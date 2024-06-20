@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import NotificationScreen from "../screen/home/NotificationScreen";
-import StartingScreen from "../screen/StartingScreen";
+import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
 
@@ -15,8 +15,16 @@ export const SignedOutStack = (
       component={StartingScreen}
       options={{ headerShown: false }}
     />
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Signup" component={SignupScreen} />
+    <Stack.Screen
+      name="Login"
+      component={LoginScreen}
+      options={{ headerTitle: "" }}
+    />
+    <Stack.Screen
+      name="Signup"
+      component={SignupScreen}
+      options={{ headerTitle: "" }}
+    />
   </>
 );
 
