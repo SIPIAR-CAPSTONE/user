@@ -1,14 +1,16 @@
 import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useTheme, Text, Button } from "react-native-paper";
 import { useState } from "react";
 import useStore from "../../../zustand/useStore";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import FormHeader from "../../common/FormHeader";
+import { useNavigation } from "@react-navigation/native";
 
 const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
+  const navigation = useNavigation();
 
   const formOne = useStore((state) => state.signupFormOne);
   const setFormOne = useStore((state) => state.setSignupFormOne);
@@ -72,12 +74,12 @@ const StepOneContent = ({ goNextStep }) => {
 
   return (
     <View style={styles.container}>
-      <FormHeader
-        title="Tell us something about yourself"
-        desc="Only provide information that is true and correct."
-      />
       {/* Form */}
-      <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
+      <View style={{ rowGap: theme.gap.lg }}>
+        <FormHeader
+          title="Tell us something about yourself"
+          desc="Only provide information that is true and correct."
+        />
         <TextFormField
           label="First Name"
           value={formOne.firstName}
@@ -115,14 +117,27 @@ const StepOneContent = ({ goNextStep }) => {
           onChangeText={(value) => setFormOne("phone", value)}
           error={errors.phone}
         />
+
+        {/* Submit or Next Button */}
+        <PrimaryButton
+          label="Next"
+          onPress={handleSubmit}
+          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+        />
       </View>
 
-      {/* Submit or Next Button */}
-      <PrimaryButton
-        label="Next"
-        onPress={handleSubmit}
-        style={{ flex: 1, borderRadius: theme.borderRadius.base }}
-      />
+      <View style={styles.footer}>
+        <Text variant="labelMedium">Already have an Account?</Text>
+        <Button
+          mode="text"
+          compact
+          onPress={() => navigation.navigate("Login")}
+          style={{ borderRadius: theme.borderRadius.base }}
+          labelStyle={{ fontSize: theme.fontSize.xs }}
+        >
+          Sign In
+        </Button>
+      </View>
     </View>
   );
 };
@@ -136,14 +151,12 @@ const styles = StyleSheet.create({
   header: {
     marginVertical: 20,
   },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
+  button: {
+    marginVertical: 20,
   },
-  desc: {
-    textAlign: "center",
-  },
-  formContainer: {
-    marginBottom: 20,
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

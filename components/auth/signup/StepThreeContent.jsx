@@ -8,7 +8,7 @@ import FormHeader from "../../common/FormHeader";
 import { useNavigation } from "@react-navigation/native";
 import useStore from "../../../zustand/useStore";
 
-const StepThreeContent = ({ backPrevStep }) => {
+const StepThreeContent = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -26,6 +26,7 @@ const StepThreeContent = ({ backPrevStep }) => {
 
     // Validate email field if it is empty
     if (!formThree.email) {
+      errors.email = "Email is required.";
     }
 
     //check if email has @ and .com
@@ -73,14 +74,14 @@ const StepThreeContent = ({ backPrevStep }) => {
   };
 
   return (
-    <View>
-      <FormHeader
-        title="Sign Up"
-        titleSize="large"
-        desc="Please fill in the information below."
-      />
+    <View style={styles.container}>
       {/* Form */}
-      <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
+      <View style={{ rowGap: theme.gap.lg }}>
+        <FormHeader
+          title="Sign Up"
+          titleSize="large"
+          desc="Please fill in the information below."
+        />
         <TextFormField
           label="Email"
           value={formThree.email}
@@ -101,25 +102,12 @@ const StepThreeContent = ({ backPrevStep }) => {
           onChangeText={(value) => setFormThree("confirmPassword", value)}
           error={errors.confirmPassword}
         />
-      </View>
 
-      {/* Container for back and next button */}
-      <View style={{ flexDirection: "row", columnGap: theme.gap.sm }}>
-        <PrimaryButton
-          label="Back"
-          mode="text"
-          onPress={backPrevStep}
-          style={{
-            flex: 1,
-            borderRadius: theme.borderRadius.base,
-            borderColor: theme.colors.primary,
-            borderWidth: 2,
-          }}
-        />
+        {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={{ flex: 3, borderRadius: theme.borderRadius.base }}
+          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
     </View>
@@ -132,23 +120,7 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 70,
   },
-  header: {
-    marginVertical: 20,
-  },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  desc: {
-    textAlign: "center",
-  },
-  formContainer: {
-    marginBottom: 20,
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 16,
+  button: {
+    marginTop: 20,
   },
 });

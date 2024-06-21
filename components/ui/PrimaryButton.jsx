@@ -22,5 +22,3 @@ const PrimaryButton = (props) => {
 };
 
 export default PrimaryButton;
-
-const styles = StyleSheet.create({});

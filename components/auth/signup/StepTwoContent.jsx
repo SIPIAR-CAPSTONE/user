@@ -8,7 +8,7 @@ import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 
-const StepTwoContent = ({ goNextStep, backPrevStep }) => {
+const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
 
   const formTwo = useStore((state) => state.signupFormTwo);
@@ -58,12 +58,12 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
 
   return (
     <View style={styles.container}>
-      <FormHeader
-        title="Please provide your current address"
-        desc="Only provide information that is true and correct."
-      />
       {/* Form */}
-      <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
+      <View style={{ rowGap: theme.gap.lg }}>
+        <FormHeader
+          title="Please provide your current address"
+          desc="Only provide information that is true and correct."
+        />
         <SelectFormField
           label="Barangay"
           value={formTwo.barangay}
@@ -83,25 +83,12 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
           onChangeText={(value) => setFormTwo("houseNumber", value)}
           error={errors.houseNumber}
         />
-      </View>
 
-      {/* Container for back and next button */}
-      <View style={[styles.buttonsContainer, { columnGap: theme.gap.sm }]}>
-        <PrimaryButton
-          label="Back"
-          mode="text"
-          onPress={backPrevStep}
-          style={{
-            flex: 1,
-            borderRadius: theme.borderRadius.base,
-            borderColor: theme.colors.primary,
-            borderWidth: 2,
-          }}
-        />
+        {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={{ flex: 3, borderRadius: theme.borderRadius.base }}
+          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
     </View>
@@ -118,19 +105,7 @@ const styles = StyleSheet.create({
   header: {
     marginVertical: 20,
   },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  desc: {
-    textAlign: "center",
-  },
-  formContainer: {
-    marginBottom: 20,
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    alignItems: "center",
+  button: {
+    marginTop: 20,
   },
 });

@@ -1,10 +1,10 @@
 import StatusBar from "../../components/common/StatusBar";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import {
   View,
   Image,
   StyleSheet,
-  StatusBar as NativeStatusBar,
+  StatusBar as RNStatusBar,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    paddingTop: NativeStatusBar.currentHeight + 50,
+    paddingTop: RNStatusBar.currentHeight + 50,
     paddingBottom: 80,
   },
   logoContainer: {
