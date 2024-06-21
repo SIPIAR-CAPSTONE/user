@@ -1,5 +1,5 @@
 import "expo-dev-client";
-import "react-native-reanimated";
+import "react-native-gesture-handler";
 import { useState } from "react";
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const isAuthenticated = false; //TODO: Replace with your actual authentication logic
   const theme = useState("light"); //TODO: Change this later on as global state or Context
-  const selectedTheme = theme == "light" ? lightTheme : lightTheme;
+  const selectedTheme = theme == "light" ? lightTheme : lightTheme; //TODO: Change the later lightTheme to darkTheme
 
   // Add a default header to all screens
   const screenOptionsConfig = ({ navigation }) => ({
