@@ -1,4 +1,3 @@
-
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
@@ -20,7 +19,11 @@ const SignupScreen = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  // Screen content of each steps
+  /*
+   * Screen content of each steps
+   * only one screen or content will be displayed at a time based on the currentStep
+   *
+   */
   const steps = [
     {
       id: 1,
@@ -50,12 +53,19 @@ const SignupScreen = () => {
 
   // Step progress color customization
   const customColors = {
+    /*
+     * it is the circle with step number inside
+     * its located at the top side
+     */
     marker: {
       text: {
         normal: theme.colors.typography.tertiary,
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
+      /*
+       * it is the line that connect the circles or the marker
+       */
       line: {
         normal: theme.colors.typography.tertiary,
         active: theme.colors.primary,
@@ -72,12 +82,12 @@ const SignupScreen = () => {
         paddingHorizontal: theme.padding.body.horizontal,
       }}
     >
-        <ProgressSteps
-          currentStep={currentStep}
-          orientation="horizontal"
-          steps={steps}
-          colors={customColors}
-        />
+      <ProgressSteps
+        currentStep={currentStep}
+        orientation="horizontal"
+        steps={steps}
+        colors={customColors}
+      />
     </ScrollView>
   );
 };

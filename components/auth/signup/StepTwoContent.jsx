@@ -14,7 +14,6 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
   const formTwo = useStore((state) => state.signupFormTwo);
   const setFormTwo = useStore((state) => state.setSignupFormTwo);
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
   /*
    *
@@ -36,7 +35,10 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
 
     // Set the errors and update form validity if it is empty
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
+
+    // return true if there is no error
+    // false if error length is greater than zero
+    return Object.keys(errors).length === 0;
   };
 
   /*
@@ -45,7 +47,8 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
    *
    */
   const handleSubmit = () => {
-    validateForm();
+    //validateForm will return true if there is no error
+    const isFormValid = validateForm();
 
     if (isFormValid) {
       //if form is valid go to next step screen
@@ -63,6 +66,7 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
       <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
         <SelectFormField
           label="Barangay"
+          value={formTwo.barangay}
           items={cdoBarangayData}
           onChange={(item) => setFormTwo("barangay", item.value)}
           error={errors.barangay}

@@ -11,12 +11,13 @@ import DatePicker from "react-native-date-picker";
 import { useState } from "react";
 
 const SelectFormField = (props) => {
-  const { onChange, items, label, error, ...inputProps } = props;
+  const { onChange, items, label, value, error, ...inputProps } = props;
   const theme = useTheme();
 
   return (
     <View>
       <Dropdown
+        value={value}
         labelField="label"
         valueField="value"
         placeholder={label}

@@ -13,7 +13,6 @@ const StepOneContent = ({ goNextStep }) => {
   const formOne = useStore((state) => state.signupFormOne);
   const setFormOne = useStore((state) => state.setSignupFormOne);
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
   /*
    *
@@ -50,7 +49,10 @@ const StepOneContent = ({ goNextStep }) => {
 
     // Set the errors and update form validity if it is empty
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
+
+    // return true if there is no error
+    // false if error length is greater than zero
+    return Object.keys(errors).length === 0;
   };
 
   /*
@@ -59,7 +61,8 @@ const StepOneContent = ({ goNextStep }) => {
    *
    */
   const handleSubmit = () => {
-    validateForm();
+    //validateForm will return true if there is no error
+    const isFormValid = validateForm();
 
     if (isFormValid) {
       //if form is valid go to next step screen

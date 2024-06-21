@@ -15,7 +15,6 @@ const StepThreeContent = ({ backPrevStep }) => {
   const formThree = useStore((state) => state.signupFormThree);
   const setFormThree = useStore((state) => state.setSignupFormThree);
   const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
 
   /*
    *
@@ -52,7 +51,10 @@ const StepThreeContent = ({ backPrevStep }) => {
 
     // Set the errors and update form validity if it is empty
     setErrors(errors);
-    setIsFormValid(Object.keys(errors).length === 0);
+
+    // return true if there is no error
+    // false if error length is greater than zero
+    return Object.keys(errors).length === 0;
   };
 
   /*
@@ -61,7 +63,8 @@ const StepThreeContent = ({ backPrevStep }) => {
    *
    */
   const handleSubmit = () => {
-    validateForm();
+    //validateForm will return true if there is no error
+    const isFormValid = validateForm();
 
     if (isFormValid) {
       //if form is valid go to completion confirmation screen
