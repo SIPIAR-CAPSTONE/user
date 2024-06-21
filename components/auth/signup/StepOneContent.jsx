@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, ScrollView, StyleSheet } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
+import FormHeader from "../../common/FormHeader";
 
 const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
@@ -15,7 +16,7 @@ const StepOneContent = ({ goNextStep }) => {
     middleName: "",
     lastName: "",
     suffix: "",
-    birthday: "",
+    birthday: new Date(),
     phone: 0,
   });
   const [errors, setErrors] = useState({});
@@ -76,29 +77,12 @@ const StepOneContent = ({ goNextStep }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={[styles.header, { rowGap: theme.gap.xs }]}>
-        <Text style={[styles.title, { fontSize: theme.fontSize.md }]}>
-          Tell us something about yourself
-        </Text>
-        <Text
-          style={[
-            styles.desc,
-            {
-              color: theme.colors.typography.secondary,
-              fontSize: theme.fontSize.sm,
-            },
-          ]}
-        >
-          Only provide information that is true and correct.
-        </Text>
-      </View>
-
-      {/*
-       *
-       * Form
-       *
-       */}
+    <View style={styles.container}>
+      <FormHeader
+        title="Tell us something about yourself"
+        desc="Only provide information that is true and correct."
+      />
+      {/* Form */}
       <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
         <TextFormField
           label="First Name"
@@ -126,8 +110,8 @@ const StepOneContent = ({ goNextStep }) => {
         />
         <BirthdayFormField
           label="Birthday"
-          value={form.birthday}
-          onChangeText={(value) => handleOnChangeValue("birthday", value)}
+          date={form.birthday}
+          setDate={handleOnChangeValue}
           error={errors.birthday}
         />
         <TextFormField
@@ -139,37 +123,13 @@ const StepOneContent = ({ goNextStep }) => {
         />
       </View>
 
-      {/*
-       *
-       * Submit or Next Button
-       *
-       */}
+      {/* Submit or Next Button */}
       <PrimaryButton
         label="Next"
         onPress={handleSubmit}
         style={{ flex: 1, borderRadius: theme.borderRadius.base }}
       />
-      {/*
-       *
-       * Footer:
-       * Navigation for Sign In
-       *
-       */}
-      <View style={styles.footer}>
-        <Text variant="labelMedium">Already Have An Account?</Text>
-        <Button
-          compact
-          onPress={() => navigation.navigate("Login")}
-          labelStyle={{
-            color: theme.colors.primary,
-            fontSize: theme.fontSize.xs,
-          }}
-          style={{ borderRadius: theme.borderRadius.base }}
-        >
-          Sign In
-        </Button>
-      </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -191,11 +151,5 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 20,
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 16,
   },
 });

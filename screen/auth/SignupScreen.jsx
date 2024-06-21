@@ -1,11 +1,12 @@
-import { ScrollView, StyleSheet } from "react-native";
+
+import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 
-import StepOneContent from "../../components/auth/login/StepOneContent";
-import StepTwoContent from "../../components/auth/login/StepTwoContent";
-import StepThreeContent from "../../components/auth/login/StepThreeContent";
+import StepOneContent from "../../components/auth/signup/StepOneContent";
+import StepTwoContent from "../../components/auth/signup/StepTwoContent";
+import StepThreeContent from "../../components/auth/signup/StepThreeContent";
 
 const SignupScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -71,12 +72,12 @@ const SignupScreen = () => {
         paddingHorizontal: theme.padding.body.horizontal,
       }}
     >
-      <ProgressSteps
-        currentStep={currentStep}
-        orientation="horizontal"
-        steps={steps}
-        colors={customColors}
-      />
+        <ProgressSteps
+          currentStep={currentStep}
+          orientation="horizontal"
+          steps={steps}
+          colors={customColors}
+        />
     </ScrollView>
   );
 };

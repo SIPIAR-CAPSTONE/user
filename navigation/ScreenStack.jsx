@@ -4,6 +4,7 @@ import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
+import RegisterConfirmation from "../screen/auth/RegisterConfirmation";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,11 @@ export const SignedOutStack = (
       name="Signup"
       component={SignupScreen}
       options={{ headerTitle: "" }}
+    />
+    <Stack.Screen
+      name="RegisterConfirmation"
+      component={RegisterConfirmation}
+      options={{ headerShown: false }}
     />
   </>
 );
