@@ -1,7 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
+import useStore from "../../../zustand/useStore";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -9,25 +9,11 @@ import FormHeader from "../../common/FormHeader";
 
 const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
-  const navigation = useNavigation();
 
-  const [form, setForm] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    suffix: "",
-    birthday: new Date(),
-    phone: 0,
-  });
+  const formOne = useStore((state) => state.signupFormOne);
+  const setFormOne = useStore((state) => state.setSignupFormOne);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
-
-  // handlers for form fields changes
-  const handleOnChangeValue = (key, newValue) => {
-    setForm((prevForm) => {
-      return { ...prevForm, [key]: newValue };
-    });
-  };
 
   /*
    *
@@ -38,27 +24,27 @@ const StepOneContent = ({ goNextStep }) => {
     let errors = {};
 
     // Validate first name field if it is empty
-    if (!form.firstName) {
+    if (!formOne.firstName) {
       errors.firstName = "First Name is required.";
     }
 
     // Validate middle name field if it is empty
-    if (!form.middleName) {
+    if (!formOne.middleName) {
       errors.middleName = "Middle Name is required.";
     }
 
     // Validate last name field if it is empty
-    if (!form.lastName) {
+    if (!formOne.lastName) {
       errors.lastName = "Last Name is required.";
     }
 
     // Validate birthday if it is empty
-    if (!form.birthday) {
+    if (!formOne.birthday) {
       errors.birthday = "Birthday is required.";
     }
 
     // Validate phone field if it is empty
-    if (!form.phone) {
+    if (!formOne.phone) {
       errors.phone = "Phone is required.";
     }
 
@@ -67,6 +53,11 @@ const StepOneContent = ({ goNextStep }) => {
     setIsFormValid(Object.keys(errors).length === 0);
   };
 
+  /*
+   *
+   *  Handle submission to proceed next step
+   *
+   */
   const handleSubmit = () => {
     validateForm();
 
@@ -86,39 +77,39 @@ const StepOneContent = ({ goNextStep }) => {
       <View style={[styles.formContainer, { rowGap: theme.gap.lg }]}>
         <TextFormField
           label="First Name"
-          value={form.firstName}
-          onChangeText={(value) => handleOnChangeValue("firstName", value)}
+          value={formOne.firstName}
+          onChangeText={(value) => setFormOne("firstName", value)}
           error={errors.firstName}
         />
         <TextFormField
           label="Middle Name"
-          value={form.middleName}
-          onChangeText={(value) => handleOnChangeValue("middleName", value)}
+          value={formOne.middleName}
+          onChangeText={(value) => setFormOne("middleName", value)}
           error={errors.middleName}
         />
         <TextFormField
           label="Last Name"
-          value={form.lastName}
-          onChangeText={(value) => handleOnChangeValue("lastName", value)}
+          value={formOne.lastName}
+          onChangeText={(value) => setFormOne("lastName", value)}
           error={errors.lastName}
         />
         <TextFormField
           label="Suffix"
-          value={form.suffix}
-          onChangeText={(value) => handleOnChangeValue("suffix", value)}
+          value={formOne.suffix}
+          onChangeText={(value) => setFormOne("suffix", value)}
           error={errors.suffix}
         />
         <BirthdayFormField
           label="Birthday"
-          date={form.birthday}
-          setDate={handleOnChangeValue}
+          date={formOne.birthday}
+          setDate={setFormOne}
           error={errors.birthday}
         />
         <TextFormField
           label="Phone Number"
           inputMode="tel"
-          value={form.phone}
-          onChangeText={(value) => handleOnChangeValue("phone", value)}
+          value={formOne.phone}
+          onChangeText={(value) => setFormOne("phone", value)}
           error={errors.phone}
         />
       </View>

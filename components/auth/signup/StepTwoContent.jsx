@@ -1,6 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
+import useStore from "../../../zustand/useStore";
 
 import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -9,20 +10,11 @@ import FormHeader from "../../common/FormHeader";
 
 const StepTwoContent = ({ goNextStep, backPrevStep }) => {
   const theme = useTheme();
-  const [form, setForm] = useState({
-    barangay: "",
-    street: "",
-    houseNumber: "",
-  });
+
+  const formTwo = useStore((state) => state.signupFormTwo);
+  const setFormTwo = useStore((state) => state.setSignupFormTwo);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
-
-  // handlers for form fields changes
-  const handleOnChangeValue = (key, newValue) => {
-    setForm((prevForm) => {
-      return { ...prevForm, [key]: newValue };
-    });
-  };
 
   /*
    *
@@ -33,12 +25,12 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
     let errors = {};
 
     // Validate barangay field if it is empty
-    if (!form.barangay) {
+    if (!formTwo.barangay) {
       errors.barangay = "Barangay is required.";
     }
 
     // Validate street field if it is empty
-    if (!form.street) {
+    if (!formTwo.street) {
       errors.street = "Street is required.";
     }
 
@@ -47,6 +39,11 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
     setIsFormValid(Object.keys(errors).length === 0);
   };
 
+  /*
+   *
+   *  Handle submission to proceed next step
+   *
+   */
   const handleSubmit = () => {
     validateForm();
 
@@ -67,24 +64,24 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
         <SelectFormField
           label="Barangay"
           items={cdoBarangayData}
-          onChange={(item) => handleOnChangeValue("barangay", item.value)}
+          onChange={(item) => setFormTwo("barangay", item.value)}
           error={errors.barangay}
         />
         <TextFormField
           label="Street"
-          value={form.street}
-          onChangeText={(value) => handleOnChangeValue("street", value)}
+          value={formTwo.street}
+          onChangeText={(value) => setFormTwo("street", value)}
           error={errors.street}
         />
         <TextFormField
           label="House Number"
-          value={form.houseNumber}
-          onChangeText={(value) => handleOnChangeValue("houseNumber", value)}
+          value={formTwo.houseNumber}
+          onChangeText={(value) => setFormTwo("houseNumber", value)}
           error={errors.houseNumber}
         />
       </View>
 
-      {/* Submit or Next Buttons */}
+      {/* Container for back and next button */}
       <View style={[styles.buttonsContainer, { columnGap: theme.gap.sm }]}>
         <PrimaryButton
           label="Back"
@@ -100,7 +97,7 @@ const StepTwoContent = ({ goNextStep, backPrevStep }) => {
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={{ flex: 2, borderRadius: theme.borderRadius.base }}
+          style={{ flex: 3, borderRadius: theme.borderRadius.base }}
         />
       </View>
     </View>
@@ -113,7 +110,6 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 70,
     height: 600,
-    justifyContent: "space-between",
   },
   header: {
     marginVertical: 20,
@@ -131,6 +127,6 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row",
     alignSelf: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
 });
