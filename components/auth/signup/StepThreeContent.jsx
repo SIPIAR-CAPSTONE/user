@@ -69,7 +69,10 @@ const StepThreeContent = () => {
 
     if (isFormValid) {
       //if form is valid go to completion confirmation screen
-      navigation.navigate("RegisterConfirmation");
+      navigation.navigate("SuccessConfirmation", {
+        title: "Registered Successfully!",
+        desc: "The submitted details should be complete and spelled correctly.",
+      });
     }
   };
 
