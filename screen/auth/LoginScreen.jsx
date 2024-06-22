@@ -1,11 +1,153 @@
-import { View, Text } from 'react-native'
+import { ScrollView, View, StyleSheet } from "react-native";
+import { Button, useTheme, Text } from "react-native-paper";
+import { useState } from "react";
+
+import FormHeader from "../../components/common/FormHeader";
+import PrimaryButton from "../../components/ui/PrimaryButton";
+import {
+  TextFormField,
+  PasswordFormField,
+} from "../../components/ui/FormField";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
-  return (
-    <View>
-      <Text>LoginScreen</Text>
-    </View>
-  )
-}
+  const theme = useTheme();
+  const navigation = useNavigation();
 
-export default LoginScreen
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  /*
+   *
+   * Form Validation
+   *
+   */
+  const validateForm = () => {
+    let errors = {};
+
+    // Validate email field if it is empty
+    if (!email) {
+      errors.email = "Email is required.";
+    }
+
+    // Validate password field if it is empty
+    if (!password) {
+      errors.password = "Password is required.";
+    }
+
+    // Set the errors and update form validity if it is empty
+    setErrors(errors);
+
+    // return true if there is no error
+    // false if error length is greater than zero
+    return Object.keys(errors).length === 0;
+  };
+
+  /*
+   *
+   *  Handle submission for signup
+   *
+   */
+  const handleSubmit = () => {
+    //validateForm will return true if there is no error
+    const isFormValid = validateForm();
+
+    if (isFormValid) {
+      //if form is valid sign in
+      // TODO: diri pag perform sa fetching
+    }
+  };
+
+  return (
+    <ScrollView
+      style={[
+        styles.container,
+        {
+          paddingVertical: theme.padding.body.vertical,
+          paddingHorizontal: theme.padding.body.horizontal,
+        },
+      ]}
+      contentContainerStyle={styles.containerContent}
+    >
+      {/* Form */}
+      <View style={{ rowGap: theme.gap.lg }}>
+        <FormHeader
+          title="Sign In"
+          titleSize="large"
+          desc="Please login to your account to access all app features."
+        />
+
+        <TextFormField
+          label="Email Address"
+          value={email}
+          inputMode="email"
+          onChangeText={setEmail}
+          error={errors.email}
+        />
+        <PasswordFormField
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          error={errors.password}
+        />
+
+        <Button
+          compact
+          mode="text"
+          style={[
+            styles.forgotPassButton,
+            { borderRadius: theme.borderRadius.md },
+          ]}
+          onPress={() => navigation.navigate("ForgotPassword")}
+        >
+          Forgot Password
+        </Button>
+
+        <PrimaryButton
+          label="Sign In"
+          onPress={handleSubmit}
+          style={{ borderRadius: theme.borderRadius.base }}
+        />
+      </View>
+
+      <View style={styles.footer}>
+        <Text variant="labelMedium">Don't Have an Account?</Text>
+        <Button
+          mode="text"
+          compact
+          onPress={() => navigation.navigate("Signup")}
+          style={{ borderRadius: theme.borderRadius.base }}
+          labelStyle={{ fontSize: theme.fontSize.xs }}
+        >
+          Sign Up
+        </Button>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default LoginScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 70,
+  },
+  containerContent: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  header: {
+    marginVertical: 20,
+  },
+  forgotPassButton: {
+    maxWidth: 180,
+    alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

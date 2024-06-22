@@ -4,7 +4,10 @@ import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
-import RegisterConfirmation from "../screen/auth/RegisterConfirmation";
+import SuccessConfirmation from "../screen/auth/SuccessConfirmation";
+import ForgotPassword from "../screen/auth/ForgotPassword";
+import OtpVerification from "../screen/auth/OtpVerification";
+import ResetPassword from "../screen/auth/ResetPassword";
 
 const Stack = createStackNavigator();
 
@@ -22,14 +25,29 @@ export const SignedOutStack = (
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
-      name="Signup"
-      component={SignupScreen}
+      name="OtpVerification"
+      component={OtpVerification}
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
-      name="RegisterConfirmation"
-      component={RegisterConfirmation}
+      name="ResetPassword"
+      component={ResetPassword}
+      options={{ headerTitle: "" }}
+    />
+    <Stack.Screen
+      name="Signup"
+      component={SignupScreen}
+      options={{ headerTitle: "Register" }}
+    />
+    <Stack.Screen
+      name="SuccessConfirmation"
+      component={SuccessConfirmation}
       options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="ForgotPassword"
+      component={ForgotPassword}
+      options={{ headerTitle: "" }}
     />
   </>
 );
