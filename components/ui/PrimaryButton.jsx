@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { useTheme } from "react-native-paper";
 
