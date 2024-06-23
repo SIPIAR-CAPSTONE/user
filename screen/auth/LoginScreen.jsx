@@ -64,7 +64,6 @@ const LoginScreen = () => {
       style={[
         styles.container,
         {
-          paddingVertical: theme.padding.body.vertical,
           paddingHorizontal: theme.padding.body.horizontal,
         },
       ]}
