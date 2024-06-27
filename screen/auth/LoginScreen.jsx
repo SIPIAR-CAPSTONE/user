@@ -9,6 +9,7 @@ import {
   PasswordFormField,
 } from "../../components/ui/FormField";
 import { useNavigation } from "@react-navigation/native";
+import { supabase } from "../../utils/supabase/config";
 
 const LoginScreen = () => {
   const theme = useTheme();
@@ -17,7 +18,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-//asda
+
   /*
    *
    * Form Validation
@@ -49,13 +50,15 @@ const LoginScreen = () => {
    *  Handle submission for signup
    *
    */
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
       //if form is valid sign in
       // TODO: diri pag perform sa fetching
+      // const { data, error } = await supabase.from("test").select();
+
     }
   };
 
