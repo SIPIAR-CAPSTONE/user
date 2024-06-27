@@ -8,6 +8,7 @@ import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
 import OtpVerificationScreen from "../screen/auth/OtpVerificationScreen";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
+import Tabs from "./BottomTab";
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,11 @@ export const SignedOutStack = (
 //Screens for unauthenticated users
 export const SignedInStack = (
   <>
+    <Stack.Screen
+      name="Tabs"
+      component={Tabs}
+      options={{ headerShown: false }}
+    />
     <Stack.Screen name="Notification" component={NotificationScreen} />
   </>
 );
