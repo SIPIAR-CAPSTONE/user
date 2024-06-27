@@ -79,8 +79,13 @@ export const SignedInStack = (
     <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
     <Stack.Screen
       name="TermsAndConditions"
+      options={{ headerTitle: "Terms and Condition" }}
       component={TermsAndConditionsScreen}
     />
-    <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+    <Stack.Screen
+      name="PrivacyPolicy"
+      options={{ headerTitle: "Privacy and Policy" }}
+      component={PrivacyPolicyScreen}
+    />
   </>
 );
