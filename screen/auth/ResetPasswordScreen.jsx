@@ -7,7 +7,7 @@ import { PasswordFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
 import { useNavigation } from "@react-navigation/native";
 
-const ResetPassword = () => {
+const ResetPasswordScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -111,7 +111,7 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {

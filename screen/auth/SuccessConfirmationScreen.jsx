@@ -4,14 +4,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const SuccessConfirmation = ({ route }) => {
+const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { title, desc, nextScreen } = route.params;
 
   /*
-   * if nextScreen is provide
-   * after a short time navigate to nextScreen
+   * if nextScreen is provided
+   * after a short time, navigate to nextScreen
    */
   useEffect(() => {
     if (nextScreen) {
@@ -46,7 +46,7 @@ const SuccessConfirmation = ({ route }) => {
   );
 };
 
-export default SuccessConfirmation;
+export default SuccessConfirmationScreen;
 
 const styles = StyleSheet.create({
   container: {

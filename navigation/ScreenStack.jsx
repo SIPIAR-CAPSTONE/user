@@ -4,10 +4,10 @@ import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
-import SuccessConfirmation from "../screen/auth/SuccessConfirmation";
-import ForgotPassword from "../screen/auth/ForgotPassword";
-import OtpVerification from "../screen/auth/OtpVerification";
-import ResetPassword from "../screen/auth/ResetPassword";
+import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
+import OtpVerificationScreen from "../screen/auth/OtpVerificationScreen";
+import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
+import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,12 +26,12 @@ export const SignedOutStack = (
     />
     <Stack.Screen
       name="OtpVerification"
-      component={OtpVerification}
+      component={OtpVerificationScreen}
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
       name="ResetPassword"
-      component={ResetPassword}
+      component={ResetPasswordScreen}
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
@@ -41,12 +41,12 @@ export const SignedOutStack = (
     />
     <Stack.Screen
       name="SuccessConfirmation"
-      component={SuccessConfirmation}
+      component={SuccessConfirmationScreen}
       options={{ headerShown: false }}
     />
     <Stack.Screen
       name="ForgotPassword"
-      component={ForgotPassword}
+      component={ForgotPasswordScreen}
       options={{ headerTitle: "" }}
     />
   </>

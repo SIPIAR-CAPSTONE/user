@@ -6,7 +6,7 @@ import { useState } from "react";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import { useNavigation } from "@react-navigation/native";
 
-const ForgotPassword = () => {
+const ForgotPasswordScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {

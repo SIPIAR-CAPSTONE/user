@@ -8,7 +8,7 @@ import PrimaryButton from "../../components/ui/PrimaryButton";
 import useCountdown from "../../hooks/useCountdown";
 import { useNavigation } from "@react-navigation/native";
 
-const OtpVerification = () => {
+const OtpVerificationScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -115,7 +115,7 @@ const ResendCountdown = ({ time, theme }) => {
   );
 };
 
-export default OtpVerification;
+export default OtpVerificationScreen;
 
 const styles = StyleSheet.create({
   container: {
