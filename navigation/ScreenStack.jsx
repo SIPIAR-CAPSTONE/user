@@ -9,6 +9,13 @@ import OtpVerificationScreen from "../screen/auth/OtpVerificationScreen";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
+import AccountVerificationScreen from "../screen/profile/AccountVerificationScreen";
+import DeleteAccountScreen from "../screen/profile/DeleteAccountScreen";
+import EditProfileScreen from "../screen/profile/EditProfileScreen";
+import MyAccountScreen from "../screen/profile/MyAccountScreen";
+import PrivacyPolicyScreen from "../screen/profile/PrivacyAndPolicyScreen";
+import TermsAndConditionsScreen from "../screen/profile/TermsAndConditionScreen";
+import SettingScreen from "../screen/profile/SettingScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,5 +69,18 @@ export const SignedInStack = (
       options={{ headerShown: false }}
     />
     <Stack.Screen name="Notification" component={NotificationScreen} />
+    <Stack.Screen name="MyAccount" component={MyAccountScreen} />
+    <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+    <Stack.Screen
+      name="AccountVerification"
+      component={AccountVerificationScreen}
+    />
+    <Stack.Screen name="Setting" component={SettingScreen} />
+    <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+    <Stack.Screen
+      name="TermsAndConditions"
+      component={TermsAndConditionsScreen}
+    />
+    <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
   </>
 );
