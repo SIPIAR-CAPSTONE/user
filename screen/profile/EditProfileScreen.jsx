@@ -1,18 +1,21 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
+import PrimaryButton from "../../components/ui/PrimaryButton";
+import cdoBarangayData from "../../utils/cdoBarangayData";
+import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import EditUserProfileCard from "../../components/profile/EditUserProfileCard";
 import SectionHeader from "../../components/profile/SectionHeader";
 import {
   BirthdayFormField,
+  SelectFormField,
   TextFormField,
 } from "../../components/profile/EditProfileFormField";
-import PrimaryButton from "../../components/ui/PrimaryButton";
 
 const EditProfileScreen = () => {
   const theme = useTheme();
-  const [profilePicture, setProfilePicture] = useState();
+  const [profilePicture, setProfilePicture] = useState(null);
   const [userInfo, setUserInfo] = useState({
     firstName: "John",
     middleName: "",
@@ -35,6 +38,11 @@ const EditProfileScreen = () => {
     });
   };
 
+  // handling confirmation dialog
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const showDialog = () => setDialogVisible(true);
+  const hideDialog = () => setDialogVisible(false);
+
   /*
    *
    * Form Validation
@@ -43,6 +51,7 @@ const EditProfileScreen = () => {
   const validateForm = () => {
     let errors = {};
 
+    /* These fields are required and should never be empty */
     // Validate first name field if it is empty
     if (!userInfo.firstName) {
       errors.firstName = "First Name is required.";
@@ -84,10 +93,19 @@ const EditProfileScreen = () => {
     <ScrollView
       contentContainerStyle={{ paddingVertical: theme.padding.body.vertical }}
     >
-      <EditUserProfileCard name="John" />
+      <EditUserProfileCard
+        name="John"
+        image={profilePicture}
+        setImage={setProfilePicture}
+      />
 
       <SectionHeader title="Personal Information" />
-      <View style={{ paddingHorizontal: theme.padding.body.horizontal }}>
+      <View
+        style={{
+          paddingHorizontal: theme.padding.body.horizontal,
+          paddingBottom: theme.padding.body.vertical,
+        }}
+      >
         <TextFormField
           label="First Name"
           value={userInfo.firstName}
@@ -110,18 +128,12 @@ const EditProfileScreen = () => {
           value={userInfo.suffix}
           onChangeText={(item) => handleFieldChange("lastName", item)}
         />
-        <TextFormField
+        <BirthdayFormField
           label="Birthday"
-          value={userInfo.birthday}
-          onChangeText={(item) => handleFieldChange("birthday", item)}
-          error={errors.birthday}
-        />
-        {/* <BirthdayFormField
-          label="Birthday"
-          date={userInfo.birthday}
+          givenDate={userInfo.birthday}
           setDate={handleFieldChange}
           error={errors.birthday}
-        /> */}
+        />
         <TextFormField
           label="Phone"
           value={userInfo.phone}
@@ -130,12 +142,18 @@ const EditProfileScreen = () => {
       </View>
 
       <SectionHeader title="Address" />
-      <View style={{ paddingHorizontal: theme.padding.body.horizontal }}>
-        <TextFormField
+      <View
+        style={{
+          paddingHorizontal: theme.padding.body.horizontal,
+          paddingBottom: theme.padding.body.vertical,
+        }}
+      >
+        <SelectFormField
           label="Barangay"
           value={userInfo.barangay}
-          onChangeText={(item) => handleFieldChange("barangay", item)}
-          error={errors.firstName}
+          items={cdoBarangayData}
+          onChange={(item) => handleFieldChange("barangay", item.value)}
+          error={errors.barangay}
         />
         <TextFormField
           label="Street"
@@ -148,10 +166,21 @@ const EditProfileScreen = () => {
           onChangeText={(item) => handleFieldChange("houseNumber", item)}
         />
 
-        <PrimaryButton
-          label="Save Changes"
-          onPress={handleSubmit}
-          style={{ borderRadius: theme.borderRadius.base, marginTop: 20 }}
+        {/* When save changes submit, show confirmation */}
+        <ConfirmationDialog
+          title="Are you sure you want to save changes?"
+          confirmButtonLabel="Save Changes"
+          visible={dialogVisible}
+          showDialog={showDialog}
+          hideDialog={hideDialog}
+          onConfirmed={handleSubmit}
+          renderButton={() => (
+            <PrimaryButton
+              label="Save Changes"
+              onPress={showDialog}
+              style={{ borderRadius: theme.borderRadius.base, marginTop: 44 }}
+            />
+          )}
         />
       </View>
     </ScrollView>

@@ -2,6 +2,8 @@ import { StyleSheet, View, TextInput } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { Text, useTheme, TouchableRipple } from "react-native-paper";
 import { useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
+import { Dropdown } from "react-native-element-dropdown";
 
 const TextFormField = (props) => {
   const theme = useTheme();
@@ -36,16 +38,69 @@ const TextFormField = (props) => {
   );
 };
 
+const SelectFormField = (props) => {
+  const { onChange, items, label, value, error, ...inputProps } = props;
+  const theme = useTheme();
+
+  return (
+    <View>
+      <Text variant="bodyMedium" style={styles.label}>
+        {label}
+      </Text>
+      <Dropdown
+        value={value}
+        labelField="label"
+        valueField="value"
+        placeholder={label}
+        data={items}
+        onChange={onChange}
+        renderRightIcon={() => (
+          <AntDesign name="caretdown" size={10} color="darkgray" />
+        )}
+        placeholderStyle={{
+          fontSize: theme.fontSize.sm,
+          color: "darkgray",
+        }}
+        selectedTextStyle={{
+          fontSize: theme.fontSize.sm,
+        }}
+        itemTextStyle={{ fontSize: theme.fontSize.sm }}
+        style={[
+          error && styles.textInputError,
+          styles.textInput,
+          {
+            borderRadius: theme.borderRadius.xs,
+            borderColor: theme.colors.secondary,
+          },
+        ]}
+        {...inputProps}
+      />
+      {error && (
+        <Text
+          variant="bodySmall"
+          style={[styles.errorLabel, { color: theme.colors.primary }]}
+        >
+          {error}
+        </Text>
+      )}
+    </View>
+  );
+};
+
 const BirthdayFormField = (props) => {
   const theme = useTheme();
 
   const { label, error, setDate, givenDate, ...inputProps } = props;
   const [open, setOpen] = useState(false);
-  const formattedDate = date;
-  // const date = Date.parse(givenDate)
+  //change string date to date object to make it work with DatePicker component
+  const date = new Date(givenDate);
+  const formattedDate = date.toISOString().split("T")[0];
 
   return (
     <View>
+      <Text variant="bodyMedium" style={styles.label}>
+        {label}
+      </Text>
       <DatePicker
         modal
         mode="date"
@@ -66,18 +121,13 @@ const BirthdayFormField = (props) => {
           styles.textInput,
           {
             justifyContent: "center",
-            backgroundColor: theme.colors.secondary,
-            borderRadius: theme.borderRadius.base,
+            borderColor: theme.colors.secondary,
+            borderRadius: theme.borderRadius.xs,
           },
         ]}
         onPress={() => setOpen(true)}
       >
-        <View style={styles.birthdayTextFieldContent}>
-          <Text style={{ color: "darkgray" }}>Birthday</Text>
-          <Text style={{ color: "darkgray" }} variant="bodySmall">
-            {formattedDate}
-          </Text>
-        </View>
+        <Text>{formattedDate}</Text>
       </TouchableRipple>
       {error && (
         <Text
@@ -91,7 +141,7 @@ const BirthdayFormField = (props) => {
   );
 };
 
-export { TextFormField, BirthdayFormField };
+export { TextFormField, BirthdayFormField, SelectFormField };
 
 const styles = StyleSheet.create({
   label: {
