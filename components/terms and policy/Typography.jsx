@@ -10,7 +10,7 @@ const Title = ({ children }) => {
         variant="displaySmall"
         style={[styles.title, { color: theme.colors.primary }]}
       >
-        SIPIAR Terms and Conditions
+        {children}
       </Text>
     )
   );
