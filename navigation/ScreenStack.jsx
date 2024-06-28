@@ -70,7 +70,11 @@ export const SignedInStack = (
     />
     <Stack.Screen name="Notification" component={NotificationScreen} />
     <Stack.Screen name="MyAccount" component={MyAccountScreen} />
-    <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+    <Stack.Screen
+      name="EditProfile"
+      options={{ headerTitle: "Edit Profile" }}
+      component={EditProfileScreen}
+    />
     <Stack.Screen
       name="AccountVerification"
       component={AccountVerificationScreen}
