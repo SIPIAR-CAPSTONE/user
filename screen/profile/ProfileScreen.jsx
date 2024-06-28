@@ -2,15 +2,26 @@ import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
 import CircularIcon from "../../components/ui/CircularIcon";
 import UserProfileCard from "../../components/profile/UserProfileCard";
+import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 
 const ProfileScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+
+  // handling logout confirmation dialog
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const showDialog = () => setDialogVisible(true);
+  const hideDialog = () => setDialogVisible(false);
+
+  const handleLogout = () => {
+    // TODO: diri tong walaon ang token para ang isAuthenticated ma false
+  };
 
   return (
     <ScrollView
@@ -72,15 +83,29 @@ const ProfileScreen = () => {
           renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
           onPress={() => navigation.navigate("PrivacyPolicy")}
         />
+
         {/* Sign Out */}
-        <ListItem
-          size="medium"
-          title="Sign Out"
-          renderIcon={() => (
-            <CircularIcon name="exit" variant="primary" size={14} />
+        {/* When logout button is pressed, show confirmation */}
+        <ConfirmationDialog
+          title="Are you sure you want to Sign Out?"
+          confirmButtonLabel="Sign Out"
+          visible={dialogVisible}
+          showDialog={showDialog}
+          hideDialog={hideDialog}
+          onConfirmed={handleLogout}
+          renderButton={() => (
+            <ListItem
+              size="medium"
+              title="Sign Out"
+              renderIcon={() => (
+                <CircularIcon name="exit" variant="primary" size={14} />
+              )}
+              renderActionIcon={() => (
+                <Ionicons name="chevron-forward" size={24} />
+              )}
+              onPress={showDialog}
+            />
           )}
-          renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
-          onPress={() => {}}
         />
       </View>
     </ScrollView>
