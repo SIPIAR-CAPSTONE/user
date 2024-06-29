@@ -21,6 +21,7 @@ const TextFormField = (props) => {
           {
             borderRadius: theme.borderRadius.xs,
             borderColor: theme.colors.secondary,
+            color: theme.colors.typography.primary,
           },
           error && styles.textInputError,
         ]}
@@ -57,14 +58,23 @@ const SelectFormField = (props) => {
         renderRightIcon={() => (
           <AntDesign name="caretdown" size={10} color="darkgray" />
         )}
+        activeColor={theme.colors.secondary}
+        containerStyle={{
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.outline,
+        }}
         placeholderStyle={{
           fontSize: theme.fontSize.sm,
           color: "darkgray",
         }}
         selectedTextStyle={{
           fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
         }}
-        itemTextStyle={{ fontSize: theme.fontSize.sm }}
+        itemTextStyle={{
+          fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
+        }}
         style={[
           error && styles.textInputError,
           styles.textInput,
@@ -90,7 +100,7 @@ const SelectFormField = (props) => {
 const BirthdayFormField = (props) => {
   const theme = useTheme();
 
-  const { label, error, setDate, givenDate, ...inputProps } = props;
+  const { label, error, setDate, givenDate } = props;
   const [open, setOpen] = useState(false);
   //change string date to date object to make it work with DatePicker component
   const date = new Date(givenDate);
@@ -104,7 +114,7 @@ const BirthdayFormField = (props) => {
       <DatePicker
         modal
         mode="date"
-        theme="light" // TODO: change this based on currentTheme global state
+        theme="light"
         open={open}
         date={date}
         onConfirm={(date) => {
@@ -127,7 +137,7 @@ const BirthdayFormField = (props) => {
         ]}
         onPress={() => setOpen(true)}
       >
-        <Text>{formattedDate}</Text>
+        <Text style={{color: theme.colors.typography.primary }}>{formattedDate}</Text>
       </TouchableRipple>
       {error && (
         <Text

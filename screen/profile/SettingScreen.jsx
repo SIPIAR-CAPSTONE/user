@@ -7,12 +7,14 @@ import CircularIcon from "../../components/ui/CircularIcon";
 import { useNavigation } from "@react-navigation/native";
 import RadioDialog from "../../components/ui/RadioDialog";
 import { useState } from "react";
+import useStore from "../../zustand/useStore";
 
 const SettingScreen = () => {
   const theme = useTheme();
+  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
+  const setCurrentThemeStatus = useStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
   const [notificationStatus, setNotificationStatus] = useState("On");
-  const [themeStatus, setThemeStatus] = useState("Light");
 
   const [visible, setVisible] = useState({
     notification: false,
@@ -73,9 +75,9 @@ const SettingScreen = () => {
         title="Theme"
         visible={visible.appearance}
         hideDialog={() => hideDialog("appearance")}
-        data={["Light", "Dark"]}
-        selectedValue={themeStatus}
-        setSelectedValue={setThemeStatus}
+        data={["light", "dark"]}
+        selectedValue={currentThemeStatus}
+        setSelectedValue={setCurrentThemeStatus}
       />
 
       {/* Delete Account */}

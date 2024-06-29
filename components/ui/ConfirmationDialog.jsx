@@ -26,7 +26,7 @@ const ConfirmationDialog = ({
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
-          style={{ backgroundColor: theme.colors.background }}
+          style={styles.container}
         >
           <Dialog.Title style={styles.title}>{title}</Dialog.Title>
           {desc && (
@@ -56,6 +56,9 @@ const ConfirmationDialog = ({
 export default ConfirmationDialog;
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 20,
+  },
   title: {
     textAlign: "center",
     fontWeight: "bold",

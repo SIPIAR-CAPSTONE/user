@@ -26,14 +26,23 @@ const SelectFormField = (props) => {
         renderRightIcon={() => (
           <AntDesign name="caretdown" size={10} color="darkgray" />
         )}
+        activeColor={theme.colors.secondary}
+        containerStyle={{
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.outline,
+        }}
         placeholderStyle={{
           fontSize: theme.fontSize.sm,
           color: "darkgray",
         }}
         selectedTextStyle={{
           fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
         }}
-        itemTextStyle={{ fontSize: theme.fontSize.sm }}
+        itemTextStyle={{
+          fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
+        }}
         style={[
           error && styles.textInputError,
           styles.textInput,
@@ -91,7 +100,9 @@ const BirthdayFormField = (props) => {
         onPress={() => setOpen(true)}
       >
         <View style={styles.birthdayTextFieldContent}>
-          <Text style={{ color: "darkgray" }}>Birthday</Text>
+          <Text style={{ color: theme.colors.typography.secondary }}>
+            Birthday
+          </Text>
           <Text style={{ color: "darkgray" }} variant="bodySmall">
             {formattedDate}
           </Text>
@@ -119,12 +130,14 @@ const TextFormField = (props) => {
       <TextInput
         editable={!disabled}
         placeholder={label}
+        placeholderTextColor={theme.colors.typography.secondary}
         style={[
           error && styles.textInputError,
           styles.textInput,
           {
             backgroundColor: theme.colors.secondary,
             borderRadius: theme.borderRadius.base,
+            color: theme.colors.typography.primary,
           },
         ]}
         {...inputProps}
@@ -187,6 +200,7 @@ const PasswordFormField = (props) => {
       <View>
         <TextInput
           placeholder={label}
+          placeholderTextColor={theme.colors.typography.secondary}
           editable={!disabled}
           secureTextEntry={!toggleEye}
           style={[
@@ -195,6 +209,7 @@ const PasswordFormField = (props) => {
             {
               backgroundColor: theme.colors.secondary,
               borderRadius: theme.borderRadius.base,
+              color: theme.colors.typography.primary,
             },
           ]}
           {...inputProps}

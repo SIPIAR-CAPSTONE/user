@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 const useStore = create((set) => ({
+  currentThemeStatus: "dark",
   signupFormOne: {
     firstName: "",
     middleName: "",
@@ -31,6 +32,7 @@ const useStore = create((set) => ({
     set((state) => ({
       signupFormThree: { ...state.signupFormThree, [key]: newValue },
     })),
+  setThemeStatus: (newThemeStatus) => set({ currentThemeStatus: newThemeStatus }),
 }));
 
 export default useStore;

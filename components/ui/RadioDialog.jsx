@@ -32,7 +32,6 @@ const RadioDialog = ({
       <Dialog
         visible={visible}
         onDismiss={hideDialog}
-        style={{ backgroundColor: theme.colors.background }}
       >
         <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Content>

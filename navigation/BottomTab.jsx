@@ -20,11 +20,15 @@ const Tabs = ({ navigation }) => {
   const sceneContainerStyle = { backgroundColor: theme.colors.background };
 
   const screenOptions = {
-    tabBarStyle: { height: 54 },
+    tabBarStyle: { height: 54, backgroundColor: theme.colors.background },
     tabBarActiveTintColor: theme.colors.primary,
     tabBarLabelStyle: { fontSize: 12, fontWeight: "500", paddingBottom: 4 },
-    headerStyle: { elevation: 0 },
-    headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
+    headerStyle: { elevation: 0, backgroundColor: theme.colors.background },
+    headerTitleStyle: {
+      fontWeight: "bold",
+      fontSize: 22,
+      color: theme.colors.typography.primary,
+    },
     headerRightContainerStyle: { marginEnd: 14 },
   };
 
