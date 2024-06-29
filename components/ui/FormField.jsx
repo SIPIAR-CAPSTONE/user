@@ -112,11 +112,12 @@ const BirthdayFormField = (props) => {
 const TextFormField = (props) => {
   const theme = useTheme();
 
-  const { label, error, ...inputProps } = props;
+  const { label, error, disabled, ...inputProps } = props;
 
   return (
     <View>
       <TextInput
+        editable={!disabled}
         placeholder={label}
         style={[
           error && styles.textInputError,
@@ -143,7 +144,7 @@ const TextFormField = (props) => {
 const PasswordFormField = (props) => {
   const theme = useTheme();
 
-  const { label, error, ...inputProps } = props;
+  const { label, error, disabled, ...inputProps } = props;
   const [toggleEye, setToggleEye] = useState(false);
 
   const handleToggle = () => {
@@ -186,6 +187,7 @@ const PasswordFormField = (props) => {
       <View>
         <TextInput
           placeholder={label}
+          editable={!disabled}
           secureTextEntry={!toggleEye}
           style={[
             error && styles.textInputError,
