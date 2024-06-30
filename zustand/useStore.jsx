@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { setItem, getItem } from "../utils/LocalStorage";
 
 const useStore = create((set) => ({
   currentThemeStatus: "dark",
@@ -32,7 +33,22 @@ const useStore = create((set) => ({
     set((state) => ({
       signupFormThree: { ...state.signupFormThree, [key]: newValue },
     })),
-  setThemeStatus: (newThemeStatus) => set({ currentThemeStatus: newThemeStatus }),
+  setThemeStatus: (newThemeStatus) => {
+    //set new theme in state
+    set({ currentThemeStatus: newThemeStatus });
+    //set new theme in localStorage
+    setItem("theme", newThemeStatus);
+  },
+  initThemeStatus: async () => {
+    const defaultTheme = "light";
+    const locallyStoredTheme = await getItem("theme");
+    console.log(locallyStoredTheme);
+    if (!null) {
+      set({ currentThemeStatus: locallyStoredTheme });
+    } else {
+      set({ currentThemeStatus: defaultTheme });
+    }
+  },
 }));
 
 export default useStore;

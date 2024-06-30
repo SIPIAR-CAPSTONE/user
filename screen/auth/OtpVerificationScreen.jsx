@@ -1,12 +1,14 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { OtpInput } from "react-native-otp-entry";
 
+import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import useCountdown from "../../hooks/useCountdown";
-import { useNavigation } from "@react-navigation/native";
+
 
 const OtpVerificationScreen = () => {
   const theme = useTheme();
@@ -81,6 +83,8 @@ const OtpVerificationScreen = () => {
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
+
+      <StatusBar />
     </ScrollView>
   );
 };

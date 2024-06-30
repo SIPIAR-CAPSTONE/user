@@ -6,6 +6,7 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
+import { useEffect } from "react";
 
 import { lightTheme, darkTheme } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
@@ -16,9 +17,18 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const isAuthenticated = true; //TODO: Replace with your actual authentication logic
+  const initThemeStatus = useStore((state) => state.initThemeStatus);
   const currentThemeStatus = useStore((state) => state.currentThemeStatus);
-
   const selectedTheme = currentThemeStatus == "light" ? lightTheme : darkTheme;
+
+  /**
+   *
+   * Initialize Theme by checking
+   * if there is a theme stored locally
+   */
+  useEffect(() => {
+    initThemeStatus();
+  }, []);
 
   //configuration to make transition between screen much faster
   const androidFastTransition = {

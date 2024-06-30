@@ -113,7 +113,7 @@ const darkTheme = {
     onPrimary: "#ffffff",
     primaryContainer: "#782024",
     onPrimaryContainer: "#ffdada",
-    secondary: "#3c3c3c",
+    secondary: "#202020",
     onSecondary: "#ffffff",
     secondaryContainer: "#5a2d2d",
     onSecondaryContainer: "#ffdada",

@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
+import StatusBar from "../../components/common/StatusBar";
+
 const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -42,6 +44,8 @@ const SuccessConfirmationScreen = ({ route }) => {
       >
         {desc}
       </Text>
+
+      <StatusBar />
     </View>
   );
 };

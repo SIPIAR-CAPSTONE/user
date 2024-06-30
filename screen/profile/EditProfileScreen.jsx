@@ -2,6 +2,7 @@ import { View, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
+import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import cdoBarangayData from "../../utils/cdoBarangayData";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
@@ -183,6 +184,8 @@ const EditProfileScreen = () => {
           )}
         />
       </View>
+
+      <StatusBar />
     </ScrollView>
   );
 };

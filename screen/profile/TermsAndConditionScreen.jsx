@@ -1,5 +1,7 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
+
+import StatusBar from "../../components/common/StatusBar";
 import {
   Title,
   H1,
@@ -129,6 +131,8 @@ const TermsAndConditionScreen = () => {
       </P>
 
       <Time style={{ marginTop: 50 }}>Last updated: May 15, 2024</Time>
+
+      <StatusBar />
     </ScrollView>
   );
 };

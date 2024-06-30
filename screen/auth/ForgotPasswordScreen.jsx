@@ -1,10 +1,12 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+
 import FormHeader from "../../components/common/FormHeader";
 import { TextFormField } from "../../components/ui/FormField";
-import { useState } from "react";
 import PrimaryButton from "../../components/ui/PrimaryButton";
-import { useNavigation } from "@react-navigation/native";
+import StatusBar from "../../components/common/StatusBar";
 
 const ForgotPasswordScreen = () => {
   const theme = useTheme();
@@ -86,6 +88,8 @@ const ForgotPasswordScreen = () => {
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
+
+      <StatusBar />
     </ScrollView>
   );
 };

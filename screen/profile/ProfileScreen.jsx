@@ -4,11 +4,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
+import StatusBar from "../../components/common/StatusBar";
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
 import CircularIcon from "../../components/ui/CircularIcon";
 import UserProfileCard from "../../components/profile/UserProfileCard";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
+import NextActionIcon from "../../components/common/NextActionIcon";
 
 const ProfileScreen = () => {
   const theme = useTheme();
@@ -50,7 +52,7 @@ const ProfileScreen = () => {
           renderIcon={() => (
             <CircularIcon name="person" variant="primary" size={14} />
           )}
-          renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+          renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate("MyAccount")}
         />
         {/* Setting */}
@@ -60,7 +62,7 @@ const ProfileScreen = () => {
           renderIcon={() => (
             <CircularIcon name="settings" variant="primary" size={14} />
           )}
-          renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+          renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate("Setting")}
         />
         {/* Terms and Conditions */}
@@ -70,7 +72,7 @@ const ProfileScreen = () => {
           renderIcon={() => (
             <CircularIcon name="document" variant="primary" size={14} />
           )}
-          renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+          renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate("TermsAndConditions")}
         />
         {/* Privacy Policy */}
@@ -80,7 +82,7 @@ const ProfileScreen = () => {
           renderIcon={() => (
             <CircularIcon name="shield-checkmark" variant="primary" size={14} />
           )}
-          renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+          renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate("PrivacyPolicy")}
         />
 
@@ -100,14 +102,14 @@ const ProfileScreen = () => {
               renderIcon={() => (
                 <CircularIcon name="exit" variant="primary" size={14} />
               )}
-              renderActionIcon={() => (
-                <Ionicons name="chevron-forward" size={24} />
-              )}
+              renderActionIcon={() => <NextActionIcon />}
               onPress={showDialog}
             />
           )}
         />
       </View>
+
+      <StatusBar />
     </ScrollView>
   );
 };

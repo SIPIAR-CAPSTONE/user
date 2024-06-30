@@ -2,6 +2,7 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { Button, useTheme, Text } from "react-native-paper";
 import { useState } from "react";
 
+import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import {
@@ -58,7 +59,6 @@ const LoginScreen = () => {
       //if form is valid sign in
       // TODO: diri pag perform sa fetching
       // const { data, error } = await supabase.from("test").select();
-
     }
   };
 
@@ -125,6 +125,8 @@ const LoginScreen = () => {
           Sign Up
         </Button>
       </View>
+
+      <StatusBar />
     </ScrollView>
   );
 };

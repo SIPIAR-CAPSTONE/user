@@ -1,13 +1,11 @@
 import { SectionList, StyleSheet } from "react-native";
-import {
-  Divider,
-  useTheme,
-} from "react-native-paper";
+import { Divider, useTheme } from "react-native-paper";
 
 import UserProfileCard from "../../components/profile/UserProfileCard";
 import SectionHeader from "../../components/profile/SectionHeader";
 import SectionItem from "../../components/profile/SectionItem";
 import EditButton from "../../components/profile/EditButton";
+import StatusBar from "../../components/common/StatusBar";
 
 const DATA = [
   {
@@ -47,25 +45,28 @@ const MyAccountScreen = () => {
   );
 
   return (
-    <SectionList
-      sections={DATA}
-      keyExtractor={(item, index) => item + index}
-      renderItem={renderItem}
-      renderSectionHeader={renderSectionHeader}
-      ListHeaderComponentStyle={styles.listHeaderContainer}
-      ListHeaderComponent={
-        <UserProfileCard
-          name="John Doe"
-          email="j.doe@gmail.com"
-          renderFooter={() => <EditButton />}
-        />
-      }
-      ItemSeparatorComponent={renderItemSeperator}
-      contentContainerStyle={{ paddingVertical: theme.padding.body.vertical }}
-    />
+    <>
+      <SectionList
+        sections={DATA}
+        keyExtractor={(item, index) => item + index}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        ListHeaderComponentStyle={styles.listHeaderContainer}
+        ListHeaderComponent={
+          <UserProfileCard
+            name="John Doe"
+            email="j.doe@gmail.com"
+            renderFooter={() => <EditButton />}
+          />
+        }
+        ItemSeparatorComponent={renderItemSeperator}
+        contentContainerStyle={{ paddingVertical: theme.padding.body.vertical }}
+      />
+
+      <StatusBar />
+    </>
   );
 };
-
 
 const styles = StyleSheet.create({
   listHeaderContainer: {

@@ -3,6 +3,7 @@ import { useTheme } from "react-native-paper";
 import { useState } from "react";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 
+import StatusBar from "../../components/common/StatusBar";
 import StepOneContent from "../../components/auth/signup/StepOneContent";
 import StepTwoContent from "../../components/auth/signup/StepTwoContent";
 import StepThreeContent from "../../components/auth/signup/StepThreeContent";
@@ -88,6 +89,8 @@ const SignupScreen = () => {
         steps={steps}
         colors={customColors}
       />
+
+      <StatusBar />
     </ScrollView>
   );
 };

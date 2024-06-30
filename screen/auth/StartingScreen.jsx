@@ -1,4 +1,3 @@
-import StatusBar from "../../components/common/StatusBar";
 import { Text, useTheme } from "react-native-paper";
 import {
   View,
@@ -7,6 +6,8 @@ import {
   StatusBar as RNStatusBar,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 
 const StartingScreen = () => {

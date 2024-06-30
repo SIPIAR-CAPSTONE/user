@@ -1,13 +1,15 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 import ListItem from "../../components/ui/ListItem";
 import CircularIcon from "../../components/ui/CircularIcon";
-import { useNavigation } from "@react-navigation/native";
 import RadioDialog from "../../components/ui/RadioDialog";
-import { useState } from "react";
 import useStore from "../../zustand/useStore";
+import StatusBar from "../../components/common/StatusBar";
+import NextActionIcon from "../../components/common/NextActionIcon";
 
 const SettingScreen = () => {
   const theme = useTheme();
@@ -49,7 +51,7 @@ const SettingScreen = () => {
         renderIcon={() => (
           <CircularIcon name="notifications" variant="primary" size={14} />
         )}
-        renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+        renderActionIcon={() => <NextActionIcon />}
         onPress={() => showDialog("notification")}
       />
       <RadioDialog
@@ -68,7 +70,7 @@ const SettingScreen = () => {
         renderIcon={() => (
           <CircularIcon name="color-palette" variant="primary" size={14} />
         )}
-        renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+        renderActionIcon={() => <NextActionIcon />}
         onPress={() => showDialog("appearance")}
       />
       <RadioDialog
@@ -87,9 +89,11 @@ const SettingScreen = () => {
         renderIcon={() => (
           <CircularIcon name="trash" variant="primary" size={14} />
         )}
-        renderActionIcon={() => <Ionicons name="chevron-forward" size={24} />}
+        renderActionIcon={() => <NextActionIcon />}
         onPress={() => navigation.navigate("DeleteAccount")}
       />
+
+      <StatusBar />
     </ScrollView>
   );
 };
