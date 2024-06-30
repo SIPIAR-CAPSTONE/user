@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { setItem, getItem } from "../utils/LocalStorage";
+import { setItem, getItem, deleteItem } from "../utils/LocalStorage";
 
 const useStore = create((set) => ({
   currentThemeStatus: "dark",
+  isUserAuthenticated: false,
   signupFormOne: {
     firstName: "",
     middleName: "",
@@ -39,15 +40,30 @@ const useStore = create((set) => ({
     //set new theme in localStorage
     setItem("theme", newThemeStatus);
   },
+  // Check if there is a theme stored locally
   initThemeStatus: async () => {
     const defaultTheme = "light";
     const locallyStoredTheme = await getItem("theme");
-    console.log(locallyStoredTheme);
+
     if (!null) {
       set({ currentThemeStatus: locallyStoredTheme });
     } else {
       set({ currentThemeStatus: defaultTheme });
     }
+  },
+  setUserIsAuthenticated: (userToken) => {
+    //set isAuthenticated state to true
+    set({ isUserAuthenticated: true });
+
+    //store userToken locally
+    setItem("userToken", userToken);
+  },
+  setUserIsNotAuthenticated: () => {
+    //set isAuthenticated state to false
+    set({ isUserAuthenticated: false });
+
+    //store userToken locally
+    deleteItem("userToken");
   },
 }));
 

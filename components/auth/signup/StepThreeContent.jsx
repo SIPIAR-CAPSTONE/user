@@ -8,6 +8,7 @@ import FormHeader from "../../common/FormHeader";
 import { useNavigation } from "@react-navigation/native";
 import useStore from "../../../zustand/useStore";
 import { supabase } from "../../../utils/supabase/config";
+import { setItem } from "../../../utils/LocalStorage";
 
 const StepThreeContent = () => {
   const theme = useTheme();
@@ -110,6 +111,7 @@ const StepThreeContent = () => {
         navigation.navigate("SuccessConfirmation", {
           title: "Registered Successfully!",
           desc: "The submitted details should be complete and spelled correctly.",
+          userToken: data["session"]["access_token"],
         });
       }
     }

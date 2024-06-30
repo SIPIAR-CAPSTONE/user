@@ -11,6 +11,7 @@ import CircularIcon from "../../components/ui/CircularIcon";
 import UserProfileCard from "../../components/profile/UserProfileCard";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import NextActionIcon from "../../components/common/NextActionIcon";
+import useStore from "../../zustand/useStore";
 
 const ProfileScreen = () => {
   const theme = useTheme();
@@ -21,8 +22,12 @@ const ProfileScreen = () => {
   const showDialog = () => setDialogVisible(true);
   const hideDialog = () => setDialogVisible(false);
 
+  const setUserIsNotAuthenticated = useStore(
+    (state) => state.setUserIsNotAuthenticated
+  );
+
   const handleLogout = () => {
-    // TODO: diri tong walaon ang token para ang isAuthenticated ma false
+    setUserIsNotAuthenticated("userToken");
   };
 
   return (

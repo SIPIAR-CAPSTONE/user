@@ -16,7 +16,7 @@ import useStore from "./zustand/useStore";
 const Stack = createStackNavigator();
 
 export default function App() {
-  const isAuthenticated = true; //TODO: Replace with your actual authentication logic
+  const isUserAuthenticated = useStore((state) => state.isUserAuthenticated);
   const initThemeStatus = useStore((state) => state.initThemeStatus);
   const currentThemeStatus = useStore((state) => state.currentThemeStatus);
   const selectedTheme = currentThemeStatus == "light" ? lightTheme : darkTheme;
@@ -78,7 +78,7 @@ export default function App() {
     <PaperProvider theme={selectedTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
-          {isAuthenticated ? SignedInStack : SignedOutStack}
+          {isUserAuthenticated ? SignedInStack : SignedOutStack}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

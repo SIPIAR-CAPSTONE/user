@@ -5,11 +5,15 @@ import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
+import useStore from "../../zustand/useStore";
 
 const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const { title, desc, nextScreen } = route.params;
+  const { title, desc, nextScreen, userToken } = route.params;
+  const setUserIsAuthenticated = useStore(
+    (state) => state.setUserIsAuthenticated
+  );
 
   /*
    * if nextScreen is provided
@@ -19,6 +23,19 @@ const SuccessConfirmationScreen = ({ route }) => {
     if (nextScreen) {
       setTimeout(function () {
         navigation.navigate(nextScreen);
+      }, 1500);
+    }
+  }, []);
+
+  /*
+   *  After login or sign up
+   *  show the confirmationScreen and after a short delay proceed to home screen
+   *
+   */
+  useEffect(() => {
+    if (userToken) {
+      setTimeout(function () {
+        setUserIsAuthenticated(userToken);
       }, 1500);
     }
   }, []);
