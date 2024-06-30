@@ -1,6 +1,5 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 

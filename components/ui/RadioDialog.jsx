@@ -2,7 +2,6 @@ import {
   Button,
   Dialog,
   Portal,
-  useTheme,
   RadioButton,
 } from "react-native-paper";
 
@@ -14,7 +13,6 @@ const RadioDialog = ({
   selectedValue,
   setSelectedValue,
 }) => {
-  const theme = useTheme();
 
   const RadioButtons = data.map((value, index) => (
     <RadioButton.Item
