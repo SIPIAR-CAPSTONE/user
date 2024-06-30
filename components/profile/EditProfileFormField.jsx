@@ -4,6 +4,7 @@ import { Text, useTheme, TouchableRipple } from "react-native-paper";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Dropdown } from "react-native-element-dropdown";
+import useStore from "../../zustand/useStore";
 
 const TextFormField = (props) => {
   const theme = useTheme();
@@ -102,6 +103,8 @@ const BirthdayFormField = (props) => {
 
   const { label, error, setDate, givenDate } = props;
   const [open, setOpen] = useState(false);
+
+  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
   //change string date to date object to make it work with DatePicker component
   const date = new Date(givenDate);
   const formattedDate = date.toISOString().split("T")[0];
@@ -114,9 +117,12 @@ const BirthdayFormField = (props) => {
       <DatePicker
         modal
         mode="date"
-        theme="light"
+        theme={currentThemeStatus}
         open={open}
         date={date}
+        buttonColor={theme.colors.typography.primary}
+        dividerColor={theme.colors.typography.primary}
+        title=" "
         onConfirm={(date) => {
           setOpen(false);
           setDate("birthday", date);
@@ -137,7 +143,9 @@ const BirthdayFormField = (props) => {
         ]}
         onPress={() => setOpen(true)}
       >
-        <Text style={{color: theme.colors.typography.primary }}>{formattedDate}</Text>
+        <Text style={{ color: theme.colors.typography.primary }}>
+          {formattedDate}
+        </Text>
       </TouchableRipple>
       {error && (
         <Text

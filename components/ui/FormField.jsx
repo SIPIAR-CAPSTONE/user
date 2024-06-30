@@ -9,6 +9,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
 import DatePicker from "react-native-date-picker";
 import { useState } from "react";
+import useStore from "../../zustand/useStore";
 
 const SelectFormField = (props) => {
   const { onChange, items, label, value, error, ...inputProps } = props;
@@ -68,6 +69,8 @@ const SelectFormField = (props) => {
 const BirthdayFormField = (props) => {
   const { label, error, setDate, date, ...inputProps } = props;
   const theme = useTheme();
+
+  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
   const [open, setOpen] = useState(false);
   const formattedDate = date.toISOString().split("T")[0];
 
@@ -76,9 +79,12 @@ const BirthdayFormField = (props) => {
       <DatePicker
         modal
         mode="date"
-        theme="light" // TODO: change this based on currentTheme global state
+        theme={currentThemeStatus}
         open={open}
         date={date}
+        buttonColor={theme.colors.typography.primary}
+        dividerColor={theme.colors.typography.primary}
+        title=" "
         onConfirm={(date) => {
           setOpen(false);
           setDate("birthday", date);
