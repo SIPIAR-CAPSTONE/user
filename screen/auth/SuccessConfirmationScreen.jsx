@@ -11,9 +11,7 @@ const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { title, desc, nextScreen, userToken } = route.params;
-  const setUserIsAuthenticated = useStore(
-    (state) => state.setUserIsAuthenticated
-  );
+  const setUserToken = useStore((state) => state.setUserToken);
 
   /*
    * if nextScreen is provided
@@ -35,7 +33,7 @@ const SuccessConfirmationScreen = ({ route }) => {
   useEffect(() => {
     if (userToken) {
       setTimeout(function () {
-        setUserIsAuthenticated(userToken);
+        setUserToken(userToken);
       }, 1500);
     }
   }, []);

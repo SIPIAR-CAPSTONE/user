@@ -1,9 +1,10 @@
 import { create } from "zustand";
-import { setItem, getItem, deleteItem } from "../utils/LocalStorage";
+import { setItem, deleteItem } from "../utils/LocalStorage";
 
 const useStore = create((set) => ({
   currentThemeStatus: "dark",
-  isUserAuthenticated: false,
+  userToken: null,
+  appIsReady: false,
   signupFormOne: {
     firstName: "",
     middleName: "",
@@ -35,36 +36,25 @@ const useStore = create((set) => ({
       signupFormThree: { ...state.signupFormThree, [key]: newValue },
     })),
   setThemeStatus: (newThemeStatus) => {
-    //set new theme in state
-    set({ currentThemeStatus: newThemeStatus });
-    //set new theme in localStorage
-    setItem("theme", newThemeStatus);
-  },
-  // Check if there is a theme stored locally
-  initThemeStatus: async () => {
     const defaultTheme = "light";
-    const locallyStoredTheme = await getItem("theme");
-
-    if (!null) {
-      set({ currentThemeStatus: locallyStoredTheme });
-    } else {
+    if (newThemeStatus == null) {
       set({ currentThemeStatus: defaultTheme });
+    } else {
+      //set new theme in state
+      set({ currentThemeStatus: newThemeStatus });
+      //set new theme in localStorage
+      setItem("theme", newThemeStatus);
     }
   },
-  setUserIsAuthenticated: (userToken) => {
-    //set isAuthenticated state to true
-    set({ isUserAuthenticated: true });
-
-    //store userToken locally
-    setItem("userToken", userToken);
+  setUserToken: (givenToken) => {
+    set({ userToken: givenToken });
+    setItem("userToken", givenToken);
   },
-  setUserIsNotAuthenticated: () => {
-    //set isAuthenticated state to false
-    set({ isUserAuthenticated: false });
-
-    //store userToken locally
+  removeUserToken: () => {
+    set({ userToken: null });
     deleteItem("userToken");
   },
+  setAppIsReady: (value) => set({ appIsReady: value }),
 }));
 
 export default useStore;

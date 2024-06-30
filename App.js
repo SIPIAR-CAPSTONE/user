@@ -7,6 +7,7 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { lightTheme, darkTheme } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
@@ -16,20 +17,25 @@ import useStore from "./zustand/useStore";
 const Stack = createStackNavigator();
 
 export default function App() {
-  const isUserAuthenticated = useStore((state) => state.isUserAuthenticated);
-  const initThemeStatus = useStore((state) => state.initThemeStatus);
+  const userToken = useStore((state) => state.userToken);
   const currentThemeStatus = useStore((state) => state.currentThemeStatus);
+  const setThemeStatus = useStore((state) => state.setThemeStatus);
   const selectedTheme = currentThemeStatus == "light" ? lightTheme : darkTheme;
 
-  /**
-   *
-   * Initialize Theme by checking
-   * if there is a theme stored locally
-   */
   useEffect(() => {
-    initThemeStatus();
+    const initThemeCheck = async () => {
+      setThemeStatus(await AsyncStorage.getItem("theme"));
+    };
+
+    initThemeCheck();
   }, []);
 
+  /*
+   *
+   *
+   * Stack Navigator Configuration
+   *
+   */
   //configuration to make transition between screen much faster
   const androidFastTransition = {
     gestureDirection: "horizontal",
@@ -47,7 +53,7 @@ export default function App() {
         },
       },
     },
-    cardStyleInterpolator: CardStyleInterpolators.forFade, // No sliding animation, just fade in/out
+    cardStyleInterpolator: CardStyleInterpolators.forFade,
   };
 
   // Add a default header to all screens
@@ -78,7 +84,7 @@ export default function App() {
     <PaperProvider theme={selectedTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
-          {isUserAuthenticated ? SignedInStack : SignedOutStack}
+          {userToken ? SignedInStack : SignedOutStack}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

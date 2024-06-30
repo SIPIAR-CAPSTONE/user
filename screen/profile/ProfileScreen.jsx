@@ -22,12 +22,10 @@ const ProfileScreen = () => {
   const showDialog = () => setDialogVisible(true);
   const hideDialog = () => setDialogVisible(false);
 
-  const setUserIsNotAuthenticated = useStore(
-    (state) => state.setUserIsNotAuthenticated
-  );
+  const setUserToken = useStore((state) => state.setUserToken);
 
   const handleLogout = () => {
-    setUserIsNotAuthenticated("userToken");
+    setUserToken("userToken");
   };
 
   return (
