@@ -1,15 +1,17 @@
-import { StyleSheet, ScrollView, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
-import FormHeader from '../../components/common/FormHeader'
-import { TextFormField } from '../../components/ui/FormField'
-import { useState } from 'react'
-import PrimaryButton from '../../components/ui/PrimaryButton'
-import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, ScrollView, View } from "react-native";
+import { useTheme } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+
+import FormHeader from "../../components/common/FormHeader";
+import { TextFormField } from "../../components/ui/FormField";
+import PrimaryButton from "../../components/ui/PrimaryButton";
+import StatusBar from "../../components/common/StatusBar";
 // import { supabase } from '../../utils/supabase/config'
 import useSendToken from '../../hooks/useSendToken'
 import useStore from "../../zustand/useStore"
 
-const ForgotPassword = () => {
+const ForgotPasswordScreen = () => {
   const theme = useTheme()
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
@@ -102,11 +104,13 @@ const ForgotPassword = () => {
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
+
+      <StatusBar />
     </ScrollView>
   )
 }
 
-export default ForgotPassword
+export default ForgotPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {

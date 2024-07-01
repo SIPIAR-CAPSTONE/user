@@ -1,27 +1,75 @@
 import "expo-dev-client";
 import "react-native-gesture-handler";
-import { useState } from "react";
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { lightTheme } from "./utils/theme";
+import { lightTheme, darkTheme } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
 import CircularIcon from "./components/ui/CircularIcon";
+import useStore from "./zustand/useStore";
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const isAuthenticated = false; //TODO: Replace with your actual authentication logic
-  const theme = useState("light"); //TODO: Change this later on as global state or Context
-  const selectedTheme = theme == "light" ? lightTheme : lightTheme; //TODO: Change the later lightTheme to darkTheme
+  const userToken = useStore((state) => state.userToken);
+  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
+  const setThemeStatus = useStore((state) => state.setThemeStatus);
+  const selectedTheme = currentThemeStatus == "light" ? lightTheme : darkTheme;
+
+  useEffect(() => {
+    const initThemeCheck = async () => {
+      setThemeStatus(await AsyncStorage.getItem("theme"));
+    };
+
+    initThemeCheck();
+  }, []);
+
+  /*
+   *
+   *
+   * Stack Navigator Configuration
+   *
+   */
+  //configuration to make transition between screen much faster
+  const androidFastTransition = {
+    gestureDirection: "horizontal",
+    transitionSpec: {
+      open: {
+        animation: "timing",
+        config: {
+          duration: 100,
+        },
+      },
+      close: {
+        animation: "timing",
+        config: {
+          duration: 50,
+        },
+      },
+    },
+    cardStyleInterpolator: CardStyleInterpolators.forFade,
+  };
 
   // Add a default header to all screens
-  const screenOptionsConfig = ({ navigation }) => ({
+  const screenOptions = ({ navigation }) => ({
+    ...androidFastTransition,
+    presentation: "transparentModal",
     cardStyle: { backgroundColor: selectedTheme.colors.background },
-    headerStyle: { elevation: 0 },
+    headerStyle: {
+      elevation: 0,
+      backgroundColor: selectedTheme.colors.background,
+    },
     headerTitleAlign: "center",
-    headerTitleStyle: { fontWeight: "bold" },
+    headerTitleStyle: {
+      fontWeight: "bold",
+      color: selectedTheme.colors.typography.primary,
+    },
     headerLeftContainerStyle: { marginStart: 14 },
     headerLeft: () => (
       <CircularIcon
@@ -35,8 +83,8 @@ export default function App() {
   return (
     <PaperProvider theme={selectedTheme}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={screenOptionsConfig}>
-          {isAuthenticated ? SignedInStack : SignedOutStack}
+        <Stack.Navigator screenOptions={screenOptions}>
+          {userToken ? SignedInStack : SignedOutStack}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

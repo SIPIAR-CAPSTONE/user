@@ -28,6 +28,14 @@
       "eas": {
         "projectId": "71877161-49ed-4815-b59e-0d5a06083044"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to change your profile picture."
+        }
+      ]
+    ]
   }
 }

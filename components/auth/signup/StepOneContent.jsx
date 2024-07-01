@@ -49,6 +49,11 @@ const StepOneContent = ({ goNextStep }) => {
       errors.phone = "Phone is required.";
     }
 
+    // check if the phone number size is 11
+    if (formOne.phone.length != 11) {
+      errors.phone = "Phone should have 11 numbers.";
+    }
+
     // Set the errors and update form validity if it is empty
     setErrors(errors);
 

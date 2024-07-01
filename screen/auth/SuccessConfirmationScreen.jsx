@@ -4,19 +4,36 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const SuccessConfirmation = ({ route }) => {
+import StatusBar from "../../components/common/StatusBar";
+import useStore from "../../zustand/useStore";
+
+const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const { title, desc, nextScreen } = route.params;
+  const { title, desc, nextScreen, userToken } = route.params;
+  const setUserToken = useStore((state) => state.setUserToken);
 
   /*
-   * if nextScreen is provide
-   * after a short time navigate to nextScreen
+   * if nextScreen is provided
+   * after a short time, navigate to nextScreen
    */
   useEffect(() => {
     if (nextScreen) {
       setTimeout(function () {
         navigation.navigate(nextScreen);
+      }, 1500);
+    }
+  }, []);
+
+  /*
+   *  After login or sign up
+   *  show the confirmationScreen and after a short delay proceed to home screen
+   *
+   */
+  useEffect(() => {
+    if (userToken) {
+      setTimeout(function () {
+        setUserToken(userToken);
       }, 1500);
     }
   }, []);
@@ -42,11 +59,13 @@ const SuccessConfirmation = ({ route }) => {
       >
         {desc}
       </Text>
+
+      <StatusBar />
     </View>
   );
 };
 
-export default SuccessConfirmation;
+export default SuccessConfirmationScreen;
 
 const styles = StyleSheet.create({
   container: {

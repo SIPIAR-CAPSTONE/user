@@ -1,13 +1,14 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
+import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import { PasswordFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
-import { useNavigation } from "@react-navigation/native";
 
-const ResetPassword = () => {
+const ResetPasswordScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
@@ -107,11 +108,13 @@ const ResetPassword = () => {
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
+
+      <StatusBar />
     </View>
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordScreen;
 
 const styles = StyleSheet.create({
   container: {
