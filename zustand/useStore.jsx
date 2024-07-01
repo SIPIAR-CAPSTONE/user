@@ -23,6 +23,7 @@ const useStore = create((set) => ({
     password: "",
     confirmPassword: "",
   },
+  passwordResetEmail: "",
   setSignupFormOne: (key, newValue) =>
     set((state) => ({
       signupFormOne: { ...state.signupFormOne, [key]: newValue },
@@ -35,6 +36,7 @@ const useStore = create((set) => ({
     set((state) => ({
       signupFormThree: { ...state.signupFormThree, [key]: newValue },
     })),
+  setPasswordResetEmail: (email) => set(() => ({ email })),
   setThemeStatus: (newThemeStatus) => {
     const defaultTheme = "light";
     if (newThemeStatus == null) {

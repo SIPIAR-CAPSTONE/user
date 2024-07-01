@@ -5,7 +5,7 @@ import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
 import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
-import OtpVerificationScreen from "../screen/auth/OtpVerificationScreen";
+import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
@@ -33,8 +33,8 @@ export const SignedOutStack = (
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
-      name="OtpVerification"
-      component={OtpVerificationScreen}
+      name="TokenVerification"
+      component={TokenVerification}
       options={{ headerTitle: "" }}
     />
     <Stack.Screen

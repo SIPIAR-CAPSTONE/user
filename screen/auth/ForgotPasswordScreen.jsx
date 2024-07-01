@@ -7,13 +7,17 @@ import FormHeader from "../../components/common/FormHeader";
 import { TextFormField } from "../../components/ui/FormField";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import StatusBar from "../../components/common/StatusBar";
+// import { supabase } from '../../utils/supabase/config'
+import useSendToken from '../../hooks/useSendToken'
+import useStore from "../../zustand/useStore"
 
 const ForgotPasswordScreen = () => {
-  const theme = useTheme();
-  const navigation = useNavigation();
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const [email, setEmail] = useState('')
+  const { errors, setErrors, process } = useSendToken(email, true)
 
-  const [email, setEmail] = useState("");
-  const [errors, setErrors] = useState({});
+  const setResetEmail = useStore((state) => state.setPasswordResetEmail)
 
   /*
    *
@@ -21,43 +25,55 @@ const ForgotPasswordScreen = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    let errors = {}
 
     // Validate email field if it is empty
     if (!email) {
-      errors.email = "Email is required.";
+      errors.email = 'Email is required.'
     }
 
     //check if email has @ and .com
     if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Invalid Email";
+      errors.email = 'Invalid Email'
     }
 
     // Set the errors and update form validity if it is empty
-    setErrors(errors);
+    setErrors(errors)
 
     // return true if there is no error
     // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
+    return Object.keys(errors).length === 0
+  }
 
   /*
    *
-   *  Handle submission for signup
+   *  Handle submission for forgot password
    *
    */
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // add email as a global prop
+    setResetEmail(email)
+
     //validateForm will return true if there is no error
-    const isFormValid = validateForm();
+    const isFormValid = validateForm()
 
     if (isFormValid) {
-      //if form is valid send password recovery code
-      // TODO: diri pag perform sa fetching
+      process()
+      // //if form is valid send password recovery code
+      // const { error } = await supabase.auth.signInWithOtp({
+      //   email: email,
+      // })
 
-      //then navigate to otp verification
-      navigation.navigate("OtpVerification");
+      // if (error) {
+      //   let errors = {}
+      //   errors.email = error
+      //   setErrors(errors)
+      // } else if (!error) {
+      //   //then navigate to otp verification
+      //   navigation.navigate('TokenVerification')
+      // }
     }
-  };
+  }
 
   return (
     <ScrollView
@@ -83,7 +99,7 @@ const ForgotPasswordScreen = () => {
         />
 
         <PrimaryButton
-          label="Send Code"
+          label="Send Token"
           onPress={handleSubmit}
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
@@ -91,8 +107,8 @@ const ForgotPasswordScreen = () => {
 
       <StatusBar />
     </ScrollView>
-  );
-};
+  )
+}
 
 export default ForgotPasswordScreen;
 
@@ -103,4 +119,4 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
-});
+})
