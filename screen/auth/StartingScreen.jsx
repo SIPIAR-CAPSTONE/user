@@ -1,5 +1,4 @@
-import StatusBar from "../../components/common/StatusBar";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import {
   View,
   Image,
@@ -7,11 +6,14 @@ import {
   StatusBar as RNStatusBar,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "react-native-paper";
+
+import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 
 const StartingScreen = () => {
-  const theme = useTheme();
   const navigation = useNavigation();
+  const theme = useTheme();
 
   return (
     <View

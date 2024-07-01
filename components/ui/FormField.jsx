@@ -9,6 +9,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
 import DatePicker from "react-native-date-picker";
 import { useState } from "react";
+import useStore from "../../zustand/useStore";
 
 const SelectFormField = (props) => {
   const { onChange, items, label, value, error, ...inputProps } = props;
@@ -26,14 +27,23 @@ const SelectFormField = (props) => {
         renderRightIcon={() => (
           <AntDesign name="caretdown" size={10} color="darkgray" />
         )}
+        activeColor={theme.colors.secondary}
+        containerStyle={{
+          backgroundColor: theme.colors.background,
+          borderColor: theme.colors.outline,
+        }}
         placeholderStyle={{
           fontSize: theme.fontSize.sm,
           color: "darkgray",
         }}
         selectedTextStyle={{
           fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
         }}
-        itemTextStyle={{ fontSize: theme.fontSize.sm }}
+        itemTextStyle={{
+          fontSize: theme.fontSize.sm,
+          color: theme.colors.typography.primary,
+        }}
         style={[
           error && styles.textInputError,
           styles.textInput,
@@ -59,6 +69,8 @@ const SelectFormField = (props) => {
 const BirthdayFormField = (props) => {
   const { label, error, setDate, date, ...inputProps } = props;
   const theme = useTheme();
+
+  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
   const [open, setOpen] = useState(false);
   const formattedDate = date.toISOString().split("T")[0];
 
@@ -67,9 +79,12 @@ const BirthdayFormField = (props) => {
       <DatePicker
         modal
         mode="date"
-        theme="light" // TODO: change this based on currentTheme global state
+        theme={currentThemeStatus}
         open={open}
         date={date}
+        buttonColor={theme.colors.typography.primary}
+        dividerColor={theme.colors.typography.primary}
+        title=" "
         onConfirm={(date) => {
           setOpen(false);
           setDate("birthday", date);
@@ -91,7 +106,9 @@ const BirthdayFormField = (props) => {
         onPress={() => setOpen(true)}
       >
         <View style={styles.birthdayTextFieldContent}>
-          <Text style={{ color: "darkgray" }}>Birthday</Text>
+          <Text style={{ color: theme.colors.typography.secondary }}>
+            Birthday
+          </Text>
           <Text style={{ color: "darkgray" }} variant="bodySmall">
             {formattedDate}
           </Text>
@@ -112,18 +129,21 @@ const BirthdayFormField = (props) => {
 const TextFormField = (props) => {
   const theme = useTheme();
 
-  const { label, error, ...inputProps } = props;
+  const { label, error, disabled, ...inputProps } = props;
 
   return (
     <View>
       <TextInput
+        editable={!disabled}
         placeholder={label}
+        placeholderTextColor={theme.colors.typography.secondary}
         style={[
           error && styles.textInputError,
           styles.textInput,
           {
             backgroundColor: theme.colors.secondary,
             borderRadius: theme.borderRadius.base,
+            color: theme.colors.typography.primary,
           },
         ]}
         {...inputProps}
@@ -143,7 +163,7 @@ const TextFormField = (props) => {
 const PasswordFormField = (props) => {
   const theme = useTheme();
 
-  const { label, error, ...inputProps } = props;
+  const { label, error, disabled, ...inputProps } = props;
   const [toggleEye, setToggleEye] = useState(false);
 
   const handleToggle = () => {
@@ -186,6 +206,8 @@ const PasswordFormField = (props) => {
       <View>
         <TextInput
           placeholder={label}
+          placeholderTextColor={theme.colors.typography.secondary}
+          editable={!disabled}
           secureTextEntry={!toggleEye}
           style={[
             error && styles.textInputError,
@@ -193,6 +215,7 @@ const PasswordFormField = (props) => {
             {
               backgroundColor: theme.colors.secondary,
               borderRadius: theme.borderRadius.base,
+              color: theme.colors.typography.primary,
             },
           ]}
           {...inputProps}
