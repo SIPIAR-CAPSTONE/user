@@ -9,6 +9,7 @@ import RadioDialog from "../../components/ui/RadioDialog";
 import useStore from "../../zustand/useStore";
 import StatusBar from "../../components/common/StatusBar";
 import NextActionIcon from "../../components/common/NextActionIcon";
+import { themeStatus } from "../../utils/theme";
 
 const SettingScreen = () => {
   const theme = useTheme();
@@ -76,7 +77,7 @@ const SettingScreen = () => {
         title="Theme"
         visible={visible.appearance}
         hideDialog={() => hideDialog("appearance")}
-        data={["light", "dark"]}
+        data={[themeStatus.light, themeStatus.dark]}
         selectedValue={currentThemeStatus}
         setSelectedValue={setCurrentThemeStatus}
       />

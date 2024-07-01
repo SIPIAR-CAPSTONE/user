@@ -205,4 +205,9 @@ const darkTheme = {
   },
 };
 
-export { lightTheme, darkTheme };
+const themeStatus = {
+  dark: "dark",
+  light: "light"
+}
+
+export { lightTheme, darkTheme, themeStatus };

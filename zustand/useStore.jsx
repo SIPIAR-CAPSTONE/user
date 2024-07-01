@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { setItem, deleteItem } from "../utils/LocalStorage";
+import { themeStatus } from "../utils/theme";
 
 const useStore = create((set) => ({
-  currentThemeStatus: "dark",
+  currentThemeStatus: themeStatus.dark,
   userToken: null,
   appIsReady: false,
   signupFormOne: {
@@ -38,9 +39,9 @@ const useStore = create((set) => ({
     })),
   setPasswordResetEmail: (email) => set(() => ({ email })),
   setThemeStatus: (newThemeStatus) => {
-    const defaultTheme = "light";
     if (newThemeStatus == null) {
-      set({ currentThemeStatus: defaultTheme });
+      //if given new theme is null set current theme with light theme as default
+      set({ currentThemeStatus: themeStatus.light });
     } else {
       //set new theme in state
       set({ currentThemeStatus: newThemeStatus });
