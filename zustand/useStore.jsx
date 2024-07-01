@@ -1,24 +1,25 @@
-import { create } from "zustand";
+import { create } from 'zustand'
 
 const useStore = create((set) => ({
   signupFormOne: {
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    suffix: "",
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
     birthday: new Date(),
     phone: 0,
   },
   signupFormTwo: {
-    barangay: "",
-    street: "",
-    houseNumber: "",
+    barangay: '',
+    street: '',
+    houseNumber: '',
   },
   signupFormThree: {
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
   },
+  passwordResetEmail: '',
   setSignupFormOne: (key, newValue) =>
     set((state) => ({
       signupFormOne: { ...state.signupFormOne, [key]: newValue },
@@ -31,6 +32,7 @@ const useStore = create((set) => ({
     set((state) => ({
       signupFormThree: { ...state.signupFormThree, [key]: newValue },
     })),
-}));
+  setPasswordResetEmail: (email) => set(() => ({ email })),
+}))
 
-export default useStore;
+export default useStore
