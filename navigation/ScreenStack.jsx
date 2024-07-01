@@ -6,7 +6,7 @@ import LoginScreen from "../screen/auth/LoginScreen";
 import SignupScreen from "../screen/auth/SignupScreen";
 import SuccessConfirmation from "../screen/auth/SuccessConfirmation";
 import ForgotPassword from "../screen/auth/ForgotPassword";
-import OtpVerification from "../screen/auth/OtpVerification";
+import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPassword from "../screen/auth/ResetPassword";
 
 const Stack = createStackNavigator();
@@ -25,8 +25,8 @@ export const SignedOutStack = (
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
-      name="OtpVerification"
-      component={OtpVerification}
+      name="TokenVerification"
+      component={TokenVerification}
       options={{ headerTitle: "" }}
     />
     <Stack.Screen
