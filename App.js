@@ -2,10 +2,11 @@ import "expo-dev-client";
 import "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+// import {
+//   createStackNavigator,
+//   CardStyleInterpolators,
+// } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -14,7 +15,7 @@ import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
 import CircularIcon from "./components/ui/CircularIcon";
 import useStore from "./zustand/useStore";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const userToken = useStore((state) => state.userToken);
@@ -33,44 +34,23 @@ export default function App() {
   /*
    *
    *
-   * Stack Navigator Configuration
+   * Native Stack Navigator Default Screen Configuration
    *
    */
-  //configuration to make transition between screen much faster
-  const androidFastTransition = {
-    gestureDirection: "horizontal",
-    transitionSpec: {
-      open: {
-        animation: "timing",
-        config: {
-          duration: 100,
-        },
-      },
-      close: {
-        animation: "timing",
-        config: {
-          duration: 50,
-        },
-      },
-    },
-    cardStyleInterpolator: CardStyleInterpolators.forFade,
-  };
 
   // Add a default header to all screens
   const screenOptions = ({ navigation }) => ({
-    ...androidFastTransition,
-    presentation: "transparentModal",
-    cardStyle: { backgroundColor: selectedTheme.colors.background },
-    headerStyle: {
-      elevation: 0,
-      backgroundColor: selectedTheme.colors.background,
-    },
+    presentation: "containedTransparentModal",
+    animation: "fade",
+    contentStyle: { backgroundColor: selectedTheme.colors.background },
+    headerStyle: { backgroundColor: selectedTheme.colors.background },
+    headerShadowVisible: false,
     headerTitleAlign: "center",
     headerTitleStyle: {
       fontWeight: "bold",
       color: selectedTheme.colors.typography.primary,
     },
-    headerLeftContainerStyle: { marginStart: 14 },
+    // headerLeftContainerStyle: { marginStart: 14 },
     headerLeft: () => (
       <CircularIcon
         name="arrow-back"
@@ -84,7 +64,7 @@ export default function App() {
     <PaperProvider theme={selectedTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
-          {userToken ? SignedInStack : SignedOutStack}
+          {!userToken ? SignedInStack : SignedOutStack}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
