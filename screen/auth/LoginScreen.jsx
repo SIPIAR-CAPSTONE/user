@@ -1,21 +1,16 @@
 import { ScrollView, View, StyleSheet } from 'react-native'
 import { Button, useTheme, Text } from 'react-native-paper'
 import { useState } from 'react'
-
-import StatusBar from "../../components/common/StatusBar";
-import FormHeader from "../../components/common/FormHeader";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import {
-  TextFormField,
-  PasswordFormField,
-} from "../../components/ui/FormField";
-import { useNavigation } from "@react-navigation/native";
-import { supabase } from "../../utils/supabase/config";
+import StatusBar from '../../components/common/StatusBar'
+import FormHeader from '../../components/common/FormHeader'
+import PrimaryButton from '../../components/ui/PrimaryButton'
+import { TextFormField, PasswordFormField } from '../../components/ui/FormField'
+import { useNavigation } from '@react-navigation/native'
+import { supabase } from '../../utils/supabase/config'
 
 const LoginScreen = () => {
   const theme = useTheme()
   const navigation = useNavigation()
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
@@ -61,10 +56,8 @@ const LoginScreen = () => {
         email: email,
         password: password,
       })
+      // TODO (AKO RA ANI): session management
       console.log(data)
-      if (error) {
-        console.log(error.message)
-      }
     }
   }
 

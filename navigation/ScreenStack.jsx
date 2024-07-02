@@ -40,7 +40,7 @@ export const SignedOutStack = (
     <Stack.Screen
       name="ResetPassword"
       component={ResetPasswordScreen}
-      options={{ headerTitle: "" }}
+      options={{ headerLeft: () => null, headerTitle: "" }}
     />
     <Stack.Screen
       name="Signup"
