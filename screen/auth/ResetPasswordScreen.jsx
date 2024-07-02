@@ -2,16 +2,15 @@ import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import { PasswordFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
+import { supabase } from "../../utils/supabase/config";
 
 const ResetPasswordScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -54,21 +53,27 @@ const ResetPasswordScreen = () => {
    *  Handle submission for signup
    *
    */
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
-      //TODO: diri pag fetch
+      //! update password of user
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword
+      })
 
-      const resetPasswordSuccess = true; //TODO: mao ning result sa fetch
-      if (resetPasswordSuccess) {
-        //navigate to success confirmation screen
-        navigation.navigate("SuccessConfirmation", {
-          title: "Reset Password Successfully!",
-          desc: "You can now login your new password credentials.",
-          nextScreen: "StartingScreen",
-        });
+      if (error) {
+        let errors = {};
+        errors.confirmNewPassword = error.message;
+        setErrors(errors);
+      }else if(!error){
+          //! navigate to success confirmation screen
+          navigation.navigate("SuccessConfirmation", {
+            title: "Reset Password Successfully!",
+            desc: "You can now login your new password credentials.",
+            nextScreen: "StartingScreen",
+          });
       }
     }
   };
@@ -80,6 +85,7 @@ const ResetPasswordScreen = () => {
         { paddingHorizontal: theme.padding.body.horizontal },
       ]}
     >
+
       {/* Form */}
       <View style={{ rowGap: theme.gap.lg }}>
         <FormHeader
