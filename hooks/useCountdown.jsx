@@ -1,22 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const useCountdown = (startingTime) => {
   const [time, setTime] = useState(startingTime);
+  const timerRef = useRef(null);
+
+  //! set timer to null
+  const pause = () => {
+    clearInterval(timerRef.current);
+  };
 
   useEffect(() => {
-    let timer = setInterval(() => {
-      setTime((time) => {
-        if (time === 0) {
-          clearInterval(timer);
+    timerRef.current = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timerRef.current);
           return 0;
-        } else return time - 1;
+        } else {
+          return prevTime - 1;
+        }
       });
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => clearInterval(timerRef.current);
   }, []);
 
-  return { time };
+  return { time, pause };
 };
 
 export default useCountdown;
