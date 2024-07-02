@@ -1,22 +1,18 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-
-import FormHeader from "../../components/common/FormHeader";
-import { TextFormField } from "../../components/ui/FormField";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import StatusBar from "../../components/common/StatusBar";
-// import { supabase } from '../../utils/supabase/config'
+import { StyleSheet, ScrollView, View } from 'react-native'
+import { useTheme, Text } from 'react-native-paper'
+import { useState } from 'react'
+import FormHeader from '../../components/common/FormHeader'
+import { TextFormField } from '../../components/ui/FormField'
+import PrimaryButton from '../../components/ui/PrimaryButton'
+import StatusBar from '../../components/common/StatusBar'
 import useSendToken from '../../hooks/useSendToken'
-import useStore from "../../zustand/useStore"
+import useStore from '../../zustand/useStore'
+import { supabase } from '../../utils/supabase/config'
 
 const ForgotPasswordScreen = () => {
   const theme = useTheme()
-  const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const { errors, setErrors, process } = useSendToken(email, true)
-
   const setResetEmail = useStore((state) => state.setPasswordResetEmail)
 
   /*
@@ -58,20 +54,20 @@ const ForgotPasswordScreen = () => {
     const isFormValid = validateForm()
 
     if (isFormValid) {
-      process()
-      // //if form is valid send password recovery code
-      // const { error } = await supabase.auth.signInWithOtp({
-      //   email: email,
-      // })
+      //! check in the bystander table if the provided email is registered
+      const { data } = await supabase
+        .from('bystander')
+        .select()
+        .eq('email', email)
 
-      // if (error) {
-      //   let errors = {}
-      //   errors.email = error
-      //   setErrors(errors)
-      // } else if (!error) {
-      //   //then navigate to otp verification
-      //   navigation.navigate('TokenVerification')
-      // }
+      //! check if data is an array and has at least one element
+      if (Array.isArray(data) && data.length > 0) {
+        process()  //! call the process form the useSendToken hook for sending token to the provided email
+      } else {
+        let errors = {}
+        errors.email = 'Account not found.'
+        setErrors(errors)
+      }
     }
   }
 
@@ -88,7 +84,7 @@ const ForgotPasswordScreen = () => {
         <FormHeader
           title="Forgot Password"
           titleSize="large"
-          desc="Please provide your email address."
+          desc="Please provide your registered email."
         />
         <TextFormField
           label="Email Address"
@@ -97,7 +93,6 @@ const ForgotPasswordScreen = () => {
           onChangeText={setEmail}
           error={errors.email}
         />
-
         <PrimaryButton
           label="Send Token"
           onPress={handleSubmit}
@@ -110,7 +105,7 @@ const ForgotPasswordScreen = () => {
   )
 }
 
-export default ForgotPasswordScreen;
+export default ForgotPasswordScreen
 
 const styles = StyleSheet.create({
   container: {
