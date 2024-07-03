@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, View } from 'react-native'
 import { useTheme, Text } from 'react-native-paper'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { TextFormField } from '../../components/ui/FormField'
 import FormHeader from '../../components/common/FormHeader'
 import PrimaryButton from '../../components/ui/PrimaryButton'
@@ -14,23 +14,21 @@ const TokenVerification = () => {
   const theme = useTheme()
   const navigation = useNavigation()
   const [isFilled, setIsFilled] = useState(false)
-  const { time } = useCountdown(30)
+  const { time, pause } = useCountdown(70) //! it should be 70 constant, this is for interval in supabase
   const [tokenHash, setTokenHash] = useState('')
   const [serverError, setServerError] = useState('')
-
   const resetEmail = useStore((state) => state.email)
   const { process } = useSendToken(resetEmail, false)
-  const hasCalledProcess = useRef(false)
+  const hasCalledProcess = useRef(true)
 
-  console.log('main compo', time)
-
-  useEffect(() => {
-    if (time === 0 && !hasCalledProcess.current) {
-      console.log('nagtawag')
-      process()
-      hasCalledProcess.current = true
-    }
-  }, [time, process])
+  /*
+   * if the countdown sets to 0, call the process for sending the token again
+   * 0 is rendered twice, so it needs a useRef hook to determine if it's already performed
+   */
+  if (time === 0 && hasCalledProcess.current) {
+    process()
+    hasCalledProcess.current = false
+  }
 
   /*
    * listen to token Field changes
@@ -46,6 +44,7 @@ const TokenVerification = () => {
 
   const handleSubmit = async () => {
     if (isFilled) {
+      //! verify provied token
       const { error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
         type: 'email',
@@ -55,6 +54,7 @@ const TokenVerification = () => {
         setServerError(error)
       } else if (!error) {
         navigation.navigate('ResetPassword')
+        pause() //! call the pause function to stop the countdown
       }
     }
   }
@@ -88,8 +88,7 @@ const TokenVerification = () => {
             variant="labelLarge"
             style={{
               color: theme.colors.primary,
-              textAlign: 'center',
-              marginVertical: 10,
+              textAlign: 'center'
             }}
           >
             Resent, please wait a while.
@@ -110,11 +109,10 @@ const TokenVerification = () => {
 }
 
 const ResendCountdown = ({ time, theme }) => {
-  console.log('reset countdown', time)
   return (
     <Text
       variant="labelMedium"
-      style={{ textAlign: 'center', marginVertical: 10 }}
+      style={{ textAlign: 'center'}}
     >
       Resend Token in{' '}
       <Text variant="labelLarge" style={{ color: theme.colors.primary }}>

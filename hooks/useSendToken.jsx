@@ -1,13 +1,13 @@
 import { useNavigation } from '@react-navigation/native'
 import { supabase } from '../utils/supabase/config'
 import { useState } from 'react'
-import { useEffect } from 'react'
 
 const useSendToken = (email, isNavigate) => {
   const navigation = useNavigation()
   const [errors, setErrors] = useState({})
+
   const process = async () => {
-    //if form is valid send password recovery code
+    //! if form is valid send password recovery token
     const { error } = await supabase.auth.signInWithOtp({
       email: email,
     })
@@ -17,8 +17,9 @@ const useSendToken = (email, isNavigate) => {
       errors.email = error.message
       setErrors(errors)
     } else if (!error) {
+      //! if no error exist, and isNavigate is true (for forgotpassword screen only)
       if (isNavigate) {
-        //then navigate to otp verification
+        //! navigate to token verification screen
         navigation.navigate('TokenVerification')
       }
     }
