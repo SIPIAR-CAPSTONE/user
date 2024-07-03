@@ -64,7 +64,7 @@ export default function App() {
     <PaperProvider theme={selectedTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
-          {!userToken ? SignedInStack : SignedOutStack}
+          {userToken ? SignedInStack : SignedOutStack}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
