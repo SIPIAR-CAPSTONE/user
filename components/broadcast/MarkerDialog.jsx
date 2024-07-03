@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Text, Dialog, Portal, Button, useTheme } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
+import { useMemo } from "react";
 
 import { getDistanceGap, getTimeGap } from "../../utils/dateAndDistanceGap";
 
@@ -29,7 +30,10 @@ const MarkerDialog = ({
         .join(" ")
     : EMPTY_PLACEHOLDER;
 
-  const distanceGap = getDistanceGap(userLocation, selectedMarker?.coordinate);
+  const distanceGap = useMemo(
+    () => getDistanceGap(userLocation, selectedMarker?.coordinate),
+    [userLocation, selectedMarker]
+  );
 
   return (
     <Portal>
@@ -64,7 +68,7 @@ const MarkerDialog = ({
           />
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={hideDialog} mode="text" textColor="">
+          <Button onPress={hideDialog} mode="text" rippleColor="rgba(0,0,0,0)">
             Close
           </Button>
         </Dialog.Actions>
