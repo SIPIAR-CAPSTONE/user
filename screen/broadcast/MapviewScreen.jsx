@@ -33,7 +33,13 @@ const MapviewScreen = ({ route }) => {
 
   const hideDialog = () => {
     setVisible(false);
-    setSelectedMarker(null);
+    /*
+     * the purpose of delay is to let the visible status of dialog to false or to off
+     * then the selectedMarker data will be set to null
+     * because without the delay when a user click the close button in dialog, in brief seconds
+     * the selectedMarker info in the dialog disappear it cause laggy transition
+     */
+    setTimeout(() => setSelectedMarker(null), 200);
   };
 
   //generate markers for each emergency alerts
