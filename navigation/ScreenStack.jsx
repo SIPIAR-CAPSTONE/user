@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
@@ -16,8 +16,9 @@ import MyAccountScreen from "../screen/profile/MyAccountScreen";
 import PrivacyPolicyScreen from "../screen/profile/PrivacyAndPolicyScreen";
 import TermsAndConditionsScreen from "../screen/profile/TermsAndConditionScreen";
 import SettingScreen from "../screen/profile/SettingScreen";
+import MapviewScreen from "../screen/broadcast/MapviewScreen";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 //Screens for authenticated users
 export const SignedOutStack = (
@@ -69,7 +70,16 @@ export const SignedInStack = (
       options={{ headerShown: false }}
     />
     <Stack.Screen name="Notification" component={NotificationScreen} />
-    <Stack.Screen name="MyAccount" component={MyAccountScreen} />
+    <Stack.Screen
+      name="Mapview"
+      options={{ headerTitle: "Map View" }}
+      component={MapviewScreen}
+    />
+    <Stack.Screen
+      name="MyAccount"
+      options={{ headerTitle: "My Account" }}
+      component={MyAccountScreen}
+    />
     <Stack.Screen
       name="EditProfile"
       options={{ headerTitle: "Edit Profile" }}
@@ -77,10 +87,15 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="AccountVerification"
+      options={{ headerTitle: "Account Verification" }}
       component={AccountVerificationScreen}
     />
     <Stack.Screen name="Setting" component={SettingScreen} />
-    <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+    <Stack.Screen
+      name="DeleteAccount"
+      options={{ headerTitle: "Delete Account" }}
+      component={DeleteAccountScreen}
+    />
     <Stack.Screen
       name="TermsAndConditions"
       options={{ headerTitle: "Terms and Condition" }}

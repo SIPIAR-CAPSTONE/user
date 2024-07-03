@@ -6,6 +6,7 @@ const lightTheme = {
       secondary: "#6b6b6b",
       tertiary: "#aeaeae",
     },
+    dialogBackground: "#ee4048",
     primary: "#ee4048",
     onPrimary: "#ffffff",
     primaryContainer: "#ffd8d8",
@@ -27,7 +28,7 @@ const lightTheme = {
     onErrorContainer: "#410002",
     background: "#ffffff",
     onBackground: "#201a1a",
-    surface: "#fffbff",
+    surface: "#ffffff",
     onSurface: "#201a1a",
     surfaceVariant: "#f4dddc",
     onSurfaceVariant: "#534342",
@@ -42,7 +43,7 @@ const lightTheme = {
       level0: "transparent",
       level1: "#fcf0f4",
       level2: "#fae9ee",
-      level3: "#f8e2e8",
+      level3: "#ffffff",
       level4: "#f7e0e5",
       level5: "#f6dbe1",
     },
@@ -207,7 +208,7 @@ const darkTheme = {
 
 const themeStatus = {
   dark: "dark",
-  light: "light"
-}
+  light: "light",
+};
 
 export { lightTheme, darkTheme, themeStatus };
