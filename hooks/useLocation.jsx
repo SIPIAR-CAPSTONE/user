@@ -86,7 +86,27 @@ const useLocation = () => {
       //  - "enabled" if user has clicked on OK button in the popup
     } catch (error) {
       if (error instanceof Error) {
-        Alert.alert("Unexpected Error: ", error.message);
+        if (error.code == "EUNSPECIFIED") {
+          Alert.alert(
+            `Warning: `,
+            "You still reject to turn on your location. Please restart the application.",
+            [
+              {
+                text: "back",
+                onPress: () => navigation.navigate("ProfileScreen"),
+                style: "cancel",
+              },
+            ]
+          );
+        } else {
+          Alert.alert("Unexpected Error: ", error.message, [
+            {
+              text: "back",
+              onPress: () => navigation.navigate("ProfileScreen"),
+              style: "cancel",
+            },
+          ]);
+        }
         // The user has not accepted to enable the location services or something went wrong during the process
         // "err" : { "code" : "ERR00|ERR01|ERR02|ERR03", "message" : "message"}
         // codes :
