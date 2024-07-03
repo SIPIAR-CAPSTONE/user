@@ -3,13 +3,13 @@ import { useTheme } from "react-native-paper";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import ListItem from "../../components/ui/ListItem";
-import CircularIcon from "../../components/ui/CircularIcon";
-import RadioDialog from "../../components/ui/RadioDialog";
-import useStore from "../../zustand/useStore";
-import StatusBar from "../../components/common/StatusBar";
-import NextActionIcon from "../../components/common/NextActionIcon";
-import { themeStatus } from "../../utils/theme";
+import ListItem from "../../../components/ui/ListItem";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import RadioDialog from "../../../components/ui/RadioDialog";
+import useStore from "../../../zustand/useStore";
+import StatusBar from "../../../components/common/StatusBar";
+import NextActionIcon from "../../../components/common/NextActionIcon";
+import { themeStatus } from "../../../utils/theme";
 
 const SettingScreen = () => {
   const theme = useTheme();

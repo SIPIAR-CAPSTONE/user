@@ -1,14 +1,14 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 
-import StatusBar from "../../components/common/StatusBar";
+import StatusBar from "../../../components/common/StatusBar";
 import {
   Title,
   H1,
   H2,
   P,
   Strong,
-} from "../../components/terms and policy/Typography";
+} from "../../../components/terms and policy/Typography";
 
 const PrivacyAndPolicyScreen = () => {
   const theme = useTheme();

@@ -2,17 +2,17 @@ import { View, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
-import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import cdoBarangayData from "../../utils/cdoBarangayData";
-import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import EditUserProfileCard from "../../components/profile/EditUserProfileCard";
-import SectionHeader from "../../components/profile/SectionHeader";
+import StatusBar from "../../../components/common/StatusBar";
+import PrimaryButton from "../../../components/ui/PrimaryButton";
+import cdoBarangayData from "../../../utils/cdoBarangayData";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
+import SectionHeader from "../../../components/profile/SectionHeader";
 import {
   BirthdayFormField,
   SelectFormField,
   TextFormField,
-} from "../../components/profile/EditProfileFormField";
+} from "../../../components/profile/EditProfileFormField";
 
 const EditProfileScreen = () => {
   const theme = useTheme();
