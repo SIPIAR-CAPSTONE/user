@@ -14,7 +14,7 @@ import SelectAnIdScreen from "../screen/profile/accountVerification/SelectAnIdSc
 import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
 import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
-import PrivacyAndPolicyScreen from "../screen/profile/PrivacyPolicy/PrivacyAndPolicyScreen";
+import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
 import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
 import SettingScreen from "../screen/profile/setting/SettingScreen";
 import MapviewScreen from "../screen/broadcast/MapviewScreen";
