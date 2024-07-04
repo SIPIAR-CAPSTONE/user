@@ -1,11 +1,11 @@
 import { SectionList, StyleSheet } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 
-import UserProfileCard from "../../components/profile/UserProfileCard";
-import SectionHeader from "../../components/profile/SectionHeader";
-import SectionItem from "../../components/profile/SectionItem";
-import EditButton from "../../components/profile/EditButton";
-import StatusBar from "../../components/common/StatusBar";
+import UserProfileCard from "../../../components/profile/UserProfileCard";
+import SectionHeader from "../../../components/profile/SectionHeader";
+import SectionItem from "../../../components/profile/SectionItem";
+import EditButton from "../../../components/profile/EditButton";
+import StatusBar from "../../../components/common/StatusBar";
 
 const DATA = [
   {

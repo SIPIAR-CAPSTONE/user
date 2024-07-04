@@ -12,6 +12,8 @@ const ListItem = ({
   renderActionIcon,
   size = "small",
   onPress,
+  contentContainerStyle,
+  roundness,
 }) => {
   const theme = useTheme();
 
@@ -36,23 +38,27 @@ const ListItem = ({
     },
   };
 
+  const ROUNDNESS_STYLE =
+    roundness != null ? roundness : sizeStyle[size].borderRadius;
+
   return (
     <TouchableRipple
       borderless
       onPress={onPress ? onPress : null}
-      style={{ borderRadius: sizeStyle[size].borderRadius }}
+      style={{ borderRadius: ROUNDNESS_STYLE }}
     >
       <View
         style={[
           styles.container,
           {
             backgroundColor: theme.colors.secondary,
-            borderRadius: sizeStyle[size].borderRadius,
+            borderRadius: ROUNDNESS_STYLE,
             padding: sizeStyle[size].padding,
             columnGap: sizeStyle[size].padding,
             maxHeight: sizeStyle[size].maxHeight,
             minHeight: sizeStyle[size].height,
           },
+          contentContainerStyle,
         ]}
       >
         {/* Right Side: Leading Icon */}

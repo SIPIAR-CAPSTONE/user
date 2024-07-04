@@ -9,13 +9,14 @@ import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
-import AccountVerificationScreen from "../screen/profile/AccountVerificationScreen";
-import DeleteAccountScreen from "../screen/profile/DeleteAccountScreen";
-import EditProfileScreen from "../screen/profile/EditProfileScreen";
-import MyAccountScreen from "../screen/profile/MyAccountScreen";
-import PrivacyPolicyScreen from "../screen/profile/PrivacyAndPolicyScreen";
-import TermsAndConditionsScreen from "../screen/profile/TermsAndConditionScreen";
-import SettingScreen from "../screen/profile/SettingScreen";
+import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
+import SelectAnIdScreen from "../screen/profile/accountVerification/SelectAnIdScreen";
+import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
+import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
+import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
+import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
+import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
+import SettingScreen from "../screen/profile/setting/SettingScreen";
 import MapviewScreen from "../screen/broadcast/MapviewScreen";
 
 const Stack = createNativeStackNavigator();
@@ -90,6 +91,15 @@ export const SignedInStack = (
       options={{ headerTitle: "Account Verification" }}
       component={AccountVerificationScreen}
     />
+    <Stack.Screen
+      name="SelectAnId"
+      options={{
+        headerTitle: "Select an ID",
+        presentation: "transparentModal",
+        contentStyle: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+      }}
+      component={SelectAnIdScreen}
+    />
     <Stack.Screen name="Setting" component={SettingScreen} />
     <Stack.Screen
       name="DeleteAccount"
@@ -104,7 +114,7 @@ export const SignedInStack = (
     <Stack.Screen
       name="PrivacyPolicy"
       options={{ headerTitle: "Privacy and Policy" }}
-      component={PrivacyPolicyScreen}
+      component={PrivacyAndPolicyScreen}
     />
   </>
 );
