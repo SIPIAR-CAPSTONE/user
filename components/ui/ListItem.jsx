@@ -100,7 +100,7 @@ const ListItem = ({
         </View>
         {/* Left Side: action icon */}
         {renderActionIcon && (
-          <View style={styles.icon}>{renderActionIcon()}</View>
+          <View style={styles.actionIcon}>{renderActionIcon()}</View>
         )}
       </View>
     </TouchableRipple>
@@ -123,6 +123,10 @@ const styles = StyleSheet.create({
     columnGap: 6,
   },
   icon: {
+    alignSelf: "center",
+    width: 33,
+  },
+  actionIcon: {
     alignSelf: "center",
   },
 });
