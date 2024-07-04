@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { lightTheme, darkTheme } from "./utils/theme";
+import { lightTheme, darkTheme, themeStatus } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
 import CircularIcon from "./components/ui/CircularIcon";
 import useStore from "./zustand/useStore";
@@ -21,7 +21,8 @@ export default function App() {
   const userToken = useStore((state) => state.userToken);
   const currentThemeStatus = useStore((state) => state.currentThemeStatus);
   const setThemeStatus = useStore((state) => state.setThemeStatus);
-  const selectedTheme = currentThemeStatus == "light" ? lightTheme : darkTheme;
+  const selectedTheme =
+    currentThemeStatus == themeStatus.light ? lightTheme : darkTheme;
 
   useEffect(() => {
     const initThemeCheck = async () => {
@@ -50,7 +51,6 @@ export default function App() {
       fontWeight: "bold",
       color: selectedTheme.colors.typography.primary,
     },
-    // headerLeftContainerStyle: { marginStart: 14 },
     headerLeft: () => (
       <CircularIcon
         name="arrow-back"
