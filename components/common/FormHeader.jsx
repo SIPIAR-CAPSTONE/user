@@ -33,7 +33,7 @@ export default FormHeader;
 
 const styles = StyleSheet.create({
   header: {
-    marginVertical: 20,
+    marginVertical: 14,
   },
   title: {
     fontWeight: "bold",

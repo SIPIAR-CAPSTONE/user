@@ -1,27 +1,32 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useEffect, useState } from "react";
-import useStore from "../../../zustand/useStore";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import FormHeader from "../../common/FormHeader";
+import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepOneContent = ({ goNextStep }) => {
+const StepOneContent = () => {
   const theme = useTheme();
 
-  const formOne = useStore((state) => state.signupFormOne);
-  const setFormOne = useStore((state) => state.setSignupFormOne);
+  const goVerificationNextStep = useBoundStore(
+    (state) => state.goVerificationNextStep
+  );
+  const verificationForm = useBoundStore((state) => state.verificationForm);
+  const setVerificationForm = useBoundStore(
+    (state) => state.setVerificationForm
+  );
   const [errors, setErrors] = useState({});
 
   //TODO: diri
   useEffect(() => {
-    const fetchFormOneData = () => {
+    const fetchData = () => {
       //TODO: e set dayon
-      setFormOne();
+      setVerificationForm();
     };
 
-    fetchFormOneData();
+    fetchData();
   }, []);
 
   /*
@@ -33,32 +38,32 @@ const StepOneContent = ({ goNextStep }) => {
     let errors = {};
 
     // Validate first name field if it is empty
-    if (!formOne.firstName) {
+    if (!verificationForm.firstName) {
       errors.firstName = "First Name is required.";
     }
 
     // Validate middle name field if it is empty
-    if (!formOne.middleName) {
+    if (!verificationForm.middleName) {
       errors.middleName = "Middle Name is required.";
     }
 
     // Validate last name field if it is empty
-    if (!formOne.lastName) {
+    if (!verificationForm.lastName) {
       errors.lastName = "Last Name is required.";
     }
 
     // Validate birthday if it is empty
-    if (!formOne.birthday) {
+    if (!verificationForm.birthday) {
       errors.birthday = "Birthday is required.";
     }
 
     // Validate phone field if it is empty
-    if (!formOne.phone) {
+    if (!verificationForm.phone) {
       errors.phone = "Phone is required.";
     }
 
     // check if the phone number size is 11
-    if (formOne.phone.length != 11) {
+    if (verificationForm.phone.length != 11) {
       errors.phone = "Phone should have 11 numbers.";
     }
 
@@ -79,10 +84,9 @@ const StepOneContent = ({ goNextStep }) => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
-    //!temoporary change
-    if (!isFormValid) {
+    if (isFormValid) {
       //if form is valid go to next step screen
-      goNextStep();
+      goVerificationNextStep();
     }
   };
 
@@ -96,39 +100,39 @@ const StepOneContent = ({ goNextStep }) => {
         />
         <TextFormField
           label="First Name"
-          value={formOne.firstName}
-          onChangeText={(value) => setFormOne("firstName", value)}
+          value={verificationForm.firstName}
+          onChangeText={(value) => setVerificationForm("firstName", value)}
           error={errors.firstName}
         />
         <TextFormField
           label="Middle Name"
-          value={formOne.middleName}
-          onChangeText={(value) => setFormOne("middleName", value)}
+          value={verificationForm.middleName}
+          onChangeText={(value) => setVerificationForm("middleName", value)}
           error={errors.middleName}
         />
         <TextFormField
           label="Last Name"
-          value={formOne.lastName}
-          onChangeText={(value) => setFormOne("lastName", value)}
+          value={verificationForm.lastName}
+          onChangeText={(value) => setVerificationForm("lastName", value)}
           error={errors.lastName}
         />
         <TextFormField
           label="Suffix"
-          value={formOne.suffix}
-          onChangeText={(value) => setFormOne("suffix", value)}
+          value={verificationForm.suffix}
+          onChangeText={(value) => setVerificationForm("suffix", value)}
           error={errors.suffix}
         />
         <BirthdayFormField
           label="Birthday"
-          date={formOne.birthday}
-          setDate={setFormOne}
+          date={verificationForm.birthday}
+          setDate={setVerificationForm}
           error={errors.birthday}
         />
         <TextFormField
           label="Phone Number"
           inputMode="tel"
-          value={formOne.phone}
-          onChangeText={(value) => setFormOne("phone", value)}
+          value={verificationForm.phone}
+          onChangeText={(value) => setVerificationForm("phone", value)}
           error={errors.phone}
         />
 

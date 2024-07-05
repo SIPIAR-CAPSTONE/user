@@ -12,7 +12,7 @@ const UserProfileCard = ({ variant = "text", name, email, renderFooter }) => {
   return (
     <View style={styles.header}>
       <Avatar.Text
-        size={124}
+        size={120}
         label={firstNameInitial}
         style={{ backgroundColor: "#FFDDDD" }}
       />
@@ -33,6 +33,6 @@ export default UserProfileCard;
 const styles = StyleSheet.create({
   header: {
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 8,
   },
 });

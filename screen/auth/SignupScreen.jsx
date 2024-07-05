@@ -1,24 +1,33 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
+import { useEffect } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
 import StepOneContent from "../../components/auth/signup/StepOneContent";
 import StepTwoContent from "../../components/auth/signup/StepTwoContent";
 import StepThreeContent from "../../components/auth/signup/StepThreeContent";
+import useBoundStore from "../../zustand/useBoundStore";
 
-const SignupScreen = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+const SignupScreen = ({ navigation }) => {
   const theme = useTheme();
 
-  const goNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
-  };
+  const signupCurrentStep = useBoundStore((state) => state.signupCurrentStep);
+  const resetSignup = useBoundStore((state) => state.resetSignup);
 
-  const backPrevStep = () => {
-    setCurrentStep((prevStep) => prevStep - 1);
-  };
+  /*
+   * The first time the user enter in signup screen
+   * the signup form global state will be reset.
+   *
+   * so when a user fill out the fields in signup form and then exit
+   * when the user comeback in the signup screen all fields and steps are reset
+   */
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      resetSignup();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   /*
    * Screen content of each steps
@@ -30,7 +39,7 @@ const SignupScreen = () => {
       id: 1,
       content: (
         <Content>
-          <StepOneContent goNextStep={goNextStep} />
+          <StepOneContent />
         </Content>
       ),
     },
@@ -38,7 +47,7 @@ const SignupScreen = () => {
       id: 2,
       content: (
         <Content>
-          <StepTwoContent goNextStep={goNextStep} backPrevStep={backPrevStep} />
+          <StepTwoContent />
         </Content>
       ),
     },
@@ -46,7 +55,7 @@ const SignupScreen = () => {
       id: 3,
       content: (
         <Content>
-          <StepThreeContent backPrevStep={backPrevStep} />
+          <StepThreeContent />
         </Content>
       ),
     },
@@ -79,12 +88,11 @@ const SignupScreen = () => {
     <ScrollView
       style={{
         flex: 1,
-        paddingVertical: theme.padding.body.vertical,
         paddingHorizontal: theme.padding.body.horizontal,
       }}
     >
       <ProgressSteps
-        currentStep={currentStep}
+        currentStep={signupCurrentStep}
         orientation="horizontal"
         steps={steps}
         colors={customColors}

@@ -9,7 +9,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
 import DatePicker from "react-native-date-picker";
 import { useState } from "react";
-import useStore from "../../zustand/useStore";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const SelectFormField = (props) => {
   const { onChange, items, label, value, error, ...inputProps } = props;
@@ -70,7 +70,7 @@ const BirthdayFormField = (props) => {
   const { label, error, setDate, date, ...inputProps } = props;
   const theme = useTheme();
 
-  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
+  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const [open, setOpen] = useState(false);
   const formattedDate = date.toISOString().split("T")[0];
 
@@ -238,7 +238,7 @@ export { TextFormField, BirthdayFormField, SelectFormField, PasswordFormField };
 
 const styles = StyleSheet.create({
   textInput: {
-    height: 60,
+    height: 54,
     padding: 14,
   },
   textInputError: {
