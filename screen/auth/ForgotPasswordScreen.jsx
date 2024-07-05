@@ -1,6 +1,7 @@
-import { StyleSheet, ScrollView, View, Alert } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { StyleSheet, ScrollView, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import { useState } from "react";
+
 import FormHeader from "../../components/common/FormHeader";
 import { TextFormField } from "../../components/ui/FormField";
 import PrimaryButton from "../../components/ui/PrimaryButton";

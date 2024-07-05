@@ -1,14 +1,15 @@
-import { StyleSheet, View } from 'react-native'
-import { Text, useTheme } from 'react-native-paper'
-import { Ionicons } from '@expo/vector-icons'
-import { useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
-import StatusBar from '../../components/common/StatusBar'
+import { StyleSheet, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+
+import StatusBar from "../../components/common/StatusBar";
 
 const SuccessConfirmationScreen = ({ route }) => {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const { title, desc, nextScreen } = route.params
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const { title, desc, nextScreen } = route.params;
 
   /*
    * if nextScreen is provided
@@ -20,7 +21,7 @@ const SuccessConfirmationScreen = ({ route }) => {
         navigation.navigate(nextScreen);
       }, 1500);
     }
-  }, [])
+  }, []);
 
   return (
     <View

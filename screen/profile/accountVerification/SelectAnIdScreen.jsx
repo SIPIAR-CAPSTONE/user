@@ -1,6 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 

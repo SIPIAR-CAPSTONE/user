@@ -1,6 +1,11 @@
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button, useTheme, Text } from "react-native-paper";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+
+import { supabase } from "../../utils/supabase/config";
+import { LargeSecureStore } from "../../utils/SecureLocalStorage";
+import useBoundStore from "../../zustand/useBoundStore";
 import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -8,10 +13,6 @@ import {
   TextFormField,
   PasswordFormField,
 } from "../../components/ui/FormField";
-import { useNavigation } from "@react-navigation/native";
-import { supabase } from "../../utils/supabase/config";
-import { LargeSecureStore } from "../../utils/SecureLocalStorage";
-import useBoundStore from "../../zustand/useBoundStore";
 
 const LoginScreen = () => {
   const theme = useTheme();

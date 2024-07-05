@@ -1,11 +1,11 @@
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState, useCallback } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
 import { getTimeGap, getDistanceGap } from "../../utils/dateAndDistanceGap";
-import { useEffect, useState, useCallback } from "react";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 
