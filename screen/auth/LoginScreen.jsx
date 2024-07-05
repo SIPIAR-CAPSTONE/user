@@ -41,6 +41,8 @@ const LoginScreen = () => {
     return Object.keys(errors).length === 0
   }
 
+
+
   /*
    *
    *  Handle submission for signup
@@ -52,12 +54,15 @@ const LoginScreen = () => {
 
     if (isFormValid) {
       //! If form valid, sign in account
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       })
-      // TODO (AKO RA ANI): session management
-      console.log(data)
+      if(error){
+        let errors = {}
+        errors.password = error.message
+        setErrors(errors)
+      }
     }
   }
 
