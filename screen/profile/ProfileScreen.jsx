@@ -1,31 +1,29 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-
-import StatusBar from "../../components/common/StatusBar";
-import ListItem from "../../components/ui/ListItem";
-import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
-import CircularIcon from "../../components/ui/CircularIcon";
-import UserProfileCard from "../../components/profile/UserProfileCard";
-import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import NextActionIcon from "../../components/common/NextActionIcon";
-import useStore from "../../zustand/useStore";
+import { View, StyleSheet, ScrollView } from 'react-native'
+import { useTheme } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+import { useState } from 'react'
+import StatusBar from '../../components/common/StatusBar'
+import ListItem from '../../components/ui/ListItem'
+import VerifiedIndicator from '../../components/profile/VerifiedIndicator'
+import CircularIcon from '../../components/ui/CircularIcon'
+import UserProfileCard from '../../components/profile/UserProfileCard'
+import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
+import NextActionIcon from '../../components/common/NextActionIcon'
+import { supabase } from '../../utils/supabase/config'
 
 const ProfileScreen = () => {
-  const theme = useTheme();
-  const navigation = useNavigation();
+  const theme = useTheme()
+  const navigation = useNavigation()
 
   // handling logout confirmation dialog
-  const [dialogVisible, setDialogVisible] = useState(false);
-  const showDialog = () => setDialogVisible(true);
-  const hideDialog = () => setDialogVisible(false);
+  const [dialogVisible, setDialogVisible] = useState(false)
+  const showDialog = () => setDialogVisible(true)
+  const hideDialog = () => setDialogVisible(false)
 
-  const setUserToken = useStore((state) => state.setUserToken);
 
-  const handleLogout = () => {
-    setUserToken("userToken");
-  };
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+  }
 
   return (
     <ScrollView
@@ -55,7 +53,7 @@ const ProfileScreen = () => {
             <CircularIcon name="person" variant="primary" size={14} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("MyAccount")}
+          onPress={() => navigation.navigate('MyAccount')}
         />
         {/* Setting */}
         <ListItem
@@ -65,7 +63,7 @@ const ProfileScreen = () => {
             <CircularIcon name="settings" variant="primary" size={14} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("Setting")}
+          onPress={() => navigation.navigate('Setting')}
         />
         {/* Terms and Conditions */}
         <ListItem
@@ -75,7 +73,7 @@ const ProfileScreen = () => {
             <CircularIcon name="document" variant="primary" size={14} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("TermsAndConditions")}
+          onPress={() => navigation.navigate('TermsAndConditions')}
         />
         {/* Privacy Policy */}
         <ListItem
@@ -85,7 +83,7 @@ const ProfileScreen = () => {
             <CircularIcon name="shield-checkmark" variant="primary" size={14} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("PrivacyPolicy")}
+          onPress={() => navigation.navigate('PrivacyPolicy')}
         />
 
         {/* Sign Out */}
@@ -113,14 +111,14 @@ const ProfileScreen = () => {
 
       <StatusBar />
     </ScrollView>
-  );
-};
+  )
+}
 
-export default ProfileScreen;
+export default ProfileScreen
 
 const styles = StyleSheet.create({
   listItems: {
     marginTop: 20,
     rowGap: 10,
   },
-});
+})
