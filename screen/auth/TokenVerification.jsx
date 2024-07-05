@@ -20,6 +20,7 @@ const TokenVerification = () => {
   const resetEmail = useStore((state) => state.email)
   const { process } = useSendToken(resetEmail, false)
   const hasCalledProcess = useRef(true)
+  const setResetPasswordSession = useStore((state) => state.setResetPasswordSession)
 
   /*
    * if the countdown sets to 0, call the process for sending the token again
@@ -45,7 +46,7 @@ const TokenVerification = () => {
   const handleSubmit = async () => {
     if (isFilled) {
       //! verify provied token
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
         type: 'email',
       })
@@ -55,6 +56,7 @@ const TokenVerification = () => {
       } else if (!error) {
         navigation.navigate('ResetPassword')
         pause() //! call the pause function to stop the countdown
+        setResetPasswordSession(data['session']) //! set the session as global but not yet encrypted
       }
     }
   }
@@ -88,7 +90,7 @@ const TokenVerification = () => {
             variant="labelLarge"
             style={{
               color: theme.colors.primary,
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             Resent, please wait a while.
@@ -110,10 +112,7 @@ const TokenVerification = () => {
 
 const ResendCountdown = ({ time, theme }) => {
   return (
-    <Text
-      variant="labelMedium"
-      style={{ textAlign: 'center'}}
-    >
+    <Text variant="labelMedium" style={{ textAlign: 'center' }}>
       Resend Token in{' '}
       <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
         {time}

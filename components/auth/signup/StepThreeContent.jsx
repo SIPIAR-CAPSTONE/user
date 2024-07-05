@@ -1,30 +1,29 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme, Text } from "react-native-paper";
-import { useState } from "react";
-
-import PrimaryButton from "../../ui/PrimaryButton";
-import { PasswordFormField, TextFormField } from "../../ui/FormField";
-import FormHeader from "../../common/FormHeader";
-import { useNavigation } from "@react-navigation/native";
-import useStore from "../../../zustand/useStore";
-import { supabase } from "../../../utils/supabase/config";
-import { setItem } from "../../../utils/LocalStorage";
+import { View, StyleSheet } from 'react-native'
+import { useTheme, Text } from 'react-native-paper'
+import { useState } from 'react'
+import PrimaryButton from '../../ui/PrimaryButton'
+import { PasswordFormField, TextFormField } from '../../ui/FormField'
+import FormHeader from '../../common/FormHeader'
+import { useNavigation } from '@react-navigation/native'
+import useStore from '../../../zustand/useStore'
+import { supabase } from '../../../utils/supabase/config'
+import { LargeSecureStore } from '../../../utils/SecureLocalStorage'
 
 const StepThreeContent = () => {
-  const theme = useTheme();
-  const navigation = useNavigation();
+  const theme = useTheme()
 
   //! Access global forms to pass as meta data for user
-  const formOne = useStore((state) => state.signupFormOne);
-  const formTwo = useStore((state) => state.signupFormTwo);
-  const formThree = useStore((state) => state.signupFormThree);
+  const formOne = useStore((state) => state.signupFormOne)
+  const formTwo = useStore((state) => state.signupFormTwo)
+  const formThree = useStore((state) => state.signupFormThree)
 
-  const setFormThree = useStore((state) => state.setSignupFormThree);
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const setFormThree = useStore((state) => state.setSignupFormThree)
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const setSession = useStore((state) => state.setSession)
 
   //! State for UI signup error
-  const [signUpError, setSignUpError] = useState("");
+  const [signUpError, setSignUpError] = useState('')
 
   /*
    *
@@ -32,41 +31,41 @@ const StepThreeContent = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    let errors = {}
 
     // Validate email field if it is empty
     if (!formThree.email) {
-      errors.email = "Email is required.";
+      errors.email = 'Email is required.'
     }
 
     //check if email has @ and .com
     if (!/\S+@\S+\.\S+/.test(formThree.email)) {
-      errors.email = "Invalid Email.";
+      errors.email = 'Invalid Email.'
     }
 
     // Validate password field if it is empty
     if (!formThree.password) {
-      errors.password = "Password is required.";
+      errors.password = 'Password is required.'
     }
 
     // Validate confirm password field if it is empty
     if (!formThree.confirmPassword) {
-      errors.confirmPassword = "Confirm Password is required.";
+      errors.confirmPassword = 'Confirm Password is required.'
     }
 
     // Validate if password and confirm password matched
     if (formThree.password !== formThree.confirmPassword) {
-      errors.confirmPassword = "Password and Confirm Password must be match.";
-      errors.password = "Password and Confirm Password must be match.";
+      errors.confirmPassword = 'Password and Confirm Password must be match.'
+      errors.password = 'Password and Confirm Password must be match.'
     }
 
     // Set the errors and update form validity if it is empty
-    setErrors(errors);
+    setErrors(errors)
 
     // return true if there is no error
     // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
+    return Object.keys(errors).length === 0
+  }
 
   /*
    *
@@ -75,10 +74,10 @@ const StepThreeContent = () => {
    */
   const handleSubmit = async () => {
     //validateForm will return true if there is no error
-    const isFormValid = validateForm();
+    const isFormValid = validateForm()
 
     if (isFormValid) {
-      setLoading(true);
+      setLoading(true)
 
       //! Signup user using the credentials provided, also added other fields as meta data
       const { data, error } = await supabase.auth
@@ -100,22 +99,23 @@ const StepThreeContent = () => {
           },
         })
         .finally(() => {
-          setLoading(false);
-        });
+          setLoading(false)
+        })
 
       //! Checking error and handling after successful signup
       if (error) {
-        setSignUpError(error.message);
+        setSignUpError(error.message)
       } else if (!error) {
-        //if form is valid go to completion confirmation screen
-        navigation.navigate("SuccessConfirmation", {
-          title: "Registered Successfully!",
-          desc: "The submitted details should be complete and spelled correctly.",
-          userToken: data["session"]["access_token"],
-        });
+        //! after successful signup, store the encrypted session locally and as global state
+        const largeSecureStore = new LargeSecureStore()
+        encryptedSession = await largeSecureStore.setItem(
+          'session',
+          JSON.stringify(data["session"]),
+        )
+        await setSession(encryptedSession)
       }
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -130,7 +130,7 @@ const StepThreeContent = () => {
           label="Email"
           value={formThree.email}
           inputMode="email"
-          onChangeText={(value) => setFormThree("email", value)}
+          onChangeText={(value) => setFormThree('email', value)}
           error={errors.email}
           disabled={loading}
         />
@@ -138,14 +138,14 @@ const StepThreeContent = () => {
         <PasswordFormField
           label="Password"
           value={formThree.password}
-          onChangeText={(value) => setFormThree("password", value)}
+          onChangeText={(value) => setFormThree('password', value)}
           error={errors.password}
           disabled={loading}
         />
         <PasswordFormField
           label="Confirm Password"
           value={formThree.confirmPassword}
-          onChangeText={(value) => setFormThree("confirmPassword", value)}
+          onChangeText={(value) => setFormThree('confirmPassword', value)}
           error={errors.confirmPassword}
           disabled={loading}
         />
@@ -162,10 +162,10 @@ const StepThreeContent = () => {
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default StepThreeContent;
+export default StepThreeContent
 
 const styles = StyleSheet.create({
   container: {
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
-});
+})
