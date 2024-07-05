@@ -1,24 +1,20 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 
 import StatusBar from "../../../components/common/StatusBar";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
 import StepTwoContent from "../../../components/profile/accountVerification/StepTwoContent";
 import StepThreeContent from "../../../components/profile/accountVerification/StepThreeContent";
+import StepFourContent from "../../../components/profile/accountVerification/StepFourContent";
+import useBoundStore from "../../../zustand/useBoundStore";
+import { useEffect } from "react";
 
-const AccountVerificationScreen = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+const AccountVerificationScreen = ({ navigation }) => {
   const theme = useTheme();
-
-  const goNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
-  };
-
-  const backPrevStep = () => {
-    setCurrentStep((prevStep) => prevStep - 1);
-  };
+  const verificationCurrentStep = useBoundStore(
+    (state) => state.verificationCurrentStep
+  );
 
   /*
    * Screen content of each steps
@@ -30,7 +26,7 @@ const AccountVerificationScreen = () => {
       id: 1,
       content: (
         <Content>
-          <StepOneContent goNextStep={goNextStep} />
+          <StepOneContent />
         </Content>
       ),
     },
@@ -38,7 +34,7 @@ const AccountVerificationScreen = () => {
       id: 2,
       content: (
         <Content>
-          <StepTwoContent goNextStep={goNextStep} backPrevStep={backPrevStep} />
+          <StepTwoContent />
         </Content>
       ),
     },
@@ -46,7 +42,15 @@ const AccountVerificationScreen = () => {
       id: 3,
       content: (
         <Content>
-          <StepThreeContent backPrevStep={backPrevStep} />
+          <StepThreeContent />
+        </Content>
+      ),
+    },
+    {
+      id: 4,
+      content: (
+        <Content>
+          <StepFourContent />
         </Content>
       ),
     },
@@ -75,6 +79,13 @@ const AccountVerificationScreen = () => {
     },
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      console.log("reset");
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <ScrollView
       style={{
@@ -84,7 +95,7 @@ const AccountVerificationScreen = () => {
       }}
     >
       <ProgressSteps
-        currentStep={currentStep}
+        currentStep={verificationCurrentStep}
         orientation="horizontal"
         steps={steps}
         colors={customColors}

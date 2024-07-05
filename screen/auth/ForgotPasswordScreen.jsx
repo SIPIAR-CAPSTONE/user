@@ -6,15 +6,15 @@ import { TextFormField } from "../../components/ui/FormField";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import StatusBar from "../../components/common/StatusBar";
 import useSendToken from "../../hooks/useSendToken";
-import useStore from "../../zustand/useStore";
 import { supabase } from "../../utils/supabase/config";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const ForgotPasswordScreen = () => {
   const theme = useTheme();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { errors, setErrors, process } = useSendToken(email, true);
-  const setResetEmail = useStore((state) => state.setPasswordResetEmail);
+  const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail);
 
   /*
    *
