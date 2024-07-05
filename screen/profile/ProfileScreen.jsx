@@ -11,7 +11,7 @@ import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
 import NextActionIcon from '../../components/common/NextActionIcon'
 import { supabase } from '../../utils/supabase/config'
 import { LargeSecureStore } from "../../utils/SecureLocalStorage"
-import useStore from "../../zustand/useStore"
+import useBoundStore from '../../zustand/useBoundStore'
 
 const ProfileScreen = () => {
   const theme = useTheme()
@@ -23,7 +23,7 @@ const ProfileScreen = () => {
   const hideDialog = () => setDialogVisible(false)
 
 
-  const removeSession = useStore((state) => state.removeSession)
+  const removeSession = useBoundStore((state) => state.removeSession)
   const largeSecureStore = new LargeSecureStore()
 
   const handleLogout = async () => {

@@ -1,34 +1,36 @@
-import { StyleSheet, ScrollView, View } from 'react-native'
-import { useTheme, Text } from 'react-native-paper'
-import { useEffect, useState, useRef } from 'react'
-import { TextFormField } from '../../components/ui/FormField'
-import FormHeader from '../../components/common/FormHeader'
-import PrimaryButton from '../../components/ui/PrimaryButton'
-import useCountdown from '../../hooks/useCountdown'
-import { useNavigation } from '@react-navigation/native'
-import { supabase } from '../../utils/supabase/config'
-import useSendToken from '../../hooks/useSendToken'
-import useStore from '../../zustand/useStore'
+import { StyleSheet, ScrollView, View } from "react-native";
+import { useTheme, Text } from "react-native-paper";
+import { useEffect, useState, useRef } from "react";
+import { TextFormField } from "../../components/ui/FormField";
+import FormHeader from "../../components/common/FormHeader";
+import PrimaryButton from "../../components/ui/PrimaryButton";
+import useCountdown from "../../hooks/useCountdown";
+import { useNavigation } from "@react-navigation/native";
+import { supabase } from "../../utils/supabase/config";
+import useSendToken from "../../hooks/useSendToken";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const TokenVerification = () => {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const [isFilled, setIsFilled] = useState(false)
-  const { time, pause } = useCountdown(70) //! it should be 70 constant, this is for interval in supabase
-  const [tokenHash, setTokenHash] = useState('')
-  const [serverError, setServerError] = useState('')
-  const resetEmail = useStore((state) => state.email)
-  const { process } = useSendToken(resetEmail, false)
-  const hasCalledProcess = useRef(true)
-  const setResetPasswordSession = useStore((state) => state.setResetPasswordSession)
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const [isFilled, setIsFilled] = useState(false);
+  const { time, pause } = useCountdown(70); //! it should be 70 constant, this is for interval in supabase
+  const [tokenHash, setTokenHash] = useState("");
+  const [serverError, setServerError] = useState("");
+  const passwordResetEmail = useBoundStore((state) => state.passwordResetEmail);
+  const { process } = useSendToken(passwordResetEmail, false);
+  const hasCalledProcess = useRef(true);
+  const setResetPasswordSession = useBoundStore(
+    (state) => state.setResetPasswordSession
+  );
 
   /*
    * if the countdown sets to 0, call the process for sending the token again
    * 0 is rendered twice, so it needs a useRef hook to determine if it's already performed
    */
   if (time === 0 && hasCalledProcess.current) {
-    process()
-    hasCalledProcess.current = false
+    process();
+    hasCalledProcess.current = false;
   }
 
   /*
@@ -37,29 +39,29 @@ const TokenVerification = () => {
    */
   useEffect(() => {
     if (tokenHash.length >= 56) {
-      setIsFilled(true)
+      setIsFilled(true);
     } else {
-      setIsFilled(false)
+      setIsFilled(false);
     }
-  }, [tokenHash])
+  }, [tokenHash]);
 
   const handleSubmit = async () => {
     if (isFilled) {
       //! verify provied token
       const { data, error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
-        type: 'email',
-      })
+        type: "email",
+      });
 
       if (error) {
-        setServerError(error)
+        setServerError(error);
       } else if (!error) {
-        navigation.navigate('ResetPassword')
-        pause() //! call the pause function to stop the countdown
-        setResetPasswordSession(data['session']) //! set the session as global but not yet encrypted
+        navigation.navigate("ResetPassword");
+        pause(); //! call the pause function to stop the countdown
+        setResetPasswordSession(data["session"]); //! set the session as global but not yet encrypted
       }
     }
-  }
+  };
 
   return (
     <ScrollView
@@ -90,7 +92,7 @@ const TokenVerification = () => {
             variant="labelLarge"
             style={{
               color: theme.colors.primary,
-              textAlign: 'center',
+              textAlign: "center",
             }}
           >
             Resent, please wait a while.
@@ -107,22 +109,22 @@ const TokenVerification = () => {
         />
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
 const ResendCountdown = ({ time, theme }) => {
   return (
-    <Text variant="labelMedium" style={{ textAlign: 'center' }}>
-      Resend Token in{' '}
+    <Text variant="labelMedium" style={{ textAlign: "center" }}>
+      Resend Token in{" "}
       <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
         {time}
-      </Text>{' '}
+      </Text>{" "}
       Sec
     </Text>
-  )
-}
+  );
+};
 
-export default TokenVerification
+export default TokenVerification;
 
 const styles = StyleSheet.create({
   container: {
@@ -131,4 +133,4 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
-})
+});
