@@ -1,15 +1,15 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useState, lazy } from "react";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import RadioDialog from "../../../components/ui/RadioDialog";
 import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import { themeStatus } from "../../../utils/theme";
+const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingScreen = () => {
   const theme = useTheme();

@@ -1,14 +1,20 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
+import { useEffect, lazy } from "react";
 
+import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
-import StepTwoContent from "../../../components/profile/accountVerification/StepTwoContent";
-import StepThreeContent from "../../../components/profile/accountVerification/StepThreeContent";
-import StepFourContent from "../../../components/profile/accountVerification/StepFourContent";
-import useBoundStore from "../../../zustand/useBoundStore";
-import { useEffect } from "react";
+const StepTwoContent = lazy(() =>
+  import("../../../components/profile/accountVerification/StepTwoContent")
+);
+const StepThreeContent = lazy(() =>
+  import("../../../components/profile/accountVerification/StepThreeContent")
+);
+const StepFourContent = lazy(() =>
+  import("../../../components/profile/accountVerification/StepFourContent")
+);
 
 const AccountVerificationScreen = ({ navigation }) => {
   const theme = useTheme();

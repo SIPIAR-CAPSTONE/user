@@ -1,13 +1,17 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect } from "react";
+import { useEffect, lazy } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
-import StepOneContent from "../../components/auth/signup/StepOneContent";
-import StepTwoContent from "../../components/auth/signup/StepTwoContent";
-import StepThreeContent from "../../components/auth/signup/StepThreeContent";
 import useBoundStore from "../../zustand/useBoundStore";
+import StepOneContent from "../../components/auth/signup/StepOneContent";
+const StepTwoContent = lazy(() =>
+  import("../../components/auth/signup/StepTwoContent")
+);
+const StepThreeContent = lazy(() =>
+  import("../../components/auth/signup/StepThreeContent")
+);
 
 const SignupScreen = ({ navigation }) => {
   const theme = useTheme();
