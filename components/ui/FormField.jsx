@@ -238,7 +238,7 @@ export { TextFormField, BirthdayFormField, SelectFormField, PasswordFormField };
 
 const styles = StyleSheet.create({
   textInput: {
-    height: 60,
+    height: 54,
     padding: 14,
   },
   textInputError: {

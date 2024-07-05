@@ -1,3 +1,56 @@
+const commonTheme = {
+  fontSize: {
+    xs: 12,
+    sm: 14,
+    base: 16,
+    md: 18,
+    lg: 20,
+    xl: 22,
+    xxl: 24,
+    xxxl: 28,
+  },
+  borderRadius: {
+    xs: 4,
+    sm: 6,
+    base: 8,
+    md: 10,
+    lg: 12,
+    xl: 14,
+    full: 100,
+  },
+  padding: {
+    body: {
+      horizontal: 12,
+      vertical: 14,
+    },
+    button: {
+      xs: 1,
+      sm: 2,
+      base: 4,
+      md: 6,
+      lg: 8,
+      xl: 10,
+    },
+  },
+  margin: {
+    heading: {
+      vertical: 14,
+    },
+    body: {
+      horizontal: 16,
+      vertical: 18,
+    },
+  },
+  gap: {
+    xs: 4,
+    sm: 6,
+    base: 8,
+    md: 10,
+    lg: 12,
+    xl: 14,
+  },
+};
+
 const lightTheme = {
   colors: {
     typography: {
@@ -51,56 +104,7 @@ const lightTheme = {
     onSurfaceDisabled: "rgba(32, 26, 26, 0.38)",
     backdrop: "rgba(59, 45, 44, 0.4)",
   },
-  fontSize: {
-    xs: 12,
-    sm: 14,
-    base: 16,
-    md: 18,
-    lg: 20,
-    xl: 22,
-    xxl: 24,
-    xxxl: 28,
-  },
-  borderRadius: {
-    xs: 4,
-    sm: 6,
-    base: 8,
-    md: 10,
-    lg: 12,
-    xl: 14,
-    full: 100,
-  },
-  padding: {
-    body: {
-      horizontal: 16,
-      vertical: 18,
-    },
-    button: {
-      xs: 1,
-      sm: 2,
-      base: 4,
-      md: 6,
-      lg: 8,
-      xl: 10,
-    },
-  },
-  margin: {
-    heading: {
-      vertical: 14,
-    },
-    body: {
-      horizontal: 16,
-      vertical: 18,
-    },
-  },
-  gap: {
-    xs: 4,
-    sm: 6,
-    base: 8,
-    md: 10,
-    lg: 12,
-    xl: 14,
-  },
+  ...commonTheme,
 };
 const darkTheme = {
   colors: {
@@ -154,56 +158,7 @@ const darkTheme = {
     onSurfaceDisabled: "rgba(230, 230, 230, 0.38)",
     backdrop: "rgba(0, 0, 0, 0.5)",
   },
-  fontSize: {
-    xs: 12,
-    sm: 14,
-    base: 16,
-    md: 18,
-    lg: 20,
-    xl: 22,
-    xxl: 24,
-    xxxl: 28,
-  },
-  borderRadius: {
-    xs: 4,
-    sm: 6,
-    base: 8,
-    md: 10,
-    lg: 12,
-    xl: 14,
-    full: 100,
-  },
-  padding: {
-    body: {
-      horizontal: 16,
-      vertical: 18,
-    },
-    button: {
-      xs: 1,
-      sm: 2,
-      base: 4,
-      md: 6,
-      lg: 8,
-      xl: 10,
-    },
-  },
-  margin: {
-    heading: {
-      vertical: 14,
-    },
-    body: {
-      horizontal: 16,
-      vertical: 18,
-    },
-  },
-  gap: {
-    xs: 4,
-    sm: 6,
-    base: 8,
-    md: 10,
-    lg: 12,
-    xl: 14,
-  },
+  ...commonTheme,
 };
 
 const themeStatus = {

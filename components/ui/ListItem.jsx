@@ -3,11 +3,12 @@ import { Text, useTheme, TouchableRipple } from "react-native-paper";
 
 const ListItem = ({
   title,
-  titleVariant = "titleMedium",
-  subTitle,
-  subTitleVariant = "bodySmall",
+  titleSize = 16,
+  titleWeight = "bold",
+  subTitle ,
+  subTitleSize = 10,
   desc,
-  descVariant = "bodyMedium",
+  descSize = 12,
   renderIcon,
   renderActionIcon,
   size = "small",
@@ -19,22 +20,22 @@ const ListItem = ({
 
   const sizeStyle = {
     large: {
-      height: 96,
-      maxHeight: 120,
-      padding: 18,
-      borderRadius: 14,
-    },
-    medium: {
-      height: 76,
-      maxHeight: 90,
-      padding: 16,
+      height: 70,
+      paddingHorizontal: 12,
+      paddingVertical: 16,
       borderRadius: 12,
     },
-    small: {
-      height: 46,
-      maxHeight: 64,
-      padding: 14,
+    medium: {
+      height: 60,
+      paddingHorizontal: 10,
+      paddingVertical: 14,
       borderRadius: 10,
+    },
+    small: {
+      height: 50,
+      paddingHorizontal: 8,
+      paddingVertical: 12,
+      borderRadius: 8,
     },
   };
 
@@ -53,29 +54,37 @@ const ListItem = ({
           {
             backgroundColor: theme.colors.secondary,
             borderRadius: ROUNDNESS_STYLE,
-            padding: sizeStyle[size].padding,
-            columnGap: sizeStyle[size].padding,
-            maxHeight: sizeStyle[size].maxHeight,
-            minHeight: sizeStyle[size].height,
+            paddingHorizontal: sizeStyle[size].paddingHorizontal,
+            paddingVertical: sizeStyle[size].paddingVertical,
+            columnGap: sizeStyle[size].paddingHorizontal,
+            height: sizeStyle[size].height,
           },
           contentContainerStyle,
         ]}
       >
         {/* Right Side: Leading Icon */}
-        {renderIcon && <View style={styles.icon}>{renderIcon()}</View>}
+        {renderIcon && <View>{renderIcon()}</View>}
         {/* Center to last Side: Text content */}
         <View style={styles.content}>
           {/* Title and subtitle */}
           <View style={styles.header}>
-            <Text numberOfLines={1} variant={titleVariant}>
+            <Text
+              style={[
+                styles.title,
+                { fontSize: titleSize, fontWeight: titleWeight },
+              ]}
+              numberOfLines={1}
+            >
               {title}
             </Text>
             {subTitle && (
               <Text
-                variant={subTitleVariant}
                 style={[
                   styles.subTitle,
-                  { color: theme.colors.typography.tertiary },
+                  {
+                    color: theme.colors.typography.tertiary,
+                    fontSize: subTitleSize,
+                  },
                 ]}
               >
                 {subTitle}
@@ -85,12 +94,12 @@ const ListItem = ({
           {/* Description */}
           {desc && (
             <Text
-              variant={descVariant}
               numberOfLines={2}
               style={[
                 styles.desc,
                 {
                   color: theme.colors.typography.secondary,
+                  fontSize: descSize,
                 },
               ]}
             >
@@ -119,12 +128,8 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    alignItems: "baseline",
+    alignItems: "center",
     columnGap: 6,
-  },
-  icon: {
-    alignSelf: "center",
-    width: 33,
   },
   actionIcon: {
     alignSelf: "center",

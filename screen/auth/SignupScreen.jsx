@@ -79,7 +79,6 @@ const SignupScreen = () => {
     <ScrollView
       style={{
         flex: 1,
-        paddingVertical: theme.padding.body.vertical,
         paddingHorizontal: theme.padding.body.horizontal,
       }}
     >

@@ -9,7 +9,7 @@ const DistanceIcon = ({ distance, status }) => {
 
   return (
     <View style={styles.container}>
-      <Feather name="map-pin" size={28} color={iconColor} />
+      <Feather name="map-pin" size={22} color={iconColor} />
       <Text
         style={[styles.distance, { color: theme.colors.typography.secondary }]}
       >
@@ -24,9 +24,10 @@ export default DistanceIcon;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    rowGap: 4,
+    rowGap: 2,
+    marginHorizontal: 3,
   },
   distance: {
-    fontSize: 9,
+    fontSize: 8,
   },
 });

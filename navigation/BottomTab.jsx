@@ -20,9 +20,9 @@ const Tabs = ({ navigation }) => {
   const sceneContainerStyle = { backgroundColor: theme.colors.background };
 
   const screenOptions = {
-    tabBarStyle: { height: 54, backgroundColor: theme.colors.background },
+    tabBarStyle: { height: 46, backgroundColor: theme.colors.background, paddingTop: 2 },
     tabBarActiveTintColor: theme.colors.primary,
-    tabBarLabelStyle: { fontSize: 12, fontWeight: "500", paddingBottom: 4 },
+    tabBarLabelStyle: { fontSize: 12, fontWeight: "500", paddingBottom: 2 },
     headerStyle: { elevation: 0, backgroundColor: theme.colors.background },
     headerTitleStyle: {
       fontWeight: "bold",
