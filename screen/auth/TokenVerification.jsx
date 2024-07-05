@@ -17,8 +17,8 @@ const TokenVerification = () => {
   const { time, pause } = useCountdown(70) //! it should be 70 constant, this is for interval in supabase
   const [tokenHash, setTokenHash] = useState('')
   const [serverError, setServerError] = useState('')
-  const resetEmail = useStore((state) => state.email)
-  const { process } = useSendToken(resetEmail, false)
+  const passwordResetEmail = useBoundStore((state) => state.passwordResetEmail)
+  const { process } = useSendToken(passwordResetEmail, false)
   const hasCalledProcess = useRef(true)
 
   /*
