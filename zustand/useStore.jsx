@@ -5,7 +5,6 @@ import { themeStatus } from '../utils/theme'
 const useStore = create((set) => ({
   currentThemeStatus: themeStatus.dark,
   session: null,
-  resetPasswordSession: null,
   appIsReady: false,
   signupFormOne: {
     firstName: '',
@@ -56,10 +55,7 @@ const useStore = create((set) => ({
   removeSession: () => {
     set({ session: null })
   },
-  setAppIsReady: (value) => set({ appIsReady: value }),
-  setResetPasswordSession: (value) => set({ resetPasswordSession: value }),
-  removePasswordResetSession: () => { set({ resetPasswordSession: null })
-  },
+  setAppIsReady: (value) => set({ appIsReady: value })
 }))
 
 export default useStore

@@ -4,18 +4,11 @@ import { Ionicons } from '@expo/vector-icons'
 import { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import StatusBar from '../../components/common/StatusBar'
-import useStore from '../../zustand/useStore'
-import { LargeSecureStore } from '../../utils/SecureLocalStorage'
 
 const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme()
   const navigation = useNavigation()
-  const { title, desc, nextScreen, session } = route.params
-  const setSession = useStore((state) => state.setSession)
-  const resetPasswordSession = useStore((state) => state.resetPasswordSession)
-  const removePasswordResetSession = useStore(
-    (state) => state.removePasswordResetSession,
-  )
+  const { title, desc, nextScreen } = route.params
 
   /*
    * if nextScreen is provided
@@ -26,27 +19,6 @@ const SuccessConfirmationScreen = ({ route }) => {
       setTimeout(function () {
         navigation.navigate(nextScreen)
       }, 1500)
-    }
-    removePasswordResetSession()
-  }, [])
-
-  /*
-   *  After login or sign up
-   *  show the confirmationScreen and after a short delay proceed to home screen
-   *
-   */
-  useEffect(() => {
-    if (resetPasswordSession) {
-      setTimeout(async function () {
-        const largeSecureStore = new LargeSecureStore()
-
-        encryptedSession = await largeSecureStore.setItem(
-          'session',
-          JSON.stringify(resetPasswordSession),
-        )
-        setSession(encryptedSession)
-      }, 1500)
-      removePasswordResetSession()
     }
   }, [])
 
