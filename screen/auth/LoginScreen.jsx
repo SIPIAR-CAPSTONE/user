@@ -18,6 +18,7 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const setSession = useBoundStore((state) => state.setSession);
   const largeSecureStore = new LargeSecureStore();
@@ -54,15 +55,20 @@ const LoginScreen = () => {
    *
    */
   const handleSubmit = async () => {
+    setLoading(true);
+
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
       //! If form valid, sign in account
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
+      const { data, error } = await supabase.auth
+        .signInWithPassword({
+          email: email,
+          password: password,
+        })
+        .finally(() => setLoading(false));
+
       if (error) {
         let errors = {};
         errors.password = error.message;
@@ -104,12 +110,14 @@ const LoginScreen = () => {
           inputMode="email"
           onChangeText={setEmail}
           error={errors.email}
+          disabled={loading}
         />
         <PasswordFormField
           label="Password"
           value={password}
           onChangeText={setPassword}
           error={errors.password}
+          disabled={loading}
         />
 
         <Button
@@ -128,6 +136,7 @@ const LoginScreen = () => {
           label="Sign In"
           onPress={handleSubmit}
           style={{ borderRadius: theme.borderRadius.base }}
+          disabled={loading}
         />
       </View>
 
