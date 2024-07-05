@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme, TouchableRipple } from "react-native-paper";
 
-const CircularIcon = ({ name, onPress, variant = "gray", size = 22 }) => {
+const CircularIcon = ({ name, onPress, variant = "gray", size = 19 }) => {
   const theme = useTheme();
 
   const VARIANT_STYLE = {

@@ -17,9 +17,9 @@ export default function CprTabBarIcon() {
 const styles = StyleSheet.create({
   cprIcon: {
     top: -8,
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 56,
+    height: 56,
+    borderRadius: 50,
     borderWidth: 1,
     borderColor: "crimson",
     alignItems: "center",

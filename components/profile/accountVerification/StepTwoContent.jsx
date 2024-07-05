@@ -1,28 +1,33 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState, useEffect } from "react";
-import useStore from "../../../zustand/useStore";
 
 import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
+import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepTwoContent = ({ goNextStep }) => {
+const StepTwoContent = () => {
   const theme = useTheme();
 
-  const formTwo = useStore((state) => state.signupFormTwo);
-  const setFormTwo = useStore((state) => state.setSignupFormTwo);
+  const goVerificationNextStep = useBoundStore(
+    (state) => state.goVerificationNextStep
+  );
+  const verificationForm = useBoundStore((state) => state.verificationForm);
+  const setVerificationForm = useBoundStore(
+    (state) => state.setVerificationForm
+  );
   const [errors, setErrors] = useState({});
 
   //TODO: diri
   useEffect(() => {
-    const fetchFormTwoData = () => {
+    const fetchverificationFormData = () => {
       //TODO: e set dayon
-      setFormTwo();
+      setVerificationForm();
     };
 
-    fetchFormTwoData();
+    fetchverificationFormData();
   }, []);
 
   /*
@@ -34,12 +39,12 @@ const StepTwoContent = ({ goNextStep }) => {
     let errors = {};
 
     // Validate barangay field if it is empty
-    if (!formTwo.barangay) {
+    if (!verificationForm.barangay) {
       errors.barangay = "Barangay is required.";
     }
 
     // Validate street field if it is empty
-    if (!formTwo.street) {
+    if (!verificationForm.street) {
       errors.street = "Street is required.";
     }
 
@@ -60,10 +65,9 @@ const StepTwoContent = ({ goNextStep }) => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
-    //!temoporary change
-    if (!isFormValid) {
+    if (isFormValid) {
       //if form is valid go to next step screen
-      goNextStep();
+      goVerificationNextStep();
     }
   };
 
@@ -77,21 +81,21 @@ const StepTwoContent = ({ goNextStep }) => {
         />
         <SelectFormField
           label="Barangay"
-          value={formTwo.barangay}
+          value={verificationForm.barangay}
           items={cdoBarangayData}
-          onChange={(item) => setFormTwo("barangay", item.value)}
+          onChange={(item) => setVerificationForm("barangay", item.value)}
           error={errors.barangay}
         />
         <TextFormField
           label="Street"
-          value={formTwo.street}
-          onChangeText={(value) => setFormTwo("street", value)}
+          value={verificationForm.street}
+          onChangeText={(value) => setVerificationForm("street", value)}
           error={errors.street}
         />
         <TextFormField
           label="House Number"
-          value={formTwo.houseNumber}
-          onChangeText={(value) => setFormTwo("houseNumber", value)}
+          value={verificationForm.houseNumber}
+          onChangeText={(value) => setVerificationForm("houseNumber", value)}
           error={errors.houseNumber}
         />
 

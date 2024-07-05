@@ -11,7 +11,7 @@ import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
 import NextActionIcon from '../../components/common/NextActionIcon'
 import { supabase } from '../../utils/supabase/config'
 import { LargeSecureStore } from "../../utils/SecureLocalStorage"
-import useStore from "../../zustand/useStore"
+import useBoundStore from '../../zustand/useBoundStore'
 
 const ProfileScreen = () => {
   const theme = useTheme()
@@ -23,7 +23,7 @@ const ProfileScreen = () => {
   const hideDialog = () => setDialogVisible(false)
 
 
-  const removeSession = useStore((state) => state.removeSession)
+  const removeSession = useBoundStore((state) => state.removeSession)
   const largeSecureStore = new LargeSecureStore()
 
   const handleLogout = async () => {
@@ -62,7 +62,7 @@ const ProfileScreen = () => {
           size="medium"
           title="My Account"
           renderIcon={() => (
-            <CircularIcon name="person" variant="primary" size={14} />
+            <CircularIcon name="person" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate('MyAccount')}
@@ -72,7 +72,7 @@ const ProfileScreen = () => {
           size="medium"
           title="Setting"
           renderIcon={() => (
-            <CircularIcon name="settings" variant="primary" size={14} />
+            <CircularIcon name="settings" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate('Setting')}
@@ -82,7 +82,7 @@ const ProfileScreen = () => {
           size="medium"
           title="Terms and Conditions"
           renderIcon={() => (
-            <CircularIcon name="document" variant="primary" size={14} />
+            <CircularIcon name="document" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate('TermsAndConditions')}
@@ -92,7 +92,7 @@ const ProfileScreen = () => {
           size="medium"
           title="Privacy Policy"
           renderIcon={() => (
-            <CircularIcon name="shield-checkmark" variant="primary" size={14} />
+            <CircularIcon name="shield-checkmark" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate('PrivacyPolicy')}
@@ -112,7 +112,7 @@ const ProfileScreen = () => {
               size="medium"
               title="Sign Out"
               renderIcon={() => (
-                <CircularIcon name="exit" variant="primary" size={14} />
+                <CircularIcon name="exit" variant="primary" size={12} />
               )}
               renderActionIcon={() => <NextActionIcon />}
               onPress={showDialog}
@@ -131,6 +131,6 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   listItems: {
     marginTop: 20,
-    rowGap: 10,
+    rowGap: 7,
   },
 })

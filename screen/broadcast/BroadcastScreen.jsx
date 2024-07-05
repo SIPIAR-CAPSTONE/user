@@ -53,7 +53,10 @@ const BroadcastScreen = () => {
         <View
           style={[
             styles.countContainer,
-            { backgroundColor: theme.colors.primary },
+            {
+              backgroundColor: theme.colors.primary,
+              borderRadius: theme.borderRadius.full,
+            },
           ]}
         >
           <Text variant="labelSmall" style={{ color: theme.colors.onPrimary }}>
@@ -68,11 +71,10 @@ const BroadcastScreen = () => {
     <ListItem
       key={item.id}
       title={`${item.first_name} ${item.last_name}`}
-      titleVariant="titleSmall"
+      titleSize={14}
       subTitle={getTimeGap(item.createdAt)}
-      subTitleVariant="labelSmall"
       desc={item.address}
-      descVariant="labelSmall"
+      descSize={11}
       onPress={() =>
         navigation.navigate("Mapview", {
           intialCoordinate: item.coordinate,
@@ -95,7 +97,7 @@ const BroadcastScreen = () => {
       keyExtractor={(item) => item.id}
       renderItem={renderEmergencyAlertsItem}
       ListHeaderComponent={<Header count={dataSize} />}
-      ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+      ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
       contentContainerStyle={{
         paddingVertical: theme.padding.body.vertical,
         paddingHorizontal: theme.padding.body.horizontal,
@@ -120,9 +122,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   countContainer: {
-    height: 28,
-    width: 28,
-    borderRadius: 50,
+    height: 24,
+    width: 24,
     marginEnd: 6,
     alignItems: "center",
     justifyContent: "center",

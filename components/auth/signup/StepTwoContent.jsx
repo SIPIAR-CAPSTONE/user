@@ -1,18 +1,19 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
-import useStore from "../../../zustand/useStore";
+import useBoundStore from "../../../zustand/useBoundStore";
 
 import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 
-const StepTwoContent = ({ goNextStep }) => {
+const StepTwoContent = () => {
   const theme = useTheme();
 
-  const formTwo = useStore((state) => state.signupFormTwo);
-  const setFormTwo = useStore((state) => state.setSignupFormTwo);
+  const signupForm = useBoundStore((state) => state.signupForm);
+  const setSignupForm = useBoundStore((state) => state.setSignupForm);
+  const goSignupNextStep = useBoundStore((state) => state.goSignupNextStep);
   const [errors, setErrors] = useState({});
 
   /*
@@ -24,12 +25,12 @@ const StepTwoContent = ({ goNextStep }) => {
     let errors = {};
 
     // Validate barangay field if it is empty
-    if (!formTwo.barangay) {
+    if (!signupForm.barangay) {
       errors.barangay = "Barangay is required.";
     }
 
     // Validate street field if it is empty
-    if (!formTwo.street) {
+    if (!signupForm.street) {
       errors.street = "Street is required.";
     }
 
@@ -52,7 +53,7 @@ const StepTwoContent = ({ goNextStep }) => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goNextStep();
+      goSignupNextStep();
     }
   };
 
@@ -66,21 +67,21 @@ const StepTwoContent = ({ goNextStep }) => {
         />
         <SelectFormField
           label="Barangay"
-          value={formTwo.barangay}
+          value={signupForm.barangay}
           items={cdoBarangayData}
-          onChange={(item) => setFormTwo("barangay", item.value)}
+          onChange={(item) => setSignupForm("barangay", item.value)}
           error={errors.barangay}
         />
         <TextFormField
           label="Street"
-          value={formTwo.street}
-          onChangeText={(value) => setFormTwo("street", value)}
+          value={signupForm.street}
+          onChangeText={(value) => setSignupForm("street", value)}
           error={errors.street}
         />
         <TextFormField
           label="House Number"
-          value={formTwo.houseNumber}
-          onChangeText={(value) => setFormTwo("houseNumber", value)}
+          value={signupForm.houseNumber}
+          onChangeText={(value) => setSignupForm("houseNumber", value)}
           error={errors.houseNumber}
         />
 

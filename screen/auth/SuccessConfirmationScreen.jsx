@@ -17,8 +17,8 @@ const SuccessConfirmationScreen = ({ route }) => {
   useEffect(() => {
     if (nextScreen) {
       setTimeout(function () {
-        navigation.navigate(nextScreen)
-      }, 1500)
+        navigation.navigate(nextScreen);
+      }, 1500);
     }
   }, [])
 
@@ -46,25 +46,25 @@ const SuccessConfirmationScreen = ({ route }) => {
 
       <StatusBar />
     </View>
-  )
-}
+  );
+};
 
-export default SuccessConfirmationScreen
+export default SuccessConfirmationScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 50,
     rowGap: 10,
   },
   title: {
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginTop: 10,
   },
   desc: {
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+});

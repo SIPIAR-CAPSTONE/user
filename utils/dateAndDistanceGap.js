@@ -93,7 +93,7 @@ const getDistanceGap = function (userCoordinate, alertCoordinate) {
   // Function to format the distance into a human-readable string
   function formatDistance(distanceInKm) {
     if (distanceInKm >= 1) {
-      return `${distanceInKm.toFixed(2)} km`;
+      return `${distanceInKm.toFixed(1)} km`;
     } else {
       const distanceInMeters = distanceInKm * 1000;
       return `${distanceInMeters.toFixed(0)} m`;

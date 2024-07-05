@@ -6,15 +6,15 @@ import { useNavigation } from "@react-navigation/native";
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import RadioDialog from "../../../components/ui/RadioDialog";
-import useStore from "../../../zustand/useStore";
+import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import { themeStatus } from "../../../utils/theme";
 
 const SettingScreen = () => {
   const theme = useTheme();
-  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
-  const setCurrentThemeStatus = useStore((state) => state.setThemeStatus);
+  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
+  const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
   const [notificationStatus, setNotificationStatus] = useState("On");
 

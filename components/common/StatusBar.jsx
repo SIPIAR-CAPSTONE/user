@@ -1,10 +1,10 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import useStore from "../../zustand/useStore";
+import useBoundStore from "../../zustand/useBoundStore";
 
 import { themeStatus } from "../../utils/theme";
 
 const StatusBar = ({ style }) => {
-  const currentThemeStatus = useStore((state) => state.currentThemeStatus);
+  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   //initialie statusStyle
   let selectedStatusStyle = currentThemeStatus;
   //if there is a custom style, use it.

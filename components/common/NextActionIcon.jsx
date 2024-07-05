@@ -7,7 +7,7 @@ const NextActionIcon = () => {
   return (
     <Ionicons
       name="chevron-forward"
-      size={24}
+      size={20}
       color={theme.colors.typography.primary}
     />
   );
