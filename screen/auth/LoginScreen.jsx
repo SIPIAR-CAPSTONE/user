@@ -7,6 +7,8 @@ import PrimaryButton from '../../components/ui/PrimaryButton'
 import { TextFormField, PasswordFormField } from '../../components/ui/FormField'
 import { useNavigation } from '@react-navigation/native'
 import { supabase } from '../../utils/supabase/config'
+import { LargeSecureStore } from "../../utils/SecureLocalStorage"
+import useStore from "../../zustand/useStore"
 
 const LoginScreen = () => {
   const theme = useTheme()
@@ -14,6 +16,8 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
+  const setSession = useStore((state) => state.setSession)
+  const largeSecureStore = new LargeSecureStore()
 
   /*
    *
@@ -41,8 +45,6 @@ const LoginScreen = () => {
     return Object.keys(errors).length === 0
   }
 
-
-
   /*
    *
    *  Handle submission for signup
@@ -54,14 +56,23 @@ const LoginScreen = () => {
 
     if (isFormValid) {
       //! If form valid, sign in account
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       })
-      if(error){
+      if (error) {
         let errors = {}
         errors.password = error.message
         setErrors(errors)
+      } else if (!error) {
+        //! call the setItem in which it encrypt the session and store in secure local storage
+        encryptedSession = await largeSecureStore.setItem(
+          'session',
+          JSON.stringify(data['session']),
+        )
+
+        //! set encrypted session as global state
+        setSession(encryptedSession)
       }
     }
   }
