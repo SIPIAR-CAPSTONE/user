@@ -13,6 +13,7 @@ const ResetPasswordScreen = () => {
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   /*
@@ -53,27 +54,33 @@ const ResetPasswordScreen = () => {
    *  Handle submission for signup
    *
    */
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
+    setLoading(true);
+
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
       //! update password of user
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword
-      })
+      const { error } = await supabase.auth
+        .updateUser({
+          password: newPassword,
+        })
+        .finally(() => {
+          setLoading(false);
+        });
 
       if (error) {
         let errors = {};
         errors.confirmNewPassword = error.message;
         setErrors(errors);
-      }else if(!error){
-          //! navigate to success confirmation screen
-          navigation.navigate("SuccessConfirmation", {
-            title: "Reset Password Successfully!",
-            desc: "You can now login your new password credentials.",
-            nextScreen: "StartingScreen",
-          });
+      } else if (!error) {
+        //! navigate to success confirmation screen
+        navigation.navigate("SuccessConfirmation", {
+          title: "Reset Password Successfully!",
+          desc: "You can now login your new password credentials.",
+          nextScreen: "StartingScreen",
+        });
       }
     }
   };
@@ -85,7 +92,6 @@ const ResetPasswordScreen = () => {
         { paddingHorizontal: theme.padding.body.horizontal },
       ]}
     >
-
       {/* Form */}
       <View style={{ rowGap: theme.gap.lg }}>
         <FormHeader
@@ -99,18 +105,21 @@ const ResetPasswordScreen = () => {
           value={newPassword}
           onChangeText={setNewPassword}
           error={errors.newPassword}
+          disabled={loading}
         />
         <PasswordFormField
           label="Confirm New Password"
           value={confirmNewPassword}
           onChangeText={setConfirmNewPassword}
           error={errors.confirmNewPassword}
+          disabled={loading}
         />
 
         {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
+          disabled={loading}
           style={[styles.button, { borderRadius: theme.borderRadius.base }]}
         />
       </View>
