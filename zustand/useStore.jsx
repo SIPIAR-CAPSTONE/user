@@ -1,30 +1,31 @@
-import { create } from "zustand";
-import { setItem, deleteItem } from "../utils/LocalStorage";
-import { themeStatus } from "../utils/theme";
+import { create } from 'zustand'
+import { setItem, deleteItem } from '../utils/LocalStorage'
+import { themeStatus } from '../utils/theme'
 
 const useStore = create((set) => ({
   currentThemeStatus: themeStatus.dark,
   session: null,
+  resetPasswordSession: null,
   appIsReady: false,
   signupFormOne: {
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    suffix: "",
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
     birthday: new Date(),
     phone: 0,
   },
   signupFormTwo: {
-    barangay: "",
-    street: "",
-    houseNumber: "",
+    barangay: '',
+    street: '',
+    houseNumber: '',
   },
   signupFormThree: {
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
   },
-  passwordResetEmail: "",
+  passwordResetEmail: '',
   setSignupFormOne: (key, newValue) =>
     set((state) => ({
       signupFormOne: { ...state.signupFormOne, [key]: newValue },
@@ -41,21 +42,24 @@ const useStore = create((set) => ({
   setThemeStatus: (newThemeStatus) => {
     if (newThemeStatus == null) {
       //if given new theme is null set current theme with light theme as default
-      set({ currentThemeStatus: themeStatus.light });
+      set({ currentThemeStatus: themeStatus.light })
     } else {
       //set new theme in state
-      set({ currentThemeStatus: newThemeStatus });
+      set({ currentThemeStatus: newThemeStatus })
       //set new theme in localStorage
-      setItem("theme", newThemeStatus);
+      setItem('theme', newThemeStatus)
     }
   },
   setSession: (encryptedSession) => {
-    set({ session: encryptedSession });
+    set({ session: encryptedSession })
   },
   removeSession: () => {
-    set({ session: null });
+    set({ session: null })
   },
   setAppIsReady: (value) => set({ appIsReady: value }),
-}));
+  setResetPasswordSession: (value) => set({ resetPasswordSession: value }),
+  removePasswordResetSession: () => { set({ resetPasswordSession: null })
+  },
+}))
 
-export default useStore;
+export default useStore

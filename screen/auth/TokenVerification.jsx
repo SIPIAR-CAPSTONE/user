@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native'
 import { supabase } from '../../utils/supabase/config'
 import useSendToken from '../../hooks/useSendToken'
 import useStore from '../../zustand/useStore'
-import { LargeSecureStore } from "../../utils/SecureLocalStorage"
 
 const TokenVerification = () => {
   const theme = useTheme()
@@ -21,7 +20,7 @@ const TokenVerification = () => {
   const resetEmail = useStore((state) => state.email)
   const { process } = useSendToken(resetEmail, false)
   const hasCalledProcess = useRef(true)
-  const setSession = useStore((state) => state.setSession)
+  const setResetPasswordSession = useStore((state) => state.setResetPasswordSession)
 
   /*
    * if the countdown sets to 0, call the process for sending the token again
@@ -52,21 +51,12 @@ const TokenVerification = () => {
         type: 'email',
       })
 
-      console.log('toke verification diri', data)
-
       if (error) {
         setServerError(error)
       } else if (!error) {
         navigation.navigate('ResetPassword')
         pause() //! call the pause function to stop the countdown
-
-        //! after successful signup, store the encrypted session locally and as global state
-        const largeSecureStore = new LargeSecureStore()
-        encryptedSession = await largeSecureStore.setItem(
-          'session',
-          JSON.stringify(data['session']),
-        )
-        await setSession(encryptedSession)
+        setResetPasswordSession(data['session']) //! set the session as global but not yet encrypted
       }
     }
   }

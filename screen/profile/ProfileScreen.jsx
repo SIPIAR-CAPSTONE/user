@@ -10,6 +10,8 @@ import UserProfileCard from '../../components/profile/UserProfileCard'
 import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
 import NextActionIcon from '../../components/common/NextActionIcon'
 import { supabase } from '../../utils/supabase/config'
+import { LargeSecureStore } from "../../utils/SecureLocalStorage"
+import useStore from "../../zustand/useStore"
 
 const ProfileScreen = () => {
   const theme = useTheme()
@@ -21,8 +23,18 @@ const ProfileScreen = () => {
   const hideDialog = () => setDialogVisible(false)
 
 
+  const removeSession = useStore((state) => state.removeSession)
+  const largeSecureStore = new LargeSecureStore()
+
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut()
+
+    if (!error) {
+      //! remove encrypted session from secure local storage
+      await largeSecureStore.removeItem('session')
+      //! remove encrypted session as a global state
+      removeSession()
+    }
   }
 
   return (

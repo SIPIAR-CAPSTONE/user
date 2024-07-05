@@ -1,17 +1,21 @@
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
-import { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import StatusBar from "../../components/common/StatusBar";
-import useStore from "../../zustand/useStore";
-import { LargeSecureStore } from "../../utils/SecureLocalStorage";
+import { StyleSheet, View } from 'react-native'
+import { Text, useTheme } from 'react-native-paper'
+import { Ionicons } from '@expo/vector-icons'
+import { useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import StatusBar from '../../components/common/StatusBar'
+import useStore from '../../zustand/useStore'
+import { LargeSecureStore } from '../../utils/SecureLocalStorage'
 
 const SuccessConfirmationScreen = ({ route }) => {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const { title, desc, nextScreen, session } = route.params;
-  const setSession = useStore((state) => state.setSession);
+  const theme = useTheme()
+  const navigation = useNavigation()
+  const { title, desc, nextScreen, session } = route.params
+  const setSession = useStore((state) => state.setSession)
+  const resetPasswordSession = useStore((state) => state.resetPasswordSession)
+  const removePasswordResetSession = useStore(
+    (state) => state.removePasswordResetSession,
+  )
 
   /*
    * if nextScreen is provided
@@ -20,10 +24,11 @@ const SuccessConfirmationScreen = ({ route }) => {
   useEffect(() => {
     if (nextScreen) {
       setTimeout(function () {
-        navigation.navigate(nextScreen);
-      }, 1500);
+        navigation.navigate(nextScreen)
+      }, 1500)
     }
-  }, []);
+    removePasswordResetSession()
+  }, [])
 
   /*
    *  After login or sign up
@@ -31,20 +36,19 @@ const SuccessConfirmationScreen = ({ route }) => {
    *
    */
   useEffect(() => {
-    if (session) {
+    if (resetPasswordSession) {
       setTimeout(async function () {
-        //! kani sila na mga code wala nani sila kai ge handle na ang pag store sa sesssion
-        //! through sa ilang each page (login/signup) diko sure asa nimo ni gamiton na useEffect
-        // const largeSecureStore = new LargeSecureStore()
+        const largeSecureStore = new LargeSecureStore()
 
-        // encryptedSession = await largeSecureStore.setItem(
-        //   'session',
-        //   JSON.stringify(session),
-        // )
-        // setSession(session);
-      }, 1500);
+        encryptedSession = await largeSecureStore.setItem(
+          'session',
+          JSON.stringify(resetPasswordSession),
+        )
+        setSession(encryptedSession)
+      }, 1500)
+      removePasswordResetSession()
     }
-  }, []);
+  }, [])
 
   return (
     <View
@@ -70,25 +74,25 @@ const SuccessConfirmationScreen = ({ route }) => {
 
       <StatusBar />
     </View>
-  );
-};
+  )
+}
 
-export default SuccessConfirmationScreen;
+export default SuccessConfirmationScreen
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 50,
     rowGap: 10,
   },
   title: {
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginTop: 10,
   },
   desc: {
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})
