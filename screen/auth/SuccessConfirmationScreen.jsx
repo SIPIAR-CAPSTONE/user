@@ -3,15 +3,15 @@ import { Text, useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import StatusBar from "../../components/common/StatusBar";
 import useStore from "../../zustand/useStore";
+import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 
 const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const { title, desc, nextScreen, userToken } = route.params;
-  const setUserToken = useStore((state) => state.setUserToken);
+  const { title, desc, nextScreen, session } = route.params;
+  const setSession = useStore((state) => state.setSession);
 
   /*
    * if nextScreen is provided
@@ -31,9 +31,17 @@ const SuccessConfirmationScreen = ({ route }) => {
    *
    */
   useEffect(() => {
-    if (userToken) {
-      setTimeout(function () {
-        setUserToken(userToken);
+    if (session) {
+      setTimeout(async function () {
+        //! kani sila na mga code wala nani sila kai ge handle na ang pag store sa sesssion
+        //! through sa ilang each page (login/signup) diko sure asa nimo ni gamiton na useEffect
+        // const largeSecureStore = new LargeSecureStore()
+
+        // encryptedSession = await largeSecureStore.setItem(
+        //   'session',
+        //   JSON.stringify(session),
+        // )
+        // setSession(session);
       }, 1500);
     }
   }, []);

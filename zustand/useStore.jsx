@@ -4,7 +4,7 @@ import { themeStatus } from "../utils/theme";
 
 const useStore = create((set) => ({
   currentThemeStatus: themeStatus.dark,
-  userToken: null,
+  session: null,
   appIsReady: false,
   signupFormOne: {
     firstName: "",
@@ -49,13 +49,11 @@ const useStore = create((set) => ({
       setItem("theme", newThemeStatus);
     }
   },
-  setUserToken: (givenToken) => {
-    set({ userToken: givenToken });
-    setItem("userToken", givenToken);
+  setSession: (encryptedSession) => {
+    set({ session: encryptedSession });
   },
-  removeUserToken: () => {
-    set({ userToken: null });
-    deleteItem("userToken");
+  removeSession: () => {
+    set({ session: null });
   },
   setAppIsReady: (value) => set({ appIsReady: value }),
 }));

@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { supabase } from '../../utils/supabase/config'
 import useSendToken from '../../hooks/useSendToken'
 import useStore from '../../zustand/useStore'
+import { LargeSecureStore } from "../../utils/SecureLocalStorage"
 
 const TokenVerification = () => {
   const theme = useTheme()
@@ -20,6 +21,7 @@ const TokenVerification = () => {
   const resetEmail = useStore((state) => state.email)
   const { process } = useSendToken(resetEmail, false)
   const hasCalledProcess = useRef(true)
+  const setSession = useStore((state) => state.setSession)
 
   /*
    * if the countdown sets to 0, call the process for sending the token again
@@ -45,16 +47,26 @@ const TokenVerification = () => {
   const handleSubmit = async () => {
     if (isFilled) {
       //! verify provied token
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
         type: 'email',
       })
+
+      console.log('toke verification diri', data)
 
       if (error) {
         setServerError(error)
       } else if (!error) {
         navigation.navigate('ResetPassword')
         pause() //! call the pause function to stop the countdown
+
+        //! after successful signup, store the encrypted session locally and as global state
+        const largeSecureStore = new LargeSecureStore()
+        encryptedSession = await largeSecureStore.setItem(
+          'session',
+          JSON.stringify(data['session']),
+        )
+        await setSession(encryptedSession)
       }
     }
   }
@@ -88,7 +100,7 @@ const TokenVerification = () => {
             variant="labelLarge"
             style={{
               color: theme.colors.primary,
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             Resent, please wait a while.
@@ -110,10 +122,7 @@ const TokenVerification = () => {
 
 const ResendCountdown = ({ time, theme }) => {
   return (
-    <Text
-      variant="labelMedium"
-      style={{ textAlign: 'center'}}
-    >
+    <Text variant="labelMedium" style={{ textAlign: 'center' }}>
       Resend Token in{' '}
       <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
         {time}
