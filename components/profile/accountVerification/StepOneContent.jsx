@@ -7,12 +7,9 @@ import PrimaryButton from "../../ui/PrimaryButton";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepOneContent = () => {
+const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
 
-  const goVerificationNextStep = useBoundStore(
-    (state) => state.goVerificationNextStep
-  );
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -86,7 +83,7 @@ const StepOneContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goVerificationNextStep();
+      goNextStep();
     }
   };
 

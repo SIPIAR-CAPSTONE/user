@@ -8,13 +8,12 @@ import FormHeader from "../../common/FormHeader";
 import { useNavigation } from "@react-navigation/native";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepOneContent = () => {
+const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
   const navigation = useNavigation();
 
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
-  const goSignupNextStep = useBoundStore((state) => state.goSignupNextStep);
   const [errors, setErrors] = useState({});
 
   /*
@@ -74,7 +73,7 @@ const StepOneContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goSignupNextStep();
+      goNextStep();
     }
   };
 

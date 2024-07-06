@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect, lazy } from "react";
+import { useEffect, lazy, useState } from "react";
 
 import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
@@ -18,9 +18,11 @@ const StepFourContent = lazy(() =>
 
 const AccountVerificationScreen = ({ navigation }) => {
   const theme = useTheme();
-  const verificationCurrentStep = useBoundStore(
-    (state) => state.verificationCurrentStep
-  );
+  const [currentStep, setCurrentStep] = useState(0);
+  const resetVerification = useBoundStore((state) => state.resetVerification);
+
+  const goNextStep = () =>
+    setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
 
   /*
    * Screen content of each steps
@@ -32,7 +34,7 @@ const AccountVerificationScreen = ({ navigation }) => {
       id: 1,
       content: (
         <Content>
-          <StepOneContent />
+          <StepOneContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -40,7 +42,7 @@ const AccountVerificationScreen = ({ navigation }) => {
       id: 2,
       content: (
         <Content>
-          <StepTwoContent />
+          <StepTwoContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -48,7 +50,7 @@ const AccountVerificationScreen = ({ navigation }) => {
       id: 3,
       content: (
         <Content>
-          <StepThreeContent />
+          <StepThreeContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -85,9 +87,13 @@ const AccountVerificationScreen = ({ navigation }) => {
     },
   };
 
+  /*
+   * All feilds or all  previous values of the global state of verification form will
+   * be reset when first enter to the account verification screen
+   */
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log("reset");
+      resetVerification();
     });
     return unsubscribe;
   }, [navigation]);
@@ -101,7 +107,7 @@ const AccountVerificationScreen = ({ navigation }) => {
       }}
     >
       <ProgressSteps
-        currentStep={verificationCurrentStep}
+        currentStep={currentStep}
         orientation="horizontal"
         steps={steps}
         colors={customColors}

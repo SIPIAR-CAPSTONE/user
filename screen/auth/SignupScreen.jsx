@@ -1,7 +1,7 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect, lazy } from "react";
+import { useEffect, lazy, useState } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
@@ -16,15 +16,15 @@ const StepThreeContent = lazy(() =>
 const SignupScreen = ({ navigation }) => {
   const theme = useTheme();
 
-  const signupCurrentStep = useBoundStore((state) => state.signupCurrentStep);
+  const [currentStep, setCurrentStep] = useState(0);
   const resetSignup = useBoundStore((state) => state.resetSignup);
 
+  const goNextStep = () =>
+    setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
+
   /*
-   * The first time the user enter in signup screen
-   * the signup form global state will be reset.
-   *
-   * so when a user fill out the fields in signup form and then exit
-   * when the user comeback in the signup screen all fields and steps are reset
+   * All feilds or all  previous values of the global state of signup form will
+   * be reset when first enter to the signup screen
    */
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -43,7 +43,7 @@ const SignupScreen = ({ navigation }) => {
       id: 1,
       content: (
         <Content>
-          <StepOneContent />
+          <StepOneContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -51,7 +51,7 @@ const SignupScreen = ({ navigation }) => {
       id: 2,
       content: (
         <Content>
-          <StepTwoContent />
+          <StepTwoContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -96,7 +96,7 @@ const SignupScreen = ({ navigation }) => {
       }}
     >
       <ProgressSteps
-        currentStep={signupCurrentStep}
+        currentStep={currentStep}
         orientation="horizontal"
         steps={steps}
         colors={customColors}

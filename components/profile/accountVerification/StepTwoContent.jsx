@@ -8,12 +8,9 @@ import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepTwoContent = () => {
+const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
 
-  const goVerificationNextStep = useBoundStore(
-    (state) => state.goVerificationNextStep
-  );
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -67,7 +64,7 @@ const StepTwoContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goVerificationNextStep();
+      goNextStep();
     }
   };
 

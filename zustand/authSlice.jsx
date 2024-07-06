@@ -19,11 +19,6 @@ export const createAuthSlice = (set) => ({
   appIsReady: false,
   passwordResetEmail: "",
   signupForm: DEFAULT_SIGNUP_FORM,
-  signupCurrentStep: 0,
-  goSignupNextStep: () =>
-    set((state) => ({
-      signupCurrentStep: state.signupCurrentStep + 1,
-    })),
   setSignupForm: (key, newValue) =>
     set((state) => ({
       signupForm: { ...state.signupForm, [key]: newValue },
@@ -42,6 +37,5 @@ export const createAuthSlice = (set) => ({
   },
   resetSignup: () => {
     set({ signupForm: DEFAULT_SIGNUP_FORM });
-    set({ signupCurrentStep: 0 });
   },
 });
