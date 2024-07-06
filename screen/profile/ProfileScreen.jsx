@@ -1,41 +1,36 @@
-import { View, StyleSheet, ScrollView } from 'react-native'
-import { useTheme } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native'
-import { useState } from 'react'
-import StatusBar from '../../components/common/StatusBar'
-import ListItem from '../../components/ui/ListItem'
-import VerifiedIndicator from '../../components/profile/VerifiedIndicator'
-import CircularIcon from '../../components/ui/CircularIcon'
-import UserProfileCard from '../../components/profile/UserProfileCard'
-import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
-import NextActionIcon from '../../components/common/NextActionIcon'
-import { supabase } from '../../utils/supabase/config'
-import { LargeSecureStore } from "../../utils/SecureLocalStorage"
-import useBoundStore from '../../zustand/useBoundStore'
+import { View, StyleSheet, ScrollView } from "react-native";
+import { useTheme } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { useRef } from "react";
+import StatusBar from "../../components/common/StatusBar";
+import ListItem from "../../components/ui/ListItem";
+import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
+import CircularIcon from "../../components/ui/CircularIcon";
+import UserProfileCard from "../../components/profile/UserProfileCard";
+import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
+import NextActionIcon from "../../components/common/NextActionIcon";
+import { supabase } from "../../utils/supabase/config";
+import { LargeSecureStore } from "../../utils/SecureLocalStorage";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const ProfileScreen = () => {
-  const theme = useTheme()
-  const navigation = useNavigation()
+  const theme = useTheme();
+  const navigation = useNavigation();
+  const logoutDialogRef = useRef(null);
 
-  // handling logout confirmation dialog
-  const [dialogVisible, setDialogVisible] = useState(false)
-  const showDialog = () => setDialogVisible(true)
-  const hideDialog = () => setDialogVisible(false)
-
-
-  const removeSession = useBoundStore((state) => state.removeSession)
-  const largeSecureStore = new LargeSecureStore()
+  const removeSession = useBoundStore((state) => state.removeSession);
+  const largeSecureStore = new LargeSecureStore();
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabase.auth.signOut();
 
     if (!error) {
       //! remove encrypted session from secure local storage
-      await largeSecureStore.removeItem('session')
+      await largeSecureStore.removeItem("session");
       //! remove encrypted session as a global state
-      removeSession()
+      removeSession();
     }
-  }
+  };
 
   return (
     <ScrollView
@@ -65,7 +60,7 @@ const ProfileScreen = () => {
             <CircularIcon name="person" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate('MyAccount')}
+          onPress={() => navigation.navigate("MyAccount")}
         />
         {/* Setting */}
         <ListItem
@@ -75,7 +70,7 @@ const ProfileScreen = () => {
             <CircularIcon name="settings" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate('Setting')}
+          onPress={() => navigation.navigate("Setting")}
         />
         {/* Terms and Conditions */}
         <ListItem
@@ -85,7 +80,7 @@ const ProfileScreen = () => {
             <CircularIcon name="document" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate('TermsAndConditions')}
+          onPress={() => navigation.navigate("TermsAndConditions")}
         />
         {/* Privacy Policy */}
         <ListItem
@@ -95,42 +90,44 @@ const ProfileScreen = () => {
             <CircularIcon name="shield-checkmark" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate('PrivacyPolicy')}
+          onPress={() => navigation.navigate("PrivacyPolicy")}
         />
 
         {/* Sign Out */}
-        {/* When logout button is pressed, show confirmation */}
-        <ConfirmationDialog
-          title="Are you sure you want to Sign Out?"
-          confirmButtonLabel="Sign Out"
-          visible={dialogVisible}
-          showDialog={showDialog}
-          hideDialog={hideDialog}
-          onConfirmed={handleLogout}
-          renderButton={() => (
-            <ListItem
-              size="medium"
-              title="Sign Out"
-              renderIcon={() => (
-                <CircularIcon name="exit" variant="primary" size={12} />
-              )}
-              renderActionIcon={() => <NextActionIcon />}
-              onPress={showDialog}
-            />
+        {/* When logout button is pressed, show confirmation dialog */}
+        <ListItem
+          size="medium"
+          title="Sign Out"
+          renderIcon={() => (
+            <CircularIcon name="exit" variant="primary" size={12} />
           )}
+          renderActionIcon={() => <NextActionIcon />}
+          onPress={() => logoutDialogRef.current.showDialog()}
+        />
+        <ConfirmationDialog
+          ref={logoutDialogRef}
+          title="Are you sure you want to Sign Out?"
+          buttons={[
+            { label: "Sign out", onPress: handleLogout, mode: "contained" },
+            {
+              label: "Cancel",
+              onPress: () => logoutDialogRef.current.hideDialog(),
+              mode: "text",
+            },
+          ]}
         />
       </View>
 
       <StatusBar />
     </ScrollView>
-  )
-}
+  );
+};
 
-export default ProfileScreen
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
   listItems: {
     marginTop: 20,
     rowGap: 7,
   },
-})
+});
