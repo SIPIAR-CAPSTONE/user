@@ -10,7 +10,6 @@ import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
 import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
-import SelectAnIdScreen from "../screen/profile/accountVerification/SelectAnIdScreen";
 import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
 import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
@@ -90,15 +89,6 @@ export const SignedInStack = (
       name="AccountVerification"
       options={{ headerTitle: "Account Verification" }}
       component={AccountVerificationScreen}
-    />
-    <Stack.Screen
-      name="SelectAnId"
-      options={{
-        headerTitle: "Select an ID",
-        presentation: "transparentModal",
-        contentStyle: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-      }}
-      component={SelectAnIdScreen}
     />
     <Stack.Screen name="Setting" component={SettingScreen} />
     <Stack.Screen
