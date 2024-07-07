@@ -1,25 +1,37 @@
 const DEFAULT_SIGNUP_FORM = {
-  firstName: "",
-  middleName: "",
-  lastName: "",
-  suffix: "",
+  firstName: '',
+  middleName: '',
+  lastName: '',
+  suffix: '',
   birthday: new Date(),
   phone: 0,
-  barangay: "",
-  street: "",
-  houseNumber: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
+  barangay: '',
+  street: '',
+  houseNumber: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+}
 
 export const createAuthSlice = (set) => ({
   session: null,
   resetPasswordSession: null,
   appIsReady: false,
-  passwordResetEmail: "",
+  passwordResetEmail: '',
   signupForm: DEFAULT_SIGNUP_FORM,
   signupCurrentStep: 0,
+  userMetaData: {
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    suffix: '',
+    birthday: new Date(),
+    phone: 0,
+    barangay: '',
+    street: '',
+    houseNumber: '',
+    email: ''
+  },
   goSignupNextStep: () =>
     set((state) => ({
       signupCurrentStep: state.signupCurrentStep + 1,
@@ -30,18 +42,19 @@ export const createAuthSlice = (set) => ({
     })),
   setPasswordResetEmail: (value) => set({ passwordResetEmail: value }),
   setSession: (encryptedSession) => {
-    set({ session: encryptedSession });
+    set({ session: encryptedSession })
   },
   removeSession: () => {
-    set({ session: null });
+    set({ session: null })
   },
   setAppIsReady: (value) => set({ appIsReady: value }),
   setResetPasswordSession: (value) => set({ resetPasswordSession: value }),
   removePasswordResetSession: () => {
-    set({ resetPasswordSession: null });
+    set({ resetPasswordSession: null })
   },
   resetSignup: () => {
-    set({ signupForm: DEFAULT_SIGNUP_FORM });
-    set({ signupCurrentStep: 0 });
+    set({ signupForm: DEFAULT_SIGNUP_FORM })
+    set({ signupCurrentStep: 0 })
   },
-});
+  setUserMetaData: (value) => set({ userMetaData: value })
+})
