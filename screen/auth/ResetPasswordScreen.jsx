@@ -56,12 +56,12 @@ const ResetPasswordScreen = () => {
    *
    */
   const handleSubmit = async () => {
-    setLoading(true);
-
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
+      setLoading(true);
+
       //! update password of user
       const { error } = await supabase.auth
         .updateUser({
