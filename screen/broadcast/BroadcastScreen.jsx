@@ -12,62 +12,61 @@ import useLocation from "../../hooks/useLocation";
 const BroadcastScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
-  const dataSize = data?.length > 0 ? data?.length : 0;
+  const [alerts, setAlerts] = useState([]);
+  const alertsCount = alerts.length;
 
   //location of the user of the device
   const { userLocation } = useLocation();
 
   //For refreshing the list functionality
   const [refreshing, setRefreshing] = useState(false);
-  //!sample only
+
+  const fetchAlerts = async () => {
+    //TODO: fetch
+    setAlerts(TEMP_ALERTS_DATA); //!remove this
+  };
+
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
+
+  /**
+   * when user drag the screen from top to bottom it will execute fetchAlerts
+   * to refresh the data of the list
+   */
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      fetchEmergencyAlerts();
+      fetchAlerts();
       setRefreshing(false);
     }, 2000);
   }, []);
 
-  //first screen load
-  //fetch emergency alerts
-  useEffect(() => {
-    //!sample
-    fetchEmergencyAlerts();
-  }, []);
-
-  const fetchEmergencyAlerts = async () => {
-    //fetch data
-    setData(EmergencyAlertsDataSample); //!just change this
-  };
-
-  const Header = ({ count }) => {
-    return (
+  const Header = () => (
+    <View
+      style={[styles.header, { marginVertical: theme.margin.heading.vertical }]}
+    >
+      <Text variant="titleMedium">EMERGENCY ALERTS</Text>
       <View
         style={[
-          styles.header,
-          { marginVertical: theme.margin.heading.vertical },
+          styles.countContainer,
+          {
+            backgroundColor: theme.colors.primary,
+            borderRadius: theme.borderRadius.full,
+          },
         ]}
       >
-        <Text variant="titleMedium">EMERGENCY ALERTS</Text>
-        <View
-          style={[
-            styles.countContainer,
-            {
-              backgroundColor: theme.colors.primary,
-              borderRadius: theme.borderRadius.full,
-            },
-          ]}
-        >
-          <Text variant="labelSmall" style={{ color: theme.colors.onPrimary }}>
-            {count}
-          </Text>
-        </View>
+        <Text variant="labelSmall" style={{ color: theme.colors.onPrimary }}>
+          {alertsCount}
+        </Text>
       </View>
-    );
-  };
+    </View>
+  );
 
-  const renderEmergencyAlertsItem = ({ item }) => (
+  /**
+   * Renders the alert item in the list.
+   */
+  const renderAlertItem = ({ item }) => (
     <ListItem
       key={item.id}
       title={`${item.first_name} ${item.last_name}`}
@@ -77,8 +76,8 @@ const BroadcastScreen = () => {
       descSize={11}
       onPress={() =>
         navigation.navigate("Mapview", {
-          intialCoordinate: item.coordinate,
-          selectedEmergencyAlertId: item.id,
+          initialCoordinate: item.coordinate,
+          selectedAlertId: item.id,
         })
       }
       renderIcon={() => (
@@ -93,10 +92,10 @@ const BroadcastScreen = () => {
 
   return (
     <FlatList
-      data={data}
+      data={alerts}
       keyExtractor={(item) => item.id}
-      renderItem={renderEmergencyAlertsItem}
-      ListHeaderComponent={<Header count={dataSize} />}
+      renderItem={renderAlertItem}
+      ListHeaderComponent={<Header />}
       ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
       contentContainerStyle={{
         paddingVertical: theme.padding.body.vertical,
@@ -130,9 +129,8 @@ const styles = StyleSheet.create({
   },
 });
 
-//Temporary data
 //!remove this after applying fetching
-const EmergencyAlertsDataSample = [
+const TEMP_ALERTS_DATA = [
   {
     id: 1,
     distance: 500,

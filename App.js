@@ -22,6 +22,9 @@ export default function App() {
     currentThemeStatus == themeStatus.light ? lightTheme : darkTheme;
   const globalStateEncryptedSession = useBoundStore((state) => state.session);
 
+  /**
+   * Initialize the theme based on the stored value in AsyncStorage.
+   */
   useEffect(() => {
     const initThemeCheck = async () => {
       setThemeStatus(await AsyncStorage.getItem("theme"));
@@ -32,12 +35,13 @@ export default function App() {
 
   /*
    *
-   *
    * Native Stack Navigator Default Screen Configuration
    *
+   * It adds a header to all screens and configures the
+   * appearance of the screen, including the background color, header
+   * style, and header title.
+   *
    */
-
-  // Add a default header to all screens
   const screenOptions = ({ navigation }) => ({
     presentation: "containedTransparentModal",
     animation: "fade",

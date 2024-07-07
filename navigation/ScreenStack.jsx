@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
@@ -20,7 +19,20 @@ import MapviewScreen from "../screen/broadcast/MapviewScreen";
 
 const Stack = createNativeStackNavigator();
 
-//Screens for authenticated users
+/**
+ * commonScreenStack: A stack of screens that exist on both signed in and signed out stacks.
+ */
+const commonScreenStack = (
+  <Stack.Screen
+    name="SuccessConfirmation"
+    component={SuccessConfirmationScreen}
+    options={{ headerShown: false }}
+  />
+);
+
+/**
+ * SignedOutStack: A stack of screens that are displayed to unauthenticated users.
+ */
 export const SignedOutStack = (
   <>
     <Stack.Screen
@@ -49,19 +61,17 @@ export const SignedOutStack = (
       options={{ headerTitle: "Register" }}
     />
     <Stack.Screen
-      name="SuccessConfirmation"
-      component={SuccessConfirmationScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
       name="ForgotPassword"
       component={ForgotPasswordScreen}
       options={{ headerTitle: "" }}
     />
+    {commonScreenStack}
   </>
 );
 
-//Screens for unauthenticated users
+/**
+ * SignedInStack: A stack of screens that are displayed to authenticated users.
+ */
 export const SignedInStack = (
   <>
     <Stack.Screen
@@ -106,5 +116,6 @@ export const SignedInStack = (
       options={{ headerTitle: "Privacy and Policy" }}
       component={PrivacyAndPolicyScreen}
     />
+    {commonScreenStack}
   </>
 );

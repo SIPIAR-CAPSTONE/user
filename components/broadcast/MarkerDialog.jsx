@@ -7,32 +7,52 @@ import { getDistanceGap, getTimeGap } from "../../utils/dateAndDistanceGap";
 
 const EMPTY_PLACEHOLDER = " - ";
 
+/**
+ * Component that displays a dialog with information about a marker.
+ *
+ * @param {boolean} props.visible - Whether the dialog should be visible.
+ * @param {Function} props.hideDialog - The function to call when the dialog should be hidden.
+ * @param {Object} props.selectedMarker - The selected marker to display information about selected alert.
+ * @param {Object} props.userLocation - The user's location.
+ */
 const MarkerDialog = ({
   visible,
   hideDialog,
   selectedMarker,
   userLocation,
 }) => {
-  const name =
-    selectedMarker?.first_name || selectedMarker?.last_name
-      ? `${selectedMarker?.first_name} ${selectedMarker?.last_name}`
-      : EMPTY_PLACEHOLDER;
+  // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
+  const FULL_NAME = `${selectedMarker?.first_name} ${selectedMarker?.last_name}`;
+  const name = useMemo(
+    () =>
+      selectedMarker?.first_name || selectedMarker?.last_name
+        ? FULL_NAME
+        : EMPTY_PLACEHOLDER,
+    [selectedMarker?.first_name, selectedMarker?.last_name]
+  );
 
-  const timeGap = selectedMarker?.createdAt
-    ? getTimeGap(selectedMarker?.createdAt)
-    : EMPTY_PLACEHOLDER;
-
-  const dateRequested = selectedMarker?.createdAt
-    ? new Date(selectedMarker?.createdAt)
-        .toString()
-        .split(" ")
-        .slice(0, 4)
-        .join(" ")
-    : EMPTY_PLACEHOLDER;
-
+  // Calculate the distance gap between the user's location and the selected marker's location.
   const distanceGap = useMemo(
     () => getDistanceGap(userLocation, selectedMarker?.coordinate),
-    [userLocation, selectedMarker]
+    [userLocation, selectedMarker?.coordinate]
+  );
+
+  // Calculate the time gap between the selected marker's createdAt and the current time.
+  const timeGap = useMemo(
+    () =>
+      selectedMarker?.createdAt
+        ? getTimeGap(selectedMarker?.createdAt)
+        : EMPTY_PLACEHOLDER,
+    [selectedMarker?.createdAt]
+  );
+
+  // Get the date requested from the selected marker's createdAt, or use the EMPTY_PLACEHOLDER if unavailable.
+  const dateRequested = useMemo(
+    () =>
+      selectedMarker?.createdAt
+        ? new Date(selectedMarker?.createdAt).toLocaleDateString()
+        : EMPTY_PLACEHOLDER,
+    [selectedMarker?.createdAt]
   );
 
   return (
@@ -69,7 +89,7 @@ const MarkerDialog = ({
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={hideDialog} mode="text" rippleColor="rgba(0,0,0,0)">
-            Close
+            close
           </Button>
         </Dialog.Actions>
       </Dialog>
@@ -77,11 +97,22 @@ const MarkerDialog = ({
   );
 };
 
+/**
+ * InfoField component displays a single piece of information with its corresponding icon.
+ *
+ * @param {string} props.icon - The name of the icon to be displayed.
+ * @param {string} props.label - The label of the information field.
+ * @param {string} props.value - The value of the information field.
+ * @param {Object} props.colors - The background and color of the icon container.
+ * @param {string} props.colors.background - The background color of the icon container.
+ * @param {string} props.colors.color - The text color of the icon.
+ */
 const InfoField = ({ icon, label, value, colors }) => {
   const theme = useTheme();
 
   return (
     <View style={styles.infoField}>
+      {/* Container for the icon */}
       <View
         style={[
           styles.iconContainer,
@@ -93,6 +124,7 @@ const InfoField = ({ icon, label, value, colors }) => {
       >
         <Feather name={icon} size={18} color={colors.color} />
       </View>
+      {/* Container for the label and value */}
       <View>
         <Text
           style={[

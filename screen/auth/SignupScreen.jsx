@@ -22,21 +22,9 @@ const SignupScreen = ({ navigation }) => {
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
 
-  /*
-   * All feilds or all  previous values of the global state of signup form will
-   * be reset when first enter to the signup screen
-   */
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      resetSignup();
-    });
-    return unsubscribe;
-  }, [navigation]);
-
-  /*
-   * Screen content of each steps
-   * only one screen or content will be displayed at a time based on the currentStep
-   *
+  /**
+   * The content of each step of the signup process
+   * Only one step will be displayed at a time based on the currentStep
    */
   const steps = [
     {
@@ -67,7 +55,7 @@ const SignupScreen = ({ navigation }) => {
 
   // Step progress color customization
   const customColors = {
-    /*
+    /**
      * it is the circle with step number inside
      * its located at the top side
      */
@@ -77,7 +65,7 @@ const SignupScreen = ({ navigation }) => {
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
-      /*
+      /**
        * it is the line that connect the circles or the marker
        */
       line: {
@@ -87,6 +75,20 @@ const SignupScreen = ({ navigation }) => {
       },
     },
   };
+
+  /**
+   * This effect is triggered whenever the signup screen is focused.
+   * It resets the signup form by calling the `resetSignup` function.
+   * This ensures that all fields or previous values of the global state of the signup form
+   * are cleared when the user navigates back to the asignup screen.
+   *
+   */
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      resetSignup();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <ScrollView

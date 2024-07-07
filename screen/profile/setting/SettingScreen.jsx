@@ -16,22 +16,19 @@ const SettingScreen = () => {
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
-  const [notificationStatus, setNotificationStatus] = useState("On");
 
+  // Set initial state for dialog visibility and notification status
   const [visible, setVisible] = useState({
     notification: false,
     appearance: false,
   });
+  const [notificationStatus, setNotificationStatus] = useState("On");
 
+  // Function to show or hide dialogs
   const showDialog = (type) =>
-    setVisible((prevVisible) => {
-      return { ...prevVisible, [type]: true };
-    });
-
+    setVisible((prevVisible) => ({ ...prevVisible, [type]: true }));
   const hideDialog = (type) =>
-    setVisible((prevVisible) => {
-      return { ...prevVisible, [type]: false };
-    });
+    setVisible((prevVisible) => ({ ...prevVisible, [type]: false }));
 
   return (
     <ScrollView
