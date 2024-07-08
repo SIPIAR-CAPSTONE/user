@@ -23,19 +23,12 @@ const ResetPasswordScreen = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate password field if it is empty
-    if (!newPassword) {
-      errors.newPassword = "Password is required.";
-    }
-
-    // Validate confirm password field if it is empty
+    if (!newPassword) errors.newPassword = "Password is required.";
     if (!confirmNewPassword) {
       errors.confirmNewPassword = "Confirm Password is required.";
     }
-
-    // Validate if password and confirm password matched
     if (newPassword !== confirmNewPassword) {
       errors.confirmNewPassword =
         "Password and Confirm Password must be match.";
@@ -62,7 +55,7 @@ const ResetPasswordScreen = () => {
     if (isFormValid) {
       setLoading(true);
 
-      //! update password of user
+      //* update password of user
       const { error } = await supabase.auth
         .updateUser({
           password: newPassword,
@@ -76,7 +69,7 @@ const ResetPasswordScreen = () => {
         errors.confirmNewPassword = error.message;
         setErrors(errors);
       } else if (!error) {
-        //! navigate to success confirmation screen
+        //* navigate to success confirmation screen
         navigation.navigate("SuccessConfirmation", {
           title: "Reset Password Successfully!",
           desc: "You can now login your new password credentials.",

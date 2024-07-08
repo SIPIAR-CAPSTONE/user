@@ -1,21 +1,28 @@
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme, Avatar } from "react-native-paper";
 
-const UserProfileCard = ({ variant = "text", name, email, renderFooter }) => {
+const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
   const theme = useTheme();
   const firstNameInitial = name[0];
 
-  if (variant == "image") {
-    // TODO: avatar.image
-  }
+  const UserAvatar = imageSource ? (
+    <Avatar.Image
+      size={120}
+      source={{ uri: imageSource }}
+      style={{ backgroundColor: "#FFDDDD" }}
+    />
+  ) : (
+    <Avatar.Text
+      size={120}
+      label={firstNameInitial}
+      style={{ backgroundColor: "#FFDDDD" }}
+    />
+  );
 
   return (
     <View style={styles.header}>
-      <Avatar.Text
-        size={120}
-        label={firstNameInitial}
-        style={{ backgroundColor: "#FFDDDD" }}
-      />
+      {UserAvatar}
+
       <Text variant="titleMedium">{name}</Text>
       <Text
         style={{ color: theme.colors.typography.tertiary }}
