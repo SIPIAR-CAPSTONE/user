@@ -52,23 +52,11 @@ const EditProfileScreen = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    /* These fields are required and should never be empty */
-    // Validate first name field if it is empty
-    if (!userInfo.firstName) {
-      errors.firstName = "First Name is required.";
-    }
-
-    // Validate last name field if it is empty
-    if (!userInfo.lastName) {
-      errors.lastName = "Last Name is required.";
-    }
-
-    // Validate birthday if it is empty
-    if (!userInfo.birthday) {
-      errors.birthday = "Birthday is required.";
-    }
+    if (!userInfo.firstName) errors.firstName = "First Name is required.";
+    if (!userInfo.lastName) errors.lastName = "Last Name is required.";
+    if (!userInfo.birthday) errors.birthday = "Birthday is required.";
 
     // Set the errors and update form validity if it is empty
     setErrors(errors);

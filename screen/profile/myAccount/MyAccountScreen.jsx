@@ -7,28 +7,6 @@ import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 
-const DATA = [
-  {
-    title: "Personal Information",
-    data: [
-      { label: "First Name", value: "John" },
-      { label: "Middle Name", value: "-" },
-      { label: "Last Name", value: "Doe" },
-      { label: "Suffix", value: "-" },
-      { label: "Birthday", value: "20 Jan 2022" },
-      { label: "Phone", value: "091231123123" },
-    ],
-  },
-  {
-    title: "Address",
-    data: [
-      { label: "Barangay", value: "Oakwood Court" },
-      { label: "Street", value: "Block 16, Zone 3" },
-      { label: "House Number", value: "28" },
-    ],
-  },
-];
-
 const MyAccountScreen = () => {
   const theme = useTheme();
 
@@ -47,7 +25,7 @@ const MyAccountScreen = () => {
   return (
     <>
       <SectionList
-        sections={DATA}
+        sections={SAMPLE_USER_DATA}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
@@ -75,3 +53,26 @@ const styles = StyleSheet.create({
 });
 
 export default MyAccountScreen;
+
+//! remove this later
+const SAMPLE_USER_DATA = [
+  {
+    title: "Personal Information",
+    data: [
+      { label: "First Name", value: "John" },
+      { label: "Middle Name", value: "-" },
+      { label: "Last Name", value: "Doe" },
+      { label: "Suffix", value: "-" },
+      { label: "Birthday", value: "20 Jan 2022" },
+      { label: "Phone", value: "091231123123" },
+    ],
+  },
+  {
+    title: "Address",
+    data: [
+      { label: "Barangay", value: "Oakwood Court" },
+      { label: "Street", value: "Block 16, Zone 3" },
+      { label: "House Number", value: "28" },
+    ],
+  },
+];
