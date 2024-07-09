@@ -27,25 +27,18 @@ const StepTwoContent = ({ goNextStep }) => {
     fetchverificationFormData();
   }, []);
 
-  /*
+  /**
+   * Function to validate the form
    *
-   * Form Validation
+   * @return {boolean} true if there are no errors, false otherwise
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate barangay field if it is empty
-    if (!verificationForm.barangay) {
-      errors.barangay = "Barangay is required.";
-    }
+    if (!verificationForm.barangay) errors.barangay = "Barangay is required.";
+    if (!verificationForm.street) errors.street = "Street is required.";
 
-    // Validate street field if it is empty
-    if (!verificationForm.street) {
-      errors.street = "Street is required.";
-    }
-
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
     // return true if there is no error

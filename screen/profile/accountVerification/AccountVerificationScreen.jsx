@@ -24,10 +24,9 @@ const AccountVerificationScreen = ({ navigation }) => {
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
 
-  /*
-   * Screen content of each steps
-   * only one screen or content will be displayed at a time based on the currentStep
-   *
+  /**
+   * The content of each step of the verification process
+   * Only one step will be displayed at a time based on the currentStep
    */
   const steps = [
     {
@@ -66,7 +65,7 @@ const AccountVerificationScreen = ({ navigation }) => {
 
   // Step progress color customization
   const customColors = {
-    /*
+    /**
      * it is the circle with step number inside
      * its located at the top side
      */
@@ -76,7 +75,7 @@ const AccountVerificationScreen = ({ navigation }) => {
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
-      /*
+      /**
        * it is the line that connect the circles or the marker
        */
       line: {
@@ -87,14 +86,22 @@ const AccountVerificationScreen = ({ navigation }) => {
     },
   };
 
-  /*
-   * All feilds or all  previous values of the global state of verification form will
-   * be reset when first enter to the account verification screen
+  /**
+   * This effect is triggered whenever the account verification screen is focused.
+   * It resets the verification form by calling the `resetVerification` function.
+   * This ensures that all fields or previous values of the global state of the verification form
+   * are cleared when the user navigates back to the account verification screen.
+   *
    */
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const resetVerificationOnFocus = () => {
       resetVerification();
-    });
+    };
+
+    const unsubscribe = navigation.addListener(
+      "focus",
+      resetVerificationOnFocus
+    );
     return unsubscribe;
   }, [navigation]);
 

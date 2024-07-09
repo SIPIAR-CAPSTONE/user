@@ -5,15 +5,15 @@ import { AntDesign } from "@expo/vector-icons";
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
-import { Fragment, useState } from "react";
-import SelectIdModal from "./SelectIdModal";
+import { Fragment, useState, lazy } from "react";
+const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 
 const StepThreeContent = ({ goNextStep }) => {
   const theme = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
-  const IdOptionListItems = IdItems.map((item) => (
+  const IdItems = ID_ITEMS_DATA.map((item) => (
     <Fragment key={item.id}>
       <ListItem
         size="small"
@@ -50,7 +50,7 @@ const StepThreeContent = ({ goNextStep }) => {
           { height: 5, backgroundColor: theme.colors.elevation.level1 },
         ]}
       />
-      <View>{IdOptionListItems}</View>
+      {IdItems}
 
       {modalVisible && (
         <SelectIdModal
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
 //Data for each id list item
 
-const IdItems = [
+const ID_ITEMS_DATA = [
   {
     id: 0,
     title: "National ID",

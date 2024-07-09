@@ -3,16 +3,23 @@ import { useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 
 import { Portal, Appbar, useTheme, Text } from "react-native-paper";
-import CircularIcon from "../../ui/CircularIcon";
-import PrimaryButton from "../../../components/ui/PrimaryButton";
+import CircularIcon from "../../../ui/CircularIcon";
+import PrimaryButton from "../../../../components/ui/PrimaryButton";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
+/**
+ * Select ID Modal component for account verification step 3.
+ * @param {Function} props.onClose - Function to close the modal.
+ * @param {Function} props.onConfirmed - Function to confirm the selected ID.
+ * @param {string} props.idTitle - Title of the selected ID. e.g. "Driver's License", "Passport", etc. This will be displayed as the title of the selected ID.
+ * @param {string} props.idImageSource - Image source of the selected ID.
+ */
 const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
   const theme = useTheme();
   const bottomSheetRef = useRef(null);
 
-  //all instructions in the bottomSheet
-  const renderInstructions = InstructionData.map((instruction) => (
+  //Render the instructions in the bottom sheet
+  const renderInstructions = INSTRUCTION_DATA.map((instruction) => (
     <View key={instruction.id} style={styles.instructionContainer}>
       <View
         style={[
@@ -54,7 +61,8 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
           Select ID
         </Text>
 
-        {/* invisible element, just to make the Select ID title center */}
+        {/* the parent use justify between that is why i have this invisible 
+        element to center the "Select ID" title */}
         <View style={{ width: 10 }} />
       </Appbar.Header>
 
@@ -69,8 +77,21 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
           />
         </View>
 
-        <BottomSheet ref={bottomSheetRef} snapPoints={["55%"]}>
-          <BottomSheetView style={styles.contentContainer}>
+        <BottomSheet
+          ref={bottomSheetRef}
+          snapPoints={[380]}
+          handleStyle={{
+            backgroundColor: theme.colors.elevation.level3,
+            borderTopEndRadius: 14,
+            borderTopStartRadius: 14,
+          }}
+        >
+          <BottomSheetView
+            style={[
+              styles.contentContainer,
+              { backgroundColor: theme.colors.elevation.level3 },
+            ]}
+          >
             <View style={styles.titleContainer}>
               <AntDesign name="idcard" size={33} color={theme.colors.primary} />
               <Text style={styles.title} variant="titleLarge">
@@ -91,7 +112,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
             <PrimaryButton
               label="Confirm"
               onPress={onConfirmed}
-              style={{ borderRadius: theme.borderRadius.base }}
+              style={[styles.button, { borderRadius: theme.borderRadius.base }]}
             />
           </BottomSheetView>
         </BottomSheet>
@@ -138,7 +159,9 @@ const styles = StyleSheet.create({
   },
   idSampleImage: {
     width: 310,
+    maxWidth: "88%",
     height: 190,
+    maxHeight: "54%",
   },
   instructionsContainer: {
     rowGap: 10,
@@ -155,10 +178,11 @@ const styles = StyleSheet.create({
     width: 22,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 2,
   },
 });
 
-const InstructionData = [
+const INSTRUCTION_DATA = [
   {
     id: 0,
     number: 1,
