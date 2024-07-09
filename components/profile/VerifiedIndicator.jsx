@@ -1,11 +1,9 @@
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
-const VerifiedIndicator = ({ isVerified = "false" }) => {
+const VerifiedIndicator = ({ isVerified = "false", onPress }) => {
   const theme = useTheme();
-  const navigation = useNavigation();
 
   if (isVerified) {
     return (
@@ -23,11 +21,7 @@ const VerifiedIndicator = ({ isVerified = "false" }) => {
   }
 
   return (
-    <TouchableRipple
-      style={styles.buttonWrapper}
-      borderless
-      onPress={() => navigation.navigate("AccountVerification")}
-    >
+    <TouchableRipple style={styles.buttonWrapper} borderless onPress={onPress}>
       <View style={[styles.button, { borderColor: theme.colors.primary }]}>
         <Text style={{ color: theme.colors.primary }}>Verify Now</Text>
       </View>

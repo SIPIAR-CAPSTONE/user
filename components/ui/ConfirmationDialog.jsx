@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Text, Dialog, Portal, useTheme } from "react-native-paper";
+import { Dialog, Portal, useTheme } from "react-native-paper";
 import React, { useState, useImperativeHandle, forwardRef } from "react";
 
 import PrimaryButton from "./PrimaryButton";
@@ -13,7 +13,7 @@ const ConfirmationDialog = forwardRef(
 
     const showDialog = () => setIsDialogVisible(true);
 
-    // Expose toggleDialog to the parent component
+    // Expose functions to the parent component
     useImperativeHandle(ref, () => ({
       showDialog,
       hideDialog,
@@ -27,11 +27,7 @@ const ConfirmationDialog = forwardRef(
           style={styles.container}
         >
           <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-          {content && (
-            <Dialog.Content>
-              <Text variant="bodyMedium">{content}</Text>
-            </Dialog.Content>
-          )}
+          {content && <Dialog.Content>{content}</Dialog.Content>}
           <Dialog.Actions style={styles.buttonsContainer}>
             {buttons.map((button, index) => (
               <PrimaryButton
