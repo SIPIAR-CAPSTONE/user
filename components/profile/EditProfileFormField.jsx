@@ -106,6 +106,14 @@ const BirthdayFormField = (props) => {
 
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   //change string date to date object to make it work with DatePicker component
+
+  /**
+   *
+   * The date data from database is in string format
+   * To make it work with date picker component,
+   * I converted it to date object before using it in date picker
+   *
+   */
   const date = new Date(givenDate);
   const formattedDate = date.toISOString().split("T")[0];
 
