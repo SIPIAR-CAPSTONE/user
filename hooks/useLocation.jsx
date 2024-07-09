@@ -21,8 +21,8 @@ const useLocation = () => {
         // If permision is not granted display warning
         if (status !== "granted") {
           Alert.alert(
-            "Warning: Permission to access location denied",
-            "You cannot access this feature because you deny the permision. Please go to the app setting and change the Location permision to access this feature.",
+            "Permission Denied",
+            "You cannot access this feature because you denied the permision request. Please go to the app setting and change the Location permision to access this feature.",
             [
               {
                 text: "Open Settings",
