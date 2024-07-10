@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
+import useUserMetadata from "../../hooks/useUserMetadata";
 
 const LoginScreen = () => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ const LoginScreen = () => {
   const [errors, setErrors] = useState({});
   const setSession = useBoundStore((state) => state.setSession);
   const largeSecureStore = new LargeSecureStore();
+  const { setState } = useUserMetadata()
 
   /*
    *
@@ -82,6 +84,9 @@ const LoginScreen = () => {
 
         //! set encrypted session as global state
         setSession(encryptedSession);
+
+        //! set session global state variables
+        setState(data['session'])
       }
     }
   };

@@ -7,6 +7,7 @@ import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { supabase } from "../../../utils/supabase/config";
 import { LargeSecureStore } from "../../../utils/SecureLocalStorage";
+import useUserMetadata from "../../../hooks/useUserMetadata";
 
 const StepThreeContent = () => {
   const theme = useTheme();
@@ -16,6 +17,8 @@ const StepThreeContent = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const setSession = useBoundStore((state) => state.setSession);
+  const { setState } = useUserMetadata()
+
 
   //! State for UI signup error
   const [signUpError, setSignUpError] = useState("");
@@ -108,6 +111,9 @@ const StepThreeContent = () => {
           JSON.stringify(data["session"])
         );
         await setSession(encryptedSession);
+
+        //! set session global state variables
+        setState(data['session'])
       }
     }
   };
