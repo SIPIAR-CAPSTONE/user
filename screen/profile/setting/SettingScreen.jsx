@@ -31,10 +31,10 @@ const SettingScreen = () => {
   const hideDialog = (type) =>
     setVisible((prevVisible) => ({ ...prevVisible, [type]: false }));
 
-  const handleChangeTheme = (newThemeStatus) => {
+  const handleChangeTheme = (value) => {
     switchTheme({
       switchThemeFunction: () => {
-        setCurrentThemeStatus(newThemeStatus); // your switch theme function
+        setCurrentThemeStatus(value);
       },
       animationConfig: {
         type: "circular",
@@ -46,6 +46,8 @@ const SettingScreen = () => {
       },
     });
   };
+
+  const handleChangeNotification = (value) => setNotificationStatus(value);
 
   return (
     <ScrollView
@@ -74,7 +76,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("notification")}
         data={["On", "Off"]}
         selectedValue={notificationStatus}
-        setSelectedValue={(value) => setNotificationStatus(value)}
+        setSelectedValue={handleChangeNotification}
       />
 
       {/* Appearance */}
@@ -93,7 +95,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("appearance")}
         data={[themeStatus.light, themeStatus.dark]}
         selectedValue={currentThemeStatus}
-        setSelectedValue={(value) => handleChangeTheme(value)}
+        setSelectedValue={handleChangeTheme}
       />
 
       {/* Delete Account */}
