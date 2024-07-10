@@ -9,6 +9,7 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import { themeStatus } from "../../../utils/theme";
+import switchTheme from "react-native-theme-switch-animation";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingScreen = () => {
@@ -29,6 +30,22 @@ const SettingScreen = () => {
     setVisible((prevVisible) => ({ ...prevVisible, [type]: true }));
   const hideDialog = (type) =>
     setVisible((prevVisible) => ({ ...prevVisible, [type]: false }));
+
+  const handleChangeTheme = (newThemeStatus) => {
+    switchTheme({
+      switchThemeFunction: () => {
+        setCurrentThemeStatus(newThemeStatus); // your switch theme function
+      },
+      animationConfig: {
+        type: "circular",
+        duration: 500,
+        startingPoint: {
+          cxRatio: 0.3,
+          cyRatio: 0.5,
+        },
+      },
+    });
+  };
 
   return (
     <ScrollView
@@ -57,7 +74,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("notification")}
         data={["On", "Off"]}
         selectedValue={notificationStatus}
-        setSelectedValue={setNotificationStatus}
+        setSelectedValue={(value) => setNotificationStatus(value)}
       />
 
       {/* Appearance */}
@@ -76,7 +93,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("appearance")}
         data={[themeStatus.light, themeStatus.dark]}
         selectedValue={currentThemeStatus}
-        setSelectedValue={setCurrentThemeStatus}
+        setSelectedValue={(value) => handleChangeTheme(value)}
       />
 
       {/* Delete Account */}
