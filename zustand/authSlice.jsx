@@ -30,7 +30,7 @@ export const createAuthSlice = (set) => ({
     barangay: '',
     street: '',
     houseNumber: '',
-    email: ''
+    email: '',
   },
   goSignupNextStep: () =>
     set((state) => ({
@@ -56,5 +56,6 @@ export const createAuthSlice = (set) => ({
     set({ signupForm: DEFAULT_SIGNUP_FORM })
     set({ signupCurrentStep: 0 })
   },
-  setUserMetaData: (value) => set({ userMetaData: value })
+  setUserMetaData: (value) => set({ userMetaData: value }),
+  removeUserMetaData: () => set({ userMetaData: DEFAULT_SIGNUP_FORM })
 })
