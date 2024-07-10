@@ -12,6 +12,7 @@ import NextActionIcon from "../../components/common/NextActionIcon";
 import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
+import useUserMetadata from "../../hooks/useUserMetadata"
 
 /**
  * Profile screen component
@@ -24,8 +25,10 @@ const ProfileScreen = () => {
   const verificationScreenConfirmationDialogRef = useRef(null);
   const logoutDialogRef = useRef(null);
 
+  const userMetaData = useBoundStore((state) => state.userMetaData)
   const removeSession = useBoundStore((state) => state.removeSession);
   const largeSecureStore = new LargeSecureStore();
+  const { removeState } = useUserMetadata()
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -34,7 +37,10 @@ const ProfileScreen = () => {
       //! remove encrypted session from secure local storage
       await largeSecureStore.removeItem("session");
       //! remove encrypted session as a global state
-      removeSession();
+      removeSession()
+
+      //! remove global state variable
+      removeState()
     }
   };
 
@@ -61,8 +67,8 @@ const ProfileScreen = () => {
       showsVerticalScrollIndicator={false}
     >
       <UserProfileCard
-        name="John Doe"
-        email="j.doe@gmail.com"
+        name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
+        email={userMetaData['email']}
         imageSource={""}
         renderFooter={() => (
           <VerifiedIndicator

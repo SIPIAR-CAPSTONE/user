@@ -7,7 +7,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { lightTheme, darkTheme, themeStatus } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
 import CircularIcon from "./components/ui/CircularIcon";

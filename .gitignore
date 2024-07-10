@@ -38,3 +38,6 @@ yarn-error.*
 
 # environment variables
 .env
+
+# json formatter for testing
+jsonformatter
