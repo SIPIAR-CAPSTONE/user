@@ -23,6 +23,7 @@ const ProfileScreen = () => {
   const showDialog = () => setDialogVisible(true)
   const hideDialog = () => setDialogVisible(false)
 
+  const userMetaData = useBoundStore((state) => state.userMetaData)
   const removeSession = useBoundStore((state) => state.removeSession)
   const largeSecureStore = new LargeSecureStore()
   const { removeState } = useUserMetadata()
@@ -51,8 +52,8 @@ const ProfileScreen = () => {
       showsVerticalScrollIndicator={false}
     >
       <UserProfileCard
-        name="John Doe"
-        email="j.doe@gmail.com"
+        name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
+        email={userMetaData['email']}
         renderFooter={() => <VerifiedIndicator isVerified={false} />}
       />
       {/*
