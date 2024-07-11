@@ -48,7 +48,7 @@ const StepFourContent = () => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
-    if (!isFormValid) {
+    if (isFormValid) {
       setLoading(true);
 
       //TODO: fetching
