@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState, lazy } from "react";
+import { useState, lazy, useRef } from "react";
 
 import StatusBar from "../../../components/common/StatusBar";
 import PrimaryButton from "../../../components/ui/PrimaryButton";
@@ -11,53 +11,49 @@ import {
   BirthdayFormField,
   SelectFormField,
   TextFormField,
-} from '../../../components/profile/EditProfileFormField'
-import { supabase } from '../../../utils/supabase/config'
-import useBoundStore from '../../../zustand/useBoundStore'
-import { useNavigation } from '@react-navigation/native'
-import useUserMetadata from "../../../hooks/useUserMetadata"
+} from "../../../components/profile/EditProfileFormField";
+import { supabase } from "../../../utils/supabase/config";
+import useBoundStore from "../../../zustand/useBoundStore";
+import { useNavigation } from "@react-navigation/native";
+import useUserMetadata from "../../../hooks/useUserMetadata";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
 
 const EditProfileScreen = () => {
-  const theme = useTheme()
-  const [profilePicture, setProfilePicture] = useState(null)
-  const userMetaData = useBoundStore((state) => state.userMetaData)
-  const navigation = useNavigation()
-  const { setState } = useUserMetadata()
+  const theme = useTheme();
+  const [profilePicture, setProfilePicture] = useState(null);
+  const userMetaData = useBoundStore((state) => state.userMetaData);
+  const navigation = useNavigation();
+  const { setState } = useUserMetadata();
 
   //! format date to yy-mm-dd (remove trails ex. T:14:00:08)
-  const date = new Date(userMetaData['birthday'])
-  const formattedDate = date.toISOString().split('T')[0]
+  const date = new Date(userMetaData["birthday"]);
+  const formattedDate = date.toISOString().split("T")[0];
 
   //! default value to input fields
   const [userInfo, setUserInfo] = useState({
-    firstName: userMetaData['firstName'],
-    middleName: userMetaData['middleName'],
-    lastName: userMetaData['lastName'],
-    suffix: userMetaData['suffix'],
+    firstName: userMetaData["firstName"],
+    middleName: userMetaData["middleName"],
+    lastName: userMetaData["lastName"],
+    suffix: userMetaData["suffix"],
     birthday: formattedDate,
-    phone: userMetaData['phone'],
-    barangay: userMetaData['barangay'],
-    street: userMetaData['street'],
-    houseNumber: userMetaData['houseNumber'],
-  })
-  const [errors, setErrors] = useState({})
+    phone: userMetaData["phone"],
+    barangay: userMetaData["barangay"],
+    street: userMetaData["street"],
+    houseNumber: userMetaData["houseNumber"],
+  });
+  const [errors, setErrors] = useState({});
+  const sumbitConfirmationDialogRef = useRef(null);
 
   const handleFieldChange = (key, newValue) => {
     setUserInfo((prevUserInfo) => {
       return {
         ...prevUserInfo,
         [key]: newValue,
-      }
-    })
-  }
-
-  // handling confirmation dialog
-  const [dialogVisible, setDialogVisible] = useState(false)
-  const showDialog = () => setDialogVisible(true)
-  const hideDialog = () => setDialogVisible(false)
+      };
+    });
+  };
 
   /*
    *
@@ -72,12 +68,12 @@ const EditProfileScreen = () => {
     if (!userInfo.birthday) errors.birthday = "Birthday is required.";
 
     // Set the errors and update form validity if it is empty
-    setErrors(errors)
+    setErrors(errors);
 
     // return true if there is no error
     // false if error length is greater than zero
-    return Object.keys(errors).length === 0
-  }
+    return Object.keys(errors).length === 0;
+  };
 
   /*
    *
@@ -86,35 +82,35 @@ const EditProfileScreen = () => {
    */
   const handleSubmit = async () => {
     //validateForm will return true if there is no error
-    const isFormValid = validateForm()
+    const isFormValid = validateForm();
 
     if (isFormValid) {
       const { data, error } = await supabase.auth.updateUser({
         data: {
-          first_name: userInfo['firstName'],
-          middle_name: userInfo['middleName'],
-          last_name: userInfo['lastName'],
-          suffix: userInfo['suffix'],
-          birth_date: userInfo['birthday'],
-          phone_number: userInfo['phone'],
-          barangay: userInfo['barangay'],
-          street: userInfo['street'],
-          house_number: userInfo['houseNumber'],
+          first_name: userInfo["firstName"],
+          middle_name: userInfo["middleName"],
+          last_name: userInfo["lastName"],
+          suffix: userInfo["suffix"],
+          birth_date: userInfo["birthday"],
+          phone_number: userInfo["phone"],
+          barangay: userInfo["barangay"],
+          street: userInfo["street"],
+          house_number: userInfo["houseNumber"],
         },
-      })
+      });
 
       if (error) {
         //todo: more appropriate error handling for all
-        console.log('error update', error.message)
+        console.log("error update", error.message);
       } else if (!error) {
         //! update session global state variables
-        setState(data)
+        setState(data);
 
         //! navigate to my account page if success
-        navigation.navigate('MyAccount')
+        navigation.navigate("MyAccount");
       }
     }
-  }
+  };
 
   return (
     <ScrollView
@@ -122,6 +118,7 @@ const EditProfileScreen = () => {
     >
       <EditUserProfileCard
         name="John"
+        imageSource={""}
         image={profilePicture}
         setImage={setProfilePicture}
       />
@@ -136,24 +133,24 @@ const EditProfileScreen = () => {
         <TextFormField
           label="First Name"
           value={userInfo.firstName}
-          onChangeText={(item) => handleFieldChange('firstName', item)}
+          onChangeText={(item) => handleFieldChange("firstName", item)}
           error={errors.firstName}
         />
         <TextFormField
           label="Middle Name"
           value={userInfo.middleName}
-          onChangeText={(item) => handleFieldChange('middleName', item)}
+          onChangeText={(item) => handleFieldChange("middleName", item)}
         />
         <TextFormField
           label="Last Name"
           value={userInfo.lastName}
-          onChangeText={(item) => handleFieldChange('lastName', item)}
+          onChangeText={(item) => handleFieldChange("lastName", item)}
           error={errors.lastName}
         />
         <TextFormField
           label="Suffix"
           value={userInfo.suffix}
-          onChangeText={(item) => handleFieldChange('suffix', item)}
+          onChangeText={(item) => handleFieldChange("suffix", item)}
         />
         <BirthdayFormField
           label="Birthday"
@@ -164,7 +161,7 @@ const EditProfileScreen = () => {
         <TextFormField
           label="Phone"
           value={userInfo.phone}
-          onChangeText={(item) => handleFieldChange('phone', item)}
+          onChangeText={(item) => handleFieldChange("phone", item)}
         />
       </View>
 
@@ -179,41 +176,47 @@ const EditProfileScreen = () => {
           label="Barangay"
           value={userInfo.barangay}
           items={cdoBarangayData}
-          onChange={(item) => handleFieldChange('barangay', item.value)}
+          onChange={(item) => handleFieldChange("barangay", item.value)}
           error={errors.barangay}
         />
         <TextFormField
           label="Street"
           value={userInfo.street}
-          onChangeText={(item) => handleFieldChange('street', item)}
+          onChangeText={(item) => handleFieldChange("street", item)}
         />
         <TextFormField
           label="House Number"
           value={userInfo.houseNumber}
-          onChangeText={(item) => handleFieldChange('houseNumber', item)}
+          onChangeText={(item) => handleFieldChange("houseNumber", item)}
         />
 
+        <PrimaryButton
+          label="Save Changes"
+          onPress={() => sumbitConfirmationDialogRef.current.showDialog()}
+          style={{ borderRadius: theme.borderRadius.base, marginTop: 44 }}
+        />
         {/* When save changes submit, show confirmation */}
         <ConfirmationDialog
+          ref={sumbitConfirmationDialogRef}
           title="Are you sure you want to save changes?"
-          confirmButtonLabel="Save Changes"
-          visible={dialogVisible}
-          showDialog={showDialog}
-          hideDialog={hideDialog}
-          onConfirmed={handleSubmit}
-          renderButton={() => (
-            <PrimaryButton
-              label="Save Changes"
-              onPress={showDialog}
-              style={{ borderRadius: theme.borderRadius.base, marginTop: 44 }}
-            />
-          )}
+          buttons={[
+            {
+              label: "Save Changes",
+              onPress: handleSubmit,
+              mode: "contained",
+            },
+            {
+              label: "Cancel",
+              onPress: () => sumbitConfirmationDialogRef.current.hideDialog(),
+              mode: "text",
+            },
+          ]}
         />
       </View>
 
       <StatusBar />
     </ScrollView>
-  )
-}
+  );
+};
 
-export default EditProfileScreen
+export default EditProfileScreen;
