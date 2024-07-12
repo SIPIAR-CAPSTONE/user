@@ -7,12 +7,9 @@ import PrimaryButton from "../../ui/PrimaryButton";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepOneContent = () => {
+const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
 
-  const goVerificationNextStep = useBoundStore(
-    (state) => state.goVerificationNextStep
-  );
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -29,45 +26,25 @@ const StepOneContent = () => {
     fetchData();
   }, []);
 
-  /*
+  /**
+   * Function to validate the form
    *
-   * Form Validation
+   * @return {boolean} true if there are no errors, false otherwise
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate first name field if it is empty
-    if (!verificationForm.firstName) {
+    if (!verificationForm.firstName)
       errors.firstName = "First Name is required.";
-    }
-
-    // Validate middle name field if it is empty
-    if (!verificationForm.middleName) {
+    if (!verificationForm.middleName)
       errors.middleName = "Middle Name is required.";
-    }
-
-    // Validate last name field if it is empty
-    if (!verificationForm.lastName) {
-      errors.lastName = "Last Name is required.";
-    }
-
-    // Validate birthday if it is empty
-    if (!verificationForm.birthday) {
-      errors.birthday = "Birthday is required.";
-    }
-
-    // Validate phone field if it is empty
-    if (!verificationForm.phone) {
-      errors.phone = "Phone is required.";
-    }
-
-    // check if the phone number size is 11
-    if (verificationForm.phone.length != 11) {
+    if (!verificationForm.lastName) errors.lastName = "Last Name is required.";
+    if (!verificationForm.birthday) errors.birthday = "Birthday is required.";
+    if (!verificationForm.phone) errors.phone = "Phone is required.";
+    if (verificationForm.phone.length !== 11)
       errors.phone = "Phone should have 11 numbers.";
-    }
 
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
     // return true if there is no error
@@ -86,7 +63,7 @@ const StepOneContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goVerificationNextStep();
+      goNextStep();
     }
   };
 

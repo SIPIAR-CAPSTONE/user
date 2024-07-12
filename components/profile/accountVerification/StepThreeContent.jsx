@@ -5,14 +5,15 @@ import { AntDesign } from "@expo/vector-icons";
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
-import { useNavigation } from "@react-navigation/native";
-import { Fragment } from "react";
+import { Fragment, useState, lazy } from "react";
+const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 
-const StepThreeContent = () => {
+const StepThreeContent = ({ goNextStep }) => {
   const theme = useTheme();
-  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
-  const IdOptionListItems = IdItems.map((item) => (
+  const IdItems = ID_ITEMS_DATA.map((item) => (
     <Fragment key={item.id}>
       <ListItem
         size="small"
@@ -23,7 +24,10 @@ const StepThreeContent = () => {
           paddingEnd: 1,
         }}
         renderActionIcon={() => <NextActionIcon />}
-        onPress={() => navigation.navigate("SelectAnId", { idType: item.type })}
+        onPress={() => {
+          setSelectedId(item);
+          setModalVisible(true);
+        }}
       />
       <Divider />
     </Fragment>
@@ -46,8 +50,46 @@ const StepThreeContent = () => {
           { height: 5, backgroundColor: theme.colors.elevation.level1 },
         ]}
       />
-      <View>{IdOptionListItems}</View>
+      {IdItems}
+
+      {modalVisible && (
+        <SelectIdModal
+          onClose={() => setModalVisible(false)}
+          onConfirmed={() => {
+            setModalVisible(false);
+            goNextStep();
+          }}
+          idTitle={selectedId.title}
+          idImageSource={selectedId.imageSource}
+        />
+      )}
     </ScrollView>
+  );
+};
+
+// Secondary heading local component for the second heading
+const SecondaryHeader = (props) => {
+  const theme = useTheme();
+  const { title, desc } = props;
+
+  return (
+    <View style={styles.headerSecondContent}>
+      <View style={styles.titleContainer}>
+        <Text
+          style={[styles.title, { color: theme.colors.typography.primary }]}
+          variant="titleLarge"
+        >
+          {title}
+        </Text>
+        <AntDesign name="idcard" size={33} color={theme.colors.primary} />
+      </View>
+      <Text
+        style={[styles.desc, { color: theme.colors.typography.secondary }]}
+        variant="bodyMedium"
+      >
+        {desc}
+      </Text>
+    </View>
   );
 };
 
@@ -76,51 +118,34 @@ const styles = StyleSheet.create({
 });
 
 //Data for each id list item
-const IdItems = [
+
+const ID_ITEMS_DATA = [
   {
     id: 0,
     title: "National ID",
     type: "nationalId",
+    imageSource:
+      "https://marketplace.canva.com/EAFanujoFkY/2/0/1600w/canva-blue-modern-highschool-id-card-vjI1KIbwj8o.jpg",
   },
   {
     id: 1,
     title: "Student ID",
     type: "studentId",
+    imageSource:
+      "https://marketplace.canva.com/EAFXhyJiKhc/1/0/1600w/canva-white-and-red-modern-highschool-id-card-9QGif02vO4s.jpg",
   },
   {
     id: 2,
     title: "ePhil ID",
     type: "ePhilId",
+    imageSource:
+      "https://upload.wikimedia.org/wikipedia/commons/3/34/Philippine_Identification_System_%28PhilSys%29_card_sample.png",
   },
   {
     id: 3,
     title: "Passport",
     type: "passport",
+    imageSource:
+      "https://upload.wikimedia.org/wikipedia/commons/5/56/Specimen_Personal_Information_Page_South_Korean_Passport.jpg",
   },
 ];
-
-// Secondary heading local component for the second heading
-const SecondaryHeader = (props) => {
-  const theme = useTheme();
-  const { title, desc } = props;
-
-  return (
-    <View style={styles.headerSecondContent}>
-      <View style={styles.titleContainer}>
-        <Text
-          style={[styles.title, { color: theme.colors.typography.primary }]}
-          variant="titleLarge"
-        >
-          {title}
-        </Text>
-        <AntDesign name="idcard" size={33} color={theme.colors.primary} />
-      </View>
-      <Text
-        style={[styles.desc, { color: theme.colors.typography.secondary }]}
-        variant="bodyMedium"
-      >
-        {desc}
-      </Text>
-    </View>
-  );
-};

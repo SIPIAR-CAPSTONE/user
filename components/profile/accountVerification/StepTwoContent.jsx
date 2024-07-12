@@ -8,12 +8,9 @@ import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-const StepTwoContent = () => {
+const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
 
-  const goVerificationNextStep = useBoundStore(
-    (state) => state.goVerificationNextStep
-  );
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -30,25 +27,18 @@ const StepTwoContent = () => {
     fetchverificationFormData();
   }, []);
 
-  /*
+  /**
+   * Function to validate the form
    *
-   * Form Validation
+   * @return {boolean} true if there are no errors, false otherwise
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate barangay field if it is empty
-    if (!verificationForm.barangay) {
-      errors.barangay = "Barangay is required.";
-    }
+    if (!verificationForm.barangay) errors.barangay = "Barangay is required.";
+    if (!verificationForm.street) errors.street = "Street is required.";
 
-    // Validate street field if it is empty
-    if (!verificationForm.street) {
-      errors.street = "Street is required.";
-    }
-
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
     // return true if there is no error
@@ -67,7 +57,7 @@ const StepTwoContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goVerificationNextStep();
+      goNextStep();
     }
   };
 

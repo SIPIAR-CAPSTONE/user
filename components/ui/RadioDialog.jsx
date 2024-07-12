@@ -34,7 +34,7 @@ const RadioDialog = ({
         <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Content>
           <RadioButton.Group
-            onValueChange={(value) => setSelectedValue(value)}
+            onValueChange={setSelectedValue}
             value={selectedValue}
           >
             {RadioButtons}

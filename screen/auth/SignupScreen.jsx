@@ -1,45 +1,37 @@
 import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect } from "react";
+import { useEffect, lazy, useState } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
-import StepOneContent from "../../components/auth/signup/StepOneContent";
-import StepTwoContent from "../../components/auth/signup/StepTwoContent";
-import StepThreeContent from "../../components/auth/signup/StepThreeContent";
 import useBoundStore from "../../zustand/useBoundStore";
+import StepOneContent from "../../components/auth/signup/StepOneContent";
+const StepTwoContent = lazy(() =>
+  import("../../components/auth/signup/StepTwoContent")
+);
+const StepThreeContent = lazy(() =>
+  import("../../components/auth/signup/StepThreeContent")
+);
 
 const SignupScreen = ({ navigation }) => {
   const theme = useTheme();
 
-  const signupCurrentStep = useBoundStore((state) => state.signupCurrentStep);
+  const [currentStep, setCurrentStep] = useState(0);
   const resetSignup = useBoundStore((state) => state.resetSignup);
 
-  /*
-   * The first time the user enter in signup screen
-   * the signup form global state will be reset.
-   *
-   * so when a user fill out the fields in signup form and then exit
-   * when the user comeback in the signup screen all fields and steps are reset
-   */
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      resetSignup();
-    });
-    return unsubscribe;
-  }, [navigation]);
+  const goNextStep = () =>
+    setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
 
-  /*
-   * Screen content of each steps
-   * only one screen or content will be displayed at a time based on the currentStep
-   *
+  /**
+   * The content of each step of the signup process
+   * Only one step will be displayed at a time based on the currentStep
    */
   const steps = [
     {
       id: 1,
       content: (
         <Content>
-          <StepOneContent />
+          <StepOneContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -47,7 +39,7 @@ const SignupScreen = ({ navigation }) => {
       id: 2,
       content: (
         <Content>
-          <StepTwoContent />
+          <StepTwoContent goNextStep={goNextStep} />
         </Content>
       ),
     },
@@ -63,7 +55,7 @@ const SignupScreen = ({ navigation }) => {
 
   // Step progress color customization
   const customColors = {
-    /*
+    /**
      * it is the circle with step number inside
      * its located at the top side
      */
@@ -73,7 +65,7 @@ const SignupScreen = ({ navigation }) => {
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
-      /*
+      /**
        * it is the line that connect the circles or the marker
        */
       line: {
@@ -84,6 +76,20 @@ const SignupScreen = ({ navigation }) => {
     },
   };
 
+  /**
+   * This effect is triggered whenever the signup screen is focused.
+   * It resets the signup form by calling the `resetSignup` function.
+   * This ensures that all fields or previous values of the global state of the signup form
+   * are cleared when the user navigates back to the asignup screen.
+   *
+   */
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      resetSignup();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <ScrollView
       style={{
@@ -92,7 +98,7 @@ const SignupScreen = ({ navigation }) => {
       }}
     >
       <ProgressSteps
-        currentStep={signupCurrentStep}
+        currentStep={currentStep}
         orientation="horizontal"
         steps={steps}
         colors={customColors}

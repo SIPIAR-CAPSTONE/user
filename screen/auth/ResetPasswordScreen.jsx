@@ -2,6 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
 import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import { PasswordFormField } from "../../components/ui/FormField";
@@ -22,19 +23,12 @@ const ResetPasswordScreen = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate password field if it is empty
-    if (!newPassword) {
-      errors.newPassword = "Password is required.";
-    }
-
-    // Validate confirm password field if it is empty
+    if (!newPassword) errors.newPassword = "Password is required.";
     if (!confirmNewPassword) {
       errors.confirmNewPassword = "Confirm Password is required.";
     }
-
-    // Validate if password and confirm password matched
     if (newPassword !== confirmNewPassword) {
       errors.confirmNewPassword =
         "Password and Confirm Password must be match.";
@@ -55,13 +49,13 @@ const ResetPasswordScreen = () => {
    *
    */
   const handleSubmit = async () => {
-    setLoading(true);
-
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
-      //! update password of user
+      setLoading(true);
+
+      //* update password of user
       const { error } = await supabase.auth
         .updateUser({
           password: newPassword,
@@ -75,7 +69,7 @@ const ResetPasswordScreen = () => {
         errors.confirmNewPassword = error.message;
         setErrors(errors);
       } else if (!error) {
-        //! navigate to success confirmation screen
+        //* navigate to success confirmation screen
         navigation.navigate("SuccessConfirmation", {
           title: "Reset Password Successfully!",
           desc: "You can now login your new password credentials.",

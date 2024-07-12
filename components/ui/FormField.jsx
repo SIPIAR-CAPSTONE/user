@@ -11,7 +11,13 @@ import DatePicker from "react-native-date-picker";
 import { useState } from "react";
 import useBoundStore from "../../zustand/useBoundStore";
 
+/**
+ * SelectFormField component renders a dropdown form field with a label and error message.
+ * It takes in props such as onChange, items, label, value, and error.
+ * @param {Object} props - The props object containing onChange, items, label, value, and error.
+ */
 const SelectFormField = (props) => {
+  // Destructure props to get onChange, items, label, value, and error
   const { onChange, items, label, value, error, ...inputProps } = props;
   const theme = useTheme();
 
@@ -66,12 +72,23 @@ const SelectFormField = (props) => {
   );
 };
 
+/**
+ * BirthdayFormField component is a custom form field for entering birthday.
+ *
+ * @param {Object} props - The props object containing the following properties:
+ *   @param {string} label - The label for the form field.
+ *   @param {string} error - The error message for the form field.
+ *   @param {function} setDate - The function to set the date.
+ *   @param {Date} date - The date value of the form field.
+ *   @param {Object} inputProps - Additional props to be passed to the DatePicker component.
+ */
 const BirthdayFormField = (props) => {
   const { label, error, setDate, date, ...inputProps } = props;
   const theme = useTheme();
 
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const [open, setOpen] = useState(false);
+  // Format the date to string in ISO format
   const formattedDate = date.toISOString().split("T")[0];
 
   return (
@@ -93,6 +110,7 @@ const BirthdayFormField = (props) => {
           setOpen(false);
         }}
       />
+      {/* The Birthday  form field button */}
       <TouchableRipple
         style={[
           error && styles.textInputError,

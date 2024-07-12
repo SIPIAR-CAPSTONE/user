@@ -1,6 +1,7 @@
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button, useTheme, Text } from "react-native-paper";
 import { useState } from "react";
+
 import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -31,19 +32,11 @@ const LoginScreen = () => {
    *
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate email field if it is empty
-    if (!email) {
-      errors.email = "Email is required.";
-    }
+    if (!email) errors.email = "Email is required.";
+    if (!password) errors.password = "Password is required.";
 
-    // Validate password field if it is empty
-    if (!password) {
-      errors.password = "Password is required.";
-    }
-
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
     // return true if there is no error
@@ -63,7 +56,7 @@ const LoginScreen = () => {
     const isFormValid = validateForm();
 
     if (isFormValid) {
-      //! If form valid, sign in account
+      //* If form valid, sign in account
       const { data, error } = await supabase.auth
         .signInWithPassword({
           email: email,
@@ -76,13 +69,12 @@ const LoginScreen = () => {
         errors.password = error.message;
         setErrors(errors);
       } else if (!error) {
-        //! call the setItem in which it encrypt the session and store in secure local storage
+        //* call the setItem in which it encrypt the session and store in secure local storage
         encryptedSession = await largeSecureStore.setItem(
           "session",
           JSON.stringify(data["session"])
         );
 
-        //! set encrypted session as global state
         setSession(encryptedSession);
 
         //! set session global state variables

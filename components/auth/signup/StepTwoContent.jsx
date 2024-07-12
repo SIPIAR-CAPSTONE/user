@@ -8,12 +8,11 @@ import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 
-const StepTwoContent = () => {
+const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
 
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
-  const goSignupNextStep = useBoundStore((state) => state.goSignupNextStep);
   const [errors, setErrors] = useState({});
 
   /*
@@ -53,7 +52,7 @@ const StepTwoContent = () => {
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goSignupNextStep();
+      goNextStep();
     }
   };
 

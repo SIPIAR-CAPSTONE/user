@@ -1,37 +1,53 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useState, lazy } from "react";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import RadioDialog from "../../../components/ui/RadioDialog";
 import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import { themeStatus } from "../../../utils/theme";
+import switchTheme from "react-native-theme-switch-animation";
+const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingScreen = () => {
   const theme = useTheme();
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
-  const [notificationStatus, setNotificationStatus] = useState("On");
 
+  // Set initial state for dialog visibility and notification status
   const [visible, setVisible] = useState({
     notification: false,
     appearance: false,
   });
+  const [notificationStatus, setNotificationStatus] = useState("On");
 
+  // Function to show or hide dialogs
   const showDialog = (type) =>
-    setVisible((prevVisible) => {
-      return { ...prevVisible, [type]: true };
-    });
-
+    setVisible((prevVisible) => ({ ...prevVisible, [type]: true }));
   const hideDialog = (type) =>
-    setVisible((prevVisible) => {
-      return { ...prevVisible, [type]: false };
+    setVisible((prevVisible) => ({ ...prevVisible, [type]: false }));
+
+  const handleChangeTheme = (value) => {
+    switchTheme({
+      switchThemeFunction: () => {
+        setCurrentThemeStatus(value);
+      },
+      animationConfig: {
+        type: "circular",
+        duration: 500,
+        startingPoint: {
+          cxRatio: 0.3,
+          cyRatio: 0.5,
+        },
+      },
     });
+  };
+
+  const handleChangeNotification = (value) => setNotificationStatus(value);
 
   return (
     <ScrollView
@@ -60,7 +76,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("notification")}
         data={["On", "Off"]}
         selectedValue={notificationStatus}
-        setSelectedValue={setNotificationStatus}
+        setSelectedValue={handleChangeNotification}
       />
 
       {/* Appearance */}
@@ -79,7 +95,7 @@ const SettingScreen = () => {
         hideDialog={() => hideDialog("appearance")}
         data={[themeStatus.light, themeStatus.dark]}
         selectedValue={currentThemeStatus}
-        setSelectedValue={setCurrentThemeStatus}
+        setSelectedValue={handleChangeTheme}
       />
 
       {/* Delete Account */}

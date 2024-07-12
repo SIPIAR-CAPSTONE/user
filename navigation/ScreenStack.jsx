@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import NotificationScreen from "../screen/home/NotificationScreen";
 import StartingScreen from "../screen/auth/StartingScreen";
 import LoginScreen from "../screen/auth/LoginScreen";
@@ -10,7 +9,6 @@ import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
 import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
-import SelectAnIdScreen from "../screen/profile/accountVerification/SelectAnIdScreen";
 import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
 import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
@@ -21,7 +19,20 @@ import MapviewScreen from "../screen/broadcast/MapviewScreen";
 
 const Stack = createNativeStackNavigator();
 
-//Screens for authenticated users
+/**
+ * commonScreenStack: A stack of screens that exist on both signed in and signed out stacks.
+ */
+const commonScreenStack = (
+  <Stack.Screen
+    name="SuccessConfirmation"
+    component={SuccessConfirmationScreen}
+    options={{ headerShown: false }}
+  />
+);
+
+/**
+ * SignedOutStack: A stack of screens that are displayed to unauthenticated users.
+ */
 export const SignedOutStack = (
   <>
     <Stack.Screen
@@ -50,19 +61,17 @@ export const SignedOutStack = (
       options={{ headerTitle: "Register" }}
     />
     <Stack.Screen
-      name="SuccessConfirmation"
-      component={SuccessConfirmationScreen}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
       name="ForgotPassword"
       component={ForgotPasswordScreen}
       options={{ headerTitle: "" }}
     />
+    {commonScreenStack}
   </>
 );
 
-//Screens for unauthenticated users
+/**
+ * SignedInStack: A stack of screens that are displayed to authenticated users.
+ */
 export const SignedInStack = (
   <>
     <Stack.Screen
@@ -91,15 +100,6 @@ export const SignedInStack = (
       options={{ headerTitle: "Account Verification" }}
       component={AccountVerificationScreen}
     />
-    <Stack.Screen
-      name="SelectAnId"
-      options={{
-        headerTitle: "Select an ID",
-        presentation: "transparentModal",
-        contentStyle: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-      }}
-      component={SelectAnIdScreen}
-    />
     <Stack.Screen name="Setting" component={SettingScreen} />
     <Stack.Screen
       name="DeleteAccount"
@@ -116,5 +116,6 @@ export const SignedInStack = (
       options={{ headerTitle: "Privacy and Policy" }}
       component={PrivacyAndPolicyScreen}
     />
+    {commonScreenStack}
   </>
 );

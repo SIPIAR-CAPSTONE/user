@@ -1,57 +1,49 @@
-import { StyleSheet, View } from "react-native";
-import { Text, Dialog, Portal, useTheme } from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Dialog, Portal, useTheme } from "react-native-paper";
+import React, { useState, useImperativeHandle, forwardRef } from "react";
 
 import PrimaryButton from "./PrimaryButton";
 
-const ConfirmationDialog = ({
-  visible,
-  hideDialog,
-  renderButton,
-  onConfirmed,
-  title,
-  desc,
-  confirmButtonLabel,
-}) => {
-  const theme = useTheme();
+const ConfirmationDialog = forwardRef(
+  ({ title, content, buttons = [] }, ref) => {
+    const theme = useTheme();
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
 
-  const handleOnConfirmed = () => {
-    onConfirmed();
-    hideDialog();
-  };
+    const hideDialog = () => setIsDialogVisible(false);
 
-  return (
-    <View>
-      {renderButton()}
+    const showDialog = () => setIsDialogVisible(true);
+
+    // Expose functions to the parent component
+    useImperativeHandle(ref, () => ({
+      showDialog,
+      hideDialog,
+    }));
+
+    return (
       <Portal>
         <Dialog
-          visible={visible}
+          visible={isDialogVisible}
           onDismiss={hideDialog}
           style={styles.container}
         >
           <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-          {desc && (
-            <Dialog.Content>
-              <Text variant="bodyMedium">{desc}</Text>
-            </Dialog.Content>
-          )}
-          <Dialog.Actions style={styles.actionButtons}>
-            <PrimaryButton
-              label={confirmButtonLabel}
-              onPress={handleOnConfirmed}
-              style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
-            />
-            <PrimaryButton
-              label=" Cancel"
-              mode="text"
-              onPress={hideDialog}
-              style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
-            />
+          {content && <Dialog.Content>{content}</Dialog.Content>}
+          <Dialog.Actions style={styles.buttonsContainer}>
+            {buttons.map((button, index) => (
+              <PrimaryButton
+                key={index}
+                label={button.label}
+                onPress={button.onPress}
+                mode={button.mode}
+                style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
+              />
+            ))}
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </View>
-  );
-};
+    );
+  }
+);
 
 export default ConfirmationDialog;
 
@@ -63,7 +55,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  actionButtons: {
+  buttonsContainer: {
     marginTop: 28,
     flexDirection: "column",
     alignItems: "baseline",

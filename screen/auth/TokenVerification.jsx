@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
+
 import { TextFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -14,7 +15,7 @@ const TokenVerification = () => {
   const theme = useTheme()
   const navigation = useNavigation()
   const [isFilled, setIsFilled] = useState(false)
-  const { time, pause } = useCountdown(70) //! it should be 70 constant, this is for interval in supabase
+  const { time, pause } = useCountdown(70) //* it should be 70 constant, this is for interval in supabase
   const [tokenHash, setTokenHash] = useState('')
   const [serverError, setServerError] = useState('')
   const passwordResetEmail = useBoundStore((state) => state.passwordResetEmail)
@@ -44,7 +45,7 @@ const TokenVerification = () => {
 
   const handleSubmit = async () => {
     if (isFilled) {
-      //! verify provied token
+      //* verify provied token
       const { data, error } = await supabase.auth.verifyOtp({
         token_hash: tokenHash,
         type: "email",
@@ -54,7 +55,7 @@ const TokenVerification = () => {
         setServerError(error);
       } else if (!error) {
         navigation.navigate('ResetPassword')
-        pause() //! call the pause function to stop the countdown
+        pause() //* call the pause function to stop the countdown
       }
     }
   };

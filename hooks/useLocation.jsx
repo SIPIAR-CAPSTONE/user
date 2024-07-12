@@ -4,22 +4,25 @@ import { promptForEnableLocationIfNeeded } from "react-native-android-location-e
 import { useNavigation } from "@react-navigation/native";
 import { Linking, Alert } from "react-native";
 
+/**
+ * @returns {Object} An object containing user location.
+ */
 const useLocation = () => {
   const [userLocation, setUserLocation] = useState({});
   const navigation = useNavigation();
 
-  //On first screen load ask user permision to access their location
+  // On first screen load ask user permision to access their location
   useEffect(() => {
     (async () => {
       try {
-        //Ask permision to access location
+        // Ask permision to access location
         let { status } = await Location.requestForegroundPermissionsAsync();
 
-        //if permision is not granted display warning
+        // If permision is not granted display warning
         if (status !== "granted") {
           Alert.alert(
-            "Warning: Permission to access location denied",
-            "You cannot access this feature because you deny the permision. Please go to the app setting and change the Location permision to access this feature.",
+            "Permission Denied",
+            "You cannot access this feature because you denied the permision request. Please go to the app setting and change the Location permision to access this feature.",
             [
               {
                 text: "Open Settings",
@@ -38,8 +41,8 @@ const useLocation = () => {
           return;
         }
 
-        //listen to user location to track user location changes
-        foregroundSubscrition = await Location.watchPositionAsync(
+        // Listen to user location to track user location changes
+        const foregroundSubscrition = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.High,
             distanceInterval: 10,
@@ -52,8 +55,10 @@ const useLocation = () => {
             setUserLocation(coordinate);
           }
         );
+        return () => foregroundSubscrition.remove();
       } catch (error) {
         if (error.code == "ERR_LOCATION_SETTINGS_UNSATISFIED") {
+          // Display warning alert
           Alert.alert(
             "Warning: Location not enabled",
             "To access this feature your location should be turned on.",
@@ -76,7 +81,9 @@ const useLocation = () => {
     })();
   }, []);
 
-  //Ask user to enable location
+  /**
+   * Ask user to enable location.
+   */
   async function handleEnabledPressed() {
     try {
       const enableResult = await promptForEnableLocationIfNeeded();
@@ -87,6 +94,7 @@ const useLocation = () => {
     } catch (error) {
       if (error instanceof Error) {
         if (error.code == "EUNSPECIFIED") {
+          // Display warning alert
           Alert.alert(
             `Warning: `,
             "You still reject to turn on your location. Please restart the application.",

@@ -1,26 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme, TouchableRipple, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+import useImagePicker from "../../hooks/useImagePicker";
 
 const EditUserProfileCard = ({ name, image, setImage }) => {
   const theme = useTheme();
   const firstNameInitial = name[0];
 
-  // action for selecting image in the users device
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
+  const { pickImage } = useImagePicker();
 
   // The button for opening image library to select image
   // it is the camera icon button
@@ -34,7 +21,7 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
           bottom: 5,
           right: 5,
         }}
-        onPress={pickImage}
+        onPress={() => pickImage(setImage)}
       >
         <View
           style={{

@@ -1,6 +1,7 @@
-import { StyleSheet, ScrollView, View, Alert } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { StyleSheet, ScrollView, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import { useState } from "react";
+
 import FormHeader from "../../components/common/FormHeader";
 import { TextFormField } from "../../components/ui/FormField";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -9,64 +10,61 @@ import useSendToken from "../../hooks/useSendToken";
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
 
+/**
+ * ForgotPasswordScreen component
+ *
+ * where the user can enter their email and request a password reset token.
+ * It also handles the form validation and submission.
+ */
 const ForgotPasswordScreen = () => {
   const theme = useTheme();
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { errors, setErrors, process } = useSendToken(email, true);
-  const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail);
 
-  /*
-   *
+  const [email, setEmail] = useState(""); 
+  const [loading, setLoading] = useState(false); 
+
+  
+  const { errors, setErrors, process } = useSendToken(email, true); // Hook for sending password reset token
+  const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail); 
+
+  /**
    * Form Validation
    *
+   * This function validates the email field and sets error messages if necessary.
+   * It returns true if the form is valid, false otherwise.
+   *
+   * @return {boolean} - True if the form is valid, false otherwise.
    */
   const validateForm = () => {
-    let errors = {};
+    const errors = {};
 
-    // Validate email field if it is empty
-    if (!email) {
-      errors.email = "Email is required.";
-    }
+    if (!email) errors.email = "Email is required.";
+    // Check if email is valid
+    if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Invalid Email";
 
-    //check if email has @ and .com
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Invalid Email";
-    }
-
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
-    // return true if there is no error
-    // false if error length is greater than zero
+    // Return true if there are no errors, false otherwise
     return Object.keys(errors).length === 0;
   };
 
-  /*
-   *
-   *  Handle submission for forgot password
-   *
+  /**
+   * This function handles the form submission for forgot password.
    */
   const handleSubmit = async () => {
     setLoading(true);
 
-    // add email as a global prop
+    // Add email as a global prop
     setResetEmail(email);
 
-    //validateForm will return true if there is no error
     const isFormValid = validateForm();
 
     if (isFormValid) {
       try {
-        //! check in the bystander table if the provided email is registered
-        const { data } = await supabase
-          .from("bystander")
-          .select()
-          .eq("email", email);
+        const { data } = await supabase.from("bystander").select().eq("email", email);
 
-        //! check if data is an array and has at least one element
+        // Check if data is an array and has at least one element
         if (Array.isArray(data) && data.length > 0) {
-          process(); //! call the process form the useSendToken hook for sending token to the provided email
+          process(); // Call the process function from the useSendToken hook for sending token to the provided email
         } else {
           let errors = {};
           errors.email = "Account not found.";
