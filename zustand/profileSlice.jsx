@@ -18,7 +18,6 @@ export const createProfileSlice = (set) => ({
   currentThemeStatus: themeStatus.light,
   verificationForm: DEFAULT_VERIFICATION_FORM,
   profilePicturePath: null,
-  profilePictureBase64: null,
   setVerificationForm: (key, newValue) =>
     set((state) => ({
       verificationForm: { ...state.verificationForm, [key]: newValue },
@@ -36,5 +35,4 @@ export const createProfileSlice = (set) => ({
     }
   },
   setProfilePicturePath: (state) => set({ profilePicturePath: state }),
-  setProfilePictureBase64: (state) => set({ profilePictureBase64: state })
 })
