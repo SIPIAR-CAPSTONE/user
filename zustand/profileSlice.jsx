@@ -35,4 +35,5 @@ export const createProfileSlice = (set) => ({
     }
   },
   setProfilePicturePath: (state) => set({ profilePicturePath: state }),
+  removeProfilePicturePath: () => set({ profilePicturePath: null }),
 })

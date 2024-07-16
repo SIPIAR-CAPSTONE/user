@@ -30,9 +30,9 @@ const ProfileScreen = () => {
   const removeSession = useBoundStore((state) => state.removeSession)
   const largeSecureStore = new LargeSecureStore()
   const { removeState } = useUserMetadata()
-  const globalStateProfilePath = useBoundStore(
-    (state) => state.profilePicturePath,
-  )
+  const globalStateProfilePath = useBoundStore((state) => state.profilePicturePath)
+  const removeProfilePicturePath = useBoundStore((state) => state.removeProfilePicturePath)
+
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut()
@@ -45,6 +45,12 @@ const ProfileScreen = () => {
 
       //! remove global state variable
       removeState()
+
+      //! remove profile picture in local storage
+      await FileSystem.deleteAsync(globalStateProfilePath);
+
+      //! remove profile picture global variable
+      removeProfilePicturePath()
     }
   }
 
