@@ -6,11 +6,16 @@ import SectionItem from '../../../components/profile/SectionItem'
 import EditButton from '../../../components/profile/EditButton'
 import StatusBar from '../../../components/common/StatusBar'
 import useBoundStore from '../../../zustand/useBoundStore'
+import { useState } from "react";
+import useImageReader from "../../../hooks/useImageReader";
 
 const MyAccountScreen = () => {
   const theme = useTheme()
   const userMetaData = useBoundStore((state) => state.userMetaData)
-  const globalStateProfilePath = useBoundStore((state) => state.profilePicturePath)
+
+  //! retrieve profile picture upon screen load
+  const [profilePictureUri, setProfilePictureUri] = useState(null);
+  useImageReader(setProfilePictureUri)
 
   //! format date to string (ex.july 1, 2024)
   const formatDate = (date) => {
@@ -69,7 +74,7 @@ const MyAccountScreen = () => {
         ListHeaderComponentStyle={styles.listHeaderContainer}
         ListHeaderComponent={
           <UserProfileCard
-            imageSource={globalStateProfilePath}
+            imageSource={profilePictureUri}
             name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
             email={userMetaData['email']}
             renderFooter={() => <EditButton />}

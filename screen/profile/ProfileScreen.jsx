@@ -1,7 +1,7 @@
 import { View, StyleSheet, ScrollView } from 'react-native'
 import { useTheme, Text } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
-import { useEffect, useRef } from 'react'
+import { useRef, useState } from 'react'
 import StatusBar from '../../components/common/StatusBar'
 import ListItem from '../../components/ui/ListItem'
 import VerifiedIndicator from '../../components/profile/VerifiedIndicator'
@@ -14,6 +14,7 @@ import { LargeSecureStore } from '../../utils/SecureLocalStorage'
 import useBoundStore from '../../zustand/useBoundStore'
 import useUserMetadata from '../../hooks/useUserMetadata'
 import * as FileSystem from 'expo-file-system'
+import useImageReader from "../../hooks/useImageReader";
 
 /**
  * Profile screen component
@@ -30,10 +31,15 @@ const ProfileScreen = () => {
   const removeSession = useBoundStore((state) => state.removeSession)
   const largeSecureStore = new LargeSecureStore()
   const { removeState } = useUserMetadata()
-  const globalStateProfilePath = useBoundStore((state) => state.profilePicturePath)
   const removeProfilePicturePath = useBoundStore((state) => state.removeProfilePicturePath)
+  const globalStateProfilePath = useBoundStore(
+    (state) => state.profilePicturePath,
+  )
 
-
+  //! retrieve profile picture upon screen load
+  const [profilePictureUri, setProfilePictureUri] = useState(null);
+  useImageReader(setProfilePictureUri)
+  
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut()
 
@@ -79,7 +85,7 @@ const ProfileScreen = () => {
       <UserProfileCard
         name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
         email={userMetaData['email']}
-        imageSource={globalStateProfilePath}
+        imageSource={profilePictureUri}
         renderFooter={() => (
           <VerifiedIndicator
             isVerified={false}
