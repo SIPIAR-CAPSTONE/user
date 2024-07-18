@@ -1,7 +1,6 @@
 import { View, ScrollView } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { useState, lazy, useRef, useEffect } from 'react'
-
+import { useState, lazy, useRef } from 'react'
 import StatusBar from '../../../components/common/StatusBar'
 import PrimaryButton from '../../../components/ui/PrimaryButton'
 import cdoBarangayData from '../../../utils/cdoBarangayData'
@@ -17,6 +16,7 @@ import useBoundStore from '../../../zustand/useBoundStore'
 import { useNavigation } from '@react-navigation/native'
 import useUserMetadata from '../../../hooks/useUserMetadata'
 import { decode } from 'base64-arraybuffer'
+import useImageReader from '../../../hooks/useImageReader'
 const ConfirmationDialog = lazy(() =>
   import('../../../components/ui/ConfirmationDialog'),
 )
@@ -28,17 +28,16 @@ const EditProfileScreen = () => {
   const navigation = useNavigation()
   const { setState } = useUserMetadata()
 
-  //! settter and getter for global state profile path variable
-  const setglobalStateProfilePath = useBoundStore((state) => state.setProfilePicturePath)
-  const globalStateProfilePath = useBoundStore((state) => state.profilePicturePath)
+  //! settter for global state profile path variable
+  const setglobalStateProfilePath = useBoundStore(
+    (state) => state.setProfilePicturePath,
+  )
 
   //!access base 64 formatted image
   const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat)
 
-  //!set global state path to localstate
-  useEffect(() => {
-    setProfilePicture(globalStateProfilePath)
-  }, [])
+  //! retrieve dafault profile picture
+  useImageReader(setProfilePicture)
 
   //! format date to yy-mm-dd (remove trails ex. T:14:00:08)
   const date = new Date(userMetaData['birthday'])
@@ -98,7 +97,7 @@ const EditProfileScreen = () => {
     const { error } = await supabase.storage
       .from('bystander')
       .upload(
-        `profile_picture/${userMetaData['email']}.jpeg`,
+        `profile_picture/${userMetaData['email']}`,
         decode(base64ImageFormat),
         {
           contentType: 'image/*',
