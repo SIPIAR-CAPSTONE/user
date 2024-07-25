@@ -1,68 +1,67 @@
-import { SectionList, StyleSheet } from 'react-native'
-import { Divider, useTheme } from 'react-native-paper'
-import UserProfileCard from '../../../components/profile/UserProfileCard'
-import SectionHeader from '../../../components/profile/SectionHeader'
-import SectionItem from '../../../components/profile/SectionItem'
-import EditButton from '../../../components/profile/EditButton'
-import StatusBar from '../../../components/common/StatusBar'
-import useBoundStore from '../../../zustand/useBoundStore'
-import { useState } from "react";
+import { SectionList, StyleSheet } from "react-native";
+import { Divider, useTheme } from "react-native-paper";
+import UserProfileCard from "../../../components/profile/UserProfileCard";
+import SectionHeader from "../../../components/profile/SectionHeader";
+import SectionItem from "../../../components/profile/SectionItem";
+import EditButton from "../../../components/profile/EditButton";
+import StatusBar from "../../../components/common/StatusBar";
+import useBoundStore from "../../../zustand/useBoundStore";
+import { useMemo, useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
 
 const MyAccountScreen = () => {
-  const theme = useTheme()
-  const userMetaData = useBoundStore((state) => state.userMetaData)
+  const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const userMetaData = useBoundStore((state) => state.userMetaData);
 
   //! retrieve profile picture upon screen load
   const [profilePictureUri, setProfilePictureUri] = useState(null);
-  useImageReader(setProfilePictureUri)
+  useImageReader(setProfilePictureUri);
 
   //! format date to string (ex.july 1, 2024)
   const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  }
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
-  const date = new Date(userMetaData['birthday'])
-  const formattedDate = formatDate(date)
+  const date = new Date(userMetaData["birthday"]);
+  const formattedDate = formatDate(date);
 
   //! array template for UI rendering
   const SAMPLE_USER_DATA = [
     {
-      title: 'Personal Information',
+      title: "Personal Information",
       data: [
-        { label: 'First Name', value: userMetaData['firstName'] },
-        { label: 'Middle Name', value: userMetaData['middleName'] },
-        { label: 'Last Name', value: userMetaData['lastName'] },
-        { label: 'Suffix', value: userMetaData['suffix'] },
-        { label: 'Birthday', value: formattedDate },
-        { label: 'Phone', value: userMetaData['phone'] },
+        { label: "First Name", value: userMetaData["firstName"] },
+        { label: "Middle Name", value: userMetaData["middleName"] },
+        { label: "Last Name", value: userMetaData["lastName"] },
+        { label: "Suffix", value: userMetaData["suffix"] },
+        { label: "Birthday", value: formattedDate },
+        { label: "Phone", value: userMetaData["phone"] },
       ],
     },
     {
-      title: 'Address',
+      title: "Address",
       data: [
-        { label: 'Barangay', value: userMetaData['barangay'] },
-        { label: 'Street', value: userMetaData['street'] },
-        { label: 'House Number', value: userMetaData['houseNumber'] },
+        { label: "Barangay", value: userMetaData["barangay"] },
+        { label: "Street", value: userMetaData["street"] },
+        { label: "House Number", value: userMetaData["houseNumber"] },
       ],
     },
-  ]
+  ];
 
   const renderItem = ({ item }) => (
     <SectionItem label={item.label} value={item.value} />
-  )
+  );
 
   const renderSectionHeader = ({ section: { title } }) => (
     <SectionHeader title={title} />
-  )
+  );
 
-  const renderItemSeperator = () => (
-    <Divider style={{ marginHorizontal: theme.padding.body.horizontal }} />
-  )
+  const renderItemSeperator = () => <Divider style={styles.divider} />;
 
   return (
     <>
@@ -75,24 +74,31 @@ const MyAccountScreen = () => {
         ListHeaderComponent={
           <UserProfileCard
             imageSource={profilePictureUri}
-            name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
-            email={userMetaData['email']}
+            name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
+            email={userMetaData["email"]}
             renderFooter={() => <EditButton />}
           />
         }
         ItemSeparatorComponent={renderItemSeperator}
-        contentContainerStyle={{ paddingVertical: theme.padding.body.vertical }}
+        contentContainerStyle={styles.contentContainer}
       />
 
       <StatusBar />
     </>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
-  listHeaderContainer: {
-    marginBottom: 16,
-  },
-})
+const makeStyles = ({ padding }) =>
+  StyleSheet.create({
+    contentContainer: {
+      paddingVertical: padding.body.vertical,
+    },
+    divider: {
+      marginHorizontal: padding.body.horizontal,
+    },
+    listHeaderContainer: {
+      marginBottom: 16,
+    },
+  });
 
-export default MyAccountScreen
+export default MyAccountScreen;

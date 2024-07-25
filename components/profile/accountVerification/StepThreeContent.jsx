@@ -5,11 +5,12 @@ import { AntDesign } from "@expo/vector-icons";
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
-import { Fragment, useState, lazy } from "react";
+import { Fragment, useState, lazy, useMemo } from "react";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 
 const StepThreeContent = ({ goNextStep }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -19,10 +20,7 @@ const StepThreeContent = ({ goNextStep }) => {
         size="small"
         title={item.title}
         roundness={0}
-        contentContainerStyle={{
-          backgroundColor: theme.colors.background,
-          paddingEnd: 1,
-        }}
+        contentContainerStyle={styles.listItem}
         renderActionIcon={() => <NextActionIcon />}
         onPress={() => {
           setSelectedId(item);
@@ -70,23 +68,18 @@ const StepThreeContent = ({ goNextStep }) => {
 // Secondary heading local component for the second heading
 const SecondaryHeader = (props) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const { title, desc } = props;
 
   return (
     <View style={styles.headerSecondContent}>
       <View style={styles.titleContainer}>
-        <Text
-          style={[styles.title, { color: theme.colors.typography.primary }]}
-          variant="titleLarge"
-        >
+        <Text style={styles.title} variant="titleLarge">
           {title}
         </Text>
         <AntDesign name="idcard" size={33} color={theme.colors.primary} />
       </View>
-      <Text
-        style={[styles.desc, { color: theme.colors.typography.secondary }]}
-        variant="bodyMedium"
-      >
+      <Text style={styles.desc} variant="bodyMedium">
         {desc}
       </Text>
     </View>
@@ -95,27 +88,36 @@ const SecondaryHeader = (props) => {
 
 export default StepThreeContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-    height: 600,
-  },
-  headerSecondContent: {
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  divider: {
-    marginVertical: 8,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  title: {
-    fontWeight: "bold",
-  },
-});
+const makeStyles = ({ colors }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      height: 600,
+    },
+    listItem: {
+      backgroundColor: colors.background,
+      paddingEnd: 1,
+    },
+    headerSecondContent: {
+      marginTop: 10,
+      marginBottom: 20,
+    },
+    divider: {
+      marginVertical: 8,
+    },
+    titleContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    title: {
+      fontWeight: "bold",
+      color: colors.typography.primary,
+    },
+    desc: {
+      color: colors.typography.secondary,
+    },
+  });
 
 //Data for each id list item
 

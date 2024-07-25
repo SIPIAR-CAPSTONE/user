@@ -1,7 +1,7 @@
 import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
@@ -11,6 +11,7 @@ import useLocation from "../../hooks/useLocation";
 
 const BroadcastScreen = () => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const navigation = useNavigation();
   const [alerts, setAlerts] = useState([]);
   const alertsCount = alerts.length;
@@ -43,20 +44,10 @@ const BroadcastScreen = () => {
   }, []);
 
   const Header = () => (
-    <View
-      style={[styles.header, { marginVertical: theme.margin.heading.vertical }]}
-    >
+    <View style={styles.header}>
       <Text variant="titleMedium">EMERGENCY ALERTS</Text>
-      <View
-        style={[
-          styles.countContainer,
-          {
-            backgroundColor: theme.colors.primary,
-            borderRadius: theme.borderRadius.full,
-          },
-        ]}
-      >
-        <Text variant="labelSmall" style={{ color: theme.colors.onPrimary }}>
+      <View style={styles.countContainer}>
+        <Text variant="labelSmall" style={styles.count}>
           {alertsCount}
         </Text>
       </View>
@@ -97,10 +88,7 @@ const BroadcastScreen = () => {
       renderItem={renderAlertItem}
       ListHeaderComponent={<Header />}
       ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-      contentContainerStyle={{
-        paddingVertical: theme.padding.body.vertical,
-        paddingHorizontal: theme.padding.body.horizontal,
-      }}
+      contentContainerStyle={styles.contentContainer}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -114,20 +102,31 @@ const BroadcastScreen = () => {
 
 export default BroadcastScreen;
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  countContainer: {
-    height: 24,
-    width: 24,
-    marginEnd: 6,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const makeStyles = ({ margin, colors, borderRadius, padding }) =>
+  StyleSheet.create({
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginVertical: margin.heading.vertical,
+    },
+    countContainer: {
+      height: 24,
+      width: 24,
+      marginEnd: 6,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.full,
+    },
+    count: {
+      color: colors.onPrimary,
+    },
+    contentContainer: {
+      paddingVertical: padding.body.vertical,
+      paddingHorizontal: padding.body.horizontal,
+    },
+  });
 
 //!remove this after applying fetching
 const TEMP_ALERTS_DATA = [

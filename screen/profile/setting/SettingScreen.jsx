@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useState, lazy } from "react";
+import { useState, lazy, useMemo } from "react";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
@@ -14,6 +14,7 @@ const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingScreen = () => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
@@ -51,13 +52,7 @@ const SettingScreen = () => {
 
   return (
     <ScrollView
-      contentContainerStyle={[
-        styles.listItems,
-        {
-          paddingVertical: theme.padding.body.vertical,
-          paddingHorizontal: theme.padding.body.horizontal,
-        },
-      ]}
+      contentContainerStyle={styles.listItems}
       showsVerticalScrollIndicator={false}
     >
       {/* Notification */}
@@ -116,9 +111,12 @@ const SettingScreen = () => {
 
 export default SettingScreen;
 
-const styles = StyleSheet.create({
-  listItems: {
-    marginTop: 20,
-    rowGap: 10,
-  },
-});
+const makeStyles = ({ padding }) =>
+  StyleSheet.create({
+    listItems: {
+      marginTop: 20,
+      rowGap: 10,
+      paddingVertical: padding.body.vertical,
+      paddingHorizontal: padding.body.horizontal,
+    },
+  });

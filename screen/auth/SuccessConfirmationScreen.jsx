@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
@@ -16,6 +16,7 @@ import StatusBar from "../../components/common/StatusBar";
  */
 const SuccessConfirmationScreen = ({ route }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const navigation = useNavigation();
   const { title, desc, nextScreen } = route.params;
 
@@ -31,12 +32,7 @@ const SuccessConfirmationScreen = ({ route }) => {
   }, []);
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingHorizontal: theme.padding.body.horizontal },
-      ]}
-    >
+    <View style={styles.container}>
       <Ionicons
         name="checkmark-circle"
         size={100}
@@ -45,10 +41,7 @@ const SuccessConfirmationScreen = ({ route }) => {
       <Text variant="titleLarge" style={styles.title}>
         {title}
       </Text>
-      <Text
-        variant="bodyMedium"
-        style={[styles.desc, { color: theme.colors.typography.secondary }]}
-      >
+      <Text variant="bodyMedium" style={styles.desc}>
         {desc}
       </Text>
 
@@ -59,20 +52,23 @@ const SuccessConfirmationScreen = ({ route }) => {
 
 export default SuccessConfirmationScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 50,
-    rowGap: 10,
-  },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 10,
-  },
-  desc: {
-    textAlign: "center",
-  },
-});
+const makeStyles = ({ colors, padding }) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 50,
+      rowGap: 10,
+      paddingHorizontal: padding.body.horizontal,
+    },
+    title: {
+      fontWeight: "bold",
+      textAlign: "center",
+      marginTop: 10,
+    },
+    desc: {
+      textAlign: "center",
+      color: colors.typography.secondary,
+    },
+  });

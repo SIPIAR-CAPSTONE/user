@@ -1,13 +1,14 @@
 import { StyleSheet, View, TextInput } from "react-native";
 import DatePicker from "react-native-date-picker";
 import { Text, useTheme, TouchableRipple } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Dropdown } from "react-native-element-dropdown";
 import useBoundStore from "../../zustand/useBoundStore";
 
 const TextFormField = (props) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   const { label, error, ...inputProps } = props;
 
@@ -17,22 +18,11 @@ const TextFormField = (props) => {
         {label}
       </Text>
       <TextInput
-        style={[
-          styles.textInput,
-          {
-            borderRadius: theme.borderRadius.xs,
-            borderColor: theme.colors.secondary,
-            color: theme.colors.typography.primary,
-          },
-          error && styles.textInputError,
-        ]}
+        style={[styles.textInput, error && styles.textInputError]}
         {...inputProps}
       />
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -43,6 +33,7 @@ const TextFormField = (props) => {
 const SelectFormField = (props) => {
   const { onChange, items, label, value, error, ...inputProps } = props;
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <View>
@@ -60,37 +51,21 @@ const SelectFormField = (props) => {
           <AntDesign name="caretdown" size={10} color="darkgray" />
         )}
         activeColor={theme.colors.secondary}
-        containerStyle={{
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.outline,
-        }}
-        placeholderStyle={{
-          fontSize: theme.fontSize.sm,
-          color: "darkgray",
-        }}
-        selectedTextStyle={{
-          fontSize: theme.fontSize.sm,
-          color: theme.colors.typography.primary,
-        }}
-        itemTextStyle={{
-          fontSize: theme.fontSize.sm,
-          color: theme.colors.typography.primary,
-        }}
+        containerStyle={styles.dropdownContainer}
+        placeholderStyle={styles.dropdownPlaceholder}
+        selectedTextStyle={styles.dropdownText}
+        itemTextStyle={styles.dropdownText}
         style={[
           error && styles.textInputError,
           styles.textInput,
           {
-            borderRadius: theme.borderRadius.xs,
-            borderColor: theme.colors.secondary,
+            color: theme.colors.text,
           },
         ]}
         {...inputProps}
       />
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -100,6 +75,7 @@ const SelectFormField = (props) => {
 
 const BirthdayFormField = (props) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   const { label, error, setDate, givenDate } = props;
   const [open, setOpen] = useState(false);
@@ -143,23 +119,14 @@ const BirthdayFormField = (props) => {
         style={[
           error && styles.textInputError,
           styles.textInput,
-          {
-            justifyContent: "center",
-            borderColor: theme.colors.secondary,
-            borderRadius: theme.borderRadius.xs,
-          },
+          styles.birthdayFormField,
         ]}
         onPress={() => setOpen(true)}
       >
-        <Text style={{ color: theme.colors.typography.primary }}>
-          {formattedDate}
-        </Text>
+        <Text style={styles.birthdayDate}>{formattedDate}</Text>
       </TouchableRipple>
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -169,24 +136,49 @@ const BirthdayFormField = (props) => {
 
 export { TextFormField, BirthdayFormField, SelectFormField };
 
-const styles = StyleSheet.create({
-  label: {
-    fontWeight: "bold",
-    marginBottom: 4,
-    marginTop: 12,
-  },
-  textInput: {
-    height: 46,
-    paddingHorizontal: 14,
-    borderWidth: 1,
-  },
-  textInputError: {
-    borderWidth: 1.5,
-    borderColor: "red",
-  },
-  errorLabel: {
-    paddingStart: 14,
-    paddingTop: 4,
-    marginBottom: 4,
-  },
-});
+const makeStyles = ({ colors, fontSize, borderRadius }) =>
+  StyleSheet.create({
+    label: {
+      fontWeight: "bold",
+      marginBottom: 4,
+      marginTop: 12,
+    },
+    textInput: {
+      height: 46,
+      paddingHorizontal: 14,
+      borderWidth: 1,
+      borderRadius: borderRadius.xs,
+      borderColor: colors.secondary,
+      color: colors.typography.primary,
+    },
+    textInputError: {
+      borderWidth: 1.5,
+      borderColor: "red",
+    },
+    errorLabel: {
+      paddingStart: 14,
+      paddingTop: 4,
+      marginBottom: 4,
+    },
+    dropdownContainer: {
+      backgroundColor: colors.background,
+      borderColor: colors.outline,
+    },
+    dropdownPlaceholder: {
+      fontSize: fontSize.sm,
+      color: "darkgray",
+    },
+    dropdownText: {
+      fontSize: fontSize.sm,
+      color: colors.typography.primary,
+    },
+    birthdayFormField: {
+      justifyContent: "center",
+    },
+    birthdayLabel: {
+      color: colors.typography.secondary,
+    },
+    birthdayDate: {
+      color: colors.typography.primary,
+    },
+  });
