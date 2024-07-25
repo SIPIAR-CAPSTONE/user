@@ -2,9 +2,11 @@ import { Alert, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+import useBoundStore from "../zustand/useBoundStore";
 
 const useImagePicker = () => {
   const navigation = useNavigation();
+  const setBase64ImageFormat = useBoundStore((state) => state.setBase64ImageFormat)
 
   // On first screen load ask user permision to access their camera
   useEffect(() => {
@@ -57,8 +59,9 @@ const useImagePicker = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true
     });
-
+    setBase64ImageFormat(result.assets[0].base64)
     if (!result.canceled) {
       setImageCallBack(result.assets[0].uri);
     }
