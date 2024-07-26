@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -9,7 +9,7 @@ import useBoundStore from "../../../zustand/useBoundStore";
 
 const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
-
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -69,8 +69,7 @@ const StepOneContent = ({ goNextStep }) => {
 
   return (
     <View style={styles.container}>
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+      <View style={styles.form}>
         <FormHeader
           title="Confirm if your information is correct"
           desc="Only provide information that is true and correct."
@@ -113,11 +112,10 @@ const StepOneContent = ({ goNextStep }) => {
           error={errors.phone}
         />
 
-        {/* Submit or Next Button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.nextButton}
         />
       </View>
     </View>
@@ -126,11 +124,16 @@ const StepOneContent = ({ goNextStep }) => {
 
 export default StepOneContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  button: {
-    marginVertical: 20,
-  },
-});
+const makeStyles = ({ gap, borderRadius }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: borderRadius.base,
+    },
+  });

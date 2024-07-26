@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useBoundStore from "../../../zustand/useBoundStore";
 
 import { TextFormField, SelectFormField } from "../../ui/FormField";
@@ -10,7 +10,7 @@ import FormHeader from "../../common/FormHeader";
 
 const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
-
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
@@ -58,8 +58,7 @@ const StepTwoContent = ({ goNextStep }) => {
 
   return (
     <View style={styles.container}>
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+      <View style={styles.form}>
         <FormHeader
           title="Please provide your current address"
           desc="Only provide information that is true and correct."
@@ -84,11 +83,10 @@ const StepTwoContent = ({ goNextStep }) => {
           error={errors.houseNumber}
         />
 
-        {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.nextButton}
         />
       </View>
     </View>
@@ -97,15 +95,20 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-    height: 600,
-  },
-  header: {
-    marginVertical: 20,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ borderRadius, gap }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      height: 600,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    header: {
+      marginVertical: 20,
+    },
+    nextButton: {
+      marginTop: 20,
+      borderRadius: borderRadius.base,
+    },
+  });

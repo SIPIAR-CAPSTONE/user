@@ -1,12 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 import { LargeSecureStore } from "../SecureLocalStorage";
-import 'react-native-url-polyfill/auto'
-import { SUPABASE_API_KEY } from '@env'
+import "react-native-url-polyfill/auto";
+import { SUPABASE_API_KEY } from "@env";
 
 // TODO: SOON
 //! as of now, the repo is private, consider using environment variables for future deployment
 const supabaseUrl = "https://rdoshowgrmvpotygauvz.supabase.co";
-const supabaseAnonKey = SUPABASE_API_KEY
+const supabaseAnonKey = SUPABASE_API_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
@@ -17,4 +17,4 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
 });
 
-export { supabase }
+export { supabase };

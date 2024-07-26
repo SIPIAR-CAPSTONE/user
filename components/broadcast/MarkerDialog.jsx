@@ -21,6 +21,9 @@ const MarkerDialog = ({
   selectedMarker,
   userLocation,
 }) => {
+  const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
+
   // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
   const FULL_NAME = `${selectedMarker?.first_name} ${selectedMarker?.last_name}`;
   const name = useMemo(
@@ -109,39 +112,19 @@ const MarkerDialog = ({
  */
 const InfoField = ({ icon, label, value, colors }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <View style={styles.infoField}>
-      {/* Container for the icon */}
-      <View
-        style={[
-          styles.iconContainer,
-          {
-            backgroundColor: colors.background,
-            borderRadius: theme.borderRadius.full,
-          },
-        ]}
-      >
+      <View style={styles.iconContainer}>
         <Feather name={icon} size={18} color={colors.color} />
       </View>
       {/* Container for the label and value */}
       <View>
-        <Text
-          style={[
-            styles.fieldValue,
-            { color: theme.colors.typography.primary },
-          ]}
-          variant="titleMedium"
-        >
+        <Text style={styles.fieldValue} variant="titleMedium">
           {value}
         </Text>
-        <Text
-          style={[
-            styles.fieldLabel,
-            { color: theme.colors.typography.secondary },
-          ]}
-          variant="bodySmall"
-        >
+        <Text style={styles.fieldLabel} variant="bodySmall">
           {label}
         </Text>
       </View>
@@ -151,27 +134,32 @@ const InfoField = ({ icon, label, value, colors }) => {
 
 export default MarkerDialog;
 
-const styles = StyleSheet.create({
-  title: {
-    fontWeight: "bold",
-  },
-  infoFieldsContainer: {
-    marginTop: 10,
-    rowGap: 12,
-  },
-  infoField: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 12,
-  },
-  iconContainer: {
-    backgroundColor: "red",
-    padding: 14,
-  },
-  fieldValue: {
-    height: 25,
-  },
-  fieldLabel: {
-    height: 22,
-  },
-});
+const makeStyles = ({ colors, borderRadius }) =>
+  StyleSheet.create({
+    title: {
+      fontWeight: "bold",
+    },
+    infoFieldsContainer: {
+      marginTop: 10,
+      rowGap: 12,
+    },
+    infoField: {
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: 12,
+    },
+    iconContainer: {
+      backgroundColor: "red",
+      padding: 14,
+      backgroundColor: colors.background,
+      borderRadius: borderRadius.full,
+    },
+    fieldValue: {
+      height: 25,
+      color: colors.typography.primary,
+    },
+    fieldLabel: {
+      height: 22,
+      color: colors.typography.secondary,
+    },
+  });

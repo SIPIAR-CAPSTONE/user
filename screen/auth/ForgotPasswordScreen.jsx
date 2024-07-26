@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
 import { TextFormField } from "../../components/ui/FormField";
@@ -18,13 +18,13 @@ import useBoundStore from "../../zustand/useBoundStore";
  */
 const ForgotPasswordScreen = () => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
-  const [email, setEmail] = useState(""); 
-  const [loading, setLoading] = useState(false); 
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  
   const { errors, setErrors, process } = useSendToken(email, true); // Hook for sending password reset token
-  const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail); 
+  const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail);
 
   /**
    * Form Validation
@@ -38,18 +38,13 @@ const ForgotPasswordScreen = () => {
     const errors = {};
 
     if (!email) errors.email = "Email is required.";
-    // Check if email is valid
     if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Invalid Email";
 
     setErrors(errors);
 
-    // Return true if there are no errors, false otherwise
     return Object.keys(errors).length === 0;
   };
 
-  /**
-   * This function handles the form submission for forgot password.
-   */
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -60,7 +55,10 @@ const ForgotPasswordScreen = () => {
 
     if (isFormValid) {
       try {
-        const { data } = await supabase.from("bystander").select().eq("email", email);
+        const { data } = await supabase
+          .from("bystander")
+          .select()
+          .eq("email", email);
 
         // Check if data is an array and has at least one element
         if (Array.isArray(data) && data.length > 0) {
@@ -80,15 +78,8 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <ScrollView
-      style={[
-        styles.container,
-        {
-          paddingHorizontal: theme.padding.body.horizontal,
-        },
-      ]}
-    >
-      <View style={{ rowGap: theme.gap.lg }}>
+    <ScrollView style={styles.container}>
+      <View style={styles.form}>
         <FormHeader
           title="Forgot Password"
           titleSize="large"
@@ -106,7 +97,7 @@ const ForgotPasswordScreen = () => {
           label="Send Token"
           onPress={handleSubmit}
           disabled={loading}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.button}
         />
       </View>
 
@@ -117,11 +108,17 @@ const ForgotPasswordScreen = () => {
 
 export default ForgotPasswordScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ borderRadius, padding, gap }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: padding.body.horizontal,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    button: {
+      marginTop: 20,
+      borderRadius: borderRadius.base,
+    },
+  });

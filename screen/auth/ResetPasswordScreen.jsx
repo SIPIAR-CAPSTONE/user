@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
@@ -11,6 +11,7 @@ import { supabase } from "../../utils/supabase/config";
 
 const ResetPasswordScreen = () => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -80,20 +81,16 @@ const ResetPasswordScreen = () => {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { paddingHorizontal: theme.padding.body.horizontal },
-      ]}
-    >
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+    <View style={styles.container}>
+      <View style={styles.form}>
         <FormHeader
           title="Reset Password"
           titleSize="large"
           desc="Set your new password for your account"
         />
+
         <View style={{ height: 16 }} />
+
         <PasswordFormField
           label="New Password"
           value={newPassword}
@@ -114,7 +111,7 @@ const ResetPasswordScreen = () => {
           label="Next"
           onPress={handleSubmit}
           disabled={loading}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.button}
         />
       </View>
 
@@ -125,11 +122,17 @@ const ResetPasswordScreen = () => {
 
 export default ResetPasswordScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ borderRadius, padding, gap }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: padding.body.horizontal,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    button: {
+      marginTop: 20,
+      borderRadius: borderRadius.base,
+    },
+  });

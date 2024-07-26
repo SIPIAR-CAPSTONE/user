@@ -45,7 +45,7 @@ const MapviewScreen = ({ route }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <>
       <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
@@ -66,19 +66,17 @@ const MapviewScreen = ({ route }) => {
         selectedMarker={selectedAlert}
         userLocation={userLocation}
       />
-    </View>
+    </>
   );
 };
 
 export default MapviewScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   map: {
     width: "100%",
     height: "100%",
+    flex: 1,
   },
 });
 

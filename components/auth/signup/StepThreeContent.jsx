@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import PrimaryButton from "../../ui/PrimaryButton";
 import { PasswordFormField, TextFormField } from "../../ui/FormField";
 import FormHeader from "../../common/FormHeader";
@@ -11,14 +11,13 @@ import useUserMetadata from "../../../hooks/useUserMetadata";
 
 const StepThreeContent = () => {
   const theme = useTheme();
-
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const setSession = useBoundStore((state) => state.setSession);
-  const { setState } = useUserMetadata()
-
+  const { setState } = useUserMetadata();
 
   //! State for UI signup error
   const [signUpError, setSignUpError] = useState("");
@@ -113,15 +112,14 @@ const StepThreeContent = () => {
         await setSession(encryptedSession);
 
         //! set session global state variables
-        setState(data['session'])
+        setState(data["session"]);
       }
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+      <View style={styles.form}>
         <FormHeader
           title="Sign Up"
           titleSize="large"
@@ -151,15 +149,13 @@ const StepThreeContent = () => {
           disabled={loading}
         />
 
-        {/* Server Error */}
-        <Text style={{ color: theme.colors.primary }}>{signUpError}</Text>
+        <Text style={styles.serverErrorMessage}>{signUpError}</Text>
 
-        {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
           disabled={loading}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.nextButton}
         />
       </View>
     </View>
@@ -168,11 +164,19 @@ const StepThreeContent = () => {
 
 export default StepThreeContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ borderRadius, gap, colors }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    serverErrorMessage: {
+      color: colors.primary,
+    },
+    nextButton: {
+      marginTop: 20,
+      borderRadius: borderRadius.base,
+    },
+  });
