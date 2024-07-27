@@ -1,30 +1,39 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useEffect, useState } from "react";
+import { View, StyleSheet } from 'react-native'
+import { useTheme } from 'react-native-paper'
+import { useEffect, useState } from 'react'
 
-import { TextFormField, BirthdayFormField } from "../../ui/FormField";
-import PrimaryButton from "../../ui/PrimaryButton";
-import FormHeader from "../../common/FormHeader";
-import useBoundStore from "../../../zustand/useBoundStore";
+import { TextFormField, BirthdayFormField } from '../../ui/FormField'
+import PrimaryButton from '../../ui/PrimaryButton'
+import FormHeader from '../../common/FormHeader'
+import useBoundStore from '../../../zustand/useBoundStore'
 
 const StepOneContent = ({ goNextStep }) => {
-  const theme = useTheme();
+  const userData = useBoundStore((state) => state.userMetaData)
 
-  const verificationForm = useBoundStore((state) => state.verificationForm);
+  console.log('MEATA DATA FOR USER: ', userData)
+
+  const theme = useTheme()
+
+  const verificationForm = useBoundStore((state) => state.verificationForm)
   const setVerificationForm = useBoundStore(
-    (state) => state.setVerificationForm
-  );
-  const [errors, setErrors] = useState({});
+    (state) => state.setVerificationForm,
+  )
+  const [errors, setErrors] = useState({})
 
   //TODO: diri
   useEffect(() => {
     const fetchData = () => {
       //TODO: e set dayon
-      setVerificationForm();
-    };
+      for (x in userData) {
+        if (x != 'birthday') {
+          setVerificationForm(`${x}`, userData[`${x}`])
+        }
+      }
+      // setVerificationForm('birthday', userData['birthday'])
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   /**
    * Function to validate the form
@@ -33,24 +42,24 @@ const StepOneContent = ({ goNextStep }) => {
    *
    */
   const validateForm = () => {
-    const errors = {};
+    const errors = {}
 
     if (!verificationForm.firstName)
-      errors.firstName = "First Name is required.";
+      errors.firstName = 'First Name is required.'
     if (!verificationForm.middleName)
-      errors.middleName = "Middle Name is required.";
-    if (!verificationForm.lastName) errors.lastName = "Last Name is required.";
-    if (!verificationForm.birthday) errors.birthday = "Birthday is required.";
-    if (!verificationForm.phone) errors.phone = "Phone is required.";
+      errors.middleName = 'Middle Name is required.'
+    if (!verificationForm.lastName) errors.lastName = 'Last Name is required.'
+    if (!verificationForm.birthday) errors.birthday = 'Birthday is required.'
+    if (!verificationForm.phone) errors.phone = 'Phone is required.'
     if (verificationForm.phone.length !== 11)
-      errors.phone = "Phone should have 11 numbers.";
+      errors.phone = 'Phone should have 11 numbers.'
 
-    setErrors(errors);
+    setErrors(errors)
 
     // return true if there is no error
     // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
+    return Object.keys(errors).length === 0
+  }
 
   /*
    *
@@ -59,13 +68,13 @@ const StepOneContent = ({ goNextStep }) => {
    */
   const handleSubmit = () => {
     //validateForm will return true if there is no error
-    const isFormValid = validateForm();
+    const isFormValid = validateForm()
 
     if (isFormValid) {
       //if form is valid go to next step screen
-      goNextStep();
+      goNextStep()
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -78,38 +87,39 @@ const StepOneContent = ({ goNextStep }) => {
         <TextFormField
           label="First Name"
           value={verificationForm.firstName}
-          onChangeText={(value) => setVerificationForm("firstName", value)}
+          onChangeText={(value) => setVerificationForm('firstName', value)}
           error={errors.firstName}
         />
         <TextFormField
           label="Middle Name"
           value={verificationForm.middleName}
-          onChangeText={(value) => setVerificationForm("middleName", value)}
+          onChangeText={(value) => setVerificationForm('middleName', value)}
           error={errors.middleName}
         />
         <TextFormField
           label="Last Name"
           value={verificationForm.lastName}
-          onChangeText={(value) => setVerificationForm("lastName", value)}
+          onChangeText={(value) => setVerificationForm('lastName', value)}
           error={errors.lastName}
         />
         <TextFormField
           label="Suffix"
           value={verificationForm.suffix}
-          onChangeText={(value) => setVerificationForm("suffix", value)}
+          onChangeText={(value) => setVerificationForm('suffix', value)}
           error={errors.suffix}
         />
         <BirthdayFormField
           label="Birthday"
-          date={verificationForm.birthday}
-          setDate={setVerificationForm}
+          givenDate={verificationForm.birthday}
+          // date={verificationForm.birthday}
+          // setDate={setVerificationForm}
           error={errors.birthday}
         />
         <TextFormField
           label="Phone Number"
           inputMode="tel"
           value={verificationForm.phone}
-          onChangeText={(value) => setVerificationForm("phone", value)}
+          onChangeText={(value) => setVerificationForm('phone', value)}
           error={errors.phone}
         />
 
@@ -121,10 +131,10 @@ const StepOneContent = ({ goNextStep }) => {
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default StepOneContent;
+export default StepOneContent
 
 const styles = StyleSheet.create({
   container: {
@@ -133,4 +143,4 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: 20,
   },
-});
+})
