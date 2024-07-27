@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image } from "react-native";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 
 import { Portal, Appbar, useTheme, Text } from "react-native-paper";
@@ -9,25 +9,14 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const bottomSheetRef = useRef(null);
 
   //all instructions in the bottomSheet
   const renderInstructions = InstructionData.map((instruction) => (
     <View key={instruction.id} style={styles.instructionContainer}>
-      <View
-        style={[
-          styles.circularNumber,
-          {
-            backgroundColor: theme.colors.primary,
-            borderRadius: theme.borderRadius.full,
-          },
-        ]}
-      >
-        <Text
-          style={{ color: theme.colors.onPrimary, fontSize: theme.fontSize.xs }}
-        >
-          {instruction.number}
-        </Text>
+      <View style={styles.circularNumber}>
+        <Text style={styles.number}>{instruction.number}</Text>
       </View>
       <Text variant="bodyMedium" style={{ flex: 1 }}>
         {instruction.desc}
@@ -37,22 +26,9 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
   return (
     <Portal>
-      <Appbar.Header
-        style={[
-          styles.customHeader,
-          { backgroundColor: theme.colors.background },
-        ]}
-      >
+      <Appbar.Header style={styles.customHeader}>
         <CircularIcon name="arrow-back" pressable onPress={onClose} />
-        <Text
-          style={{
-            fontWeight: "bold",
-            fontSize: theme.fontSize.lg,
-            color: theme.colors.typography.primary,
-          }}
-        >
-          Select ID
-        </Text>
+        <Text style={styles.headerLabel}>Select ID</Text>
 
         {/* invisible element, just to make the Select ID title center */}
         <View style={{ width: 10 }} />
@@ -60,13 +36,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
       <View style={styles.body}>
         <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: idImageSource }}
-            style={[
-              styles.idSampleImage,
-              { borderRadius: theme.borderRadius.lg },
-            ]}
-          />
+          <Image source={{ uri: idImageSource }} style={styles.idSampleImage} />
         </View>
 
         <BottomSheet ref={bottomSheetRef} snapPoints={["55%"]}>
@@ -77,10 +47,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
                 {idTitle}
               </Text>
             </View>
-            <Text
-              variant="bodyMedium"
-              style={{ color: theme.colors.typography.secondary }}
-            >
+            <Text variant="bodyMedium" style={styles.desc}>
               Make sure to follow these tips!
             </Text>
 
@@ -91,7 +58,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
             <PrimaryButton
               label="Confirm"
               onPress={onConfirmed}
-              style={{ borderRadius: theme.borderRadius.base }}
+              style={styles.confirmButton}
             />
           </BottomSheetView>
         </BottomSheet>
@@ -102,61 +69,81 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
 export default SelectIdModal;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  customHeader: {
-    height: 56,
-    paddingHorizontal: 16,
-    textAlign: "center",
-    justifyContent: "space-between",
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "rgba(1,1,1,0.5)",
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 14,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-    marginBottom: 2,
-  },
-  title: {
-    fontWeight: "bold",
-  },
-  imageContainer: {
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  idSampleImage: {
-    width: 310,
-    height: 190,
-  },
-  instructionsContainer: {
-    rowGap: 10,
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  instructionContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-  },
-  circularNumber: {
-    height: 22,
-    width: 22,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const makeStyles = ({ colors, borderRadius, fontSize }) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    customHeader: {
+      height: 56,
+      paddingHorizontal: 16,
+      textAlign: "center",
+      justifyContent: "space-between",
+      backgroundColor: colors.background,
+    },
+    headerLabel: {
+      fontWeight: "bold",
+      fontSize: fontSize.lg,
+      color: colors.typography.primary,
+    },
+    body: {
+      flex: 1,
+      backgroundColor: "rgba(1,1,1,0.5)",
+    },
+    contentContainer: {
+      flex: 1,
+      paddingHorizontal: 14,
+    },
+    titleContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+      marginBottom: 2,
+    },
+    title: {
+      fontWeight: "bold",
+    },
+    desc: {
+      color: colors.typography.secondary,
+    },
+    imageContainer: {
+      height: "50%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    idSampleImage: {
+      width: 310,
+      height: 190,
+      borderRadius: borderRadius.lg,
+    },
+    instructionsContainer: {
+      rowGap: 10,
+      marginTop: 20,
+      marginBottom: 30,
+    },
+    instructionContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+    },
+    circularNumber: {
+      height: 22,
+      width: 22,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.full,
+    },
+    number: {
+      color: colors.onPrimary,
+      fontSize: fontSize.xs,
+    },
+    confirmButton: {
+      borderRadius: borderRadius.base,
+    },
+  });
 
 const InstructionData = [
   {

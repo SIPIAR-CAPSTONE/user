@@ -2,9 +2,11 @@ import { View, StyleSheet } from "react-native";
 import { useTheme, TouchableRipple, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import useImagePicker from "../../hooks/useImagePicker";
+import { useMemo } from "react";
 
 const EditUserProfileCard = ({ name, image, setImage }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const firstNameInitial = name[0];
 
   const { pickImage } = useImagePicker();
@@ -15,24 +17,10 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
     return (
       <TouchableRipple
         borderless
-        style={{
-          borderRadius: theme.borderRadius.full,
-          position: "absolute",
-          bottom: 5,
-          right: 5,
-        }}
+        style={styles.button}
         onPress={() => pickImage(setImage)}
       >
-        <View
-          style={{
-            backgroundColor: theme.colors.primary,
-            borderRadius: theme.borderRadius.full,
-            height: 30,
-            width: 30,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <View style={styles.icon}>
           <Ionicons
             name="camera-outline"
             size={20}
@@ -59,7 +47,7 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
         <Avatar.Text
           size={124}
           label={firstNameInitial}
-          style={{ backgroundColor: "#FFDDDD" }}
+          style={styles.avatar}
         />
         <SelectImageButton />
       </View>
@@ -75,9 +63,27 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
 
 export default EditUserProfileCard;
 
-const styles = StyleSheet.create({
-  header: {
-    alignItems: "center",
-    paddingVertical: 16,
-  },
-});
+const makeStyles = ({ borderRadius, colors }) =>
+  StyleSheet.create({
+    header: {
+      alignItems: "center",
+      paddingVertical: 16,
+    },
+    button: {
+      borderRadius: borderRadius.full,
+      position: "absolute",
+      bottom: 5,
+      right: 5,
+    },
+    icon: {
+      backgroundColor: colors.primary,
+      borderRadius: borderRadius.full,
+      height: 30,
+      width: 30,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    avatar: {
+      backgroundColor: "#FFDDDD",
+    },
+  });

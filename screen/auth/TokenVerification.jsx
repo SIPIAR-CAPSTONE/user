@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 
 import { TextFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
@@ -12,15 +12,16 @@ import useSendToken from "../../hooks/useSendToken";
 import useBoundStore from "../../zustand/useBoundStore";
 
 const TokenVerification = () => {
-  const theme = useTheme()
-  const navigation = useNavigation()
-  const [isFilled, setIsFilled] = useState(false)
-  const { time, pause } = useCountdown(70) //* it should be 70 constant, this is for interval in supabase
-  const [tokenHash, setTokenHash] = useState('')
-  const [serverError, setServerError] = useState('')
-  const passwordResetEmail = useBoundStore((state) => state.passwordResetEmail)
-  const { process } = useSendToken(passwordResetEmail, false)
-  const hasCalledProcess = useRef(true)
+  const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const navigation = useNavigation();
+  const [isFilled, setIsFilled] = useState(false);
+  const { time, pause } = useCountdown(70); //* it should be 70 constant, this is for interval in supabase
+  const [tokenHash, setTokenHash] = useState("");
+  const [serverError, setServerError] = useState("");
+  const passwordResetEmail = useBoundStore((state) => state.passwordResetEmail);
+  const { process } = useSendToken(passwordResetEmail, false);
+  const hasCalledProcess = useRef(true);
 
   /*
    * if the countdown sets to 0, call the process for sending the token again
@@ -54,22 +55,15 @@ const TokenVerification = () => {
       if (error) {
         setServerError(error);
       } else if (!error) {
-        navigation.navigate('ResetPassword')
-        pause() //* call the pause function to stop the countdown
+        navigation.navigate("ResetPassword");
+        pause(); //* call the pause function to stop the countdown
       }
     }
   };
 
   return (
-    <ScrollView
-      style={[
-        styles.container,
-        {
-          paddingHorizontal: theme.padding.body.horizontal,
-        },
-      ]}
-    >
-      <View style={{ rowGap: theme.gap.lg }}>
+    <ScrollView style={styles.container}>
+      <View style={styles.form}>
         <FormHeader
           title="Enter Your Token"
           titleSize="large"
@@ -82,38 +76,32 @@ const TokenVerification = () => {
           onChangeText={setTokenHash}
         />
 
-        <Text style={{ color: theme.colors.primary }}>{serverError}</Text>
+        <Text style={styles.serverErrorMessage}>{serverError}</Text>
 
         {time === 0 ? (
-          <Text
-            variant="labelLarge"
-            style={{
-              color: theme.colors.primary,
-              textAlign: "center",
-            }}
-          >
+          <Text variant="labelLarge" style={styles.resentMessage}>
             Resent, please wait a while.
           </Text>
         ) : (
-          <ResendCountdown theme={theme} time={time} />
+          <ResendCountdown time={time} styles={styles} />
         )}
 
         <PrimaryButton
           label="Verify"
           onPress={handleSubmit}
           disabled={!isFilled}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.button}
         />
       </View>
     </ScrollView>
   );
 };
 
-const ResendCountdown = ({ time, theme }) => {
+const ResendCountdown = ({ time, styles }) => {
   return (
-    <Text variant="labelMedium" style={{ textAlign: "center" }}>
+    <Text variant="labelMedium" style={styles.timerContainer}>
       Resend Token in{" "}
-      <Text variant="labelLarge" style={{ color: theme.colors.primary }}>
+      <Text variant="labelLarge" style={styles.time}>
         {time}
       </Text>{" "}
       Sec
@@ -123,11 +111,30 @@ const ResendCountdown = ({ time, theme }) => {
 
 export default TokenVerification;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ padding, gap, colors, borderRadius }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: padding.body.horizontal,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    serverErrorMessage: {
+      color: colors.primary,
+    },
+    resentMessage: {
+      color: colors.primary,
+      textAlign: "center",
+    },
+    button: {
+      marginTop: 20,
+      borderRadius: borderRadius.base,
+    },
+    timerContainer: {
+      textAlign: "center",
+    },
+    time: {
+      color: colors.primary,
+    },
+  });

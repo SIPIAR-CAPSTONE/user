@@ -8,7 +8,7 @@ import {
 import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
 import DatePicker from "react-native-date-picker";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useBoundStore from "../../zustand/useBoundStore";
 
 /**
@@ -20,6 +20,7 @@ const SelectFormField = (props) => {
   // Destructure props to get onChange, items, label, value, and error
   const { onChange, items, label, value, error, ...inputProps } = props;
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <View>
@@ -34,37 +35,19 @@ const SelectFormField = (props) => {
           <AntDesign name="caretdown" size={10} color="darkgray" />
         )}
         activeColor={theme.colors.secondary}
-        containerStyle={{
-          backgroundColor: theme.colors.background,
-          borderColor: theme.colors.outline,
-        }}
-        placeholderStyle={{
-          fontSize: theme.fontSize.sm,
-          color: "darkgray",
-        }}
-        selectedTextStyle={{
-          fontSize: theme.fontSize.sm,
-          color: theme.colors.typography.primary,
-        }}
-        itemTextStyle={{
-          fontSize: theme.fontSize.sm,
-          color: theme.colors.typography.primary,
-        }}
+        containerStyle={styles.dropdownContainer}
+        placeholderStyle={styles.dropdownPlaceholder}
+        selectedTextStyle={styles.dropdownText}
+        itemTextStyle={styles.dropdownText}
         style={[
           error && styles.textInputError,
           styles.textInput,
-          {
-            backgroundColor: theme.colors.secondary,
-            borderRadius: theme.borderRadius.md,
-          },
+          { borderRadius: theme.borderRadius.md },
         ]}
         {...inputProps}
       />
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -85,6 +68,7 @@ const SelectFormField = (props) => {
 const BirthdayFormField = (props) => {
   const { label, error, setDate, date, ...inputProps } = props;
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const [open, setOpen] = useState(false);
@@ -115,28 +99,19 @@ const BirthdayFormField = (props) => {
         style={[
           error && styles.textInputError,
           styles.textInput,
-          {
-            justifyContent: "center",
-            backgroundColor: theme.colors.secondary,
-            borderRadius: theme.borderRadius.base,
-          },
+          styles.birthdayFormField,
         ]}
         onPress={() => setOpen(true)}
       >
         <View style={styles.birthdayTextFieldContent}>
-          <Text style={{ color: theme.colors.typography.secondary }}>
-            Birthday
-          </Text>
-          <Text style={{ color: "darkgray" }} variant="bodySmall">
+          <Text style={styles.birthdayLabel}>Birthday</Text>
+          <Text style={styles.birthdayDate} variant="bodySmall">
             {formattedDate}
           </Text>
         </View>
       </TouchableRipple>
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -146,6 +121,7 @@ const BirthdayFormField = (props) => {
 
 const TextFormField = (props) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   const { label, error, disabled, ...inputProps } = props;
 
@@ -155,22 +131,11 @@ const TextFormField = (props) => {
         editable={!disabled}
         placeholder={label}
         placeholderTextColor={theme.colors.typography.secondary}
-        style={[
-          error && styles.textInputError,
-          styles.textInput,
-          {
-            backgroundColor: theme.colors.secondary,
-            borderRadius: theme.borderRadius.base,
-            color: theme.colors.typography.primary,
-          },
-        ]}
+        style={[error && styles.textInputError, styles.textInput]}
         {...inputProps}
       />
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -180,6 +145,7 @@ const TextFormField = (props) => {
 
 const PasswordFormField = (props) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
 
   const { label, error, disabled, ...inputProps } = props;
   const [toggleEye, setToggleEye] = useState(false);
@@ -190,16 +156,7 @@ const PasswordFormField = (props) => {
 
   const ToggleEyeIcon = () => {
     return (
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.toggleEye}>
         {toggleEye ? (
           <IconButton
             onPress={handleToggle}
@@ -227,24 +184,13 @@ const PasswordFormField = (props) => {
           placeholderTextColor={theme.colors.typography.secondary}
           editable={!disabled}
           secureTextEntry={!toggleEye}
-          style={[
-            error && styles.textInputError,
-            styles.textInput,
-            {
-              backgroundColor: theme.colors.secondary,
-              borderRadius: theme.borderRadius.base,
-              color: theme.colors.typography.primary,
-            },
-          ]}
+          style={[error && styles.textInputError, styles.textInput]}
           {...inputProps}
         />
         <ToggleEyeIcon />
       </View>
       {error && (
-        <Text
-          variant="bodySmall"
-          style={[styles.errorLabel, { color: theme.colors.primary }]}
-        >
+        <Text variant="bodySmall" style={styles.errorLabel}>
           {error}
         </Text>
       )}
@@ -254,23 +200,57 @@ const PasswordFormField = (props) => {
 
 export { TextFormField, BirthdayFormField, SelectFormField, PasswordFormField };
 
-const styles = StyleSheet.create({
-  textInput: {
-    height: 54,
-    padding: 14,
-  },
-  textInputError: {
-    borderWidth: 1.5,
-    borderColor: "red",
-  },
-  errorLabel: {
-    paddingStart: 14,
-    paddingTop: 4,
-    marginBottom: 4,
-  },
-  birthdayTextFieldContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-});
+const makeStyles = ({ colors, borderRadius, fontSize }) =>
+  StyleSheet.create({
+    textInput: {
+      height: 54,
+      padding: 14,
+      backgroundColor: colors.secondary,
+      borderRadius: borderRadius.base,
+      color: colors.typography.primary,
+    },
+    textInputError: {
+      borderWidth: 1.5,
+      borderColor: "red",
+    },
+    errorLabel: {
+      paddingStart: 14,
+      paddingTop: 4,
+      marginBottom: 4,
+      color: colors.primary,
+    },
+    dropdownContainer: {
+      backgroundColor: colors.background,
+      borderColor: colors.outline,
+    },
+    dropdownPlaceholder: {
+      fontSize: fontSize.sm,
+      color: "darkgray",
+    },
+    dropdownText: {
+      fontSize: fontSize.sm,
+      color: colors.typography.primary,
+    },
+    birthdayTextFieldContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    birthdayFormField: {
+      justifyContent: "center",
+    },
+    birthdayLabel: {
+      color: colors.typography.secondary,
+    },
+    birthdayDate: {
+      color: "darkgray",
+    },
+    toggleEye: {
+      position: "absolute",
+      top: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });

@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme, Text, Button } from "react-native-paper";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { TextFormField, BirthdayFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -10,6 +10,7 @@ import useBoundStore from "../../../zustand/useBoundStore";
 
 const StepOneContent = ({ goNextStep }) => {
   const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const navigation = useNavigation();
 
   const signupForm = useBoundStore((state) => state.signupForm);
@@ -24,32 +25,11 @@ const StepOneContent = ({ goNextStep }) => {
   const validateForm = () => {
     let errors = {};
 
-    // Validate first name field if it is empty
-    if (!signupForm.firstName) {
-      errors.firstName = "First Name is required.";
-    }
-
-    // Validate middle name field if it is empty
-    if (!signupForm.middleName) {
-      errors.middleName = "Middle Name is required.";
-    }
-
-    // Validate last name field if it is empty
-    if (!signupForm.lastName) {
-      errors.lastName = "Last Name is required.";
-    }
-
-    // Validate birthday if it is empty
-    if (!signupForm.birthday) {
-      errors.birthday = "Birthday is required.";
-    }
-
-    // Validate phone field if it is empty
-    if (!signupForm.phone) {
-      errors.phone = "Phone is required.";
-    }
-
-    // check if the phone number size is 11
+    if (!signupForm.firstName) errors.firstName = "First Name is required.";
+    if (!signupForm.middleName) errors.middleName = "Middle Name is required.";
+    if (!signupForm.lastName) errors.lastName = "Last Name is required.";
+    if (!signupForm.birthday) errors.birthday = "Birthday is required.";
+    if (!signupForm.phone) errors.phone = "Phone is required.";
     if (signupForm.phone.length != 11) {
       errors.phone = "Phone should have 11 numbers.";
     }
@@ -57,16 +37,9 @@ const StepOneContent = ({ goNextStep }) => {
     // Set the errors and update form validity if it is empty
     setErrors(errors);
 
-    // return true if there is no error
-    // false if error length is greater than zero
     return Object.keys(errors).length === 0;
   };
 
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = () => {
     //validateForm will return true if there is no error
     const isFormValid = validateForm();
@@ -79,8 +52,7 @@ const StepOneContent = ({ goNextStep }) => {
 
   return (
     <View style={styles.container}>
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+      <View style={styles.form}>
         <FormHeader
           title="Tell us something about yourself"
           desc="Only provide information that is true and correct."
@@ -127,7 +99,7 @@ const StepOneContent = ({ goNextStep }) => {
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.nextButton}
         />
       </View>
 
@@ -137,8 +109,8 @@ const StepOneContent = ({ goNextStep }) => {
           mode="text"
           compact
           onPress={() => navigation.navigate("Login")}
-          style={{ borderRadius: theme.borderRadius.base }}
-          labelStyle={{ fontSize: theme.fontSize.xs }}
+          style={styles.signinButton}
+          labelStyle={styles.signinButtonLabel}
         >
           Sign In
         </Button>
@@ -149,19 +121,30 @@ const StepOneContent = ({ goNextStep }) => {
 
 export default StepOneContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-  },
-  header: {
-    marginVertical: 20,
-  },
-  button: {
-    marginVertical: 20,
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const makeStyles = ({ gap, fontSize, borderRadius }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    header: {
+      marginVertical: 20,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: borderRadius.base,
+    },
+    signinButton: {
+      borderRadius: borderRadius.base,
+    },
+    signinButtonLabel: {
+      fontSize: fontSize.xs,
+    },
+    footer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  });

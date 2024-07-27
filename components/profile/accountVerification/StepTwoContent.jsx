@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -10,7 +10,7 @@ import useBoundStore from "../../../zustand/useBoundStore";
 
 const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
-
+  const styles = useMemo(() => makeStyles(theme), [theme]);
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -41,8 +41,6 @@ const StepTwoContent = ({ goNextStep }) => {
 
     setErrors(errors);
 
-    // return true if there is no error
-    // false if error length is greater than zero
     return Object.keys(errors).length === 0;
   };
 
@@ -63,8 +61,7 @@ const StepTwoContent = ({ goNextStep }) => {
 
   return (
     <View style={styles.container}>
-      {/* Form */}
-      <View style={{ rowGap: theme.gap.lg }}>
+      <View style={styles.form}>
         <FormHeader
           title="Please provide your current address"
           desc="Only provide information that is true and correct."
@@ -89,11 +86,10 @@ const StepTwoContent = ({ goNextStep }) => {
           error={errors.houseNumber}
         />
 
-        {/* next button */}
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          style={[styles.button, { borderRadius: theme.borderRadius.base }]}
+          style={styles.nextButton}
         />
       </View>
     </View>
@@ -102,12 +98,16 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 70,
-    height: 600,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
+const makeStyles = ({ gap, borderRadius }) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: gap.lg,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: borderRadius.base,
+    },
+  });
