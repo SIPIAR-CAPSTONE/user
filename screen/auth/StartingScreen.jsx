@@ -1,21 +1,14 @@
 import { Text } from "react-native-paper";
-import {
-  View,
-  Image,
-  StyleSheet,
-  StatusBar as RNStatusBar,
-} from "react-native";
+import { View, Image, StatusBar as RNStatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "react-native-paper";
 
 import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
-import { useMemo } from "react";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 const StartingScreen = () => {
   const navigation = useNavigation();
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   return (
     <View style={styles.container}>
@@ -23,6 +16,8 @@ const StartingScreen = () => {
         <Image
           style={styles.logoImage}
           source={require("../../assets/logo.png")}
+          resizeMode="contain"
+          resizeMethod="resize"
         />
         <Text variant="headlineMedium" style={styles.appName}>
           SIPIAR
@@ -52,36 +47,35 @@ const StartingScreen = () => {
 
 export default StartingScreen;
 
-const makeStyles = ({ colors, padding, gap, borderRadius }) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "space-between",
-      paddingTop: RNStatusBar.currentHeight + 50,
-      paddingBottom: 80,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    logoContainer: {
-      alignItems: "center",
-    },
-    appName: {
-      fontWeight: "bold",
-      letterSpacing: 1,
-      marginBottom: 8,
-    },
-    tagLine: {
-      color: colors.typography.secondary,
-    },
-    logoImage: {
-      height: 130,
-      width: 160,
-    },
-    buttonsContainer: {
-      rowGap: gap.md,
-    },
-    signupButton: {
-      borderRadius: borderRadius.base,
-      borderColor: colors.primary,
-      borderWidth: 2,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingTop: RNStatusBar.currentHeight + 50,
+    paddingBottom: 80,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  logoContainer: {
+    alignItems: "center",
+  },
+  appName: {
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  tagLine: {
+    color: theme.colors.typography.secondary,
+  },
+  logoImage: {
+    height: 160,
+    width: 160,
+  },
+  buttonsContainer: {
+    rowGap: theme.gap.md,
+  },
+  signupButton: {
+    borderRadius: theme.borderRadius.base,
+    borderColor: theme.colors.primary,
+    borderWidth: 2,
+  },
+}));
