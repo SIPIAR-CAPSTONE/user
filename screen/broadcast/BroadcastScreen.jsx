@@ -57,29 +57,32 @@ const BroadcastScreen = () => {
   /**
    * Renders the alert item in the list.
    */
-  const renderAlertItem = ({ item }) => (
-    <ListItem
-      key={item.id}
-      title={`${item.first_name} ${item.last_name}`}
-      titleSize={14}
-      subTitle={getTimeGap(item.createdAt)}
-      desc={item.address}
-      descSize={11}
-      onPress={() =>
-        navigation.navigate("Mapview", {
-          initialCoordinate: item.coordinate,
-          selectedAlertId: item.id,
-        })
-      }
-      renderIcon={() => (
-        <DistanceIcon
-          distance={getDistanceGap(userLocation, item.coordinate)}
-          status={item.condition}
-        />
-      )}
-      renderActionIcon={() => <NextActionIcon />}
-    />
-  );
+  const renderAlertItem = ({ item }) => {
+    const userFullName = `${item.first_name} ${item.last_name}`;
+    const distanceGap = getDistanceGap(userLocation, item.coordinate);
+    const timeGap = getTimeGap(item.createdAt);
+
+    return (
+      <ListItem
+        key={item.id}
+        title={userFullName}
+        titleSize={14}
+        subTitle={timeGap}
+        desc={item.address}
+        descSize={11}
+        onPress={() =>
+          navigation.navigate("Mapview", {
+            initialCoordinate: item.coordinate,
+            selectedAlertId: item.id,
+          })
+        }
+        renderIcon={() => (
+          <DistanceIcon distance={distanceGap} status={item.condition} />
+        )}
+        renderActionIcon={() => <NextActionIcon />}
+      />
+    );
+  };
 
   return (
     <FlatList
