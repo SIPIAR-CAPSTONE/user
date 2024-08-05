@@ -1,7 +1,6 @@
-import { ScrollView, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState, lazy, useMemo } from "react";
+import { useState, lazy } from "react";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
@@ -10,11 +9,11 @@ import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import { themeStatus } from "../../../utils/theme";
 import switchTheme from "react-native-theme-switch-animation";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const navigation = useNavigation();
@@ -111,12 +110,11 @@ const SettingScreen = () => {
 
 export default SettingScreen;
 
-const makeStyles = ({ padding }) =>
-  StyleSheet.create({
-    listItems: {
-      marginTop: 20,
-      rowGap: 10,
-      paddingVertical: padding.body.vertical,
-      paddingHorizontal: padding.body.horizontal,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  listItems: {
+    marginTop: 20,
+    rowGap: 10,
+    paddingVertical: theme.padding.body.vertical,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+}));

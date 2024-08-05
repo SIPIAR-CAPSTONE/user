@@ -1,24 +1,24 @@
-import { SectionList, StyleSheet } from "react-native";
-import { Divider, useTheme } from "react-native-paper";
+import { SectionList } from "react-native";
+import { Divider } from "react-native-paper";
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 
 const MyAccountScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const userMetaData = useBoundStore((state) => state.userMetaData);
 
-  //! retrieve profile picture upon screen load
+  //* retrieve profile picture upon screen load
   const [profilePictureUri, setProfilePictureUri] = useState(null);
   useImageReader(setProfilePictureUri);
 
-  //! format date to string (ex.july 1, 2024)
+  //* format date to string (ex.july 1, 2024)
   const formatDate = (date) => {
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -30,8 +30,8 @@ const MyAccountScreen = () => {
   const date = new Date(userMetaData["birthday"]);
   const formattedDate = formatDate(date);
 
-  //! array template for UI rendering
-  const SAMPLE_USER_DATA = [
+  //* array template for UI rendering
+  const USER_DATA = [
     {
       title: "Personal Information",
       data: [
@@ -66,7 +66,7 @@ const MyAccountScreen = () => {
   return (
     <>
       <SectionList
-        sections={SAMPLE_USER_DATA}
+        sections={USER_DATA}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
@@ -88,17 +88,16 @@ const MyAccountScreen = () => {
   );
 };
 
-const makeStyles = ({ padding }) =>
-  StyleSheet.create({
-    contentContainer: {
-      paddingVertical: padding.body.vertical,
-    },
-    divider: {
-      marginHorizontal: padding.body.horizontal,
-    },
-    listHeaderContainer: {
-      marginBottom: 16,
-    },
-  });
-
 export default MyAccountScreen;
+
+const stylesheet = createStyleSheet((theme) => ({
+  contentContainer: {
+    paddingVertical: theme.padding.body.vertical,
+  },
+  divider: {
+    marginHorizontal: theme.padding.body.horizontal,
+  },
+  listHeaderContainer: {
+    marginBottom: 16,
+  },
+}));

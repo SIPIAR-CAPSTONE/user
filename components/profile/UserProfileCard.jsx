@@ -1,10 +1,9 @@
-import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme, Avatar } from "react-native-paper";
+import {  View } from "react-native";
+import { Text,  Avatar } from "react-native-paper";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const firstNameInitial = name[0];
 
   const UserAvatar = imageSource ? (
@@ -32,16 +31,15 @@ const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
 
 export default UserProfileCard;
 
-const makeStyles = ({ colors }) =>
-  StyleSheet.create({
-    avatar: {
-      backgroundColor: "#FFDDDD",
-    },
-    header: {
-      alignItems: "center",
-      paddingVertical: 8,
-    },
-    email: {
-      color: colors.typography.tertiary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  avatar: {
+    backgroundColor: "#FFDDDD",
+  },
+  header: {
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  email: {
+    color: theme.colors.typography.tertiary,
+  },
+}));

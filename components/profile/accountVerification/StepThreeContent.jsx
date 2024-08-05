@@ -1,16 +1,16 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { useTheme, Divider, Text } from "react-native-paper";
+import { View, ScrollView } from "react-native";
+import { Divider, Text } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
-import { Fragment, useState, lazy, useMemo } from "react";
+import { Fragment, useState, lazy } from "react";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 
 const StepThreeContent = ({ goNextStep }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -67,8 +67,7 @@ const StepThreeContent = ({ goNextStep }) => {
 
 // Secondary heading local component for the second heading
 const SecondaryHeader = (props) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
   const { title, desc } = props;
 
   return (
@@ -88,39 +87,37 @@ const SecondaryHeader = (props) => {
 
 export default StepThreeContent;
 
-const makeStyles = ({ colors }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      height: 600,
-    },
-    listItem: {
-      backgroundColor: colors.background,
-      paddingEnd: 1,
-    },
-    headerSecondContent: {
-      marginTop: 10,
-      marginBottom: 20,
-    },
-    divider: {
-      marginVertical: 8,
-    },
-    titleContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    title: {
-      fontWeight: "bold",
-      color: colors.typography.primary,
-    },
-    desc: {
-      color: colors.typography.secondary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    height: 600,
+  },
+  listItem: {
+    backgroundColor: theme.colors.background,
+    paddingEnd: 1,
+  },
+  headerSecondContent: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  divider: {
+    marginVertical: 8,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  title: {
+    fontWeight: "bold",
+    color: theme.colors.typography.primary,
+  },
+  desc: {
+    color: theme.colors.typography.secondary,
+  },
+}));
 
 //Data for each id list item
-
 const ID_ITEMS_DATA = [
   {
     id: 0,

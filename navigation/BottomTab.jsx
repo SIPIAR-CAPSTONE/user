@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useTheme } from "react-native-paper";
 
 import HomeScreen from "../screen/home/HomeScreen";
 import BroadcastScreen from "../screen/broadcast/BroadcastScreen";
@@ -11,14 +10,12 @@ import CircularIcon from "../components/ui/CircularIcon";
 import LogoTitle from "../components/navigation/LogoTitle";
 import TabBarIcon from "../components/navigation/TabBarIcon";
 import CprTabBarIcon from "../components/navigation/CprTabBarIcon";
-import { useMemo } from "react";
-import { StyleSheet } from "react-native";
+import { useStyles, createStyleSheet } from "../hooks/useStyles";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = ({ navigation }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
 
   const screenOptions = {
     tabBarStyle: styles.tabBar,
@@ -96,31 +93,30 @@ const Tabs = ({ navigation }) => {
 
 export default Tabs;
 
-const makeStyles = ({ colors }) =>
-  StyleSheet.create({
-    sceneContainer: {
-      backgroundColor: colors.background,
-    },
-    tabBar: {
-      height: 46,
-      backgroundColor: colors.background,
-      paddingTop: 2,
-    },
-    tabBarLabel: {
-      fontSize: 12,
-      fontWeight: "500",
-      paddingBottom: 2,
-    },
-    header: {
-      elevation: 0,
-      backgroundColor: colors.background,
-    },
-    headerTitle: {
-      fontWeight: "bold",
-      fontSize: 22,
-      color: colors.typography.primary,
-    },
-    headerRightContainer: {
-      marginEnd: 14,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  sceneContainer: {
+    backgroundColor: theme.colors.background,
+  },
+  tabBar: {
+    height: 46,
+    backgroundColor: theme.colors.background,
+    paddingTop: 2,
+  },
+  tabBarLabel: {
+    fontSize: 12,
+    fontWeight: "500",
+    paddingBottom: 2,
+  },
+  header: {
+    elevation: 0,
+    backgroundColor: theme.colors.background,
+  },
+  headerTitle: {
+    fontWeight: "bold",
+    fontSize: 22,
+    color: theme.colors.typography.primary,
+  },
+  headerRightContainer: {
+    marginEnd: 14,
+  },
+}));

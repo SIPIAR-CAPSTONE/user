@@ -16,6 +16,7 @@ const commonTheme = {
     md: 10,
     lg: 12,
     xl: 14,
+    curve: 28,
     full: 100,
   },
   padding: {

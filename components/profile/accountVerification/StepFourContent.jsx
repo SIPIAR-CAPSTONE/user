@@ -1,17 +1,16 @@
-import { useMemo, useState } from "react";
-import { View, StyleSheet, Alert } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
+import { View } from "react-native";
 
 import ImageFrame from "./StepFourComponents/ImageFrame";
-import { useTheme, Divider } from "react-native-paper";
+import { Divider } from "react-native-paper";
 import PrimaryButton from "../../ui/PrimaryButton";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { useNavigation } from "@react-navigation/native";
 import useImagePicker from "../../../hooks/useImagePicker";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 
 const StepFourContent = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
 
   const verificationForm = useBoundStore((state) => state.verificationForm);
@@ -92,20 +91,19 @@ const StepFourContent = () => {
 
 export default StepFourContent;
 
-const makeStyles = ({ borderRadius, padding }) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      paddingVertical: 24,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    divider: {
-      marginVertical: 26,
-      backgroundColor: "gray",
-    },
-    submitButton: {
-      marginVertical: 40,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingVertical: 24,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  divider: {
+    marginVertical: 26,
+    backgroundColor: "gray",
+  },
+  submitButton: {
+    marginVertical: 40,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

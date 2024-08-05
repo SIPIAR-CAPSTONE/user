@@ -1,7 +1,7 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { View, ScrollView } from "react-native";
+import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import StatusBar from "../../components/common/StatusBar";
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
@@ -15,14 +15,14 @@ import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
 import * as FileSystem from "expo-file-system";
 import useImageReader from "../../hooks/useImageReader";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 /**
  * Profile screen component
  * Displays navigation itemsand a user profile card with user profile information
  */
 const ProfileScreen = () => {
-  const theme = useTheme();
-  const styles = makeStyles(theme);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   // Create references for the confirmation dialogs
   const verificationScreenConfirmationDialogRef = useRef(null);
@@ -39,7 +39,7 @@ const ProfileScreen = () => {
     (state) => state.profilePicturePath
   );
 
-  //! retrieve profile picture upon screen load
+  //* retrieve profile picture upon screen load
   const [profilePictureUri, setProfilePictureUri] = useState(null);
   useImageReader(setProfilePictureUri);
 
@@ -47,18 +47,18 @@ const ProfileScreen = () => {
     const { error } = await supabase.auth.signOut();
 
     if (!error) {
-      //! remove encrypted session from secure local storage
+      //* remove encrypted session from secure local storage
       await largeSecureStore.removeItem("session");
-      //! remove encrypted session as a global state
+      //* remove encrypted session as a global state
       removeSession();
 
-      //! remove global state variable
+      //* remove global state variable
       removeState();
 
-      //! remove profile picture in local storage
+      //* remove profile picture in local storage
       await FileSystem.deleteAsync(globalStateProfilePath);
 
-      //! remove profile picture global variable
+      //* remove profile picture global variable
       removeProfilePicturePath();
     }
   };
@@ -183,8 +183,7 @@ const ProfileScreen = () => {
 };
 
 const EnteringVerificationConfirmationContent = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   //all instructions in the bottomSheet
   const renderInstructions = InstructionData.map((instruction) => (
@@ -207,42 +206,41 @@ const EnteringVerificationConfirmationContent = () => {
 
 export default ProfileScreen;
 
-const makeStyles = ({ padding, colors, borderRadius, fontSize }) =>
-  StyleSheet.create({
-    container: {
-      paddingVertical: padding.body.vertical,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    listItems: {
-      marginTop: 20,
-      rowGap: 7,
-    },
-    instructionsContainer: {
-      rowGap: 20,
-      marginTop: 10,
-    },
-    instructionContainer: {
-      flexDirection: "row",
-      columnGap: 10,
-      alignItems: "center",
-    },
-    circularNumber: {
-      height: 22,
-      width: 22,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 2,
-      backgroundColor: colors.primary,
-      borderRadius: borderRadius.full,
-    },
-    number: {
-      color: colors.onPrimary,
-      fontSize: fontSize.xs,
-    },
-    desc: {
-      flex: 1,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingVertical: theme.padding.body.vertical,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  listItems: {
+    marginTop: 20,
+    rowGap: 7,
+  },
+  instructionsContainer: {
+    rowGap: 20,
+    marginTop: 10,
+  },
+  instructionContainer: {
+    flexDirection: "row",
+    columnGap: 10,
+    alignItems: "center",
+  },
+  circularNumber: {
+    height: 22,
+    width: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+  },
+  number: {
+    color: theme.colors.onPrimary,
+    fontSize: theme.fontSize.xs,
+  },
+  desc: {
+    flex: 1,
+  },
+}));
 
 const InstructionData = [
   {

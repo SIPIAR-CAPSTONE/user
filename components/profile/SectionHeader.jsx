@@ -1,10 +1,9 @@
-import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const SectionHeader = ({ title }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   return (
     <View style={styles.sectionHeader}>
@@ -17,15 +16,14 @@ const SectionHeader = ({ title }) => {
 
 export default SectionHeader;
 
-const makeStyles = ({ colors, padding }) =>
-  StyleSheet.create({
-    sectionHeader: {
-      paddingVertical: 8,
-      marginVertical: 12,
-      backgroundColor: colors.secondary,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    title: {
-      color: colors.typography.secondary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  sectionHeader: {
+    paddingVertical: 8,
+    marginVertical: 12,
+    backgroundColor: theme.colors.secondary,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  title: {
+    color: theme.colors.typography.secondary,
+  },
+}));

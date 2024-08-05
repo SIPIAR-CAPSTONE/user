@@ -1,16 +1,16 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useState, useEffect, useMemo } from "react";
+import { View } from "react-native";
+import { useState, useEffect } from "react";
 
-import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import SelectItem from "../../ui/SelectItem";
+import TextInput from "../../ui/TextInput";
 
 const StepTwoContent = ({ goNextStep }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -58,7 +58,7 @@ const StepTwoContent = ({ goNextStep }) => {
       goNextStep();
     }
   };
-
+ 
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -66,21 +66,21 @@ const StepTwoContent = ({ goNextStep }) => {
           title="Please provide your current address"
           desc="Only provide information that is true and correct."
         />
-        <SelectFormField
-          label="Barangay"
+        <SelectItem
+          placeholder="Barangay"
           value={verificationForm.barangay}
-          items={cdoBarangayData}
-          onChange={(item) => setVerificationForm("barangay", item.value)}
+          data={cdoBarangayData}
+          onChange={(value) => setVerificationForm("barangay", value)}
           error={errors.barangay}
         />
-        <TextFormField
-          label="Street"
+        <TextInput
+          placeholder="Street"
           value={verificationForm.street}
           onChangeText={(value) => setVerificationForm("street", value)}
           error={errors.street}
         />
-        <TextFormField
-          label="House Number"
+        <TextInput
+          placeholder="House Number"
           value={verificationForm.houseNumber}
           onChangeText={(value) => setVerificationForm("houseNumber", value)}
           error={errors.houseNumber}
@@ -98,16 +98,15 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const makeStyles = ({ gap, borderRadius }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    nextButton: {
-      marginVertical: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  nextButton: {
+    marginVertical: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

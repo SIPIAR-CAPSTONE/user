@@ -1,10 +1,11 @@
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 /**
  * SuccessConfirmationScreen component
@@ -15,8 +16,7 @@ import StatusBar from "../../components/common/StatusBar";
  * @param {string} route.params.nextScreen - The name of the screen to navigate to after a short delay
  */
 const SuccessConfirmationScreen = ({ route }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const { title, desc, nextScreen } = route.params;
 
@@ -52,23 +52,22 @@ const SuccessConfirmationScreen = ({ route }) => {
 
 export default SuccessConfirmationScreen;
 
-const makeStyles = ({ colors, padding }) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      marginBottom: 50,
-      rowGap: 10,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    title: {
-      fontWeight: "bold",
-      textAlign: "center",
-      marginTop: 10,
-    },
-    desc: {
-      textAlign: "center",
-      color: colors.typography.secondary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 50,
+    rowGap: 10,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 10,
+  },
+  desc: {
+    textAlign: "center",
+    color: theme.colors.typography.secondary,
+  },
+}));

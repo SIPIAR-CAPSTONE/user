@@ -1,11 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
-import { useMemo } from "react";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const DistanceIcon = ({ distance, status }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
 
   const iconColor = status ? theme.colors.green : theme.colors.primary;
 
@@ -19,15 +18,14 @@ const DistanceIcon = ({ distance, status }) => {
 
 export default DistanceIcon;
 
-const makeStyles = ({ colors }) =>
-  StyleSheet.create({
-    container: {
-      alignItems: "center",
-      rowGap: 2,
-      marginHorizontal: 3,
-    },
-    distance: {
-      fontSize: 8,
-      color: colors.typography.secondary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    alignItems: "center",
+    rowGap: 2,
+    marginHorizontal: 3,
+  },
+  distance: {
+    fontSize: 8,
+    color: theme.colors.typography.secondary,
+  },
+}));

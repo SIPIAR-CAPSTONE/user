@@ -1,9 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text, Dialog, Portal, Button, useTheme } from "react-native-paper";
+import { View } from "react-native";
+import { Text, Dialog, Portal, Button } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useMemo } from "react";
 
 import { getDistanceGap, getTimeGap } from "../../utils/dateAndDistanceGap";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const EMPTY_PLACEHOLDER = " - ";
 
@@ -21,8 +22,7 @@ const MarkerDialog = ({
   selectedMarker,
   userLocation,
 }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
   const FULL_NAME = `${selectedMarker?.first_name} ${selectedMarker?.last_name}`;
@@ -111,12 +111,13 @@ const MarkerDialog = ({
  * @param {string} props.colors.color - The text color of the icon.
  */
 const InfoField = ({ icon, label, value, colors }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
-
+  const { styles } = useStyles(stylesheet);
+ 
   return (
     <View style={styles.infoField}>
-      <View style={styles.iconContainer}>
+      <View
+        style={[styles.iconContainer, { backgroundColor: colors.background }]}
+      >
         <Feather name={icon} size={18} color={colors.color} />
       </View>
       {/* Container for the label and value */}
@@ -134,32 +135,31 @@ const InfoField = ({ icon, label, value, colors }) => {
 
 export default MarkerDialog;
 
-const makeStyles = ({ colors, borderRadius }) =>
-  StyleSheet.create({
-    title: {
-      fontWeight: "bold",
-    },
-    infoFieldsContainer: {
-      marginTop: 10,
-      rowGap: 12,
-    },
-    infoField: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: 12,
-    },
-    iconContainer: {
-      backgroundColor: "red",
-      padding: 14,
-      backgroundColor: colors.background,
-      borderRadius: borderRadius.full,
-    },
-    fieldValue: {
-      height: 25,
-      color: colors.typography.primary,
-    },
-    fieldLabel: {
-      height: 22,
-      color: colors.typography.secondary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  title: {
+    fontWeight: "bold",
+  },
+  infoFieldsContainer: {
+    marginTop: 10,
+    rowGap: 12,
+  },
+  infoField: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 12,
+  },
+  iconContainer: {
+    backgroundColor: "red",
+    padding: 14,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.full,
+  },
+  fieldValue: {
+    height: 25,
+    color: theme.colors.typography.primary,
+  },
+  fieldLabel: {
+    height: 22,
+    color: theme.colors.typography.secondary,
+  },
+}));

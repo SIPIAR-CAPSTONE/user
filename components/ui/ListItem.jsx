@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme, TouchableRipple } from "react-native-paper";
+import { View } from "react-native";
+import { Text, TouchableRipple } from "react-native-paper";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const ListItem = ({
   title,
@@ -17,8 +17,7 @@ const ListItem = ({
   contentContainerStyle,
   roundness,
 }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
 
   const sizeStyle = {
     large: {
@@ -120,21 +119,20 @@ const ListItem = ({
 
 export default ListItem;
 
-const makeStyles = () =>
-  StyleSheet.create({
-    container: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    content: {
-      flex: 1,
-    },
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: 6,
-    },
-    actionIcon: {
-      alignSelf: "center",
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  content: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 6,
+  },
+  actionIcon: {
+    alignSelf: "center",
+  },
+}));
