@@ -1,11 +1,15 @@
-import { ScrollView } from "react-native";
-import { useTheme } from "react-native-paper";
+import { View, ScrollView } from "react-native";
+import { Text } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect, lazy, useState } from "react";
+import { useEffect, lazy, useState, useRef } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
+import AppBar from "../../components/ui/AppBar";
+import CircularIcon from "../../components/ui/CircularIcon";
 import useBoundStore from "../../zustand/useBoundStore";
 import StepOneContent from "../../components/auth/signup/StepOneContent";
+import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 const StepTwoContent = lazy(() =>
   import("../../components/auth/signup/StepTwoContent")
 );
@@ -14,13 +18,22 @@ const StepThreeContent = lazy(() =>
 );
 
 const SignupScreen = ({ navigation }) => {
-  const theme = useTheme();
+  const { styles, theme } = useStyles(stylesheet);
+  const confirmationDialogRef = useRef(null);
 
   const [currentStep, setCurrentStep] = useState(0);
   const resetSignup = useBoundStore((state) => state.resetSignup);
 
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
+
+  const goBackStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
+    } else {
+      confirmationDialogRef.current.showDialog();
+    }
+  };
 
   /**
    * The content of each step of the signup process
@@ -91,17 +104,38 @@ const SignupScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        paddingHorizontal: theme.padding.body.horizontal,
-      }}
-    >
-      <ProgressSteps
-        currentStep={currentStep}
-        orientation="horizontal"
-        steps={steps}
-        colors={customColors}
+    <ScrollView style={styles.container}>
+      <AppBar style={styles.appBar}>
+        <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
+        <Text style={styles.appBarTitle}>Signup</Text>
+
+        {/* invisible element, just to make the title center */}
+        <View style={{ width: 30 }} />
+      </AppBar>
+      <View style={styles.content}>
+        <ProgressSteps
+          currentStep={currentStep}
+          orientation="horizontal"
+          steps={steps}
+          colors={customColors}
+        />
+      </View>
+
+      <ConfirmationDialog
+        ref={confirmationDialogRef}
+        title="Are you sure you want to exit?"
+        buttons={[
+          {
+            label: "Confirm",
+            onPress: () => navigation.goBack(),
+            mode: "contained",
+          },
+          {
+            label: "Cancel",
+            onPress: () => confirmationDialogRef.current.hideDialog(),
+            mode: "text",
+          },
+        ]}
       />
 
       <StatusBar />
@@ -110,3 +144,20 @@ const SignupScreen = ({ navigation }) => {
 };
 
 export default SignupScreen;
+
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+  },
+  appBar: {
+    height: 110,
+  },
+  appBarTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: theme.colors.typography.primary,
+  },
+  content: {
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+}));

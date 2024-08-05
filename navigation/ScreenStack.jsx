@@ -16,6 +16,7 @@ import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPo
 import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
 import SettingScreen from "../screen/profile/setting/SettingScreen";
 import MapviewScreen from "../screen/broadcast/MapviewScreen";
+import EditPasswordScreen from "../screen/profile/myAccount/EditPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,7 +59,7 @@ export const SignedOutStack = (
     <Stack.Screen
       name="Signup"
       component={SignupScreen}
-      options={{ headerTitle: "Register" }}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="ForgotPassword"
@@ -92,12 +93,17 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="EditProfile"
-      options={{ headerTitle: "Edit Profile" }}
+      options={{ headerShown: false }}
       component={EditProfileScreen}
     />
     <Stack.Screen
+      name="EditPassword"
+      options={{ headerTitle: "Edit Password" }}
+      component={EditPasswordScreen}
+    />
+    <Stack.Screen
       name="AccountVerification"
-      options={{ headerTitle: "Account Verification" }}
+      options={{ headerShown: false }}
       component={AccountVerificationScreen}
     />
     <Stack.Screen name="Setting" component={SettingScreen} />
