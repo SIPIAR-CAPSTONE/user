@@ -1,50 +1,52 @@
-import { View, ScrollView, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useState, lazy, useRef, useMemo } from "react";
+import { View, ScrollView } from "react-native";
+import { useState, lazy, useRef } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableRipple, Text } from "react-native-paper";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import StatusBar from "../../../components/common/StatusBar";
 import PrimaryButton from "../../../components/ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
-import {
-  BirthdayFormField,
-  SelectFormField,
-  TextFormField,
-} from "../../../components/profile/EditProfileFormField";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useNavigation } from "@react-navigation/native";
 import useUserMetadata from "../../../hooks/useUserMetadata";
 import { decode } from "base64-arraybuffer";
+import TextInput from "../../../components/ui/TextInput";
+import BirthdayPicker from "../../../components/ui/BirthdayPicker";
+import SelectItem from "../../../components/ui/SelectItem";
+import AppBar from "../../../components/ui/AppBar";
 import useImageReader from "../../../hooks/useImageReader";
+import CircularIcon from "../../../components/ui/CircularIcon";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
 
 const EditProfileScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
   const [profilePicture, setProfilePicture] = useState(null);
   const userMetaData = useBoundStore((state) => state.userMetaData);
   const navigation = useNavigation();
   const { setState } = useUserMetadata();
 
-  //! settter for global state profile path variable
+  //* settter for global state profile path variable
   const setglobalStateProfilePath = useBoundStore(
     (state) => state.setProfilePicturePath
   );
 
-  //!access base 64 formatted image
+  //* access base 64 formatted image
   const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat);
 
-  //! retrieve dafault profile picture
+  //* retrieve dafault profile picture
   useImageReader(setProfilePicture);
 
-  //! format date to yy-mm-dd (remove trails ex. T:14:00:08)
+  //* format date to yy-mm-dd (remove trails ex. T:14:00:08)
   const date = new Date(userMetaData["birthday"]);
   const formattedDate = date.toISOString().split("T")[0];
 
-  //! default value to input fields
+  //* default value to input fields
   const [userInfo, setUserInfo] = useState({
     firstName: userMetaData["firstName"],
     middleName: userMetaData["middleName"],
@@ -108,7 +110,7 @@ const EditProfileScreen = () => {
 
     if (error) {
       //todo: more appropriate error handling for all
-      console.log("error update profile", error.message);
+      console.error("error update profile", error.message);
     } else if (!error) {
       setglobalStateProfilePath(profilePicture);
     }
@@ -131,11 +133,11 @@ const EditProfileScreen = () => {
       });
       if (error) {
         //todo: more appropriate error handling for all
-        console.log("error update", error.message);
+        console.error("error update", error.message);
       } else if (!error) {
-        //! update session global state variables
+        //* update session global state variables
         setState(data);
-        //! navigate to my account page if success
+        //* navigate to my account page if success
         navigation.navigate("MyAccount");
       }
     }
@@ -143,6 +145,25 @@ const EditProfileScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <AppBar>
+        <CircularIcon
+          name="arrow-back"
+          pressable
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.appBarTitle}>Edit Profile</Text>
+        <TouchableRipple
+          style={styles.changePassButton}
+          onPress={() => navigation.navigate("EditPassword")}
+        >
+          <MaterialIcons
+            name="password"
+            size={24}
+            color={theme.colors.typography.primary}
+          />
+        </TouchableRipple>
+      </AppBar>
+
       <EditUserProfileCard
         name="John"
         imageSource={""}
@@ -152,35 +173,41 @@ const EditProfileScreen = () => {
 
       <SectionHeader title="Personal Information" />
       <View style={styles.formFields}>
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="First Name"
           value={userInfo.firstName}
           onChangeText={(item) => handleFieldChange("firstName", item)}
           error={errors.firstName}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="Middle Name"
           value={userInfo.middleName}
           onChangeText={(item) => handleFieldChange("middleName", item)}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="Last Name"
           value={userInfo.lastName}
           onChangeText={(item) => handleFieldChange("lastName", item)}
           error={errors.lastName}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="Suffix"
           value={userInfo.suffix}
           onChangeText={(item) => handleFieldChange("suffix", item)}
         />
-        <BirthdayFormField
+        <BirthdayPicker
+          variant="outlined"
           label="Birthday"
           givenDate={userInfo.birthday}
           setDate={handleFieldChange}
           error={errors.birthday}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="Phone"
           value={userInfo.phone}
           onChangeText={(item) => handleFieldChange("phone", item)}
@@ -189,19 +216,22 @@ const EditProfileScreen = () => {
 
       <SectionHeader title="Address" />
       <View style={styles.formFields}>
-        <SelectFormField
+        <SelectItem
+          variant="outlined"
           label="Barangay"
           value={userInfo.barangay}
-          items={cdoBarangayData}
+          data={cdoBarangayData}
           onChange={(item) => handleFieldChange("barangay", item.value)}
           error={errors.barangay}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="Street"
           value={userInfo.street}
           onChangeText={(item) => handleFieldChange("street", item)}
         />
-        <TextFormField
+        <TextInput
+          variant="outlined"
           label="House Number"
           value={userInfo.houseNumber}
           onChangeText={(item) => handleFieldChange("houseNumber", item)}
@@ -238,17 +268,26 @@ const EditProfileScreen = () => {
 
 export default EditProfileScreen;
 
-const makeStyles = ({ padding, borderRadius }) =>
-  StyleSheet.create({
-    container: {
-      paddingVertical: padding.body.vertical,
-    },
-    formFields: {
-      paddingHorizontal: padding.body.horizontal,
-      paddingBottom: padding.body.vertical,
-    },
-    saveButton: {
-      borderRadius: borderRadius.base,
-      marginTop: 44,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingVertical: theme.padding.body.vertical,
+  },
+  appBarTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: theme.colors.typography.primary,
+  },
+  changePassButton: {
+    backgroundColor: theme.colors.background,
+    padding: 4,
+  },
+  formFields: {
+    paddingHorizontal: theme.padding.body.horizontal,
+    paddingBottom: theme.padding.body.vertical,
+    rowGap: theme.gap.lg,
+  },
+  saveButton: {
+    borderRadius: theme.borderRadius.base,
+    marginTop: 44,
+  },
+}));

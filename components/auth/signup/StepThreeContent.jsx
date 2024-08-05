@@ -1,17 +1,18 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme, Text } from "react-native-paper";
-import { useMemo, useState } from "react";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
+import { useState } from "react";
+
 import PrimaryButton from "../../ui/PrimaryButton";
-import { PasswordFormField, TextFormField } from "../../ui/FormField";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { supabase } from "../../../utils/supabase/config";
 import { LargeSecureStore } from "../../../utils/SecureLocalStorage";
 import useUserMetadata from "../../../hooks/useUserMetadata";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import TextInput from "../../ui/TextInput";
 
 const StepThreeContent = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
@@ -19,7 +20,7 @@ const StepThreeContent = () => {
   const setSession = useBoundStore((state) => state.setSession);
   const { setState } = useUserMetadata();
 
-  //! State for UI signup error
+  //* State for UI signup error
   const [signUpError, setSignUpError] = useState("");
 
   /*
@@ -40,12 +41,7 @@ const StepThreeContent = () => {
       errors.email = "Invalid Email.";
     }
 
-    // Validate password field if it is empty
-    if (!signupForm.password) {
-      errors.password = "Password is required.";
-    }
-
-    // Validate confirm password field if it is empty
+    if (!signupForm.password) errors.password = "Password is required.";
     if (!signupForm.confirmPassword) {
       errors.confirmPassword = "Confirm Password is required.";
     }
@@ -56,11 +52,8 @@ const StepThreeContent = () => {
       errors.password = "Password and Confirm Password must be match.";
     }
 
-    // Set the errors and update form validity if it is empty
     setErrors(errors);
 
-    // return true if there is no error
-    // false if error length is greater than zero
     return Object.keys(errors).length === 0;
   };
 
@@ -76,7 +69,7 @@ const StepThreeContent = () => {
     if (isFormValid) {
       setLoading(true);
 
-      //! Signup user using the credentials provided, also added other fields as meta data
+      //* Signup user using the credentials provided, also added other fields as meta data
       const { data, error } = await supabase.auth
         .signUp({
           email: signupForm.email,
@@ -99,11 +92,11 @@ const StepThreeContent = () => {
           setLoading(false);
         });
 
-      //! Checking error and handling after successful signup
+      //* Checking error and handling after successful signup
       if (error) {
         setSignUpError(error.message);
       } else if (!error) {
-        //! after successful signup, store the encrypted session locally and as global state
+        //* after successful signup, store the encrypted session locally and as global state
         const largeSecureStore = new LargeSecureStore();
         encryptedSession = await largeSecureStore.setItem(
           "session",
@@ -111,7 +104,7 @@ const StepThreeContent = () => {
         );
         await setSession(encryptedSession);
 
-        //! set session global state variables
+        //* set session global state variables
         setState(data["session"]);
       }
     }
@@ -125,8 +118,8 @@ const StepThreeContent = () => {
           titleSize="large"
           desc="Please fill in the information below."
         />
-        <TextFormField
-          label="Email"
+        <TextInput
+          placeholder="Email"
           value={signupForm.email}
           inputMode="email"
           onChangeText={(value) => setSignupForm("email", value)}
@@ -134,15 +127,17 @@ const StepThreeContent = () => {
           disabled={loading}
         />
         <View style={{ height: 16 }} />
-        <PasswordFormField
-          label="Password"
+        <TextInput
+          placeholder="Password"
+          type="password"
           value={signupForm.password}
           onChangeText={(value) => setSignupForm("password", value)}
           error={errors.password}
           disabled={loading}
         />
-        <PasswordFormField
-          label="Confirm Password"
+        <TextInput
+          placeholder="Confirm Password"
+          type="password"
           value={signupForm.confirmPassword}
           onChangeText={(value) => setSignupForm("confirmPassword", value)}
           error={errors.confirmPassword}
@@ -164,19 +159,18 @@ const StepThreeContent = () => {
 
 export default StepThreeContent;
 
-const makeStyles = ({ borderRadius, gap, colors }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    serverErrorMessage: {
-      color: colors.primary,
-    },
-    nextButton: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  serverErrorMessage: {
+    color: theme.colors.primary,
+  },
+  nextButton: {
+    marginTop: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

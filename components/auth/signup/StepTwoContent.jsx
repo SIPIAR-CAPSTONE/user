@@ -1,16 +1,16 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useMemo, useState } from "react";
+import { View } from "react-native";
+import { useState } from "react";
 import useBoundStore from "../../../zustand/useBoundStore";
 
-import { TextFormField, SelectFormField } from "../../ui/FormField";
 import PrimaryButton from "../../ui/PrimaryButton";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import FormHeader from "../../common/FormHeader";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import TextInput from "../../ui/TextInput";
+import SelectItem from "../../ui/SelectItem";
 
 const StepTwoContent = ({ goNextStep }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
@@ -63,21 +63,21 @@ const StepTwoContent = ({ goNextStep }) => {
           title="Please provide your current address"
           desc="Only provide information that is true and correct."
         />
-        <SelectFormField
-          label="Barangay"
+        <SelectItem
+          placeholder="Barangay"
+          data={cdoBarangayData}
           value={signupForm.barangay}
-          items={cdoBarangayData}
           onChange={(item) => setSignupForm("barangay", item.value)}
           error={errors.barangay}
         />
-        <TextFormField
-          label="Street"
+        <TextInput
+          placeholder="Street"
           value={signupForm.street}
           onChangeText={(value) => setSignupForm("street", value)}
           error={errors.street}
         />
-        <TextFormField
-          label="House Number"
+        <TextInput
+          placeholder="House Number"
           value={signupForm.houseNumber}
           onChangeText={(value) => setSignupForm("houseNumber", value)}
           error={errors.houseNumber}
@@ -95,20 +95,19 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const makeStyles = ({ borderRadius, gap }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      height: 600,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    header: {
-      marginVertical: 20,
-    },
-    nextButton: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    height: 600,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  header: {
+    marginVertical: 20,
+  },
+  nextButton: {
+    marginTop: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

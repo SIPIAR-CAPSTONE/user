@@ -1,17 +1,16 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useMemo, useState } from "react";
+import { View } from "react-native";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
-import { PasswordFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
 
 const ResetPasswordScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -91,15 +90,17 @@ const ResetPasswordScreen = () => {
 
         <View style={{ height: 16 }} />
 
-        <PasswordFormField
-          label="New Password"
+        <TextInput
+          placeholder="New Password"
+          type="password"
           value={newPassword}
           onChangeText={setNewPassword}
           error={errors.newPassword}
           disabled={loading}
         />
-        <PasswordFormField
-          label="Confirm New Password"
+        <TextInput
+          placeholder="Confirm New Password"
+          type="password"
           value={confirmNewPassword}
           onChangeText={setConfirmNewPassword}
           error={errors.confirmNewPassword}
@@ -122,17 +123,16 @@ const ResetPasswordScreen = () => {
 
 export default ResetPasswordScreen;
 
-const makeStyles = ({ borderRadius, padding, gap }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  button: {
+    marginTop: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

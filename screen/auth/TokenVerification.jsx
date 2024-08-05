@@ -1,8 +1,7 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import { useTheme, Text } from "react-native-paper";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { ScrollView, View } from "react-native";
+import { Text } from "react-native-paper";
+import { useEffect, useState, useRef } from "react";
 
-import { TextFormField } from "../../components/ui/FormField";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import useCountdown from "../../hooks/useCountdown";
@@ -10,10 +9,11 @@ import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../../utils/supabase/config";
 import useSendToken from "../../hooks/useSendToken";
 import useBoundStore from "../../zustand/useBoundStore";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
 
 const TokenVerification = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [isFilled, setIsFilled] = useState(false);
   const { time, pause } = useCountdown(70); //* it should be 70 constant, this is for interval in supabase
@@ -70,8 +70,8 @@ const TokenVerification = () => {
           desc="We have sent the verification token to your email address."
         />
 
-        <TextFormField
-          label="Token Hash"
+        <TextInput
+          placeholder="Token Hash"
           value={tokenHash}
           onChangeText={setTokenHash}
         />
@@ -111,30 +111,29 @@ const ResendCountdown = ({ time, styles }) => {
 
 export default TokenVerification;
 
-const makeStyles = ({ padding, gap, colors, borderRadius }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    serverErrorMessage: {
-      color: colors.primary,
-    },
-    resentMessage: {
-      color: colors.primary,
-      textAlign: "center",
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-    timerContainer: {
-      textAlign: "center",
-    },
-    time: {
-      color: colors.primary,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  serverErrorMessage: {
+    color: theme.colors.primary,
+  },
+  resentMessage: {
+    color: theme.colors.primary,
+    textAlign: "center",
+  },
+  button: {
+    marginTop: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+  timerContainer: {
+    textAlign: "center",
+  },
+  time: {
+    color: theme.colors.primary,
+  },
+}));

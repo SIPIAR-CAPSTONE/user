@@ -1,14 +1,14 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useMemo, useState } from "react";
+import {  ScrollView, View } from "react-native";
+import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
-import { TextFormField } from "../../components/ui/FormField";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import StatusBar from "../../components/common/StatusBar";
 import useSendToken from "../../hooks/useSendToken";
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
 
 /**
  * ForgotPasswordScreen component
@@ -17,8 +17,7 @@ import useBoundStore from "../../zustand/useBoundStore";
  * It also handles the form validation and submission.
  */
 const ForgotPasswordScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,8 +84,8 @@ const ForgotPasswordScreen = () => {
           titleSize="large"
           desc="Please provide your registered email."
         />
-        <TextFormField
-          label="Email Address"
+        <TextInput
+          placeholder="Email Address"
           value={email}
           inputMode="email"
           onChangeText={setEmail}
@@ -108,17 +107,16 @@ const ForgotPasswordScreen = () => {
 
 export default ForgotPasswordScreen;
 
-const makeStyles = ({ borderRadius, padding, gap }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  button: {
+    marginTop: 20,
+    borderRadius: theme.borderRadius.base,
+  },
+}));

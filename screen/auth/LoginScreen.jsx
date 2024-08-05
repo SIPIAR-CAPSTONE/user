@@ -1,20 +1,18 @@
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { ScrollView, View } from "react-native";
+import { Button, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import PrimaryButton from "../../components/ui/PrimaryButton";
-import {
-  TextFormField,
-  PasswordFormField,
-} from "../../components/ui/FormField";
 import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -25,8 +23,7 @@ const LoginScreen = () => {
   const setSession = useBoundStore((state) => state.setSession);
   const largeSecureStore = new LargeSecureStore();
   const { setState } = useUserMetadata();
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   //* PROFILE PICTURE SETTER
   const setProfilePicturePath = useBoundStore(
@@ -107,10 +104,10 @@ const LoginScreen = () => {
 
         setSession(encryptedSession);
 
-        //! set session global state variables
+        //* set session global state variables
         setState(data["session"]);
 
-        //! CALL IMAGE DOWNLOADER FUNC
+        //* CALL IMAGE DOWNLOADER FUNC
         imageDownload(data["session"]["user"]["user_metadata"]["email"]);
       }
     }
@@ -128,16 +125,17 @@ const LoginScreen = () => {
           desc="Please login to your account to access all app features."
         />
 
-        <TextFormField
-          label="Email Address"
+        <TextInput
+          placeholder="Email Address"
           value={email}
           inputMode="email"
           onChangeText={setEmail}
           error={errors.email}
           disabled={loading}
         />
-        <PasswordFormField
-          label="Password"
+        <TextInput
+          placeholder="Password"
+          type="password"
           value={password}
           onChangeText={setPassword}
           error={errors.password}
@@ -162,7 +160,7 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.footer}>
-        <Text variant="labelMedium">Don't Have an Account?</Text>
+        <Text variant="labelLarge">Don't Have an Account?</Text>
         <Button
           mode="text"
           compact
@@ -181,40 +179,39 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const makeStyles = ({ padding, gap, borderRadius, fontSize }) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    containerContent: {
-      flex: 1,
-      justifyContent: "space-between",
-    },
-    header: {
-      marginVertical: 20,
-    },
-    form: {
-      rowGap: gap.lg,
-    },
-    forgotPassButton: {
-      maxWidth: 180,
-      alignSelf: "flex-end",
-      marginBottom: 20,
-      borderRadius: borderRadius.md,
-    },
-    signinButton: {
-      borderRadius: borderRadius.base,
-    },
-    signupButton: {
-      borderRadius: borderRadius.base,
-    },
-    signinButtonLabel: {
-      fontSize: fontSize.xs,
-    },
-    footer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    paddingHorizontal: theme.padding.body.horizontal,
+  },
+  containerContent: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  header: {
+    marginVertical: 20,
+  },
+  form: {
+    rowGap: theme.gap.lg,
+  },
+  forgotPassButton: {
+    maxWidth: 180,
+    alignSelf: "flex-end",
+    marginBottom: 20,
+    borderRadius: theme.borderRadius.md,
+  },
+  signinButton: {
+    borderRadius: theme.borderRadius.base,
+  },
+  signupButton: {
+    borderRadius: theme.borderRadius.base,
+  },
+  signinButtonLabel: {
+    fontSize: theme.fontSize.sm,
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));
