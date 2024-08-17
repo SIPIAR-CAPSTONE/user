@@ -12,7 +12,7 @@ import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
-const SettingScreen = () => {
+const SettingsScreen = () => {
   const { styles } = useStyles(stylesheet);
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
@@ -108,7 +108,7 @@ const SettingScreen = () => {
   );
 };
 
-export default SettingScreen;
+export default SettingsScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
   listItems: {
