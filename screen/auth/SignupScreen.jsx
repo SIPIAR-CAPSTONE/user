@@ -104,7 +104,7 @@ const SignupScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView style={styles.container}>
+    <>
       <AppBar style={styles.appBar}>
         <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
         <Text style={styles.appBarTitle}>Signup</Text>
@@ -112,34 +112,37 @@ const SignupScreen = ({ navigation }) => {
         {/* invisible element, just to make the title center */}
         <View style={{ width: 30 }} />
       </AppBar>
-      <View style={styles.content}>
-        <ProgressSteps
-          currentStep={currentStep}
-          orientation="horizontal"
-          steps={steps}
-          colors={customColors}
+
+      <ScrollView style={styles.container}>
+        <View style={styles.content}>
+          <ProgressSteps
+            currentStep={currentStep}
+            orientation="horizontal"
+            steps={steps}
+            colors={customColors}
+          />
+        </View>
+
+        <ConfirmationDialog
+          ref={confirmationDialogRef}
+          title="Are you sure you want to exit?"
+          buttons={[
+            {
+              label: "Confirm",
+              onPress: () => navigation.goBack(),
+              mode: "contained",
+            },
+            {
+              label: "Cancel",
+              onPress: () => confirmationDialogRef.current.hideDialog(),
+              mode: "text",
+            },
+          ]}
         />
-      </View>
 
-      <ConfirmationDialog
-        ref={confirmationDialogRef}
-        title="Are you sure you want to exit?"
-        buttons={[
-          {
-            label: "Confirm",
-            onPress: () => navigation.goBack(),
-            mode: "contained",
-          },
-          {
-            label: "Cancel",
-            onPress: () => confirmationDialogRef.current.hideDialog(),
-            mode: "text",
-          },
-        ]}
-      />
-
-      <StatusBar />
-    </ScrollView>
+        <StatusBar />
+      </ScrollView>
+    </>
   );
 };
 

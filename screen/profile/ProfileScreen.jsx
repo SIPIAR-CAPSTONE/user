@@ -108,12 +108,12 @@ const ProfileScreen = () => {
         />
         <ListItem
           size="medium"
-          title="Setting"
+          title="Settings"
           renderIcon={() => (
             <CircularIcon name="settings" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("Setting")}
+          onPress={() => navigation.navigate("Settings")}
         />
         <ListItem
           size="medium"

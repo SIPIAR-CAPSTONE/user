@@ -119,47 +119,45 @@ const AccountVerificationScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-      }}
-    >
-      <AppBar style={{ height: 110 }}>
+    <>
+      <AppBar>
         <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
-        <Text style={styles.appBarTitle}>Account Verification</Text>
-
-        {/* invisible element, just to make the title center */}
-        <View style={{ width: 30 }} />
       </AppBar>
 
-      <View style={styles.content}>
-        <ProgressSteps
-          currentStep={currentStep}
-          orientation="horizontal"
-          steps={steps}
-          colors={customColors}
+      <ScrollView
+        style={{
+          flex: 1,
+        }}
+      >
+        <View style={styles.content}>
+          <ProgressSteps
+            currentStep={currentStep}
+            orientation="horizontal"
+            steps={steps}
+            colors={customColors}
+          />
+        </View>
+
+        <ConfirmationDialog
+          ref={confirmationDialogRef}
+          title="Are you sure you want to exit?"
+          buttons={[
+            {
+              label: "Confirm",
+              onPress: () => navigation.goBack(),
+              mode: "contained",
+            },
+            {
+              label: "Cancel",
+              onPress: () => confirmationDialogRef.current.hideDialog(),
+              mode: "text",
+            },
+          ]}
         />
-      </View>
 
-      <ConfirmationDialog
-        ref={confirmationDialogRef}
-        title="Are you sure you want to exit?"
-        buttons={[
-          {
-            label: "Confirm",
-            onPress: () => navigation.goBack(),
-            mode: "contained",
-          },
-          {
-            label: "Cancel",
-            onPress: () => confirmationDialogRef.current.hideDialog(),
-            mode: "text",
-          },
-        ]}
-      />
-
-      <StatusBar />
-    </ScrollView>
+        <StatusBar />
+      </ScrollView>
+    </>
   );
 };
 

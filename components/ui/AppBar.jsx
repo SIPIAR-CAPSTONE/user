@@ -18,7 +18,7 @@ const stylesheet = createStyleSheet((theme) => ({
   container: {
     flexDirection: "row",
     paddingTop: StatusBar.currentHeight - 10,
-    height: 86,
+    height: 114,
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
