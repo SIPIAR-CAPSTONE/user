@@ -1,7 +1,7 @@
 import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import StatusBar from "../../components/common/StatusBar";
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
@@ -25,8 +25,17 @@ const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   // Create references for the confirmation dialogs
-  const verificationScreenConfirmationDialogRef = useRef(null);
-  const logoutDialogRef = useRef(null);
+  const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false);
+  const [isNavConfirmationDialogVisible, setIsNavConfirmationDialogVisible] =
+    useState(false);
+
+  const hideLogoutDialog = () => setIsLogoutDialogVisible(false);
+  const showLogoutDialog = () => setIsLogoutDialogVisible(true);
+
+  const hideNavConfirmationDialog = () =>
+    setIsNavConfirmationDialogVisible(false);
+  const showNavConfirmationDialog = () =>
+    setIsNavConfirmationDialogVisible(true);
 
   const userMetaData = useBoundStore((state) => state.userMetaData);
   const removeSession = useBoundStore((state) => state.removeSession);
@@ -71,7 +80,7 @@ const ProfileScreen = () => {
    * navigated to the AccountVerification screen resulting in a laggy transition
    */
   const handleNavigateToVerification = () => {
-    verificationScreenConfirmationDialogRef.current.hideDialog();
+    hideNavConfirmationDialog();
     setTimeout(() => {
       navigation.navigate("AccountVerification");
     }, 10);
@@ -89,9 +98,7 @@ const ProfileScreen = () => {
         renderFooter={() => (
           <VerifiedIndicator
             isVerified={false}
-            onPress={() =>
-              verificationScreenConfirmationDialogRef.current.showDialog()
-            }
+            onPress={showNavConfirmationDialog}
           />
         )}
       />
@@ -140,40 +147,23 @@ const ProfileScreen = () => {
             <CircularIcon name="exit" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => logoutDialogRef.current.showDialog()}
+          onPress={showLogoutDialog}
         />
         {/* Confirmation dialog for the sign out action */}
         <ConfirmationDialog
-          ref={logoutDialogRef}
           title="Are you sure you want to Sign Out?"
-          buttons={[
-            { label: "Sign out", onPress: handleLogout, mode: "contained" },
-            {
-              label: "Cancel",
-              onPress: () => logoutDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
+          isVisible={isLogoutDialogVisible}
+          onPressConfirmation={handleLogout}
+          onPressCancel={hideLogoutDialog}
         />
 
         {/* Confirmation dialog for starting the verification process */}
         <ConfirmationDialog
-          ref={verificationScreenConfirmationDialogRef}
           title="Here are the steps to verify your account:"
           content={<EnteringVerificationConfirmationContent />}
-          buttons={[
-            {
-              label: "GetStarted",
-              onPress: handleNavigateToVerification,
-              mode: "contained",
-            },
-            {
-              label: "Cancel",
-              onPress: () =>
-                verificationScreenConfirmationDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
+          isVisible={isNavConfirmationDialogVisible}
+          onPressConfirmation={handleNavigateToVerification}
+          onPressCancel={hideNavConfirmationDialog}
         />
       </View>
 

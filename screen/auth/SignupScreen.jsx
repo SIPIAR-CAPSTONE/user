@@ -1,7 +1,7 @@
 import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect, lazy, useState, useRef } from "react";
+import { useEffect, lazy, useState } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
 import AppBar from "../../components/ui/AppBar";
@@ -19,7 +19,11 @@ const StepThreeContent = lazy(() =>
 
 const SignupScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
-  const confirmationDialogRef = useRef(null);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const [currentStep, setCurrentStep] = useState(0);
   const resetSignup = useBoundStore((state) => state.resetSignup);
@@ -31,7 +35,7 @@ const SignupScreen = ({ navigation }) => {
     if (currentStep > 0) {
       setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
     } else {
-      confirmationDialogRef.current.showDialog();
+      showConfirmationDialog();
     }
   };
 
@@ -124,20 +128,10 @@ const SignupScreen = ({ navigation }) => {
         </View>
 
         <ConfirmationDialog
-          ref={confirmationDialogRef}
           title="Are you sure you want to exit?"
-          buttons={[
-            {
-              label: "Confirm",
-              onPress: () => navigation.goBack(),
-              mode: "contained",
-            },
-            {
-              label: "Cancel",
-              onPress: () => confirmationDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
+          isVisible={isConfirmationDialogVisible}
+          onPressConfirmation={() => navigation.goBack()}
+          onPressCancel={hideConfirmationDialog}
         />
 
         <StatusBar />

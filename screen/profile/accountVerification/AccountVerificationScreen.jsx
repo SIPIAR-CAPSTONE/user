@@ -1,7 +1,6 @@
 import { ScrollView, View } from "react-native";
-import { Text } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
-import { useEffect, lazy, useState, useRef } from "react";
+import { useEffect, lazy, useState } from "react";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import CircularIcon from "../../../components/ui/CircularIcon";
@@ -24,7 +23,11 @@ const AccountVerificationScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
   const [currentStep, setCurrentStep] = useState(0);
   const resetVerification = useBoundStore((state) => state.resetVerification);
-  const confirmationDialogRef = useRef(null);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
@@ -33,7 +36,7 @@ const AccountVerificationScreen = ({ navigation }) => {
     if (currentStep > 0) {
       setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
     } else {
-      confirmationDialogRef.current.showDialog();
+      showConfirmationDialog();
     }
   };
 
@@ -139,22 +142,11 @@ const AccountVerificationScreen = ({ navigation }) => {
         </View>
 
         <ConfirmationDialog
-          ref={confirmationDialogRef}
           title="Are you sure you want to exit?"
-          buttons={[
-            {
-              label: "Confirm",
-              onPress: () => navigation.goBack(),
-              mode: "contained",
-            },
-            {
-              label: "Cancel",
-              onPress: () => confirmationDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
+          isVisible={isConfirmationDialogVisible}
+          onPressConfirmation={() => navigation.goBack()}
+          onPressCancel={hideConfirmationDialog}
         />
-
         <StatusBar />
       </ScrollView>
     </>

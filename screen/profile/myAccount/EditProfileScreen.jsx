@@ -1,5 +1,5 @@
 import { View, ScrollView } from "react-native";
-import { useState, lazy, useRef } from "react";
+import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple, Text } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -59,7 +59,11 @@ const EditProfileScreen = () => {
     houseNumber: userMetaData["houseNumber"],
   });
   const [errors, setErrors] = useState({});
-  const sumbitConfirmationDialogRef = useRef(null);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const handleFieldChange = (key, newValue) => {
     setUserInfo((prevUserInfo) => {
@@ -240,25 +244,16 @@ const EditProfileScreen = () => {
 
           <PrimaryButton
             label="Save Changes"
-            onPress={() => sumbitConfirmationDialogRef.current.showDialog()}
+            onPress={showConfirmationDialog}
             style={styles.saveButton}
           />
+
           {/* When save changes submit, show confirmation */}
           <ConfirmationDialog
-            ref={sumbitConfirmationDialogRef}
             title="Are you sure you want to save changes?"
-            buttons={[
-              {
-                label: "Save Changes",
-                onPress: handleSubmit,
-                mode: "contained",
-              },
-              {
-                label: "Cancel",
-                onPress: () => sumbitConfirmationDialogRef.current.hideDialog(),
-                mode: "text",
-              },
-            ]}
+            isVisible={isConfirmationDialogVisible}
+            onPressConfirmation={handleSubmit}
+            onPressCancel={hideConfirmationDialog}
           />
         </View>
 
