@@ -144,7 +144,7 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <>
       <AppBar>
         <CircularIcon
           name="arrow-back"
@@ -164,105 +164,107 @@ const EditProfileScreen = () => {
         </TouchableRipple>
       </AppBar>
 
-      <EditUserProfileCard
-        name="John"
-        imageSource={""}
-        image={profilePicture}
-        setImage={setProfilePicture}
-      />
-
-      <SectionHeader title="Personal Information" />
-      <View style={styles.formFields}>
-        <TextInput
-          variant="outlined"
-          label="First Name"
-          value={userInfo.firstName}
-          onChangeText={(item) => handleFieldChange("firstName", item)}
-          error={errors.firstName}
-        />
-        <TextInput
-          variant="outlined"
-          label="Middle Name"
-          value={userInfo.middleName}
-          onChangeText={(item) => handleFieldChange("middleName", item)}
-        />
-        <TextInput
-          variant="outlined"
-          label="Last Name"
-          value={userInfo.lastName}
-          onChangeText={(item) => handleFieldChange("lastName", item)}
-          error={errors.lastName}
-        />
-        <TextInput
-          variant="outlined"
-          label="Suffix"
-          value={userInfo.suffix}
-          onChangeText={(item) => handleFieldChange("suffix", item)}
-        />
-        <BirthdayPicker
-          variant="outlined"
-          label="Birthday"
-          givenDate={userInfo.birthday}
-          setDate={handleFieldChange}
-          error={errors.birthday}
-        />
-        <TextInput
-          variant="outlined"
-          label="Phone"
-          value={userInfo.phone}
-          onChangeText={(item) => handleFieldChange("phone", item)}
-        />
-      </View>
-
-      <SectionHeader title="Address" />
-      <View style={styles.formFields}>
-        <SelectItem
-          variant="outlined"
-          label="Barangay"
-          value={userInfo.barangay}
-          data={cdoBarangayData}
-          onChange={(item) => handleFieldChange("barangay", item.value)}
-          error={errors.barangay}
-        />
-        <TextInput
-          variant="outlined"
-          label="Street"
-          value={userInfo.street}
-          onChangeText={(item) => handleFieldChange("street", item)}
-        />
-        <TextInput
-          variant="outlined"
-          label="House Number"
-          value={userInfo.houseNumber}
-          onChangeText={(item) => handleFieldChange("houseNumber", item)}
+      <ScrollView contentContainerStyle={styles.container}>
+        <EditUserProfileCard
+          name="John"
+          imageSource={""}
+          image={profilePicture}
+          setImage={setProfilePicture}
         />
 
-        <PrimaryButton
-          label="Save Changes"
-          onPress={() => sumbitConfirmationDialogRef.current.showDialog()}
-          style={styles.saveButton}
-        />
-        {/* When save changes submit, show confirmation */}
-        <ConfirmationDialog
-          ref={sumbitConfirmationDialogRef}
-          title="Are you sure you want to save changes?"
-          buttons={[
-            {
-              label: "Save Changes",
-              onPress: handleSubmit,
-              mode: "contained",
-            },
-            {
-              label: "Cancel",
-              onPress: () => sumbitConfirmationDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
-        />
-      </View>
+        <SectionHeader title="Personal Information" />
+        <View style={styles.formFields}>
+          <TextInput
+            variant="outlined"
+            label="First Name"
+            value={userInfo.firstName}
+            onChangeText={(item) => handleFieldChange("firstName", item)}
+            error={errors.firstName}
+          />
+          <TextInput
+            variant="outlined"
+            label="Middle Name"
+            value={userInfo.middleName}
+            onChangeText={(item) => handleFieldChange("middleName", item)}
+          />
+          <TextInput
+            variant="outlined"
+            label="Last Name"
+            value={userInfo.lastName}
+            onChangeText={(item) => handleFieldChange("lastName", item)}
+            error={errors.lastName}
+          />
+          <TextInput
+            variant="outlined"
+            label="Suffix"
+            value={userInfo.suffix}
+            onChangeText={(item) => handleFieldChange("suffix", item)}
+          />
+          <BirthdayPicker
+            variant="outlined"
+            label="Birthday"
+            givenDate={userInfo.birthday}
+            setDate={handleFieldChange}
+            error={errors.birthday}
+          />
+          <TextInput
+            variant="outlined"
+            label="Phone"
+            value={userInfo.phone}
+            onChangeText={(item) => handleFieldChange("phone", item)}
+          />
+        </View>
 
-      <StatusBar />
-    </ScrollView>
+        <SectionHeader title="Address" />
+        <View style={styles.formFields}>
+          <SelectItem
+            variant="outlined"
+            label="Barangay"
+            value={userInfo.barangay}
+            data={cdoBarangayData}
+            onChange={(item) => handleFieldChange("barangay", item.value)}
+            error={errors.barangay}
+          />
+          <TextInput
+            variant="outlined"
+            label="Street"
+            value={userInfo.street}
+            onChangeText={(item) => handleFieldChange("street", item)}
+          />
+          <TextInput
+            variant="outlined"
+            label="House Number"
+            value={userInfo.houseNumber}
+            onChangeText={(item) => handleFieldChange("houseNumber", item)}
+          />
+
+          <PrimaryButton
+            label="Save Changes"
+            onPress={() => sumbitConfirmationDialogRef.current.showDialog()}
+            style={styles.saveButton}
+          />
+          {/* When save changes submit, show confirmation */}
+          <ConfirmationDialog
+            ref={sumbitConfirmationDialogRef}
+            title="Are you sure you want to save changes?"
+            buttons={[
+              {
+                label: "Save Changes",
+                onPress: handleSubmit,
+                mode: "contained",
+              },
+              {
+                label: "Cancel",
+                onPress: () => sumbitConfirmationDialogRef.current.hideDialog(),
+                mode: "text",
+              },
+            ]}
+          />
+        </View>
+
+        <StatusBar />
+      </ScrollView>
+    </>
   );
 };
 
