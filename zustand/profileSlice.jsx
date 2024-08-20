@@ -1,4 +1,3 @@
-import { themeStatus } from '../utils/theme'
 import { setItem } from '../utils/LocalStorage'
 
 const DEFAULT_VERIFICATION_FORM = {
@@ -15,7 +14,7 @@ const DEFAULT_VERIFICATION_FORM = {
 }
 
 export const createProfileSlice = (set) => ({
-  currentThemeStatus: themeStatus.light,
+  currentThemeStatus: "light",
   verificationForm: DEFAULT_VERIFICATION_FORM,
   profilePicturePath: null,
   setVerificationForm: (key, newValue) =>
@@ -26,7 +25,7 @@ export const createProfileSlice = (set) => ({
   setThemeStatus: (newThemeStatus) => {
     if (newThemeStatus == null) {
       //if given new theme is null set current theme with light theme as default
-      set({ currentThemeStatus: themeStatus.light })
+      set({ currentThemeStatus: "light" })
     } else {
       //set new theme in state
       set({ currentThemeStatus: newThemeStatus })

@@ -162,9 +162,5 @@ const darkTheme = {
   ...commonTheme,
 };
 
-const themeStatus = {
-  dark: "dark",
-  light: "light",
-};
 
-export { lightTheme, darkTheme, themeStatus };
+export { lightTheme, darkTheme };

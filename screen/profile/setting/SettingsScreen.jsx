@@ -7,7 +7,6 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
 import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
-import { themeStatus } from "../../../utils/theme";
 import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
@@ -87,7 +86,7 @@ const SettingsScreen = () => {
         title="Theme"
         visible={visible.appearance}
         hideDialog={() => hideDialog("appearance")}
-        data={[themeStatus.light, themeStatus.dark]}
+        data={["light", "dark"]}
         selectedValue={currentThemeStatus}
         setSelectedValue={handleChangeTheme}
       />
