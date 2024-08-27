@@ -1,6 +1,4 @@
-import memoize from "lodash.memoize";
-
-const getTimeGap = memoize(function (timestamp) {
+const getTimeGap = (timestamp) => {
   const dateObj = new Date(timestamp); // Convert given string timestamp into date object
   const currentDate = new Date(); // Get current date
 
@@ -47,7 +45,7 @@ const getTimeGap = memoize(function (timestamp) {
     minutesDifference
   );
   return timeGap;
-});
+}
 
 /**
  *
