@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
-const FormHeader = ({ title, titleSize = "base", desc }) => {
+const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
   const theme = useTheme();
 
   const TITLE_SIZE_STYLE = {
@@ -11,7 +11,13 @@ const FormHeader = ({ title, titleSize = "base", desc }) => {
 
   return (
     <View style={[styles.header, { rowGap: theme.gap.xs }]}>
-      <Text style={[styles.title, { fontSize: TITLE_SIZE_STYLE[titleSize] }]}>
+      <Text
+        style={[
+          styles.title,
+          { fontSize: TITLE_SIZE_STYLE[titleSize] },
+          titleStyle,
+        ]}
+      >
         {title}
       </Text>
       <Text
