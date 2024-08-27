@@ -14,9 +14,14 @@ import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
 import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
 import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
-import SettingScreen from "../screen/profile/setting/SettingScreen";
+import SettingsScreen from "../screen/profile/setting/SettingsScreen";
 import MapviewScreen from "../screen/broadcast/MapviewScreen";
 import EditPasswordScreen from "../screen/profile/myAccount/EditPasswordScreen";
+import LearnCprScreen from "../screen/learn/LearnCprScreen";
+import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
+import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
+import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
+import CprScreen from "../screen/CPR/CprScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -98,7 +103,7 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="EditPassword"
-      options={{ headerTitle: "Edit Password" }}
+      options={{ headerTitle: " " }}
       component={EditPasswordScreen}
     />
     <Stack.Screen
@@ -106,10 +111,10 @@ export const SignedInStack = (
       options={{ headerShown: false }}
       component={AccountVerificationScreen}
     />
-    <Stack.Screen name="Setting" component={SettingScreen} />
+    <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen
       name="DeleteAccount"
-      options={{ headerTitle: "Delete Account" }}
+      options={{ headerTitle: " " }}
       component={DeleteAccountScreen}
     />
     <Stack.Screen
@@ -121,6 +126,23 @@ export const SignedInStack = (
       name="PrivacyPolicy"
       options={{ headerTitle: "Privacy and Policy" }}
       component={PrivacyAndPolicyScreen}
+    />
+    <Stack.Screen
+      name="Cpr"
+      component={CprScreen}
+      options={{ headerShown: false, orientation: "landscape" }}
+    />
+    <Stack.Screen name="LearnCpr" component={LearnCprScreen} />
+    <Stack.Screen
+      name="LearnCprScore"
+      options={{ headerShown: false }}
+      component={LearnCprScoreScreen}
+    />
+    <Stack.Screen name="LearnCourse" component={LearnCourseScreen} />
+    <Stack.Screen
+      name="VideoPlayer"
+      options={{ orientation: "landscape" }}
+      component={VideoPlayerScreen}
     />
     {commonScreenStack}
   </>
