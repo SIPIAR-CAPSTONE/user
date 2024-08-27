@@ -3,13 +3,13 @@ import { ToastAndroid } from "react-native";
 import { Audio, AVPlaybackSource } from "expo-av";
 import { type TSoundRef, type SoundFile } from "./useCpr.types";
 
-const PushAudio = require("../assets/audio/push.mp3") as AVPlaybackSource;
+const PushAudio = require("../../assets/audio/push.mp3") as AVPlaybackSource;
 const PushFasterAudio =
-  require("../assets/audio/pushFaster.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushFaster.mp3") as AVPlaybackSource;
 const PushHarderAudio =
-  require("../assets/audio/pushHarder.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushHarder.mp3") as AVPlaybackSource;
 const PushSoftlyAudio =
-  require("../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
 
 const usePreloadedAudio = () => {
   const soundsRef = useRef<TSoundRef>({
