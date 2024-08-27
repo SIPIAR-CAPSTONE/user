@@ -4,14 +4,17 @@ import { Divider, Menu, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 type CprHeaderProps = {
-  toggleStartAndStop: () => void;
+  handleEnd: () => void;
 };
 
-function Header({ toggleStartAndStop }: CprHeaderProps) {
+function Header({  handleEnd }: CprHeaderProps) {
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
+
 
   const openActionMenu = (): void => setVisibleActionMenu(true);
   const closeActionMenu = (): void => setVisibleActionMenu(false);
+
+  
 
   return (
     <View style={styles.header}>
@@ -20,9 +23,8 @@ function Header({ toggleStartAndStop }: CprHeaderProps) {
         onDismiss={closeActionMenu}
         anchor={<MoreOptionActionButton onPress={openActionMenu} />}
       >
-        <Menu.Item onPress={toggleStartAndStop} title="ToggleStart" />
         <Divider />
-        <Menu.Item onPress={() => {}} title="End" />
+        <Menu.Item onPress={handleEnd} title="End" />
       </Menu>
     </View>
   );

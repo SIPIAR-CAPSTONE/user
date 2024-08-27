@@ -42,9 +42,13 @@ const useCpr = () => {
 
   useEffect(() => {
     if (timerOn) {
-      if (msCounter === 500) playAudioCue(prevCompressionScore, soundsRef);
-      else if (msCounter === 600) getCompressionScore();
-      if (msCounter >= 600) resetMsCounter();
+      if (msCounter >= 500 && msCounter < 600) {
+        playAudioCue(prevCompressionScore, soundsRef);
+      }
+      if (msCounter >= 600) {
+        getCompressionScore();
+        resetMsCounter();
+      }
     }
   }, [timerOn, msCounter]);
 
@@ -123,6 +127,16 @@ const useCpr = () => {
     clearCompressionHistory();
   };
 
+  const startCpr = (): void => {
+    subscribe();
+    setTimerOn(true);
+  };
+
+  const stopCpr = (): void => {
+    unsubscribe();
+    setTimerOn(false);
+  };
+
   const toggleStartAndStop = useCallback((): void => {
     subscription ? unsubscribe() : subscribe();
     setTimerOn(!timerOn);
@@ -132,6 +146,8 @@ const useCpr = () => {
     timerOn,
     timer,
     toggleStartAndStop,
+    startCpr,
+    stopCpr,
     currentCompressionScore,
     depth: depth.current,
     compressionHistory,

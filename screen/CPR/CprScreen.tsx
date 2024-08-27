@@ -1,19 +1,35 @@
 import { StyleSheet, View } from "react-native";
+
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
 import useCpr from "../../hooks/cpr/useCpr";
 import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
+import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 function CprScreen() {
-  const { timer, toggleStartAndStop, currentCompressionScore } = useCpr();
-
+  const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr();
   const { depthAttempt, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
+  const [isDialogVisible, setIsDialogVisible] = useState(true);
+  const navigation = useNavigation();
+
+  const handleStartCpr = () => {
+    startCpr();
+    setIsDialogVisible(false);
+  };
+
+  const handleEnd = () => {
+    stopCpr();
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
-      <CprHeader toggleStartAndStop={toggleStartAndStop} />
+      <CprHeader handleEnd={handleEnd} />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -46,6 +62,16 @@ function CprScreen() {
           />
         </View>
       </View>
+
+      <ConfirmationDialog
+        isVisible={isDialogVisible}
+        cancelLabel="Back"
+        confirmationLabel="Start"
+        onPressCancel={() => navigation.goBack()}
+        onPressConfirmation={handleStartCpr}
+        title={"Start CPR?"}
+        containerStyle={styles.dialog}
+      />
     </View>
   );
 }
@@ -73,6 +99,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     columnGap: 10,
+  },
+  dialog: {
+    width: 360,
+    marginHorizontal: "auto",
   },
 });
 
