@@ -6,16 +6,13 @@ import useCpr from "../../hooks/cpr/useCpr";
 import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useEffect, useState } from "react";
-import { NavigationProp } from "@react-navigation/native";
+import { useState } from "react";
+import { useNavigation, StackActions } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
 
-type LearnCprScreenProps = {
-  navigation: NavigationProp<any, any>;
-};
-
-const LearnCprScreen = ({ navigation }: LearnCprScreenProps) => {
+const LearnCprScreen = () => {
+  const navigation = useNavigation();
   const {
     timer,
     startCpr,
@@ -39,7 +36,7 @@ const LearnCprScreen = ({ navigation }: LearnCprScreenProps) => {
   const handleEnd = () => {
     setCompressionHistory([...compressionHistory]);
     stopCpr();
-    navigation.navigate("LearnCprScore");
+    navigation.dispatch(StackActions.replace("LearnCprScore"));
   };
 
   return (
