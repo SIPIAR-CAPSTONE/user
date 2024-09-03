@@ -10,42 +10,37 @@ import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
 import { Divider } from "react-native-paper";
 import {
-  getAverageDepthAttempt,
-  getAvgOverallScorePercentage,
-  getColorScoreCount,
-  getColorScorePercentage,
+  countColorOverallScore,
+  getAverageOfTotalDepth,
+  getColorOverallScorePercentage,
+  getFormattedCurrentDate,
+  getTimingPercentage,
+  getTotalTimeDuration,
 } from "./Learn.helper";
 
 const LearnCprScoreScreen = () => {
-  const compressionHistory = useBoundStore((state) => state.compressionHistory);
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const navigation = useNavigation();
   const { styles, theme } = useStyles(stylesheet);
+  const compressionHistory = useBoundStore((state) => state.compressionHistory);
+  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
 
-  const date = new Date();
-  const currentDate = date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-  });
-
-  const averageDepthInInches = getAverageDepthAttempt(compressionHistory);
-  const averageTimingInPercent = getColorScorePercentage(
-    compressionHistory,
-    "green"
-  );
-  const totalDuration = Number(
-    compressionHistory[compressionHistory.length - 1].time
-  ).toFixed(0);
-  const overallScorePercentage =
-    getAvgOverallScorePercentage(compressionHistory);
-
-  const perfectOverallScoreCount = getColorScoreCount(
-    compressionHistory,
-    "green"
-  );
+  const currentDate = getFormattedCurrentDate();
   const totalCompression = compressionHistory.length;
+  const totalDuration = getTotalTimeDuration(compressionHistory);
+
+  const perfectOverallScoreCount = countColorOverallScore(
+    compressionHistory,
+    "green"
+  );
+  const perfectOverallScorePercentage = getColorOverallScorePercentage(
+    compressionHistory,
+    "green"
+  );
   const overallScore = `${perfectOverallScoreCount}/${totalCompression}`;
+
+  const averageDepthInInches = getAverageOfTotalDepth(compressionHistory);
+  const averageTimingInPercentage = getTimingPercentage(compressionHistory);
+
   const overallScorePointsFontSize =
     totalCompression < 10 ? 40 : totalCompression < 100 ? 30 : 24;
 
@@ -76,14 +71,14 @@ const LearnCprScoreScreen = () => {
         <ScorePoints
           label="Score"
           points={overallScore}
-          progress={overallScorePercentage}
+          progress={perfectOverallScorePercentage}
           size="lg"
           pointsFontSize={overallScorePointsFontSize}
           pointsColor={theme.colors.background}
           progressColor={
-            overallScorePercentage < 40
+            perfectOverallScorePercentage < 40
               ? "#DC2626"
-              : overallScorePercentage < 70
+              : perfectOverallScorePercentage < 70
               ? "#F59E0B"
               : "#22C55E"
           }
@@ -117,12 +112,12 @@ const LearnCprScoreScreen = () => {
           <ScorePointsListItem
             title="AVG. Timing in %"
             iconName="altimeter"
-            points={averageTimingInPercent}
+            points={averageTimingInPercentage}
             progress={100}
             progressColor={
-              averageTimingInPercent < 40
+              averageTimingInPercentage < 40
                 ? "#DC2626"
-                : averageTimingInPercent < 70
+                : averageTimingInPercentage < 70
                 ? "#F59E0B"
                 : "#22C55E"
             }

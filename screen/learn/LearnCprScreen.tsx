@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
@@ -30,7 +30,6 @@ const LearnCprScreen = ({ navigation }: LearnCprScreenProps) => {
     (state) => state.setCompressionHistory
   );
   const [isCprStartDialogVisible, setIsCprStartDialogVisible] = useState(true);
-  const [isExitDialogVisible, setIsExitDialogVisible] = useState(false);
 
   const handleStartCpr = () => {
     startCpr();
@@ -42,23 +41,6 @@ const LearnCprScreen = ({ navigation }: LearnCprScreenProps) => {
     stopCpr();
     navigation.navigate("LearnCprScore");
   };
-
-  //prevent going back to previous screen
-  useEffect(() => {
-    const beforeRemoveListener = (e: any) => {
-      e.preventDefault();
-    };
-
-    const subscription = navigation.addListener(
-      "beforeRemove",
-      beforeRemoveListener
-    );
-
-    // Cleanup the listener on component unmount
-    return () => {
-      subscription();
-    };
-  }, [navigation]);
 
   return (
     <View style={styles.container}>
