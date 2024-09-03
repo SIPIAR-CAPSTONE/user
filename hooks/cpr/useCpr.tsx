@@ -10,10 +10,7 @@ import usePreloadedAudio from "./usePreloadedAudio";
 import useTimer from "./useTimer";
 import { type Compression, type CompressionRecord } from "./useCpr.types";
 
-//for recording cpr attempt purpose
-//to be use in cpr practice (assessment) feature
-const compressionHistory: Array<CompressionRecord> = [];
-
+// Initial empty compression value
 const EMPTY_COMPRESSION_VALUE: Compression = {
   depthAttempt: 0,
   depthScore: null,
@@ -22,8 +19,8 @@ const EMPTY_COMPRESSION_VALUE: Compression = {
 };
 
 const useCpr = () => {
-  const soundsRef = usePreloadedAudio(); // Load the audio files
-  const [subscription, setSubscription] = useState<boolean>(false);
+  const soundsRef = usePreloadedAudio(); // pre load the audio files for cues
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const prevZ = useRef<number>(0);
   const depth = useRef<number>(0);
   const {
@@ -39,14 +36,17 @@ const useCpr = () => {
   const [currentCompressionScore, setCurrentCompressionScore] =
     useState<Compression>(EMPTY_COMPRESSION_VALUE);
   const prevCompressionScore = useRef<Compression>(EMPTY_COMPRESSION_VALUE); //it is used for voice cue
+  const compressionHistory = useRef<Array<CompressionRecord>>([]);
+  const formattedTime = (rawTimer * 0.001).toFixed(1);
 
+  // perform playinfAudioCue and getting compression score when conditions are met
   useEffect(() => {
     if (timerOn) {
       if (msCounter >= 500 && msCounter < 600) {
         playAudioCue(prevCompressionScore, soundsRef);
       }
       if (msCounter >= 600) {
-        getCompressionScore();
+        getCompressionScore(formattedTime);
         resetMsCounter();
       }
     }
@@ -63,48 +63,51 @@ const useCpr = () => {
       depth.current = Number(compressionDepth.toFixed(1));
       prevZ.current = z;
     },
-    [subscription]
+    [isSubscribed]
   );
 
-  const getCompressionScore = useCallback((): void => {
-    if (timerOn) {
-      const depthAttempt = depth.current;
-      const depthScore = getDepthScore(depthAttempt);
-      const timingScore = getTimingScore(depthAttempt);
-      const overallScore = getOverallScore(depthScore, timingScore);
+  const getCompressionScore = useCallback(
+    (formattedTime: string): void => {
+      if (timerOn) {
+        const depthAttempt = depth.current;
+        const depthScore = getDepthScore(depthAttempt);
+        const timingScore = getTimingScore(depthAttempt);
+        const overallScore = getOverallScore(depthScore, timingScore);
 
-      const currentScore: Compression = {
-        depthAttempt,
-        depthScore,
-        timingScore,
-        overallScore,
-      };
+        const currentScore: Compression = {
+          depthAttempt,
+          depthScore,
+          timingScore,
+          overallScore,
+        };
 
-      setCurrentCompressionScore(currentScore);
-      prevCompressionScore.current = currentScore;
+        setCurrentCompressionScore(currentScore);
+        prevCompressionScore.current = currentScore;
 
-      //record scores
-      //purpose: scoring for cpr assessment feature
-      recordCompressionHistory(currentScore);
+        // Record the current compression score with a timestamp
+        recordCompressionHistory(currentScore, formattedTime);
 
-      setTimeout(() => {
-        setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
-      }, 150);
-    }
-  }, [timerOn]);
+        
+        // Clear the current compression score after a brief delay
+        setTimeout(() => {
+          setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
+        }, 150);
+      }
+    },
+    [timerOn]
+  );
 
-  const recordCompressionHistory = (currentScore: Compression): void => {
-    const formattedCurrentTime = (rawTimer * 0.001).toFixed(1);
-    const compressionRecord: CompressionRecord = {
-      score: currentScore,
-      time: formattedCurrentTime,
+  const recordCompressionHistory = (score: Compression, time: string): void => {
+    const currentCompressionRecord: CompressionRecord = {
+      score: score,
+      time: time,
     };
 
-    compressionHistory.push(compressionRecord);
+    compressionHistory.current.push(currentCompressionRecord);
   };
 
   const clearCompressionHistory = (): void => {
-    compressionHistory.length = 0;
+    compressionHistory.current.length = 0;
   };
 
   const subscribe = useCallback((): void => {
@@ -114,12 +117,12 @@ const useCpr = () => {
       calculateDepth(data.z);
     });
 
-    if (subscription) setSubscription(true);
-  }, [subscription]);
+    if (subscription) setIsSubscribed(true);
+  }, [isSubscribed]);
 
   const unsubscribe = (): void => {
     Accelerometer.removeAllListeners();
-    setSubscription(false);
+    setIsSubscribed(false);
     depth.current = 0;
     prevCompressionScore.current = EMPTY_COMPRESSION_VALUE;
     setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
@@ -137,20 +140,15 @@ const useCpr = () => {
     setTimerOn(false);
   };
 
-  const toggleStartAndStop = useCallback((): void => {
-    subscription ? unsubscribe() : subscribe();
-    setTimerOn(!timerOn);
-  }, [timerOn]);
 
   return {
     timerOn,
     timer,
-    toggleStartAndStop,
     startCpr,
     stopCpr,
     currentCompressionScore,
     depth: depth.current,
-    compressionHistory,
+    compressionHistory: compressionHistory.current,
   };
 };
 

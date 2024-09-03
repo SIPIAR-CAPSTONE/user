@@ -6,8 +6,9 @@ import useCpr from "../../hooks/cpr/useCpr";
 import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import StatusBar from "../../components/common/StatusBar";
 
 function CprScreen() {
   const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr();
@@ -26,6 +27,7 @@ function CprScreen() {
     stopCpr();
     navigation.goBack();
   };
+
 
   return (
     <View style={styles.container}>
@@ -72,6 +74,7 @@ function CprScreen() {
         title={"Start CPR?"}
         containerStyle={styles.dialog}
       />
+      <StatusBar hidden translucent />
     </View>
   );
 }

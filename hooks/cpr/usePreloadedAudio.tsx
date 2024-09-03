@@ -42,6 +42,7 @@ const usePreloadedAudio = () => {
     preloadAudio();
 
     return () => {
+      // Unload all sounds when the component is unmounted
       for (const key in soundsRef.current) {
         const keyName = key as keyof TSoundRef;
         soundsRef.current[keyName].unloadAsync();

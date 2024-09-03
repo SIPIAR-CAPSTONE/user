@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import { type Score } from "../../hooks/cpr/useCpr.types";
-import { Color } from "../../screen/CPR/cpr.types";
+import Color from "../../utils/Color";
 
 type ScoreBarProps = {
   score: Score | null;
