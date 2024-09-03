@@ -1,7 +1,7 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import useBoundStore from "../../zustand/useBoundStore";
 
-const StatusBar = ({ style }) => {
+const StatusBar = ({ style = null, ...props }) => {
   // Get the current theme status from the store.
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
 
@@ -23,7 +23,7 @@ const StatusBar = ({ style }) => {
     selectedStatusStyle = "light";
   }
 
-  return <ExpoStatusBar style={selectedStatusStyle} />;
+  return <ExpoStatusBar style={selectedStatusStyle} {...props} />;
 };
 
 export default StatusBar;
