@@ -58,7 +58,8 @@ export function getTotalTimeDuration(records) {
     return 0;
   }
 
-  return lastRecord?.time;
+  const totalDuration = Number(lastRecord?.time).toFixed(0);
+  return totalDuration;
 }
 
 // Get the count of records with a specific color score
