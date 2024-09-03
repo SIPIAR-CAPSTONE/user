@@ -3,7 +3,7 @@ import { Text, Dialog, Portal, Button } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useMemo } from "react";
 
-import { getDistanceGap, getTimeGap } from "../../utils/dateAndDistanceGap";
+import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const EMPTY_PLACEHOLDER = " - ";
@@ -112,7 +112,7 @@ const MarkerDialog = ({
  */
 const InfoField = ({ icon, label, value, colors }) => {
   const { styles } = useStyles(stylesheet);
- 
+
   return (
     <View style={styles.infoField}>
       <View

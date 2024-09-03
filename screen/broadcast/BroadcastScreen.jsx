@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
-import { getTimeGap, getDistanceGap } from "../../utils/dateAndDistanceGap";
+import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
