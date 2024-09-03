@@ -89,16 +89,18 @@ const LearnCprScoreScreen = () => {
       <View style={styles.detailedScoreContainer}>
         <View>
           <ScorePointsListItem
-            title="Duration in sec."
+            title="Total Duration"
             iconName="timer-outline"
             points={totalDuration}
+            pointsSuffix="s"
             progress={100}
           />
           <Divider />
           <ScorePointsListItem
-            title="AVG. Depth in inches"
+            title="Average Depth"
             iconName="arrow-expand-vertical"
             points={averageDepthInInches}
+            pointsSuffix="in"
             progress={100}
             progressColor={
               averageDepthInInches < 2
@@ -110,9 +112,10 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="AVG. Timing in %"
+            title="Average Timing"
             iconName="altimeter"
             points={averageTimingInPercentage}
+            pointsSuffix="%"
             progress={100}
             progressColor={
               averageTimingInPercentage < 40

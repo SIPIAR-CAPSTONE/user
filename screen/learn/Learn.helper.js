@@ -16,8 +16,13 @@ export function getAverageOfTotalDepth(records) {
     (sum, record) => sum + record.score.depthAttempt,
     0
   );
+
+  if (records.length === 0) {
+    return 0;
+  }
+
   const averageDepth = totalDepth / records.length;
-  return Number(averageDepth.toFixed(2));
+  return Number(averageDepth.toFixed(1));
 }
 
 export function getTimingPercentage(records) {

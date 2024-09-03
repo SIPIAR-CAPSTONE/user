@@ -11,7 +11,8 @@ export default function ScorePoints({
   label,
   progressColor = "#22C55E",
   backgroundColor = "#D9D9D9",
-  size = "sm",
+  size = "md",
+  pointsSuffix,
 }) {
   const { styles, theme } = useStyles(stylesheet);
 
@@ -19,23 +20,45 @@ export default function ScorePoints({
     if (label) {
       return (
         <View style={styles.contentContainer}>
-          <Text
-            style={[
-              styles.points,
-              {
-                color: pointsColor || theme.colors.typography.primary,
-                fontSize: pointsFontSize || theme.fontSize.md,
-              },
-            ]}
-          >
-            {points}
-          </Text>
+          <View style={styles.pointsContainer}>
+            <Text
+              style={[
+                styles.points,
+                {
+                  color: pointsColor || theme.colors.typography.primary,
+                  fontSize: pointsFontSize || theme.fontSize.lg,
+                },
+              ]}
+            >
+              {points}
+            </Text>
+            <Text style={styles.pointsSuffix}>
+              {pointsSuffix ? pointsSuffix : " "}
+            </Text>
+          </View>
           <Text style={styles.label}>{label}</Text>
         </View>
       );
     }
 
-    return <Text style={styles.points}>{points}</Text>;
+    return (
+      <View style={styles.pointsContainer}>
+        <Text
+          style={[
+            styles.points,
+            {
+              color: pointsColor || theme.colors.typography.primary,
+              fontSize: pointsFontSize || theme.fontSize.lg,
+            },
+          ]}
+        >
+          {points}
+        </Text>
+        <Text style={styles.pointsSuffix}>
+          {pointsSuffix ? pointsSuffix : " "}
+        </Text>
+      </View>
+    );
   };
 
   return (
@@ -60,12 +83,24 @@ const stylesheet = createStyleSheet((theme) => ({
     color: theme.colors.background,
     fontSize: theme.fontSize.xs,
   },
+  pointsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   points: {
     fontWeight: "bold",
+    marginLeft: 6,
+  },
+  pointsSuffix: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginLeft: 2,
+    marginTop: 6,
   },
 }));
 
 const sizeStyle = {
   lg: 130,
+  md: 80,
   sm: 50,
 };

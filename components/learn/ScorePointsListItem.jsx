@@ -8,6 +8,7 @@ function ScorePointsListItem({
   points,
   progress,
   progressColor,
+  pointsSuffix,
 }) {
   const { styles, theme } = useStyles(stylesheet);
 
@@ -22,12 +23,13 @@ function ScorePointsListItem({
           color={theme.colors.typography.primary}
         />
       )}
-      right={(props) => (
+      right={() => (
         <ScorePoints
           progress={progress}
           points={points}
           progressColor={progressColor}
-          {...props}
+          pointsFontSize={20}
+          pointsSuffix={pointsSuffix}
         />
       )}
     />
