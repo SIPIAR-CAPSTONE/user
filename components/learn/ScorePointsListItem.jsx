@@ -28,7 +28,7 @@ function ScorePointsListItem({
           progress={progress}
           points={points}
           progressColor={progressColor}
-          pointsFontSize={20}
+          pointsFontSize={16}
           pointsSuffix={pointsSuffix}
         />
       )}

@@ -89,18 +89,18 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   points: {
     fontWeight: "bold",
-    marginLeft: 6,
+    marginLeft: 3,
   },
   pointsSuffix: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "bold",
-    marginLeft: 2,
+    marginLeft: 1,
     marginTop: 6,
   },
 }));
 
 const sizeStyle = {
   lg: 130,
-  md: 80,
+  md: 64,
   sm: 50,
 };
