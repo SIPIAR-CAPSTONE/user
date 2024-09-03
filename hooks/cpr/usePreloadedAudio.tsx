@@ -3,13 +3,13 @@ import { ToastAndroid } from "react-native";
 import { Audio, AVPlaybackSource } from "expo-av";
 import { type TSoundRef, type SoundFile } from "./useCpr.types";
 
-const PushAudio = require("../assets/audio/push.mp3") as AVPlaybackSource;
+const PushAudio = require("../../assets/audio/push.mp3") as AVPlaybackSource;
 const PushFasterAudio =
-  require("../assets/audio/pushFaster.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushFaster.mp3") as AVPlaybackSource;
 const PushHarderAudio =
-  require("../assets/audio/pushHarder.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushHarder.mp3") as AVPlaybackSource;
 const PushSoftlyAudio =
-  require("../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
 
 const usePreloadedAudio = () => {
   const soundsRef = useRef<TSoundRef>({
@@ -42,6 +42,7 @@ const usePreloadedAudio = () => {
     preloadAudio();
 
     return () => {
+      // Unload all sounds when the component is unmounted
       for (const key in soundsRef.current) {
         const keyName = key as keyof TSoundRef;
         soundsRef.current[keyName].unloadAsync();

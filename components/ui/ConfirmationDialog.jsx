@@ -7,11 +7,12 @@ import PrimaryButton from "./PrimaryButton";
 const ConfirmationDialog = ({
   isVisible,
   title,
-  content,
+  content = "",
   confirmationLabel = "Confirm",
   cancelLabel = "Cancel",
   onPressConfirmation,
   onPressCancel,
+  containerStyle = {}
 }) => {
   const theme = useTheme();
 
@@ -20,7 +21,7 @@ const ConfirmationDialog = ({
       <Dialog
         visible={isVisible}
         onDismiss={onPressCancel}
-        style={styles.container}
+        style={[styles.container, containerStyle]}
       >
         <Dialog.Title style={styles.title}>{title}</Dialog.Title>
         {content && <Dialog.Content>{content}</Dialog.Content>}

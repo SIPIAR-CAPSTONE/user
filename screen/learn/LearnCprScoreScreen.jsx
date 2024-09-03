@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import AppBar from "../../components/ui/AppBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -8,12 +8,20 @@ import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
 import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
-import { Divider } from "react-native-paper"
+import { Divider } from "react-native-paper";
+import {
+  getAverageDepthAttempt,
+  getAvgOverallScorePercentage,
+  getColorScoreCount,
+  getColorScorePercentage,
+} from "./Learn.helper";
 
 const LearnCprScoreScreen = () => {
+  const compressionHistory = useBoundStore((state) => state.compressionHistory);
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const navigation = useNavigation();
   const { styles, theme } = useStyles(stylesheet);
+
   const date = new Date();
   const currentDate = date.toLocaleDateString("en-US", {
     month: "long",
@@ -21,9 +29,45 @@ const LearnCprScoreScreen = () => {
     weekday: "long",
   });
 
+  const averageDepthInInches = getAverageDepthAttempt(compressionHistory);
+  const averageTimingInPercent = getColorScorePercentage(
+    compressionHistory,
+    "green"
+  );
+  const totalDuration = Number(
+    compressionHistory[compressionHistory.length - 1].time
+  ).toFixed(0);
+  const overallScorePercentage =
+    getAvgOverallScorePercentage(compressionHistory);
+
+  const perfectOverallScoreCount = getColorScoreCount(
+    compressionHistory,
+    "green"
+  );
+  const totalCompression = compressionHistory.length;
+  const overallScore = `${perfectOverallScoreCount}/${totalCompression}`;
+  const overallScorePointsFontSize =
+    totalCompression < 10 ? 40 : totalCompression < 100 ? 30 : 24;
+
+  //prevent going back to previous screen
+  useEffect(() => {
+    const beforeRemoveListener = (e) => {
+      e.preventDefault();
+    };
+
+    const subscription = navigation.addListener(
+      "beforeRemove",
+      beforeRemoveListener
+    );
+
+    // Cleanup the listener on component unmount
+    return () => {
+      subscription();
+    };
+  }, [navigation]);
+
   return (
     <>
-      <StatusBar style={currentThemeStatus} />
       <AppBar style={styles.appbar}>
         <Text style={styles.appbarTitle}>Scoring</Text>
       </AppBar>
@@ -31,11 +75,18 @@ const LearnCprScoreScreen = () => {
       <View style={styles.overallScoreContainer}>
         <ScorePoints
           label="Score"
-          points="70"
-          progress={70}
+          points={overallScore}
+          progress={overallScorePercentage}
           size="lg"
-          pointsFontSize={44}
+          pointsFontSize={overallScorePointsFontSize}
           pointsColor={theme.colors.background}
+          progressColor={
+            overallScorePercentage < 40
+              ? "#DC2626"
+              : overallScorePercentage < 70
+              ? "#F59E0B"
+              : "#22C55E"
+          }
         />
         <Text style={styles.currentDate}>{currentDate}</Text>
       </View>
@@ -45,22 +96,36 @@ const LearnCprScoreScreen = () => {
           <ScorePointsListItem
             title="Duration in sec."
             iconName="timer-outline"
-            points="60"
+            points={totalDuration}
             progress={100}
           />
           <Divider />
           <ScorePointsListItem
             title="AVG. Depth in inches"
             iconName="arrow-expand-vertical"
-            points="2.1"
+            points={averageDepthInInches}
             progress={100}
+            progressColor={
+              averageDepthInInches < 2
+                ? "#F59E0B"
+                : averageDepthInInches > 2.5
+                ? "#DC2626"
+                : "#22C55E"
+            }
           />
           <Divider />
           <ScorePointsListItem
             title="AVG. Timing in %"
             iconName="altimeter"
-            points="60"
-            progress={60}
+            points={averageTimingInPercent}
+            progress={100}
+            progressColor={
+              averageTimingInPercent < 40
+                ? "#DC2626"
+                : averageTimingInPercent < 70
+                ? "#F59E0B"
+                : "#22C55E"
+            }
           />
           <Divider />
         </View>
@@ -72,6 +137,7 @@ const LearnCprScoreScreen = () => {
             style={styles.finishButton}
           />
         </View>
+        <StatusBar hidden={false} style={currentThemeStatus} />
       </View>
     </>
   );

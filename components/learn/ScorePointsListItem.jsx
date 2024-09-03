@@ -2,7 +2,13 @@ import { List } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import ScorePoints from "./ScorePoints";
 
-function ScorePointsListItem({ iconName, title, points, progress }) {
+function ScorePointsListItem({
+  iconName,
+  title,
+  points,
+  progress,
+  progressColor,
+}) {
   const { styles, theme } = useStyles(stylesheet);
 
   return (
@@ -17,7 +23,12 @@ function ScorePointsListItem({ iconName, title, points, progress }) {
         />
       )}
       right={(props) => (
-        <ScorePoints progress={progress} points={points} {...props} />
+        <ScorePoints
+          progress={progress}
+          points={points}
+          progressColor={progressColor}
+          {...props}
+        />
       )}
     />
   );

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
@@ -7,27 +7,58 @@ import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
+import useBoundStore from "../../zustand/useBoundStore";
 
-function CprScreen() {
-  const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr();
+type LearnCprScreenProps = {
+  navigation: NavigationProp<any, any>;
+};
+
+const LearnCprScreen = ({ navigation }: LearnCprScreenProps) => {
+  const {
+    timer,
+    startCpr,
+    stopCpr,
+    currentCompressionScore,
+    compressionHistory,
+  } = useCpr();
   const { depthAttempt, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
-  const navigation = useNavigation();
+  const setCompressionHistory = useBoundStore(
+    (state) => state.setCompressionHistory
+  );
+  const [isCprStartDialogVisible, setIsCprStartDialogVisible] = useState(true);
+  const [isExitDialogVisible, setIsExitDialogVisible] = useState(false);
 
   const handleStartCpr = () => {
     startCpr();
-    setIsDialogVisible(false);
+    setIsCprStartDialogVisible(false);
   };
 
   const handleEnd = () => {
+    setCompressionHistory([...compressionHistory]);
     stopCpr();
-    navigation.goBack();
+    navigation.navigate("LearnCprScore");
   };
 
+  //prevent going back to previous screen
+  useEffect(() => {
+    const beforeRemoveListener = (e: any) => {
+      e.preventDefault();
+    };
+
+    const subscription = navigation.addListener(
+      "beforeRemove",
+      beforeRemoveListener
+    );
+
+    // Cleanup the listener on component unmount
+    return () => {
+      subscription();
+    };
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -66,7 +97,7 @@ function CprScreen() {
       </View>
 
       <ConfirmationDialog
-        isVisible={isDialogVisible}
+        isVisible={isCprStartDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
@@ -77,9 +108,9 @@ function CprScreen() {
       <StatusBar hidden translucent />
     </View>
   );
-}
+};
 
-export default CprScreen;
+export default LearnCprScreen;
 
 const styles = StyleSheet.create({
   container: {

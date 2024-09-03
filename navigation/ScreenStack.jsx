@@ -130,9 +130,19 @@ export const SignedInStack = (
     <Stack.Screen
       name="Cpr"
       component={CprScreen}
-      options={{ headerShown: false, orientation: "landscape" }}
+      options={{
+        headerShown: false,
+        orientation: "landscape",
+      }}
     />
-    <Stack.Screen name="LearnCpr" component={LearnCprScreen} />
+    <Stack.Screen
+      name="LearnCpr"
+      component={LearnCprScreen}
+      options={{
+        headerShown: false,
+        orientation: "landscape",
+      }}
+    />
     <Stack.Screen
       name="LearnCprScore"
       options={{ headerShown: false }}
