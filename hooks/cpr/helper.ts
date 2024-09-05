@@ -1,53 +1,9 @@
-import { MutableRefObject } from "react";
-import { type Compression, type TSoundRef, type SoundCue, type Score, type TimingScore } from "./useCpr.types";
-import { ToastAndroid } from "react-native";
-
-/*
- * 
- * In playing audio cue, the timingScore is prioritize 
- * 
- * 
- */
-export const playAudioCue = async (
-  prevScores: MutableRefObject<Compression>,
-  soundsRef: MutableRefObject<TSoundRef>
-): Promise<void> => {
-  const { depthScore, timingScore } = prevScores.current;
-  let soundCue: SoundCue = "push";
-
-  if(timingScore === "green" && depthScore === "yellow") {
-    soundCue = "pushHarder";
-  }
-  else if(timingScore === "green" && depthScore === "red") {
-    soundCue = "pushSoftly";
-  }
-  else if(timingScore === "red" && (depthScore === "green" || depthScore === "yellow" || depthScore === "red" || depthScore === "gray")) {
-    soundCue = "pushFaster";
-  }
-  else if(timingScore === "gray" && depthScore === "gray") {
-    soundCue = "push";
-  }
-  else {
-    soundCue = "push";
-  }
-
-  try {
-    const sound = soundsRef.current[soundCue];
-    if (sound) {
-      await sound.replayAsync();
-    } else {
-      ToastAndroid.show(`Sound not found: ${soundCue}`, ToastAndroid.SHORT);
-    }
-  } catch (err: unknown) {
-    const error = err as Error;
-    ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
-  }
-};
-
+import { type Score, type TimingScore } from "./useCpr.types";
 
 export const getTimingScore = (depth: number): TimingScore => {
-  if(depth === 0) return "gray";
-  else if(depth > 0 && depth < 0.2) return "red";
+  // if(depth === 0) return "gray";
+  // else if(depth > 0 && depth < 0.2) return "red";
+  if(depth < 0.2) return "red";
  
    //else depth is greater than or equal to 0.2
   return "green";
@@ -55,7 +11,7 @@ export const getTimingScore = (depth: number): TimingScore => {
 
 export const getDepthScore = (depth: number): Score => {
   if(depth === 0) return "gray";
-  else if(depth > 0 && depth < 2) return "yellow";
+  else if(depth >= 0 && depth < 2) return "yellow";
   else if(depth >= 2 && depth <= 2.5) return "green";
 
   //else depth is greater than 2.5
@@ -63,11 +19,11 @@ export const getDepthScore = (depth: number): Score => {
 };
 
 export const getOverallScore = (depthScore: Score, timingScore: TimingScore): Score => {
-  if(depthScore === "gray" && timingScore === "gray") return "gray";
-  else if(depthScore === "gray" && timingScore === "green") return "gray"; //! impossible to meet the condition
+  // if(depthScore === "gray" && timingScore === "gray") return "gray";
+  if(depthScore === "gray" && timingScore === "green") return "gray"; //! impossible to meet the condition
   else if(depthScore === "gray" && timingScore === "red") return "gray"; 
-  else if(depthScore === "yellow" && timingScore === "gray") return "yellow";
-  else if(depthScore === "green" && timingScore === "gray") return "yellow"; //! impossible to meet the condition
+  // else if(depthScore === "yellow" && timingScore === "gray") return "yellow";
+  // else if(depthScore === "green" && timingScore === "gray") return "yellow"; //! impossible to meet the condition
   else if(depthScore === "green" && timingScore === "green") return "green";
   else if (depthScore === "green" && timingScore === "red") return "yellow";
   else if (depthScore === "yellow" && timingScore === "red") return "yellow";

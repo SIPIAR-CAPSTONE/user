@@ -1,25 +1,20 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Accelerometer } from "expo-sensors";
-import {
-  getDepthScore,
-  getOverallScore,
-  getTimingScore,
-  playAudioCue,
-} from "./helper";
-import usePreloadedAudio from "./usePreloadedAudio";
+import { getDepthScore, getOverallScore, getTimingScore } from "./helper";
+import useAudioCue from "./useAudioCue";
 import useTimer from "./useTimer";
 import { type Compression, type CompressionRecord } from "./useCpr.types";
 
 // Initial empty compression value
 const EMPTY_COMPRESSION_VALUE: Compression = {
-  depthAttempt: 0,
+  depthAttempt: null,
   depthScore: null,
   timingScore: null,
   overallScore: null,
 };
 
 const useCpr = () => {
-  const soundsRef = usePreloadedAudio(); // pre load the audio files for cues
+  const { playAudioCue } = useAudioCue();
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
   const prevZ = useRef<number>(0);
   const depth = useRef<number>(0);
@@ -43,7 +38,7 @@ const useCpr = () => {
   useEffect(() => {
     if (timerOn) {
       if (msCounter >= 500 && msCounter < 600) {
-        playAudioCue(prevCompressionScore, soundsRef);
+        playAudioCue(prevCompressionScore);
       }
       if (msCounter >= 600) {
         getCompressionScore(formattedTime);
@@ -55,7 +50,7 @@ const useCpr = () => {
   const calculateDepth = useCallback(
     (z: number): void => {
       const deltaZ: number = z - prevZ.current;
-      const calibrationFactor: number = 4.5;
+      const calibrationFactor: number = 10;
       const gForceToInches: number = 0.3937;
       const compressionDepth: number = Math.abs(
         deltaZ * calibrationFactor * gForceToInches
@@ -87,7 +82,6 @@ const useCpr = () => {
         // Record the current compression score with a timestamp
         recordCompressionHistory(currentScore, formattedTime);
 
-        
         // Clear the current compression score after a brief delay
         setTimeout(() => {
           setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
@@ -139,7 +133,6 @@ const useCpr = () => {
     unsubscribe();
     setTimerOn(false);
   };
-
 
   return {
     timerOn,

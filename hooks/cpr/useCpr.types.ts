@@ -14,7 +14,7 @@ export type Score = "yellow" | "green" | "red" | "gray"
 export type TimingScore = Exclude<Score, "yellow">
 
 export type Compression = {
-  depthAttempt: number;
+  depthAttempt: number | null;
   depthScore: Score | null;
   timingScore: TimingScore | null;
   overallScore: Score | null;
