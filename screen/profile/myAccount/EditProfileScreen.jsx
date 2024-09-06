@@ -226,7 +226,7 @@ const EditProfileScreen = () => {
             label="Barangay"
             value={userInfo.barangay}
             data={cdoBarangayData}
-            onChange={(item) => handleFieldChange("barangay", item.value)}
+            onChange={(value) => handleFieldChange("barangay", value)}
             error={errors.barangay}
           />
           <TextInput

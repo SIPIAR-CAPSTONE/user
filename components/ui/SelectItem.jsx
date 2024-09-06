@@ -5,9 +5,17 @@ import { TouchableRipple } from "react-native-paper";
 
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
-const SelectItem = ({ data, label, placeholder, onChange, error, variant }) => {
+const SelectItem = ({
+  data,
+  label,
+  placeholder,
+  onChange,
+  error,
+  variant,
+  value,
+}) => {
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(value);
   const { styles, theme } = useStyles(stylesheet);
 
   const onSelect = (value) => {

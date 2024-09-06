@@ -67,7 +67,7 @@ const StepTwoContent = ({ goNextStep }) => {
           placeholder="Barangay"
           data={cdoBarangayData}
           value={signupForm.barangay}
-          onChange={(item) => setSignupForm("barangay", item.value)}
+          onChange={(value) => setSignupForm("barangay", value)}
           error={errors.barangay}
         />
         <TextInput
