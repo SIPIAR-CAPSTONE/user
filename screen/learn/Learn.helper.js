@@ -10,44 +10,25 @@ export function getFormattedCurrentDate() {
   return formattedCurrentDate;
 }
 
-// Calculate the average depth attempt from a list of records
-export function getAverageOfTotalDepth(records) {
-  const totalDepth = records.reduce(
-    (sum, record) => sum + record.score.depthAttempt,
-    0
-  );
-
-  if (records.length === 0) {
-    return 0;
-  }
-
-  const averageDepth = totalDepth / records.length;
-  return Number(averageDepth.toFixed(1));
-}
-
-export function getTimingPercentage(records) {
+//get the percentage of selected scoreType and score
+//example: getScorePercentage(compressionHistory, "overallScore", "green")
+export function getScorePercentage(records, scoreType, score) {
   const totalRecords = records.length;
-  const perfectTimingCount = records.filter(
-    (record) => record.score.timingScore === "green"
+  const scoreCount = records.filter(
+    (record) => record.score[scoreType] === score
   ).length;
 
-  if (totalRecords === 0 || perfectTimingCount === 0) {
+  if (totalRecords === 0 || scoreCount === 0) {
     return 0;
   }
 
-  const percentage = (perfectTimingCount / totalRecords) * 100;
-  return Number(percentage.toFixed(0));
+  const scorePercentage = getPercentage(scoreCount, totalRecords);
+  return scorePercentage;
 }
 
-// Calculate the percentage of records with a specific color score
-export function getColorOverallScorePercentage(records, color) {
-  const totalCount = records.length;
-  const colorCount = records.filter(
-    (record) => record.score.overallScore === color
-  ).length;
-
-  const percentage = (colorCount / totalCount) * 100;
-  return Number(percentage.toFixed(0));
+// Get the count of records with a specific color score
+export function countScore(records, scoreType, score) {
+  return records.filter((record) => record.score[scoreType] === score).length;
 }
 
 //get the total duration of rocords by getting the last record time
@@ -62,7 +43,6 @@ export function getTotalTimeDuration(records) {
   return totalDuration;
 }
 
-// Get the count of records with a specific color score
-export function countColorOverallScore(records, color) {
-  return records.filter((record) => record.score.overallScore === color).length;
+export function getPercentage(value, totalValue) {
+  return Number(((value / totalValue) * 100).toFixed(0));
 }
