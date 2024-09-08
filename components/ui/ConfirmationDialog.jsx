@@ -12,7 +12,8 @@ const ConfirmationDialog = ({
   cancelLabel = "Cancel",
   onPressConfirmation,
   onPressCancel,
-  containerStyle = {}
+  containerStyle = {},
+  dismissable = false,
 }) => {
   const theme = useTheme();
 
@@ -22,6 +23,7 @@ const ConfirmationDialog = ({
         visible={isVisible}
         onDismiss={onPressCancel}
         style={[styles.container, containerStyle]}
+        dismissable={dismissable}
       >
         <Dialog.Title style={styles.title}>{title}</Dialog.Title>
         {content && <Dialog.Content>{content}</Dialog.Content>}

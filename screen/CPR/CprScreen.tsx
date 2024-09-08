@@ -9,20 +9,30 @@ import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
+import useCountdown from "../../hooks/useCountdown";
+import Countdown from "../../components/cpr/Countdown";
 
 function CprScreen() {
-  const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr(); 
+  const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr();
   const { depthAttempt, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
   const [isDialogVisible, setIsDialogVisible] = useState(true);
   const navigation = useNavigation();
+  const {
+    time: countdown,
+    timerOn: countdownOn,
+    start: startCountdown,
+  } = useCountdown(3, false, startCpr);
 
   const handleStartCpr = () => {
-    startCpr();
     setIsDialogVisible(false);
+    startCountdown();
   };
 
+  /**
+   * Stop CPR and go back to the previous screen.
+   */
   const handleEnd = () => {
     stopCpr();
     navigation.goBack();
@@ -30,6 +40,7 @@ function CprScreen() {
 
   return (
     <View style={styles.container}>
+      <Countdown time={countdown} visible={countdownOn} />
       <CprHeader handleEnd={handleEnd} />
 
       <View style={styles.scoreContainer}>

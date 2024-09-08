@@ -10,6 +10,8 @@ import { useState } from "react";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
+import useCountdown from "../../hooks/useCountdown";
+import Countdown from "../../components/cpr/Countdown";
 
 const LearnCprScreen = () => {
   const navigation = useNavigation();
@@ -23,14 +25,20 @@ const LearnCprScreen = () => {
   const { depthAttempt, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
+  const {
+    time: countdown,
+    timerOn: countdownOn,
+    start: startCountdown,
+  } = useCountdown(3, false, startCpr);
+
   const setCompressionHistory = useBoundStore(
     (state) => state.setCompressionHistory
   );
   const [isCprStartDialogVisible, setIsCprStartDialogVisible] = useState(true);
 
   const handleStartCpr = () => {
-    startCpr();
     setIsCprStartDialogVisible(false);
+    startCountdown();
   };
 
   const handleEnd = () => {
@@ -41,6 +49,7 @@ const LearnCprScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Countdown time={countdown} visible={countdownOn} />
       <CprHeader handleEnd={handleEnd} />
 
       <View style={styles.scoreContainer}>
