@@ -10,13 +10,12 @@ import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
 import { Divider } from "react-native-paper";
 import {
-  countColorOverallScore,
   countScore,
   getFormattedCurrentDate,
   getTotalTimeDuration,
   getScorePercentage,
-  getPercentage,
 } from "./Learn.helper";
+import Color from "../../utils/Color";
 
 const LearnCprScoreScreen = () => {
   const navigation = useNavigation();
@@ -71,6 +70,12 @@ const LearnCprScoreScreen = () => {
     "depthScore",
     "yellow"
   );
+  const zeroDepthInPercentage = getScorePercentage(
+    compressionHistory,
+    "depthScore",
+    "gray"
+  );
+  const zeroDepthCount = countScore(compressionHistory, "depthScore", "gray");
 
   //prevent going back to previous screen
   useEffect(() => {
@@ -110,10 +115,10 @@ const LearnCprScoreScreen = () => {
             pointsColor={theme.colors.background}
             progressColor={
               perfectOverallScorePercentage < 40
-                ? "#DC2626"
+                ? Color.red
                 : perfectOverallScorePercentage < 70
-                ? "#F59E0B"
-                : "#22C55E"
+                ? Color.yellow
+                : Color.green
             }
           />
           <Text style={styles.currentDate}>{currentDate}</Text>
@@ -129,27 +134,11 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="Average Perfect Timing"
-            iconName="altimeter"
-            points={perfectTimingInPercentage}
-            pointsSuffix="%"
-            progress={perfectTimingInPercentage}
-            progressColor={
-              perfectTimingInPercentage < 40
-                ? "#DC2626"
-                : perfectTimingInPercentage < 70
-                ? "#F59E0B"
-                : "#22C55E"
-            }
-          />
-          <Divider />
-          <ScorePointsListItem
-            title="Average Perfect Depth"
-            iconName="arrow-expand-vertical"
-            points={perfectDepthInPercentage}
-            pointsSuffix="%"
-            progress={perfectDepthInPercentage}
-            progressColor="#22C55E"
+            title="Total Compressions"
+            iconName="alpha-n-box-outline"
+            points={totalCompression}
+            progress={100}
+            progressColor={Color.green}
           />
           <Divider />
           <ScorePointsListItem
@@ -157,7 +146,7 @@ const LearnCprScoreScreen = () => {
             iconName="arrow-expand-vertical"
             points={perfectDepthCount}
             progress={perfectDepthInPercentage}
-            progressColor="#22C55E"
+            progressColor={Color.green}
           />
           <Divider />
           <ScorePointsListItem
@@ -165,7 +154,7 @@ const LearnCprScoreScreen = () => {
             iconName="arrow-expand-vertical"
             points={tooMuchDepthCount}
             progress={tooMuchDepthInPercentage}
-            progressColor="#DC2626"
+            progressColor={Color.red}
           />
           <Divider />
           <ScorePointsListItem
@@ -173,7 +162,30 @@ const LearnCprScoreScreen = () => {
             iconName="arrow-expand-vertical"
             points={tooLittleDepthCount}
             progress={tooLittleDepthInPercentage}
-            progressColor="#F59E0B"
+            progressColor={Color.yellow}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Zero Depth"
+            iconName="arrow-expand-vertical"
+            points={zeroDepthCount}
+            progress={zeroDepthInPercentage}
+            progressColor={Color.gray}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Average Perfect Timing"
+            iconName="altimeter"
+            points={perfectTimingInPercentage}
+            pointsSuffix="%"
+            progress={perfectTimingInPercentage}
+            progressColor={
+              perfectTimingInPercentage < 40
+                ? Color.red
+                : perfectTimingInPercentage < 70
+                ? Color.yellow
+                : Color.green
+            }
           />
           <Divider />
         </View>
@@ -225,7 +237,7 @@ const stylesheet = createStyleSheet((theme) => ({
 
   finishButtonContainer: {
     paddingHorizontal: theme.padding.body.horizontal,
-    paddingVertical: theme.padding.body.vertical,
+    paddingVertical: 26,
     justifyContent: "flex-end",
   },
   finishButton: {
