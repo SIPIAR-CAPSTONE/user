@@ -76,12 +76,6 @@ const DeleteAccountScreen = ({ navigation }) => {
           label="Delete Account"
           onPress={showConfirmationDialog}
         />
-        <PrimaryButton
-          label="Cancel"
-          mode="ghost"
-          onPress={() => navigation.goBack()}
-          style={styles.cancelButton}
-        />
       </View>
 
       <ConfirmationDialog
