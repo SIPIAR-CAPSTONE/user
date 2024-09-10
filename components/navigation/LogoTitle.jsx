@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     columnGap: 7,
   },
   logo: {
-    height: 42,
-    width: 42,
+    height: 38,
+    width: 38,
   },
   title: {
     fontSize: 22,
