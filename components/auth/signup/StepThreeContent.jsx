@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useState } from "react";
 
@@ -159,18 +159,20 @@ const StepThreeContent = () => {
 
 export default StepThreeContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  serverErrorMessage: {
-    color: theme.colors.primary,
-  },
-  nextButton: {
-    marginTop: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    serverErrorMessage: {
+      color: theme.colors.primary,
+    },
+    nextButton: {
+      marginTop: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);

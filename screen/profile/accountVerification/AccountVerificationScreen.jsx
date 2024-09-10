@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
@@ -155,15 +155,17 @@ const AccountVerificationScreen = ({ navigation }) => {
 
 export default AccountVerificationScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: theme.colors.typography.primary,
-  },
-  content: {
-    marginTop: 10,
-    paddingVertical: theme.padding.body.vertical,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    appBarTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.colors.typography.primary,
+    },
+    content: {
+      marginTop: 10,
+      paddingVertical: theme.padding.body.vertical,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+  })
+);

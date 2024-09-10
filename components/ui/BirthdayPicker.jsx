@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import DatePicker from "react-native-date-picker";
 import { Ionicons } from "@expo/vector-icons";
@@ -81,59 +81,61 @@ const BirthdatePicker = ({
 
 export default BirthdatePicker;
 
-const stylesheet = createStyleSheet((theme) => ({
-  input: {
-    backgroundColor: theme.colors.secondary,
-    color: theme.colors.typography.primary,
-    height: 50,
-    paddingHorizontal: 14,
-    borderRadius: theme.borderRadius.sm,
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    input: {
+      backgroundColor: theme.colors.secondary,
+      color: theme.colors.typography.primary,
+      height: 50,
+      paddingHorizontal: 14,
+      borderRadius: theme.borderRadius.sm,
 
-    variants: {
-      variant: {
-        outlined: {
-          borderWidth: 1,
-          borderColor: "#e1e2e3",
-          color: theme.colors.typography.primary,
-          backgroundColor: theme.colors.background,
+      variants: {
+        variant: {
+          outlined: {
+            borderWidth: 1,
+            borderColor: "#e1e2e3",
+            color: theme.colors.typography.primary,
+            backgroundColor: theme.colors.background,
+          },
         },
       },
     },
-  },
-  inputDisabled: {
-    color: theme.colors.typography.tertiary,
-  },
-  inputError: {
-    borderWidth: 1.5,
-    color: theme.colors.primary,
-    borderColor: theme.colors.primary,
-  },
-  errorLabel: {
-    paddingStart: 14,
-    paddingTop: 4,
-    marginBottom: 4,
-    color: theme.colors.primary,
-  },
-  birthdayFieldContent: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  dateValueContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: theme.gap.xl,
-  },
-  birthdayDate: {
-    color: theme.colors.typography.secondary,
-  },
-  birthdayPlaceholder: {
-    color: theme.colors.typography.secondary,
-  },
-  label: {
-    color: theme.colors.typography.primary,
-    fontWeight: "600",
-    marginBottom: 8,
-  },
-}));
+    inputDisabled: {
+      color: theme.colors.typography.tertiary,
+    },
+    inputError: {
+      borderWidth: 1.5,
+      color: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+    errorLabel: {
+      paddingStart: 14,
+      paddingTop: 4,
+      marginBottom: 4,
+      color: theme.colors.primary,
+    },
+    birthdayFieldContent: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    dateValueContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: theme.gap.xl,
+    },
+    birthdayDate: {
+      color: theme.colors.typography.secondary,
+    },
+    birthdayPlaceholder: {
+      color: theme.colors.typography.secondary,
+    },
+    label: {
+      color: theme.colors.typography.primary,
+      fontWeight: "600",
+      marginBottom: 8,
+    },
+  })
+);

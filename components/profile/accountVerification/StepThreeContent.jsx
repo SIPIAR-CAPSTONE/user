@@ -1,4 +1,4 @@
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { Divider, Text } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -87,35 +87,37 @@ const SecondaryHeader = (props) => {
 
 export default StepThreeContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    height: 600,
-  },
-  listItem: {
-    backgroundColor: theme.colors.background,
-    paddingEnd: 1,
-  },
-  headerSecondContent: {
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  divider: {
-    marginVertical: 8,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  title: {
-    fontWeight: "bold",
-    color: theme.colors.typography.primary,
-  },
-  desc: {
-    color: theme.colors.typography.secondary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      height: 600,
+    },
+    listItem: {
+      backgroundColor: theme.colors.background,
+      paddingEnd: 1,
+    },
+    headerSecondContent: {
+      marginTop: 10,
+      marginBottom: 20,
+    },
+    divider: {
+      marginVertical: 8,
+    },
+    titleContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    title: {
+      fontWeight: "bold",
+      color: theme.colors.typography.primary,
+    },
+    desc: {
+      color: theme.colors.typography.secondary,
+    },
+  })
+);
 
 //Data for each id list item
 const ID_ITEMS_DATA = [

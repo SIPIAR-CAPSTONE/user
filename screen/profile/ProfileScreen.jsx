@@ -1,4 +1,4 @@
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -196,41 +196,43 @@ const EnteringVerificationConfirmationContent = () => {
 
 export default ProfileScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingVertical: theme.padding.body.vertical,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  listItems: {
-    marginTop: 20,
-    rowGap: 7,
-  },
-  instructionsContainer: {
-    rowGap: 20,
-    marginTop: 10,
-  },
-  instructionContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-  },
-  circularNumber: {
-    height: 22,
-    width: 22,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.full,
-  },
-  number: {
-    color: theme.colors.onPrimary,
-    fontSize: theme.fontSize.xs,
-  },
-  desc: {
-    flex: 1,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: theme.padding.body.vertical,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    listItems: {
+      marginTop: 20,
+      rowGap: 7,
+    },
+    instructionsContainer: {
+      rowGap: 20,
+      marginTop: 10,
+    },
+    instructionContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+    },
+    circularNumber: {
+      height: 22,
+      width: 22,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 2,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+    },
+    number: {
+      color: theme.colors.onPrimary,
+      fontSize: theme.fontSize.xs,
+    },
+    desc: {
+      flex: 1,
+    },
+  })
+);
 
 const InstructionData = [
   {

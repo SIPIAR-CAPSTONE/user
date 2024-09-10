@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useRef, useState } from "react";
 import StatusBar from "../../../components/common/StatusBar";
@@ -91,22 +91,24 @@ const DeleteAccountScreen = ({ navigation }) => {
 
 export default DeleteAccountScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingHorizontal: theme.padding.body.horizontal,
-    paddingVertical: theme.padding.body.vertical,
-  },
-  instruction: {
-    marginHorizontal: "auto",
-    marginTop: 40,
-    marginBottom: 20,
-    color: theme.colors.typography.primary,
-  },
-  buttonContainer: {
-    marginTop: 60,
-    rowGap: theme.gap.sm,
-  },
-  cancelButton: {
-    borderRadius: theme.borderRadius.sm,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: theme.padding.body.horizontal,
+      paddingVertical: theme.padding.body.vertical,
+    },
+    instruction: {
+      marginHorizontal: "auto",
+      marginTop: 40,
+      marginBottom: 20,
+      color: theme.colors.typography.primary,
+    },
+    buttonContainer: {
+      marginTop: 60,
+      rowGap: theme.gap.sm,
+    },
+    cancelButton: {
+      borderRadius: theme.borderRadius.sm,
+    },
+  })
+);

@@ -20,6 +20,7 @@ import SelectItem from "../../../components/ui/SelectItem";
 import AppBar from "../../../components/ui/AppBar";
 import useImageReader from "../../../hooks/useImageReader";
 import CircularIcon from "../../../components/ui/CircularIcon";
+import { StyleSheet } from "react-native";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
@@ -266,27 +267,29 @@ const EditProfileScreen = () => {
 
 export default EditProfileScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingVertical: theme.padding.body.vertical,
-  },
-  appBarTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: theme.colors.typography.primary,
-  },
-  changePassButton: {
-    backgroundColor: theme.colors.background,
-    padding: 6,
-    borderRadius: 99
-  },
-  formFields: {
-    paddingHorizontal: theme.padding.body.horizontal,
-    paddingBottom: theme.padding.body.vertical,
-    rowGap: theme.gap.lg,
-  },
-  saveButton: {
-    borderRadius: theme.borderRadius.base,
-    marginTop: 44,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingVertical: theme.padding.body.vertical,
+    },
+    appBarTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.colors.typography.primary,
+    },
+    changePassButton: {
+      backgroundColor: theme.colors.background,
+      padding: 6,
+      borderRadius: 99,
+    },
+    formFields: {
+      paddingHorizontal: theme.padding.body.horizontal,
+      paddingBottom: theme.padding.body.vertical,
+      rowGap: theme.gap.lg,
+    },
+    saveButton: {
+      borderRadius: theme.borderRadius.base,
+      marginTop: 44,
+    },
+  })
+);

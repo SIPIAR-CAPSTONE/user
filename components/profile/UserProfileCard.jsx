@@ -1,5 +1,5 @@
-import {  View } from "react-native";
-import { Text,  Avatar } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Text, Avatar } from "react-native-paper";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
@@ -31,15 +31,17 @@ const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
 
 export default UserProfileCard;
 
-const stylesheet = createStyleSheet((theme) => ({
-  avatar: {
-    backgroundColor: "#FFDDDD",
-  },
-  header: {
-    alignItems: "center",
-    paddingVertical: 8,
-  },
-  email: {
-    color: theme.colors.typography.tertiary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    avatar: {
+      backgroundColor: "#FFDDDD",
+    },
+    header: {
+      alignItems: "center",
+      paddingVertical: 8,
+    },
+    email: {
+      color: theme.colors.typography.tertiary,
+    },
+  })
+);

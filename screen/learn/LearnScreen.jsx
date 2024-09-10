@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import StatusBar from "../../components/common/StatusBar";
 import MaterialCard from "../../components/learn/MaterialCard";
@@ -37,15 +37,17 @@ const LearnScreen = ({ navigation }) => {
 
 export default LearnScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  section: {
-    marginBottom: theme.margin.body.vertical,
-  },
-  sectionLabel: {
-    marginVertical: theme.margin.heading.vertical,
-    fontWeight: "bold",
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    section: {
+      marginBottom: theme.margin.body.vertical,
+    },
+    sectionLabel: {
+      marginVertical: theme.margin.heading.vertical,
+      fontWeight: "bold",
+    },
+  })
+);

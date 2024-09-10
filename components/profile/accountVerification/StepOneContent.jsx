@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
@@ -131,15 +131,17 @@ const StepOneContent = ({ goNextStep }) => {
 
 export default StepOneContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  nextButton: {
-    marginVertical: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);

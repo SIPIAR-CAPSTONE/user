@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
@@ -119,20 +119,22 @@ const ListItem = ({
 
 export default ListItem;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  content: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 6,
-  },
-  actionIcon: {
-    alignSelf: "center",
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    content: {
+      flex: 1,
+    },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: 6,
+    },
+    actionIcon: {
+      alignSelf: "center",
+    },
+  })
+);

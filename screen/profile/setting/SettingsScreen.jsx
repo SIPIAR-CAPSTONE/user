@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
 
@@ -109,11 +109,13 @@ const SettingsScreen = () => {
 
 export default SettingsScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  listItems: {
-    marginTop: 20,
-    rowGap: 10,
-    paddingVertical: theme.padding.body.vertical,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    listItems: {
+      marginTop: 20,
+      rowGap: 10,
+      paddingVertical: theme.padding.body.vertical,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+  })
+);

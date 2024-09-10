@@ -1,8 +1,8 @@
-import { View, Image } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import { useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 
-import { Portal, Appbar,  Text } from "react-native-paper";
+import { Portal, Appbar, Text } from "react-native-paper";
 import CircularIcon from "../../ui/CircularIcon";
 import PrimaryButton from "../../../components/ui/PrimaryButton";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -69,80 +69,82 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
 export default SelectIdModal;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  customHeader: {
-    height: 56,
-    paddingHorizontal: 16,
-    textAlign: "center",
-    justifyContent: "space-between",
-    backgroundColor: theme.colors.background,
-  },
-  headerLabel: {
-    fontWeight: "bold",
-    fontSize: theme.fontSize.lg,
-    color: theme.colors.typography.primary,
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "rgba(1,1,1,0.5)",
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 14,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-    marginBottom: 2,
-  },
-  title: {
-    fontWeight: "bold",
-  },
-  desc: {
-    color: theme.colors.typography.secondary,
-  },
-  imageContainer: {
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  idSampleImage: {
-    width: 310,
-    height: 190,
-    borderRadius: theme.borderRadius.lg,
-  },
-  instructionsContainer: {
-    rowGap: 10,
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  instructionContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-  },
-  circularNumber: {
-    height: 22,
-    width: 22,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.full,
-  },
-  number: {
-    color: theme.colors.onPrimary,
-    fontSize: theme.fontSize.xs,
-  },
-  confirmButton: {
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    customHeader: {
+      height: 56,
+      paddingHorizontal: 16,
+      textAlign: "center",
+      justifyContent: "space-between",
+      backgroundColor: theme.colors.background,
+    },
+    headerLabel: {
+      fontWeight: "bold",
+      fontSize: theme.fontSize.lg,
+      color: theme.colors.typography.primary,
+    },
+    body: {
+      flex: 1,
+      backgroundColor: "rgba(1,1,1,0.5)",
+    },
+    contentContainer: {
+      flex: 1,
+      paddingHorizontal: 14,
+    },
+    titleContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+      marginBottom: 2,
+    },
+    title: {
+      fontWeight: "bold",
+    },
+    desc: {
+      color: theme.colors.typography.secondary,
+    },
+    imageContainer: {
+      height: "50%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    idSampleImage: {
+      width: 310,
+      height: 190,
+      borderRadius: theme.borderRadius.lg,
+    },
+    instructionsContainer: {
+      rowGap: 10,
+      marginTop: 20,
+      marginBottom: 30,
+    },
+    instructionContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+    },
+    circularNumber: {
+      height: 22,
+      width: 22,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+    },
+    number: {
+      color: theme.colors.onPrimary,
+      fontSize: theme.fontSize.xs,
+    },
+    confirmButton: {
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);
 
 const InstructionData = [
   {

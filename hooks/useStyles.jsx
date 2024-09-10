@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 
 const useStyles = (styles) => {
@@ -12,7 +11,7 @@ const useStyles = (styles) => {
 };
 
 const createStyleSheet = (styles) => {
-  return (theme) => StyleSheet.create(styles(theme));
+  return (theme) => styles(theme);
 };
 
 export { useStyles, createStyleSheet };

@@ -1,4 +1,4 @@
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
@@ -142,19 +142,21 @@ const SignupScreen = ({ navigation }) => {
 
 export default SignupScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-  },
-  appBar: {
-    height: 110,
-  },
-  appBarTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: theme.colors.typography.primary,
-  },
-  content: {
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    appBar: {
+      height: 110,
+    },
+    appBarTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.colors.typography.primary,
+    },
+    content: {
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+  })
+);

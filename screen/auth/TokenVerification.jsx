@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
 
@@ -111,29 +111,31 @@ const ResendCountdown = ({ time, styles }) => {
 
 export default TokenVerification;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  serverErrorMessage: {
-    color: theme.colors.primary,
-  },
-  resentMessage: {
-    color: theme.colors.primary,
-    textAlign: "center",
-  },
-  button: {
-    marginTop: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-  timerContainer: {
-    textAlign: "center",
-  },
-  time: {
-    color: theme.colors.primary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    serverErrorMessage: {
+      color: theme.colors.primary,
+    },
+    resentMessage: {
+      color: theme.colors.primary,
+      textAlign: "center",
+    },
+    button: {
+      marginTop: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+    timerContainer: {
+      textAlign: "center",
+    },
+    time: {
+      color: theme.colors.primary,
+    },
+  })
+);

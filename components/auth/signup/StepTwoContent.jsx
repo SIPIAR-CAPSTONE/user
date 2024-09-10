@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import useBoundStore from "../../../zustand/useBoundStore";
 
@@ -95,19 +95,21 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    height: 600,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  header: {
-    marginVertical: 20,
-  },
-  nextButton: {
-    marginTop: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      height: 600,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    header: {
+      marginVertical: 20,
+    },
+    nextButton: {
+      marginTop: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import React, { useRef, useState } from "react";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import FormHeader from "../../../components/common/FormHeader";
@@ -125,20 +125,22 @@ const EditPasswordScreen = () => {
 
 export default EditPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  containerContent: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  submitButton: {
-    marginTop: 10,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    containerContent: {
+      flex: 1,
+      justifyContent: "space-between",
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    submitButton: {
+      marginTop: 10,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);

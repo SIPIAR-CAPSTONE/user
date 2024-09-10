@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
@@ -24,21 +24,23 @@ const EditButton = () => {
 
 export default EditButton;
 
-const stylesheet = createStyleSheet((theme) => ({
-  touchableRipple: {
-    borderRadius: theme.borderRadius.full,
-    marginTop: 12,
-  },
-  editButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 4,
-    paddingVertical: 7,
-    paddingHorizontal: 16,
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.full,
-  },
-  label: {
-    color: theme.colors.onPrimary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    touchableRipple: {
+      borderRadius: theme.borderRadius.full,
+      marginTop: 12,
+    },
+    editButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: 4,
+      paddingVertical: 7,
+      paddingHorizontal: 16,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+    },
+    label: {
+      color: theme.colors.onPrimary,
+    },
+  })
+);

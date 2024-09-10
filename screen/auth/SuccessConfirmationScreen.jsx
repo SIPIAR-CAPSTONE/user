@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
@@ -52,22 +52,24 @@ const SuccessConfirmationScreen = ({ route }) => {
 
 export default SuccessConfirmationScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 50,
-    rowGap: 10,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 10,
-  },
-  desc: {
-    textAlign: "center",
-    color: theme.colors.typography.secondary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 50,
+      rowGap: 10,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    title: {
+      fontWeight: "bold",
+      textAlign: "center",
+      marginTop: 10,
+    },
+    desc: {
+      textAlign: "center",
+      color: theme.colors.typography.secondary,
+    },
+  })
+);

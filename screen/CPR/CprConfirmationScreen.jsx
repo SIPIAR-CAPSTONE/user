@@ -1,4 +1,4 @@
-import {  Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import StatusBar from "../../components/common/StatusBar";
 import PrimaryButton from "../../components/ui/PrimaryButton";
@@ -23,9 +23,11 @@ const CprConfirmationScreen = () => {
 
 export default CprConfirmationScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+  })
+);

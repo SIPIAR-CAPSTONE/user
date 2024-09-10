@@ -9,6 +9,7 @@ import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { StyleSheet } from "react-native";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -105,30 +106,32 @@ const BroadcastScreen = () => {
 
 export default BroadcastScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginVertical: theme.margin.heading.vertical,
-  },
-  countContainer: {
-    height: 24,
-    width: 24,
-    marginEnd: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.full,
-  },
-  count: {
-    color: theme.colors.onPrimary,
-  },
-  contentContainer: {
-    paddingVertical: theme.padding.body.vertical,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginVertical: theme.margin.heading.vertical,
+    },
+    countContainer: {
+      height: 24,
+      width: 24,
+      marginEnd: 6,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+    },
+    count: {
+      color: theme.colors.onPrimary,
+    },
+    contentContainer: {
+      paddingVertical: theme.padding.body.vertical,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+  })
+);
 
 //!remove this after applying fetching
 const TEMP_ALERTS_DATA = [

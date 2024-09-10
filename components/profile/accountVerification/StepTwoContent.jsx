@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 
 import PrimaryButton from "../../ui/PrimaryButton";
@@ -58,7 +58,7 @@ const StepTwoContent = ({ goNextStep }) => {
       goNextStep();
     }
   };
- 
+
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -98,15 +98,17 @@ const StepTwoContent = ({ goNextStep }) => {
 
 export default StepTwoContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  nextButton: {
-    marginVertical: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);

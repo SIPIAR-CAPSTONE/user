@@ -11,6 +11,7 @@ import LogoTitle from "../components/navigation/LogoTitle";
 import TabBarIcon from "../components/navigation/TabBarIcon";
 import CprTabBarIcon from "../components/navigation/CprTabBarIcon";
 import { useStyles, createStyleSheet } from "../hooks/useStyles";
+import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -93,30 +94,32 @@ const Tabs = ({ navigation }) => {
 
 export default Tabs;
 
-const stylesheet = createStyleSheet((theme) => ({
-  sceneContainer: {
-    backgroundColor: theme.colors.background,
-  },
-  tabBar: {
-    height: 46,
-    backgroundColor: theme.colors.background,
-    paddingTop: 2,
-  },
-  tabBarLabel: {
-    fontSize: 12,
-    fontWeight: "500",
-    paddingBottom: 2,
-  },
-  header: {
-    elevation: 0,
-    backgroundColor: theme.colors.background,
-  },
-  headerTitle: {
-    fontWeight: "bold",
-    fontSize: 22,
-    color: theme.colors.typography.primary,
-  },
-  headerRightContainer: {
-    marginEnd: 14,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    sceneContainer: {
+      backgroundColor: theme.colors.background,
+    },
+    tabBar: {
+      height: 46,
+      backgroundColor: theme.colors.background,
+      paddingTop: 2,
+    },
+    tabBarLabel: {
+      fontSize: 12,
+      fontWeight: "500",
+      paddingBottom: 2,
+    },
+    header: {
+      elevation: 0,
+      backgroundColor: theme.colors.background,
+    },
+    headerTitle: {
+      fontWeight: "bold",
+      fontSize: 22,
+      color: theme.colors.typography.primary,
+    },
+    headerRightContainer: {
+      marginEnd: 14,
+    },
+  })
+);

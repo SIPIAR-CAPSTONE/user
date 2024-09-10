@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, Dialog, Portal, Button } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useMemo } from "react";
@@ -135,31 +135,33 @@ const InfoField = ({ icon, label, value, colors }) => {
 
 export default MarkerDialog;
 
-const stylesheet = createStyleSheet((theme) => ({
-  title: {
-    fontWeight: "bold",
-  },
-  infoFieldsContainer: {
-    marginTop: 10,
-    rowGap: 12,
-  },
-  infoField: {
-    flexDirection: "row",
-    alignItems: "center",
-    columnGap: 12,
-  },
-  iconContainer: {
-    backgroundColor: "red",
-    padding: 14,
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.full,
-  },
-  fieldValue: {
-    height: 25,
-    color: theme.colors.typography.primary,
-  },
-  fieldLabel: {
-    height: 22,
-    color: theme.colors.typography.secondary,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    title: {
+      fontWeight: "bold",
+    },
+    infoFieldsContainer: {
+      marginTop: 10,
+      rowGap: 12,
+    },
+    infoField: {
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: 12,
+    },
+    iconContainer: {
+      backgroundColor: "red",
+      padding: 14,
+      backgroundColor: theme.colors.background,
+      borderRadius: theme.borderRadius.full,
+    },
+    fieldValue: {
+      height: 25,
+      color: theme.colors.typography.primary,
+    },
+    fieldLabel: {
+      height: 22,
+      color: theme.colors.typography.secondary,
+    },
+  })
+);

@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { useState } from "react";
 
@@ -121,29 +121,31 @@ const StepOneContent = ({ goNextStep }) => {
 
 export default StepOneContent;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  header: {
-    marginVertical: 20,
-  },
-  nextButton: {
-    marginVertical: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-  signinButton: {
-    borderRadius: theme.borderRadius.base,
-  },
-  signinButtonLabel: {
-    fontSize: theme.fontSize.sm,
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    header: {
+      marginVertical: 20,
+    },
+    nextButton: {
+      marginVertical: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+    signinButton: {
+      borderRadius: theme.borderRadius.base,
+    },
+    signinButtonLabel: {
+      fontSize: theme.fontSize.sm,
+    },
+    footer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  })
+);

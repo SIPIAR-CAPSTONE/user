@@ -1,4 +1,4 @@
-import { Text, View, Modal, ScrollView } from "react-native";
+import { Text, View, Modal, ScrollView, StyleSheet } from "react-native";
 import React, { useState, useMemo } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableRipple } from "react-native-paper";
@@ -95,76 +95,78 @@ const SelectItem = ({
 
 export default SelectItem;
 
-const stylesheet = createStyleSheet((theme) => ({
-  button: {
-    height: 50,
-    borderRadius: theme.borderRadius.sm,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    backgroundColor: theme.colors.secondary,
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    button: {
+      height: 50,
+      borderRadius: theme.borderRadius.sm,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+      backgroundColor: theme.colors.secondary,
 
-    variants: {
-      variant: {
-        outlined: {
-          borderWidth: 1,
-          borderColor: "#e1e2e3",
-          backgroundColor: theme.colors.background,
+      variants: {
+        variant: {
+          outlined: {
+            borderWidth: 1,
+            borderColor: "#e1e2e3",
+            backgroundColor: theme.colors.background,
+          },
         },
       },
     },
-  },
-  buttonError: {
-    borderWidth: 1.5,
-    color: theme.colors.primary,
-    borderColor: theme.colors.primary,
-  },
-  errorLabel: {
-    paddingStart: 14,
-    paddingTop: 4,
-    marginBottom: 4,
-    color: theme.colors.primary,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    backgroundColor: theme.colors.elevation.level3,
-    borderRadius: theme.borderRadius.curve,
-    width: 350,
-    maxWidth: "85%",
-    height: 300,
-    maxHeight: "80%",
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    paddingVertical: 18,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingHorizontal: 18,
-  },
-  optionLabel: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontSize: theme.fontSize.md,
-    color: theme.colors.typography.tertiary,
-  },
-  option: {
-    paddingHorizontal: 10,
-    paddingVertical: 14,
-  },
-  optionText: {
-    fontSize: theme.fontSize.md,
-    color: theme.colors.typography.primary,
-  },
-  label: {
-    color: theme.colors.typography.primary,
-    fontWeight: "500",
-    marginBottom: 8,
-  },
-}));
+    buttonError: {
+      borderWidth: 1.5,
+      color: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+    errorLabel: {
+      paddingStart: 14,
+      paddingTop: 4,
+      marginBottom: 4,
+      color: theme.colors.primary,
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalContent: {
+      backgroundColor: theme.colors.elevation.level3,
+      borderRadius: theme.borderRadius.curve,
+      width: 350,
+      maxWidth: "85%",
+      height: 300,
+      maxHeight: "80%",
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+      paddingVertical: 18,
+    },
+    scrollContainer: {
+      flexGrow: 1,
+      paddingHorizontal: 18,
+    },
+    optionLabel: {
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      fontSize: theme.fontSize.md,
+      color: theme.colors.typography.tertiary,
+    },
+    option: {
+      paddingHorizontal: 10,
+      paddingVertical: 14,
+    },
+    optionText: {
+      fontSize: theme.fontSize.md,
+      color: theme.colors.typography.primary,
+    },
+    label: {
+      color: theme.colors.typography.primary,
+      fontWeight: "500",
+      marginBottom: 8,
+    },
+  })
+);

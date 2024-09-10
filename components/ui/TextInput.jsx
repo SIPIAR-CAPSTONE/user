@@ -1,4 +1,4 @@
-import { View, TextInput as RNTextInput, Text } from "react-native";
+import { View, TextInput as RNTextInput, Text, StyleSheet } from "react-native";
 import { useState } from "react";
 import { IconButton } from "react-native-paper";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
@@ -86,55 +86,57 @@ const ToggleEyeIcon = ({ toggleEye, onPress, size, theme, styles }) => {
 
 export default TextInput;
 
-const stylesheet = createStyleSheet((theme) => ({
-  input: {
-    backgroundColor: theme.colors.secondary,
-    color: theme.colors.typography.primary,
-    height: 50,
-    paddingHorizontal: 14,
-    borderRadius: theme.borderRadius.sm,
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    input: {
+      backgroundColor: theme.colors.secondary,
+      color: theme.colors.typography.primary,
+      height: 50,
+      paddingHorizontal: 14,
+      borderRadius: theme.borderRadius.sm,
 
-    variants: {
-      variant: {
-        outlined: {
-          borderWidth: 1,
-          borderColor: "#e1e2e3",
-          color: theme.colors.typography.primary,
-          backgroundColor: theme.colors.background,
+      variants: {
+        variant: {
+          outlined: {
+            borderWidth: 1,
+            borderColor: "#e1e2e3",
+            color: theme.colors.typography.primary,
+            backgroundColor: theme.colors.background,
+          },
         },
       },
     },
-  },
-  inputDisabled: {
-    color: theme.colors.typography.tertiary,
-  },
-  inputError: {
-    borderWidth: 1.5,
-    color: theme.colors.primary,
-    borderColor: theme.colors.primary,
-  },
-  errorLabel: {
-    paddingStart: 14,
-    paddingTop: 4,
-    marginBottom: 4,
-    color: theme.colors.primary,
-  },
-  toggleContainer: {
-    position: "absolute",
-    right: 3,
-    top: 1,
-  },
-  label: {
-    color: theme.colors.typography.tertiary,
-    fontWeight: "500",
-    marginBottom: 8,
+    inputDisabled: {
+      color: theme.colors.typography.tertiary,
+    },
+    inputError: {
+      borderWidth: 1.5,
+      color: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+    errorLabel: {
+      paddingStart: 14,
+      paddingTop: 4,
+      marginBottom: 4,
+      color: theme.colors.primary,
+    },
+    toggleContainer: {
+      position: "absolute",
+      right: 3,
+      top: 1,
+    },
+    label: {
+      color: theme.colors.typography.tertiary,
+      fontWeight: "500",
+      marginBottom: 8,
 
-    variants: {
-      variant: {
-        outlined: {
-          color: theme.colors.typography.primary,
+      variants: {
+        variant: {
+          outlined: {
+            color: theme.colors.typography.primary,
+          },
         },
       },
     },
-  },
-}));
+  })
+);

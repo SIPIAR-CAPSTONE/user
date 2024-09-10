@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
@@ -179,39 +179,41 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  containerContent: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-  header: {
-    marginVertical: 20,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  forgotPassButton: {
-    maxWidth: 180,
-    alignSelf: "flex-end",
-    marginBottom: 20,
-    borderRadius: theme.borderRadius.md,
-  },
-  signinButton: {
-    borderRadius: theme.borderRadius.base,
-  },
-  signupButton: {
-    borderRadius: theme.borderRadius.base,
-  },
-  signinButtonLabel: {
-    fontSize: theme.fontSize.sm,
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    containerContent: {
+      flex: 1,
+      justifyContent: "space-between",
+    },
+    header: {
+      marginVertical: 20,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    forgotPassButton: {
+      maxWidth: 180,
+      alignSelf: "flex-end",
+      marginBottom: 20,
+      borderRadius: theme.borderRadius.md,
+    },
+    signinButton: {
+      borderRadius: theme.borderRadius.base,
+    },
+    signupButton: {
+      borderRadius: theme.borderRadius.base,
+    },
+    signinButtonLabel: {
+      fontSize: theme.fontSize.sm,
+    },
+    footer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+  })
+);

@@ -1,4 +1,4 @@
-import {  ScrollView, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
@@ -107,16 +107,18 @@ const ForgotPasswordScreen = () => {
 
 export default ForgotPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    paddingHorizontal: theme.padding.body.horizontal,
-  },
-  form: {
-    rowGap: theme.gap.lg,
-  },
-  button: {
-    marginTop: 20,
-    borderRadius: theme.borderRadius.base,
-  },
-}));
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      paddingBottom: 70,
+      paddingHorizontal: theme.padding.body.horizontal,
+    },
+    form: {
+      rowGap: theme.gap.lg,
+    },
+    button: {
+      marginTop: 20,
+      borderRadius: theme.borderRadius.base,
+    },
+  })
+);
