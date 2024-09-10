@@ -157,6 +157,7 @@ const EditProfileScreen = () => {
         />
         <Text style={styles.appBarTitle}>Edit Profile</Text>
         <TouchableRipple
+          borderless
           style={styles.changePassButton}
           onPress={() => navigation.navigate("EditPassword")}
         >
@@ -276,7 +277,8 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   changePassButton: {
     backgroundColor: theme.colors.background,
-    padding: 4,
+    padding: 6,
+    borderRadius: 99
   },
   formFields: {
     paddingHorizontal: theme.padding.body.horizontal,
