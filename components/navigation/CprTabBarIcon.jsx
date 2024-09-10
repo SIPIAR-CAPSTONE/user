@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { useTheme } from "react-native-paper";
 
 export default function CprTabBarIcon() {
@@ -6,10 +6,10 @@ export default function CprTabBarIcon() {
 
   return (
     <View style={[styles.cprIcon, { backgroundColor: theme.colors.primary }]}>
-      {/* <Image
+      <Image
         style={styles.logo}
-        source={require("../../assets/images/cpr-icon.png")}
-      /> */}
+        source={require("../../assets/images/hand-white.png")}
+      />
     </View>
   );
 }
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     objectFit: "contain",
-    height: 46,
-    width: 46,
+    height: 42,
+    width: 42,
+    borderRadius: 50
   },
 });
