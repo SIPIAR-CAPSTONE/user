@@ -19,8 +19,7 @@ const LearnScreen = ({ navigation }) => {
           title="Hands-on CPR Guide Training"
           backgroundColor={theme.colors.primary}
           buttonLabel="Practice CPR"
-          // imageSource={require("")}
-          imageSource={{ uri: "https://picsum.photos/200/300" }}
+          imageSource={require("../../assets/images/hand-white.png")}
           onPress={() => navigation.navigate("LearnCpr")}
         />
       </View>
