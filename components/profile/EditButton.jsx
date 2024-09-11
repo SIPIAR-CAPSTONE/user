@@ -1,17 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
-const EditButton = () => {
+const EditButton = ({onPress}) => {
   const { styles, theme } = useStyles(stylesheet);
-  const navigation = useNavigation();
 
   return (
     <TouchableRipple
       borderless
-      onPress={() => navigation.navigate("EditProfile")}
+      onPress={onPress}
       style={styles.touchableRipple}
     >
       <View style={styles.editButton}>

@@ -9,10 +9,23 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import { useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import { useNavigation } from "@react-navigation/native";
 
 const MyAccountScreen = () => {
+  const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const userMetaData = useBoundStore((state) => state.userMetaData);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
+
+  const handleConfirmation = () => {
+    hideConfirmationDialog();
+    navigation.navigate("EditProfile");
+  };
 
   //* retrieve profile picture upon screen load
   const [profilePictureUri, setProfilePictureUri] = useState(null);
@@ -76,11 +89,18 @@ const MyAccountScreen = () => {
             imageSource={profilePictureUri}
             name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
             email={userMetaData["email"]}
-            renderFooter={() => <EditButton />}
+            renderFooter={() => <EditButton onPress={showConfirmationDialog} />}
           />
         }
         ItemSeparatorComponent={renderItemSeperator}
         contentContainerStyle={styles.contentContainer}
+      />
+
+      <ConfirmationDialog
+        title="Are you sure you want to edit your account?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={handleConfirmation}
+        onPressCancel={hideConfirmationDialog}
       />
 
       <StatusBar />
