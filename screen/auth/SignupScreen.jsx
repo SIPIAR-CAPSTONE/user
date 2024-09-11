@@ -10,6 +10,7 @@ import useBoundStore from "../../zustand/useBoundStore";
 import StepOneContent from "../../components/auth/signup/StepOneContent";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import NoInternetBar from "../../components/common/NoInternetBar";
 const StepTwoContent = lazy(() =>
   import("../../components/auth/signup/StepTwoContent")
 );
@@ -133,9 +134,10 @@ const SignupScreen = ({ navigation }) => {
           onPressConfirmation={() => navigation.goBack()}
           onPressCancel={hideConfirmationDialog}
         />
-
-        <StatusBar />
       </ScrollView>
+
+      <StatusBar />
+      <NoInternetBar />
     </>
   );
 };

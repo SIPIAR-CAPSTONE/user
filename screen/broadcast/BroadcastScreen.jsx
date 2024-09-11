@@ -10,6 +10,7 @@ import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import { StyleSheet } from "react-native";
+import NotInternetAlert from "../../components/common/NoInternetAlert";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -86,21 +87,24 @@ const BroadcastScreen = () => {
   };
 
   return (
-    <FlatList
-      data={alerts}
-      keyExtractor={(item) => item.id}
-      renderItem={renderAlertItem}
-      ListHeaderComponent={<Header />}
-      ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-      contentContainerStyle={styles.contentContainer}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor="#F8852D"
-        />
-      }
-    />
+    <>
+      <FlatList
+        data={alerts}
+        keyExtractor={(item) => item.id}
+        renderItem={renderAlertItem}
+        ListHeaderComponent={<Header />}
+        ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#F8852D"
+          />
+        }
+      />
+      <NotInternetAlert />
+    </>
   );
 };
 

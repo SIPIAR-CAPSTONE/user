@@ -11,6 +11,8 @@ import useSendToken from "../../hooks/useSendToken";
 import useBoundStore from "../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
+import NoInternetBar from "../../components/common/NoInternetBar";
+import StatusBar from "../../components/common/StatusBar";
 
 const TokenVerification = () => {
   const { styles } = useStyles(stylesheet);
@@ -62,38 +64,43 @@ const TokenVerification = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.form}>
-        <FormHeader
-          title="Enter Your Token"
-          titleSize="large"
-          desc="We have sent the verification token to your email address."
-        />
+    <>
+      <ScrollView style={styles.container}>
+        <View style={styles.form}>
+          <FormHeader
+            title="Enter Your Token"
+            titleSize="large"
+            desc="We have sent the verification token to your email address."
+          />
 
-        <TextInput
-          placeholder="Token Hash"
-          value={tokenHash}
-          onChangeText={setTokenHash}
-        />
+          <TextInput
+            placeholder="Token Hash"
+            value={tokenHash}
+            onChangeText={setTokenHash}
+          />
 
-        <Text style={styles.serverErrorMessage}>{serverError}</Text>
+          <Text style={styles.serverErrorMessage}>{serverError}</Text>
 
-        {time === 0 ? (
-          <Text variant="labelLarge" style={styles.resentMessage}>
-            Resent, please wait a while.
-          </Text>
-        ) : (
-          <ResendCountdown time={time} styles={styles} />
-        )}
+          {time === 0 ? (
+            <Text variant="labelLarge" style={styles.resentMessage}>
+              Resent, please wait a while.
+            </Text>
+          ) : (
+            <ResendCountdown time={time} styles={styles} />
+          )}
 
-        <PrimaryButton
-          label="Verify"
-          onPress={handleSubmit}
-          isLoading={!isFilled}
-          style={styles.button}
-        />
-      </View>
-    </ScrollView>
+          <PrimaryButton
+            label="Verify"
+            onPress={handleSubmit}
+            isLoading={!isFilled}
+            style={styles.button}
+          />
+        </View>
+      </ScrollView>
+
+      <NoInternetBar />
+      <StatusBar />
+    </>
   );
 };
 

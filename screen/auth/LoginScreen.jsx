@@ -13,6 +13,7 @@ import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
+import NoInternetBar from "../../components/common/NoInternetBar";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -114,66 +115,69 @@ const LoginScreen = () => {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-    >
-      <View style={styles.form}>
-        <FormHeader
-          title="Sign In"
-          titleSize="large"
-          desc="Please login to your account to access all app features."
-        />
+    <>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.containerContent}
+      >
+        <View style={styles.form}>
+          <FormHeader
+            title="Sign In"
+            titleSize="large"
+            desc="Please login to your account to access all app features."
+          />
 
-        <TextInput
-          placeholder="Email Address"
-          value={email}
-          inputMode="email"
-          onChangeText={setEmail}
-          error={errors.email}
-          disabled={loading}
-        />
-        <TextInput
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChangeText={setPassword}
-          error={errors.password}
-          disabled={loading}
-        />
+          <TextInput
+            placeholder="Email Address"
+            value={email}
+            inputMode="email"
+            onChangeText={setEmail}
+            error={errors.email}
+            disabled={loading}
+          />
+          <TextInput
+            placeholder="Password"
+            type="password"
+            value={password}
+            onChangeText={setPassword}
+            error={errors.password}
+            disabled={loading}
+          />
 
-        <Button
-          compact
-          mode="text"
-          style={styles.forgotPassButton}
-          onPress={() => navigation.navigate("ForgotPassword")}
-        >
-          Forgot Password
-        </Button>
+          <Button
+            compact
+            mode="text"
+            style={styles.forgotPassButton}
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
+            Forgot Password
+          </Button>
 
-        <PrimaryButton
-          label="Sign In"
-          onPress={handleSubmit}
-          style={styles.signinButton}
-          isLoading={loading}
-        />
-      </View>
+          <PrimaryButton
+            label="Sign In"
+            onPress={handleSubmit}
+            style={styles.signinButton}
+            isLoading={loading}
+          />
+        </View>
 
-      <View style={styles.footer}>
-        <Text variant="labelLarge">Don't Have an Account?</Text>
-        <Button
-          mode="text"
-          compact
-          onPress={() => navigation.navigate("Signup")}
-          style={styles.signupButton}
-          labelStyle={styles.signinButtonLabel}
-        >
-          Sign Up
-        </Button>
-      </View>
+        <View style={styles.footer}>
+          <Text variant="labelLarge">Don't Have an Account?</Text>
+          <Button
+            mode="text"
+            compact
+            onPress={() => navigation.navigate("Signup")}
+            style={styles.signupButton}
+            labelStyle={styles.signinButtonLabel}
+          >
+            Sign Up
+          </Button>
+        </View>
+      </ScrollView>
 
+      <NoInternetBar />
       <StatusBar />
-    </ScrollView>
+    </>
   );
 };
 

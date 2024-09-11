@@ -8,6 +8,7 @@ import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
+import NoInternetBar from "../../components/common/NoInternetBar";
 
 const ResetPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -116,6 +117,7 @@ const ResetPasswordScreen = () => {
         />
       </View>
 
+      <NoInternetBar />
       <StatusBar />
     </View>
   );

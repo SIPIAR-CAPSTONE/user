@@ -9,6 +9,7 @@ import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
+import NoInternetBar from "../../components/common/NoInternetBar";
 
 /**
  * ForgotPasswordScreen component
@@ -77,31 +78,34 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.form}>
-        <FormHeader
-          title="Forgot Password"
-          titleSize="large"
-          desc="Please provide your registered email."
-        />
-        <TextInput
-          placeholder="Email Address"
-          value={email}
-          inputMode="email"
-          onChangeText={setEmail}
-          error={errors.email}
-          disabled={loading}
-        />
-        <PrimaryButton
-          label="Send Token"
-          onPress={handleSubmit}
-          isLoading={loading}
-          style={styles.button}
-        />
-      </View>
+    <>
+      <ScrollView style={styles.container}>
+        <View style={styles.form}>
+          <FormHeader
+            title="Forgot Password"
+            titleSize="large"
+            desc="Please provide your registered email."
+          />
+          <TextInput
+            placeholder="Email Address"
+            value={email}
+            inputMode="email"
+            onChangeText={setEmail}
+            error={errors.email}
+            disabled={loading}
+          />
+          <PrimaryButton
+            label="Send Token"
+            onPress={handleSubmit}
+            isLoading={loading}
+            style={styles.button}
+          />
+        </View>
+      </ScrollView>
 
+      <NoInternetBar />
       <StatusBar />
-    </ScrollView>
+    </>
   );
 };
 
