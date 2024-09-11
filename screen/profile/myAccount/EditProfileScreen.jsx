@@ -170,7 +170,7 @@ const EditProfileScreen = () => {
         </TouchableRipple>
       </AppBar>
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView>
         <EditUserProfileCard
           name="John"
           imageSource={""}
@@ -269,9 +269,6 @@ export default EditProfileScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingVertical: theme.padding.body.vertical,
-    },
     appBarTitle: {
       fontSize: 20,
       fontWeight: "bold",

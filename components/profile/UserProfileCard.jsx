@@ -8,12 +8,12 @@ const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
 
   const UserAvatar = imageSource ? (
     <Avatar.Image
-      size={120}
+      size={124}
       source={{ uri: imageSource }}
       style={styles.avatar}
     />
   ) : (
-    <Avatar.Text size={120} label={firstNameInitial} style={styles.avatar} />
+    <Avatar.Text size={124} label={firstNameInitial} style={styles.avatar} />
   );
 
   return (
@@ -38,7 +38,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
     header: {
       alignItems: "center",
-      paddingVertical: 8,
+      paddingVertical: 11,
     },
     email: {
       color: theme.colors.typography.tertiary,
