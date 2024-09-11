@@ -68,7 +68,7 @@ const StepFourContent = () => {
         image={frontIdImage}
         onPress={() => takePicture(setFrontIdImage)}
         error={errors.frontIdImage}
-        disabled={loading}
+        isLoading={loading}
       />
       <Divider style={styles.divider} />
       <ImageFrame
@@ -76,14 +76,14 @@ const StepFourContent = () => {
         image={backIdImage}
         onPress={() => takePicture(setBackIdImage)}
         error={errors.backIdImage}
-        disabled={loading}
+        isLoading={loading}
       />
 
       <PrimaryButton
         label="Submit"
         onPress={handleSubmit}
         style={styles.submitButton}
-        disabled={loading}
+        isLoading={loading}
       />
     </View>
   );

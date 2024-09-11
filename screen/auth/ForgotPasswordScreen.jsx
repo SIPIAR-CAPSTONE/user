@@ -95,7 +95,7 @@ const ForgotPasswordScreen = () => {
         <PrimaryButton
           label="Send Token"
           onPress={handleSubmit}
-          disabled={loading}
+          isLoading={loading}
           style={styles.button}
         />
       </View>

@@ -149,7 +149,7 @@ const StepThreeContent = () => {
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          disabled={loading}
+          isLoading={loading}
           style={styles.nextButton}
         />
       </View>

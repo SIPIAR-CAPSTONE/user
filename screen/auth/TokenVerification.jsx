@@ -89,7 +89,7 @@ const TokenVerification = () => {
         <PrimaryButton
           label="Verify"
           onPress={handleSubmit}
-          disabled={!isFilled}
+          isLoading={!isFilled}
           style={styles.button}
         />
       </View>

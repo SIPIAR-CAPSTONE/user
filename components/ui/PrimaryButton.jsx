@@ -1,10 +1,8 @@
 import { Button } from "react-native-paper";
 import { useTheme } from "react-native-paper";
 
-const PrimaryButton = (props) => {
+const PrimaryButton = ({ label, onPress, isLoading, ...buttonProps }) => {
   const theme = useTheme();
-
-  const { label, onPress, ...buttonProps } = props;
 
   return (
     <Button
@@ -13,6 +11,8 @@ const PrimaryButton = (props) => {
       contentStyle={{ padding: theme.padding.button.base }}
       labelStyle={{ fontSize: theme.fontSize.base }}
       style={{ borderRadius: theme.borderRadius.base }}
+      disabled={isLoading}
+      loading={isLoading}
       {...buttonProps}
     >
       {label}

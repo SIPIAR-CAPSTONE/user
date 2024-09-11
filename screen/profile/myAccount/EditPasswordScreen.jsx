@@ -108,7 +108,7 @@ const EditPasswordScreen = () => {
           label="Submit"
           onPress={showConfirmationDialog}
           style={styles.submitButton}
-          disabled={loading}
+          isLoading={loading}
         />
       </View>
 

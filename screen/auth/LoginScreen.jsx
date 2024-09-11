@@ -155,7 +155,7 @@ const LoginScreen = () => {
           label="Sign In"
           onPress={handleSubmit}
           style={styles.signinButton}
-          disabled={loading}
+          isLoading={loading}
         />
       </View>
 

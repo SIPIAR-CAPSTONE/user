@@ -111,7 +111,7 @@ const ResetPasswordScreen = () => {
         <PrimaryButton
           label="Next"
           onPress={handleSubmit}
-          disabled={loading}
+          isLoading={loading}
           style={styles.button}
         />
       </View>
