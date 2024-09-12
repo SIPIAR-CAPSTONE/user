@@ -6,7 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import StatusBar from "../../../components/common/StatusBar";
-import PrimaryButton from "../../../components/ui/PrimaryButton";
+import Button from "../../../components/ui/Button";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
@@ -244,10 +244,10 @@ const EditProfileScreen = () => {
             onChangeText={(item) => handleFieldChange("houseNumber", item)}
           />
 
-          <PrimaryButton
+          <Button
             label="Save Changes"
             onPress={showConfirmationDialog}
-            style={styles.saveButton}
+            marginVertical={30}
           />
 
           {/* When save changes submit, show confirmation */}
@@ -283,10 +283,6 @@ const stylesheet = createStyleSheet((theme) =>
       paddingHorizontal: theme.padding.body.horizontal,
       paddingBottom: theme.padding.body.vertical,
       rowGap: theme.gap.lg,
-    },
-    saveButton: {
-      borderRadius: theme.borderRadius.base,
-      marginTop: 44,
     },
   })
 );

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import { useNavigation } from "@react-navigation/native";
 
@@ -12,10 +12,7 @@ const CprConfirmationScreen = () => {
   return (
     <View style={styles.container}>
       <Text>CprConfirmationScreen</Text>
-      <PrimaryButton
-        label="Proceed"
-        onPress={() => navigation.navigate("Cpr")}
-      />
+      <Button label="Proceed" onPress={() => navigation.navigate("Cpr")} />
       <StatusBar />
     </View>
   );

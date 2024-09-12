@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { Dialog, Portal, useTheme } from "react-native-paper";
 import React from "react";
 
-import PrimaryButton from "./PrimaryButton";
+import Button from "./Button";
 
 const ConfirmationDialog = ({
   isVisible,
@@ -22,24 +22,15 @@ const ConfirmationDialog = ({
       <Dialog
         visible={isVisible}
         onDismiss={onPressCancel}
-        style={[styles.container, containerStyle]}
+        style={[styles.dialog, containerStyle]}
         dismissable={dismissable}
       >
         <Dialog.Title style={styles.title}>{title}</Dialog.Title>
         {content && <Dialog.Content>{content}</Dialog.Content>}
+
         <Dialog.Actions style={styles.buttonsContainer}>
-          <PrimaryButton
-            label={confirmationLabel}
-            onPress={onPressConfirmation}
-            mode="contained"
-            style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
-          />
-          <PrimaryButton
-            label={cancelLabel}
-            onPress={onPressCancel}
-            mode="text"
-            style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
-          />
+          <Button label={confirmationLabel} onPress={onPressConfirmation} />
+          <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
         </Dialog.Actions>
       </Dialog>
     </Portal>
@@ -49,7 +40,7 @@ const ConfirmationDialog = ({
 export default ConfirmationDialog;
 
 const styles = StyleSheet.create({
-  container: {
+  dialog: {
     paddingTop: 20,
   },
   title: {

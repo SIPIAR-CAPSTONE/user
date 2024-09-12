@@ -1,14 +1,14 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import StatusBar from "../../../components/common/StatusBar";
 import FormHeader from "../../../components/common/FormHeader";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import TextInput from "../../../components/ui/TextInput";
-import PrimaryButton from "../../../components/ui/PrimaryButton";
+import Button from "../../../components/ui/Button";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 
-const DeleteAccountScreen = ({ navigation }) => {
+const DeleteAccountScreen = () => {
   const { theme, styles } = useStyles(stylesheet);
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -72,10 +72,7 @@ const DeleteAccountScreen = ({ navigation }) => {
       />
 
       <View style={styles.buttonContainer}>
-        <PrimaryButton
-          label="Delete Account"
-          onPress={showConfirmationDialog}
-        />
+        <Button label="Delete Account" onPress={showConfirmationDialog} />
       </View>
 
       <ConfirmationDialog

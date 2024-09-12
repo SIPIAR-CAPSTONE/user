@@ -2,7 +2,7 @@ import { View, Text, Dimensions, ScrollView, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import AppBar from "../../components/ui/AppBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
@@ -191,10 +191,9 @@ const LearnCprScoreScreen = () => {
         </View>
 
         <View style={styles.finishButtonContainer}>
-          <PrimaryButton
+          <Button
             label="Finish"
             onPress={() => navigation.navigate("LearnScreen")}
-            style={styles.finishButton}
           />
         </View>
       </ScrollView>
@@ -240,9 +239,6 @@ const stylesheet = createStyleSheet((theme) =>
       paddingHorizontal: theme.padding.body.horizontal,
       paddingVertical: 26,
       justifyContent: "flex-end",
-    },
-    finishButton: {
-      borderRadius: theme.borderRadius.sm,
     },
   })
 );

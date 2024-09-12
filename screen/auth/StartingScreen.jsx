@@ -8,7 +8,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 const StartingScreen = () => {
@@ -33,15 +33,11 @@ const StartingScreen = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <PrimaryButton
-          label="Sign In"
-          onPress={() => navigation.navigate("Login")}
-        />
-        <PrimaryButton
+        <Button label="Sign In" onPress={() => navigation.navigate("Login")} />
+        <Button
           label="Sign Up"
-          mode="outlined"
+          variant="outlined"
           onPress={() => navigation.navigate("Signup")}
-          style={styles.signupButton}
         />
       </View>
 
@@ -78,11 +74,6 @@ const stylesheet = createStyleSheet((theme) =>
     },
     buttonsContainer: {
       rowGap: theme.gap.md,
-    },
-    signupButton: {
-      borderRadius: theme.borderRadius.base,
-      borderColor: theme.colors.primary,
-      borderWidth: 2,
     },
   })
 );

@@ -4,7 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { Portal, Appbar, useTheme, Text } from "react-native-paper";
 import CircularIcon from "../../../ui/CircularIcon";
-import PrimaryButton from "../../../../components/ui/PrimaryButton";
+import Button from "../../../ui/Button";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 /**
@@ -109,11 +109,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
               {renderInstructions}
             </View>
 
-            <PrimaryButton
-              label="Confirm"
-              onPress={onConfirmed}
-              style={[styles.button, { borderRadius: theme.borderRadius.base }]}
-            />
+            <Button label="Confirm" onPress={onConfirmed} />
           </BottomSheetView>
         </BottomSheet>
       </View>
