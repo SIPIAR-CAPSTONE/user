@@ -21,9 +21,16 @@ import useImageReader from "../../../hooks/useImageReader";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { StyleSheet } from "react-native";
 import Layout from "../../../components/common/Layout";
+import { isFormValid } from "../../../utils/formValidation";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
+
+const fields = [
+  { name: "firstName", rules: [{ type: "required" }] },
+  { name: "lastName", rules: [{ type: "required" }] },
+  { name: "birthday", rules: [{ type: "required" }] },
+];
 
 const EditProfileScreen = () => {
   const { styles, theme } = useStyles(stylesheet);
@@ -75,31 +82,6 @@ const EditProfileScreen = () => {
     });
   };
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!userInfo.firstName) errors.firstName = "First Name is required.";
-    if (!userInfo.lastName) errors.lastName = "Last Name is required.";
-    if (!userInfo.birthday) errors.birthday = "Birthday is required.";
-
-    // Set the errors and update form validity if it is empty
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = async () => {
     //! update profile picture, if exist, replace
     const { error } = await supabase.storage
@@ -120,9 +102,7 @@ const EditProfileScreen = () => {
       setglobalStateProfilePath(profilePicture);
     }
 
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-    if (isFormValid) {
+    if (isFormValid(fields, userInfo, setErrors)) {
       const { data, error } = await supabase.auth.updateUser({
         data: {
           first_name: userInfo["firstName"],

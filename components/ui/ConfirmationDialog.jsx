@@ -15,7 +15,6 @@ const ConfirmationDialog = ({
   containerStyle = {},
   dismissable = false,
 }) => {
-  const theme = useTheme();
 
   return (
     <Portal>

@@ -1,13 +1,35 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
+import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import FormHeader from "../../../components/common/FormHeader";
 import TextInput from "../../../components/ui/TextInput";
 import Button from "../../../components/ui/Button";
-import StatusBar from "../../../components/common/StatusBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import Form from "../../../components/common/Form";
 import Layout from "../../../components/common/Layout";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  {
+    name: "oldPassword",
+    rules: [{ type: "required" }],
+  },
+  {
+    name: "newPassword",
+    rules: [{ type: "required" }],
+  },
+  {
+    name: "confirmNewPassword",
+    rules: [
+      { type: "required" },
+      {
+        type: "match",
+        matchField: "newPassword",
+        message: "The Confirmation Password does not match.",
+      },
+    ],
+  },
+];
 
 const EditPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -22,36 +44,8 @@ const EditPasswordScreen = () => {
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState(false);
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!form.oldPassword) errors.oldPassword = "Old Password is required.";
-    if (!form.newPassword) errors.newPassword = "New Password is required.";
-    if (!form.confirmNewPassword) {
-      errors.confirmNewPassword = "Confirm Password is required.";
-    }
-    if (form.newPassword !== form.confirmNewPassword) {
-      errors.confirmNewPassword =
-        "Password and Confirm Password must be match.";
-      errors.newPassword = "Password and Confirm Password must be match.";
-    }
-
-    setErrors(errors);
-
-    // if error is no more than 0 means the form is valid
-    return Object.keys(errors).length === 0;
-  };
-
   const showConfirmationDialog = () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, form, setErrors)) {
       setIsConfirmationDialogVisible(true);
     }
   };

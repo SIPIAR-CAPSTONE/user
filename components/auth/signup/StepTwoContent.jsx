@@ -8,6 +8,12 @@ import TextInput from "../../ui/TextInput";
 import SelectItem from "../../ui/SelectItem";
 import Form from "../../common/Form";
 import { useTheme } from "react-native-paper";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  { name: "barangay", rules: [{ type: "required" }] },
+  { name: "street", rules: [{ type: "required" }] },
+];
 
 const StepTwoContent = ({ goNextStep }) => {
   const theme = useTheme();
@@ -15,42 +21,8 @@ const StepTwoContent = ({ goNextStep }) => {
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    let errors = {};
-
-    // Validate barangay field if it is empty
-    if (!signupForm.barangay) {
-      errors.barangay = "Barangay is required.";
-    }
-
-    // Validate street field if it is empty
-    if (!signupForm.street) {
-      errors.street = "Street is required.";
-    }
-
-    // Set the errors and update form validity if it is empty
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, signupForm, setErrors)) {
       //if form is valid go to next step screen
       goNextStep();
     }

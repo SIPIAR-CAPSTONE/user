@@ -10,6 +10,25 @@ import TextInput from "../../components/ui/TextInput";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
 import SuccessConfirmation from "../../components/common/SuccessConfirmation";
+import { isFormValid } from "../../utils/formValidation";
+
+const fields = [
+  {
+    name: "newPassword",
+    rules: [{ type: "required" }],
+  },
+  {
+    name: "confirmNewPassword",
+    rules: [
+      { type: "required" },
+      {
+        type: "match",
+        matchField: "newPassword",
+        message: "The Confirmation Password does not match.",
+      },
+    ],
+  },
+];
 
 const ResetPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -20,42 +39,8 @@ const ResetPasswordScreen = () => {
   const [errors, setErrors] = useState({});
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!newPassword) errors.newPassword = "Password is required.";
-    if (!confirmNewPassword) {
-      errors.confirmNewPassword = "Confirm Password is required.";
-    }
-    if (newPassword !== confirmNewPassword) {
-      errors.confirmNewPassword =
-        "Password and Confirm Password must be match.";
-      errors.newPassword = "Password and Confirm Password must be match.";
-    }
-
-    // Set the errors and update form validity if it is empty
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = async () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, { newPassword, confirmNewPassword }, setErrors)) {
       setLoading(true);
 
       //* update password of user

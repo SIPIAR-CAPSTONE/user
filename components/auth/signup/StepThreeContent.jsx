@@ -11,6 +11,26 @@ import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import TextInput from "../../ui/TextInput";
 import Button from "../../ui/Button";
 import Form from "../../common/Form";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  { name: "email", rules: [{ type: "required" }, { type: "email" }] },
+  {
+    name: "password",
+    rules: [{ type: "required" }],
+  },
+  {
+    name: "confirmPassword",
+    rules: [
+      { type: "required" },
+      {
+        type: "match",
+        matchField: "password",
+        message: "The Confirmation Password does not match.",
+      },
+    ],
+  },
+];
 
 const StepThreeContent = () => {
   const { styles, theme } = useStyles(stylesheet);
@@ -24,50 +44,8 @@ const StepThreeContent = () => {
   //* State for UI signup error
   const [signUpError, setSignUpError] = useState("");
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    let errors = {};
-
-    // Validate email field if it is empty
-    if (!signupForm.email) {
-      errors.email = "Email is required.";
-    }
-
-    //check if email has @ and .com
-    if (!/\S+@\S+\.\S+/.test(signupForm.email)) {
-      errors.email = "Invalid Email.";
-    }
-
-    if (!signupForm.password) errors.password = "Password is required.";
-    if (!signupForm.confirmPassword) {
-      errors.confirmPassword = "Confirm Password is required.";
-    }
-
-    // Validate if password and confirm password matched
-    if (signupForm.password !== signupForm.confirmPassword) {
-      errors.confirmPassword = "Password and Confirm Password must be match.";
-      errors.password = "Password and Confirm Password must be match.";
-    }
-
-    setErrors(errors);
-
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = async () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, signupForm, setErrors)) {
       setLoading(true);
 
       //* Signup user using the credentials provided, also added other fields as meta data

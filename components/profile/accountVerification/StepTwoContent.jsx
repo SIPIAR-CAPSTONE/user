@@ -7,6 +7,12 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import SelectItem from "../../ui/SelectItem";
 import TextInput from "../../ui/TextInput";
 import Form from "../../common/Form";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  { name: "barangay", rules: [{ type: "required" }] },
+  { name: "street", rules: [{ type: "required" }] },
+];
 
 const StepTwoContent = ({ goNextStep }) => {
   const verificationForm = useBoundStore((state) => state.verificationForm);
@@ -25,33 +31,8 @@ const StepTwoContent = ({ goNextStep }) => {
     fetchverificationFormData();
   }, []);
 
-  /**
-   * Function to validate the form
-   *
-   * @return {boolean} true if there are no errors, false otherwise
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!verificationForm.barangay) errors.barangay = "Barangay is required.";
-    if (!verificationForm.street) errors.street = "Street is required.";
-
-    setErrors(errors);
-
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, verificationForm, setErrors)) {
       //if form is valid go to next step screen
       goNextStep();
     }

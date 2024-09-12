@@ -14,6 +14,15 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import { isFormValid } from "../../utils/formValidation";
+
+const fields = [
+  { name: "email", rules: [{ type: "required" }] },
+  {
+    name: "password",
+    rules: [{ type: "required" }],
+  },
+];
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -55,35 +64,10 @@ const LoginScreen = () => {
     }
   };
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!email) errors.email = "Email is required.";
-    if (!password) errors.password = "Password is required.";
-
-    setErrors(errors);
-
-    // if error is no more than 0 means the form is valid
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = async () => {
-    setLoading(true);
+    if (isFormValid(fields, { email, password }, setErrors)) {
+      setLoading(true);
 
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
       //* If form valid, sign in account
       const { data, error } = await supabase.auth
         .signInWithPassword({

@@ -6,6 +6,25 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import TextInput from "../../ui/TextInput";
 import BirthdatePicker from "../../ui/BirthdayPicker";
 import Form from "../../common/Form";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  { name: "firstName", rules: [{ type: "required" }] },
+  { name: "middleName", rules: [{ type: "required" }] },
+  { name: "lastName", rules: [{ type: "required" }] },
+  { name: "birthday", rules: [{ type: "required" }] },
+  {
+    name: "phone",
+    rules: [
+      { type: "required" },
+      {
+        type: "exactLength",
+        length: 11,
+        message: "Phone should contain 11 numbers.",
+      },
+    ],
+  },
+];
 
 const StepOneContent = ({ goNextStep }) => {
   const verificationForm = useBoundStore((state) => state.verificationForm);
@@ -29,42 +48,8 @@ const StepOneContent = ({ goNextStep }) => {
   //   fetchData();
   // }, []);
 
-  /**
-   * Function to validate the form
-   *
-   * @return {boolean} true if there are no errors, false otherwise
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!verificationForm.firstName)
-      errors.firstName = "First Name is required.";
-    if (!verificationForm.middleName)
-      errors.middleName = "Middle Name is required.";
-    if (!verificationForm.lastName) errors.lastName = "Last Name is required.";
-    if (!verificationForm.birthday) errors.birthday = "Birthday is required.";
-    if (!verificationForm.phone) errors.phone = "Phone is required.";
-    if (verificationForm.phone.length !== 11)
-      errors.phone = "Phone should have 11 numbers.";
-
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, verificationForm, setErrors)) {
       //if form is valid go to next step screen
       goNextStep();
     }

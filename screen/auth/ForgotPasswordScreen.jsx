@@ -1,4 +1,4 @@
-import {  StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
@@ -10,6 +10,11 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import { isFormValid } from "../../utils/formValidation";
+
+const fields = [
+  { name: "email", rules: [{ type: "required" }, { type: "email" }] },
+];
 
 /**
  * ForgotPasswordScreen component
@@ -26,32 +31,11 @@ const ForgotPasswordScreen = () => {
   const { errors, setErrors, process } = useSendToken(email, true); // Hook for sending password reset token
   const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail);
 
-  /**
-   * Form Validation
-   *
-   * This function validates the email field and sets error messages if necessary.
-   * It returns true if the form is valid, false otherwise.
-   *
-   * @return {boolean} - True if the form is valid, false otherwise.
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!email) errors.email = "Email is required.";
-    if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Invalid Email";
-
-    setErrors(errors);
-
-    return Object.keys(errors).length === 0;
-  };
-
   const handleSubmit = async () => {
     // Add email as a global prop
     setResetEmail(email);
 
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, { email }, setErrors)) {
       setLoading(true);
 
       try {

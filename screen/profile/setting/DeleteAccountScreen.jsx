@@ -7,6 +7,9 @@ import TextInput from "../../../components/ui/TextInput";
 import Button from "../../../components/ui/Button";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import Layout from "../../../components/common/Layout";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [{ name: "password", rules: [{ type: "required" }] }];
 
 const DeleteAccountScreen = () => {
   const { theme, styles } = useStyles(stylesheet);
@@ -15,32 +18,8 @@ const DeleteAccountScreen = () => {
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState(false);
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!password) errors.password = "Password is required.";
-
-    setErrors(errors);
-
-    // if error is no more than 0 means the form is valid
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
-
   const showConfirmationDialog = () => {
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, { password }, setErrors)) {
       setIsConfirmationDialogVisible(true);
     }
     return;

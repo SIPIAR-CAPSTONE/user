@@ -9,6 +9,18 @@ import { useNavigation } from "@react-navigation/native";
 import useImagePicker from "../../../hooks/useImagePicker";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import SuccessConfirmation from "../../common/SuccessConfirmation";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [
+  {
+    name: "frontIdImage",
+    rules: [{ type: "required", message: "Front side ID image is required." }],
+  },
+  {
+    name: "backIdImage",
+    rules: [{ type: "required", message: "Back side ID image is required." }],
+  },
+];
 
 const StepFourContent = () => {
   const { styles } = useStyles(stylesheet);
@@ -23,34 +35,8 @@ const StepFourContent = () => {
 
   const { takePicture } = useImagePicker();
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!frontIdImage) errors.frontIdImage = "Front side ID image is required.";
-    if (!backIdImage) errors.backIdImage = "Back side ID image is required.";
-
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, { frontIdImage, backIdImage }, setErrors)) {
       setLoading(true);
 
       setShowSuccessAlert(true);
