@@ -116,7 +116,7 @@ const stylesheet = createStyleSheet((theme) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginVertical: theme.margin.heading.vertical,
+      marginVertical: theme.spacing.md,
     },
     countContainer: {
       height: 24,
@@ -131,8 +131,8 @@ const stylesheet = createStyleSheet((theme) =>
       color: theme.colors.onPrimary,
     },
     contentContainer: {
-      paddingVertical: theme.padding.body.vertical,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.base,
     },
   })
 );

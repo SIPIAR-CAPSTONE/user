@@ -49,7 +49,7 @@ export default function App() {
     headerTitleAlign: "center",
     headerTitleStyle: {
       fontWeight: "bold",
-      color: selectedTheme.colors.typography.primary,
+      color: selectedTheme.colors.text,
     },
     headerLeft: () => (
       <CircularIcon

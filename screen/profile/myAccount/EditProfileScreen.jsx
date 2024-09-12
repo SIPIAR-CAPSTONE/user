@@ -162,11 +162,7 @@ const EditProfileScreen = () => {
           style={styles.changePassButton}
           onPress={() => navigation.navigate("EditPassword")}
         >
-          <MaterialIcons
-            name="password"
-            size={24}
-            color={theme.colors.typography.primary}
-          />
+          <MaterialIcons name="password" size={24} color={theme.colors.text} />
         </TouchableRipple>
       </AppBar>
 
@@ -270,7 +266,7 @@ const stylesheet = createStyleSheet((theme) =>
     appBarTitle: {
       fontSize: 20,
       fontWeight: "bold",
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     changePassButton: {
       backgroundColor: theme.colors.background,
@@ -278,9 +274,9 @@ const stylesheet = createStyleSheet((theme) =>
       borderRadius: 99,
     },
     formFields: {
-      paddingHorizontal: theme.padding.body.horizontal,
-      paddingBottom: theme.padding.body.vertical,
-      rowGap: theme.gap.lg,
+      paddingHorizontal: theme.spacing.base,
+      paddingBottom: theme.spacing.md,
+      rowGap: theme.spacing.base,
     },
   })
 );

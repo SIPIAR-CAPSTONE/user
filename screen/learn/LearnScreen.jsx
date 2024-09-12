@@ -38,10 +38,10 @@ export default LearnScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     section: {
-      marginBottom: theme.margin.body.vertical,
+      marginBottom: theme.spacing.xl,
     },
     sectionLabel: {
-      marginVertical: theme.margin.heading.vertical,
+      marginVertical: theme.spacing.md,
       fontWeight: "bold",
     },
   })

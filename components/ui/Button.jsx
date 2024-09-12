@@ -46,7 +46,7 @@ const stylesheet = createStyleSheet((theme) =>
       fontSize: theme.fontSize.base,
     },
     buttonContent: {
-      padding: theme.padding.button.base,
+      padding: theme.spacing.xxxs,
     },
 
     variant: {

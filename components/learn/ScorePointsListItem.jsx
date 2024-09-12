@@ -21,7 +21,7 @@ function ScorePointsListItem({
         <List.Icon
           {...props}
           icon={iconName}
-          color={theme.colors.typography.primary}
+          color={theme.colors.text}
         />
       )}
       right={() => (
@@ -42,7 +42,7 @@ export default ScorePointsListItem;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     titleStyle: {
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
       fontSize: 17,
     },
   })

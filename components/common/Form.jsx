@@ -16,7 +16,7 @@ export default Form;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     form: {
-      rowGap: theme.gap.lg,
+      rowGap: theme.spacing.base,
       paddingBottom: 70,
     },
   })

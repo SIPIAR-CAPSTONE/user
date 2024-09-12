@@ -19,13 +19,13 @@ export default SectionHeader;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     sectionHeader: {
-      paddingVertical: 8,
-      marginVertical: 12,
+      paddingVertical: theme.spacing.xs,
+      marginVertical: theme.spacing.base,
       backgroundColor: theme.colors.secondary,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingHorizontal: theme.spacing.base,
     },
     title: {
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
   })
 );

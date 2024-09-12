@@ -173,7 +173,7 @@ export default LoginScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     form: {
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingHorizontal: theme.spacing.base,
     },
     forgotPassButton: {
       maxWidth: 180,

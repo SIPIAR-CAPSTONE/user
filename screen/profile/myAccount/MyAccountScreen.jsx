@@ -113,10 +113,10 @@ export default MyAccountScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     contentContainer: {
-      paddingBottom: theme.padding.body.vertical,
+      paddingBottom: theme.spacing.md,
     },
     divider: {
-      marginHorizontal: theme.padding.body.horizontal,
+      marginHorizontal: theme.spacing.base,
     },
     listHeaderContainer: {
       marginBottom: 16,

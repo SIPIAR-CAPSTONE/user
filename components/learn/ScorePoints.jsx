@@ -25,7 +25,7 @@ export default function ScorePoints({
               style={[
                 styles.points,
                 {
-                  color: pointsColor || theme.colors.typography.primary,
+                  color: pointsColor || theme.colors.text,
                   fontSize: pointsFontSize || theme.fontSize.lg,
                 },
               ]}
@@ -47,7 +47,7 @@ export default function ScorePoints({
           style={[
             styles.points,
             {
-              color: pointsColor || theme.colors.typography.primary,
+              color: pointsColor || theme.colors.text,
               fontSize: pointsFontSize || theme.fontSize.lg,
             },
           ]}

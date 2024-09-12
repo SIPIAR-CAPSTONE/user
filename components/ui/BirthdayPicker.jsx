@@ -42,8 +42,8 @@ const BirthdatePicker = ({
         theme={currentThemeStatus}
         open={open}
         date={dateValue}
-        buttonColor={theme.colors.typography.primary}
-        dividerColor={theme.colors.typography.primary}
+        buttonColor={theme.colors.text}
+        dividerColor={theme.colors.text}
         title={" "}
         onConfirm={handleOnConfirm}
         onCancel={handleOnCancel}
@@ -65,7 +65,7 @@ const BirthdatePicker = ({
             <Ionicons
               name="calendar-clear"
               size={18}
-              color={theme.colors.typography.primary}
+              color={theme.colors.text}
             />
           </View>
         </View>
@@ -85,7 +85,7 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     input: {
       backgroundColor: theme.colors.secondary,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
       height: 50,
       paddingHorizontal: 14,
       borderRadius: theme.borderRadius.sm,
@@ -95,14 +95,14 @@ const stylesheet = createStyleSheet((theme) =>
           outlined: {
             borderWidth: 1,
             borderColor: "#e1e2e3",
-            color: theme.colors.typography.primary,
+            color: theme.colors.text,
             backgroundColor: theme.colors.background,
           },
         },
       },
     },
     inputDisabled: {
-      color: theme.colors.typography.tertiary,
+      color: theme.colors.text3,
     },
     inputError: {
       borderWidth: 1.5,
@@ -124,16 +124,16 @@ const stylesheet = createStyleSheet((theme) =>
     dateValueContainer: {
       flexDirection: "row",
       alignItems: "center",
-      columnGap: theme.gap.xl,
+      columnGap: theme.spacing.md,
     },
     birthdayDate: {
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
     birthdayPlaceholder: {
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
     label: {
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
       fontWeight: "600",
       marginBottom: 8,
     },

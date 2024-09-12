@@ -22,10 +22,10 @@ const stylesheet = (theme) => ({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 14,
-    paddingHorizontal: theme.padding.body.horizontal,
+    padding: theme.spacing.md,
+    paddingHorizontal: theme.spacing.base,
   },
   label: {
-    color: theme.colors.typography.tertiary,
+    color: theme.colors.text3,
   },
 });

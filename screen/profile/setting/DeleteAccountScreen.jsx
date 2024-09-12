@@ -88,16 +88,16 @@ const DeleteAccountScreen = () => {
 export default DeleteAccountScreen;
 
 const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({    
+  StyleSheet.create({
     instruction: {
       marginHorizontal: "auto",
       marginTop: 40,
       marginBottom: 20,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     buttonContainer: {
       marginTop: 60,
-      rowGap: theme.gap.sm,
+      rowGap: theme.spacing.xxs,
     },
     cancelButton: {
       borderRadius: theme.borderRadius.sm,

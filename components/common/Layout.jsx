@@ -20,7 +20,7 @@ const Layout = ({
   const theme = useTheme();
 
   const paddingHorizontalStyle = !removeDefaultPaddingHorizontal && {
-    paddingHorizontal: theme.padding.body.horizontal,
+    paddingHorizontal: theme.spacing.base,
   };
 
   if (scrollable) {

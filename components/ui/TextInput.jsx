@@ -29,7 +29,7 @@ const TextInput = ({
       <RNTextInput
         editable={!disabled}
         placeholder={placeholder}
-        placeholderTextColor={theme.colors.typography.secondary}
+        placeholderTextColor={theme.colors.text2}
         inputMode={type || "text"}
         value={value}
         onChangeText={onChangeText}
@@ -40,7 +40,7 @@ const TextInput = ({
           error && styles.inputError,
           styles.input.variants.variant[variant],
         ]}
-        cursorColor={theme.colors.typography.tertiary}
+        cursorColor={theme.colors.text3}
         selectionColor="lightgray"
         {...props}
       />
@@ -70,14 +70,14 @@ const ToggleEyeIcon = ({ toggleEye, onPress, size, theme, styles }) => {
           onPress={onPress}
           icon="eye"
           size={size}
-          color={theme.colors.typography.tertiary}
+          color={theme.colors.text3}
         />
       ) : (
         <IconButton
           onPress={onPress}
           icon="eye-off"
           size={size}
-          color={theme.colors.typography.tertiary}
+          color={theme.colors.text3}
         />
       )}
     </View>
@@ -90,7 +90,7 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     input: {
       backgroundColor: theme.colors.secondary,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
       height: 50,
       paddingHorizontal: 14,
       borderRadius: theme.borderRadius.sm,
@@ -100,14 +100,14 @@ const stylesheet = createStyleSheet((theme) =>
           outlined: {
             borderWidth: 1,
             borderColor: "#e1e2e3",
-            color: theme.colors.typography.primary,
+            color: theme.colors.text,
             backgroundColor: theme.colors.background,
           },
         },
       },
     },
     inputDisabled: {
-      color: theme.colors.typography.tertiary,
+      color: theme.colors.text3,
     },
     inputError: {
       borderWidth: 1.5,
@@ -126,14 +126,14 @@ const stylesheet = createStyleSheet((theme) =>
       top: 1,
     },
     label: {
-      color: theme.colors.typography.tertiary,
+      color: theme.colors.text3,
       fontWeight: "500",
       marginBottom: 8,
 
       variants: {
         variant: {
           outlined: {
-            color: theme.colors.typography.primary,
+            color: theme.colors.text,
           },
         },
       },

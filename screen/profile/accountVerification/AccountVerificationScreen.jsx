@@ -88,7 +88,7 @@ const AccountVerificationScreen = ({ navigation }) => {
      */
     marker: {
       text: {
-        normal: theme.colors.typography.tertiary,
+        normal: theme.colors.text3,
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
@@ -96,7 +96,7 @@ const AccountVerificationScreen = ({ navigation }) => {
        * it is the line that connect the circles or the marker
        */
       line: {
-        normal: theme.colors.typography.tertiary,
+        normal: theme.colors.text3,
         active: theme.colors.primary,
         completed: theme.colors.primary,
       },
@@ -160,12 +160,12 @@ const stylesheet = createStyleSheet((theme) =>
     appBarTitle: {
       fontSize: 20,
       fontWeight: "bold",
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     content: {
       marginTop: 10,
-      paddingVertical: theme.padding.body.vertical,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.base,
     },
   })
 );

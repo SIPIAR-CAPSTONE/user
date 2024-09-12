@@ -69,7 +69,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
     desc: {
       textAlign: "center",
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
   })
 );

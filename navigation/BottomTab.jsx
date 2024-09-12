@@ -116,7 +116,7 @@ const stylesheet = createStyleSheet((theme) =>
     headerTitle: {
       fontWeight: "bold",
       fontSize: 22,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     headerRightContainer: {
       marginEnd: 14,

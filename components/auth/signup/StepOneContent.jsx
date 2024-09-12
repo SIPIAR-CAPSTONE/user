@@ -12,7 +12,7 @@ import TextInput from "../../ui/TextInput";
 import Form from "../../common/Form";
 
 const StepOneContent = ({ goNextStep }) => {
-  const { styles } = useStyles(stylesheet);
+  const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
 
   const signupForm = useBoundStore((state) => state.signupForm);
@@ -95,7 +95,11 @@ const StepOneContent = ({ goNextStep }) => {
         error={errors.phone}
       />
 
-      <Button label="Next" marginVertical={20} onPress={handleSubmit} />
+      <Button
+        label="Next"
+        marginVertical={theme.spacing.xxl}
+        onPress={handleSubmit}
+      />
 
       <View style={styles.footer}>
         <Text variant="labelLarge">Already have an Account?</Text>

@@ -63,14 +63,14 @@ const stylesheet = createStyleSheet((theme) =>
       marginBottom: 8,
     },
     tagLine: {
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
     logoImage: {
       height: 160,
       width: 160,
     },
     buttonsContainer: {
-      rowGap: theme.gap.md,
+      rowGap: theme.spacing.sm,
     },
   })
 );

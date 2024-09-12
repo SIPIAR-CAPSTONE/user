@@ -7,8 +7,10 @@ import FormHeader from "../../common/FormHeader";
 import TextInput from "../../ui/TextInput";
 import SelectItem from "../../ui/SelectItem";
 import Form from "../../common/Form";
+import { useTheme } from "react-native-paper";
 
 const StepTwoContent = ({ goNextStep }) => {
+  const theme = useTheme();
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
@@ -80,7 +82,11 @@ const StepTwoContent = ({ goNextStep }) => {
         error={errors.houseNumber}
       />
 
-      <Button label="Next" marginVertical={20} onPress={handleSubmit} />
+      <Button
+        label="Next"
+        marginVertical={theme.spacing.xxl}
+        onPress={handleSubmit}
+      />
     </Form>
   );
 };

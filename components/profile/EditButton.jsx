@@ -26,14 +26,14 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     touchableRipple: {
       borderRadius: theme.borderRadius.full,
-      marginTop: 12,
+      marginTop: theme.spacing.base,
     },
     editButton: {
       flexDirection: "row",
       alignItems: "center",
       columnGap: 4,
-      paddingVertical: 7,
-      paddingHorizontal: 16,
+      paddingVertical: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.lg,
       backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.full,
     },

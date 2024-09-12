@@ -13,7 +13,7 @@ import Button from "../../ui/Button";
 import Form from "../../common/Form";
 
 const StepThreeContent = () => {
-  const { styles } = useStyles(stylesheet);
+  const { styles, theme } = useStyles(stylesheet);
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
@@ -149,7 +149,7 @@ const StepThreeContent = () => {
         label="Next"
         onPress={handleSubmit}
         isLoading={loading}
-        marginVertical={20}
+        marginVertical={theme.spacing.xxl}
       />
     </Form>
   );

@@ -7,7 +7,7 @@ const CircularIcon = ({ name, onPress, variant = "gray", size = 19 }) => {
   const VARIANT_STYLE = {
     gray: {
       backgroundColor: theme.colors.secondary,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     primary: {
       backgroundColor: theme.colors.primary,

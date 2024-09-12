@@ -36,10 +36,10 @@ const stylesheet = createStyleSheet((theme) =>
     },
     title: {
       fontWeight: "bold",
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     desc: {
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
   })
 );

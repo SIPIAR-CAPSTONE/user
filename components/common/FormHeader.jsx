@@ -1,8 +1,9 @@
 import { StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
-  const theme = useTheme();
+  const { styles, theme } = useStyles(stylesheet);
 
   const TITLE_SIZE_STYLE = {
     base: theme.fontSize.md,
@@ -10,7 +11,7 @@ const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
   };
 
   return (
-    <View style={[styles.header, { rowGap: theme.gap.xs }]}>
+    <View style={[styles.header, { rowGap: theme.spacing.xxxs }]}>
       <Text
         style={[
           styles.title,
@@ -24,7 +25,7 @@ const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
         style={[
           styles.desc,
           {
-            color: theme.colors.typography.secondary,
+            color: theme.colors.text2,
             fontSize: theme.fontSize.sm,
           },
         ]}
@@ -37,15 +38,17 @@ const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
 
 export default FormHeader;
 
-const styles = StyleSheet.create({
-  header: {
-    marginVertical: 14,
-  },
-  title: {
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  desc: {
-    textAlign: "center",
-  },
-});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    header: {
+      marginVertical: theme.spacing.md,
+    },
+    title: {
+      fontWeight: "bold",
+      textAlign: "center",
+    },
+    desc: {
+      textAlign: "center",
+    },
+  })
+);

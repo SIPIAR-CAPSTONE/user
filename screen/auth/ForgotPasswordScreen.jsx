@@ -104,7 +104,7 @@ export default ForgotPasswordScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     form: {
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingHorizontal: theme.spacing.base,
     },
   })
 );

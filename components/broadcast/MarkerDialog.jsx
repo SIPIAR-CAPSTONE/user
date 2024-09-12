@@ -141,27 +141,27 @@ const stylesheet = createStyleSheet((theme) =>
       fontWeight: "bold",
     },
     infoFieldsContainer: {
-      marginTop: 10,
-      rowGap: 12,
+      marginTop: theme.spacing.sm,
+      rowGap: theme.spacing.base,
     },
     infoField: {
       flexDirection: "row",
       alignItems: "center",
-      columnGap: 12,
+      columnGap: theme.spacing.base,
     },
     iconContainer: {
       backgroundColor: "red",
-      padding: 14,
+      padding: theme.spacing.md,
       backgroundColor: theme.colors.background,
       borderRadius: theme.borderRadius.full,
     },
     fieldValue: {
       height: 25,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     fieldLabel: {
       height: 22,
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
   })
 );

@@ -27,7 +27,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
     distance: {
       fontSize: 8,
-      color: theme.colors.typography.secondary,
+      color: theme.colors.text2,
     },
   })
 );

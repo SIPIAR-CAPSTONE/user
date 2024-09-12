@@ -97,7 +97,7 @@ const stylesheet = createStyleSheet((theme) =>
       flex: 1,
       justifyContent: "center",
       paddingTop: 24,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingHorizontal: theme.spacing.base,
     },
     divider: {
       marginVertical: 26,

@@ -109,8 +109,8 @@ const stylesheet = createStyleSheet((theme) =>
     listItems: {
       marginTop: 20,
       rowGap: 10,
-      paddingVertical: theme.padding.body.vertical,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.base,
     },
   })
 );

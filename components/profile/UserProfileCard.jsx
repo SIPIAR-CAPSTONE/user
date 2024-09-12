@@ -41,7 +41,7 @@ const stylesheet = createStyleSheet((theme) =>
       paddingVertical: 11,
     },
     email: {
-      color: theme.colors.typography.tertiary,
+      color: theme.colors.text3,
     },
   })
 );

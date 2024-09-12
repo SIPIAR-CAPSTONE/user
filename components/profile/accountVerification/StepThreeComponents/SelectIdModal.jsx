@@ -55,7 +55,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
           style={{
             fontWeight: "bold",
             fontSize: theme.fontSize.lg,
-            color: theme.colors.typography.primary,
+            color: theme.colors.text,
           }}
         >
           Select ID
@@ -100,7 +100,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
             </View>
             <Text
               variant="bodyMedium"
-              style={{ color: theme.colors.typography.secondary }}
+              style={{ color: theme.colors.text2 }}
             >
               Make sure to follow these tips!
             </Text>

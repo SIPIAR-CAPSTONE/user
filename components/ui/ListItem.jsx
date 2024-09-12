@@ -83,7 +83,7 @@ const ListItem = ({
                 style={[
                   styles.subTitle,
                   {
-                    color: theme.colors.typography.tertiary,
+                    color: theme.colors.text3,
                     fontSize: subTitleSize,
                   },
                 ]}
@@ -99,7 +99,7 @@ const ListItem = ({
               style={[
                 styles.desc,
                 {
-                  color: theme.colors.typography.secondary,
+                  color: theme.colors.text2,
                   fontSize: descSize,
                 },
               ]}

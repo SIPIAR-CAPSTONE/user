@@ -240,7 +240,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
 
     finishButtonContainer: {
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingHorizontal: theme.spacing.base,
       paddingVertical: 26,
       justifyContent: "flex-end",
     },

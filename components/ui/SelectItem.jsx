@@ -56,13 +56,13 @@ const SelectItem = ({
           ]}
         >
           <>
-            <Text style={{ color: theme.colors.typography.primary }}>
+            <Text style={{ color: theme.colors.text }}>
               {selected ? selected : placeholder}
             </Text>
             <Ionicons
               name="chevron-down"
               size={20}
-              color={theme.colors.typography.tertiary}
+              color={theme.colors.text3}
             />
           </>
         </TouchableRipple>
@@ -153,7 +153,7 @@ const stylesheet = createStyleSheet((theme) =>
       paddingHorizontal: 10,
       paddingVertical: 5,
       fontSize: theme.fontSize.md,
-      color: theme.colors.typography.tertiary,
+      color: theme.colors.text3,
     },
     option: {
       paddingHorizontal: 10,
@@ -161,10 +161,10 @@ const stylesheet = createStyleSheet((theme) =>
     },
     optionText: {
       fontSize: theme.fontSize.md,
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
     },
     label: {
-      color: theme.colors.typography.primary,
+      color: theme.colors.text,
       fontWeight: "500",
       marginBottom: 8,
     },
