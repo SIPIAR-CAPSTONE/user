@@ -3,6 +3,7 @@ import { useTheme } from "react-native-paper";
 
 import StatusBar from "./StatusBar";
 import NotInternetAlert from "./NoInternetAlert";
+import NoInternetBar from "./NoInternetBar";
 
 const Layout = ({
   removeDefaultStatusBar = false,
@@ -40,7 +41,7 @@ const Layout = ({
           <StatusBar style={statusBarTheme} hidden={statusBarHidden} />
         )}
         {addNoInternetAlert && <NotInternetAlert />}
-        {addNoInternetBar && <NotInternetAlert />}
+        {addNoInternetBar && <NoInternetBar />}
       </>
     );
   }
@@ -55,7 +56,7 @@ const Layout = ({
         <StatusBar style={statusBarTheme} hidden={statusBarHidden} />
       )}
       {addNoInternetAlert && <NotInternetAlert />}
-      {addNoInternetBar && <NotInternetAlert />}
+      {addNoInternetBar && <NoInternetBar />}
     </>
   );
 };
