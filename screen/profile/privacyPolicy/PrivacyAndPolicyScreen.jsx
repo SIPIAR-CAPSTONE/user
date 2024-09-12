@@ -9,7 +9,7 @@ import {
 
 const PrivacyAndPolicyScreen = () => {
   return (
-    <Layout>
+    <Layout scrollable>
       <Title>SIPIAR Privacy Policy</Title>
 
       <P>
