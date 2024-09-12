@@ -1,10 +1,9 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
-import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
@@ -13,8 +12,8 @@ import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
-import NoInternetBar from "../../components/common/NoInternetBar";
 import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -116,7 +115,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <Form style={styles.form}>
         <FormHeader
           title="Sign In"
@@ -165,10 +164,7 @@ const LoginScreen = () => {
           </NPButton>
         </View>
       </Form>
-
-      <NoInternetBar />
-      <StatusBar />
-    </>
+    </Layout>
   );
 };
 

@@ -5,7 +5,6 @@ import { TouchableRipple, Text } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
-import StatusBar from "../../../components/common/StatusBar";
 import Button from "../../../components/ui/Button";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
@@ -21,6 +20,7 @@ import AppBar from "../../../components/ui/AppBar";
 import useImageReader from "../../../hooks/useImageReader";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { StyleSheet } from "react-native";
+import Layout from "../../../components/common/Layout";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
@@ -149,7 +149,7 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal>
       <AppBar>
         <CircularIcon
           name="arrow-back"
@@ -258,10 +258,8 @@ const EditProfileScreen = () => {
             onPressCancel={hideConfirmationDialog}
           />
         </View>
-
-        <StatusBar />
       </ScrollView>
-    </>
+    </Layout>
   );
 };
 

@@ -9,6 +9,7 @@ import StatusBar from "../../../components/common/StatusBar";
 import AppBar from "../../../components/ui/AppBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
+import Layout from "../../../components/common/Layout";
 const StepTwoContent = lazy(() =>
   import("../../../components/profile/accountVerification/StepTwoContent")
 );
@@ -122,7 +123,7 @@ const AccountVerificationScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal>
       <AppBar>
         <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
       </AppBar>
@@ -147,9 +148,8 @@ const AccountVerificationScreen = ({ navigation }) => {
           onPressConfirmation={() => navigation.goBack()}
           onPressCancel={hideConfirmationDialog}
         />
-        <StatusBar />
       </ScrollView>
-    </>
+    </Layout>
   );
 };
 

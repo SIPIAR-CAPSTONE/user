@@ -1,12 +1,12 @@
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useState } from "react";
-import StatusBar from "../../../components/common/StatusBar";
 import FormHeader from "../../../components/common/FormHeader";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import TextInput from "../../../components/ui/TextInput";
 import Button from "../../../components/ui/Button";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import Layout from "../../../components/common/Layout";
 
 const DeleteAccountScreen = () => {
   const { theme, styles } = useStyles(stylesheet);
@@ -52,7 +52,7 @@ const DeleteAccountScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Layout>
       <FormHeader
         title="WARNING:"
         titleStyle={{ color: theme.colors.primary }}
@@ -81,19 +81,14 @@ const DeleteAccountScreen = () => {
         onPressConfirmation={handleDeleteAccount}
         onPressCancel={hideConfirmationDialog}
       />
-      <StatusBar />
-    </View>
+    </Layout>
   );
 };
 
 export default DeleteAccountScreen;
 
 const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      paddingHorizontal: theme.padding.body.horizontal,
-      paddingVertical: theme.padding.body.vertical,
-    },
+  StyleSheet.create({    
     instruction: {
       marginHorizontal: "auto",
       marginTop: 40,

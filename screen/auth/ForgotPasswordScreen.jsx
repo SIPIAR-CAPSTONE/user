@@ -1,16 +1,15 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import {  StyleSheet } from "react-native";
 import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
 import Button from "../../components/ui/Button";
-import StatusBar from "../../components/common/StatusBar";
 import useSendToken from "../../hooks/useSendToken";
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
-import NoInternetBar from "../../components/common/NoInternetBar";
 import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
 
 /**
  * ForgotPasswordScreen component
@@ -79,7 +78,7 @@ const ForgotPasswordScreen = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <Form style={styles.form}>
         <FormHeader
           title="Forgot Password"
@@ -96,10 +95,7 @@ const ForgotPasswordScreen = () => {
         />
         <Button label="Send Token" onPress={handleSubmit} isLoading={loading} />
       </Form>
-
-      <NoInternetBar />
-      <StatusBar />
-    </>
+    </Layout>
   );
 };
 

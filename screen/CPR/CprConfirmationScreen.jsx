@@ -1,20 +1,19 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import React from "react";
-import StatusBar from "../../components/common/StatusBar";
 import Button from "../../components/ui/Button";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import { useNavigation } from "@react-navigation/native";
+import Layout from "../../components/common/Layout";
 
 const CprConfirmationScreen = () => {
   const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <Layout>
       <Text>CprConfirmationScreen</Text>
       <Button label="Proceed" onPress={() => navigation.navigate("Cpr")} />
-      <StatusBar />
-    </View>
+    </Layout>
   );
 };
 
@@ -24,7 +23,6 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     container: {
       paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
     },
   })
 );

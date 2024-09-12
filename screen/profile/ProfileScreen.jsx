@@ -1,8 +1,7 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import StatusBar from "../../components/common/StatusBar";
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
 import CircularIcon from "../../components/ui/CircularIcon";
@@ -16,6 +15,7 @@ import useUserMetadata from "../../hooks/useUserMetadata";
 import * as FileSystem from "expo-file-system";
 import useImageReader from "../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
 /**
  * Profile screen component
@@ -87,10 +87,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
+    <Layout scrollable>
       <UserProfileCard
         name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
         email={userMetaData["email"]}
@@ -166,9 +163,7 @@ const ProfileScreen = () => {
           onPressCancel={hideNavConfirmationDialog}
         />
       </View>
-
-      <StatusBar />
-    </ScrollView>
+    </Layout>
   );
 };
 
@@ -198,10 +193,6 @@ export default ProfileScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingVertical: theme.padding.body.vertical,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
     listItems: {
       marginTop: 20,
       rowGap: 7,

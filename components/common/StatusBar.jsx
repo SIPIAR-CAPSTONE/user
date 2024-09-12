@@ -4,8 +4,6 @@ import useBoundStore from "../../zustand/useBoundStore";
 const StatusBar = ({ style = null, ...props }) => {
   // Get the current theme status from the store.
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-
-  // Initialize the status style.
   let selectedStatusStyle = currentThemeStatus;
 
   // If there is a custom style, use it.

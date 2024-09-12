@@ -2,14 +2,13 @@ import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import StatusBar from "../../components/common/StatusBar";
 import Button from "../../components/ui/Button";
 import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
-import NoInternetBar from "../../components/common/NoInternetBar";
 import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
 
 const ResetPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -82,7 +81,7 @@ const ResetPasswordScreen = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <Form style={styles.form}>
         <FormHeader
           title="Reset Password"
@@ -111,10 +110,7 @@ const ResetPasswordScreen = () => {
 
         <Button label="Next" onPress={handleSubmit} isLoading={loading} />
       </Form>
-
-      <NoInternetBar />
-      <StatusBar />
-    </>
+    </Layout>
   );
 };
 

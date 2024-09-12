@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
 /**
  * SuccessConfirmationScreen component
@@ -32,7 +33,7 @@ const SuccessConfirmationScreen = ({ route }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <Layout>
       <Ionicons
         name="checkmark-circle"
         size={100}
@@ -46,7 +47,7 @@ const SuccessConfirmationScreen = ({ route }) => {
       </Text>
 
       <StatusBar />
-    </View>
+    </Layout>
   );
 };
 
@@ -60,7 +61,6 @@ const stylesheet = createStyleSheet((theme) =>
       justifyContent: "center",
       marginBottom: 50,
       rowGap: 10,
-      paddingHorizontal: theme.padding.body.horizontal,
     },
     title: {
       fontWeight: "bold",

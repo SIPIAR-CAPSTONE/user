@@ -16,6 +16,7 @@ import {
   getScorePercentage,
 } from "./Learn.helper";
 import Color from "../../utils/Color";
+import Layout from "../../components/common/Layout";
 
 const LearnCprScoreScreen = () => {
   const navigation = useNavigation();
@@ -95,8 +96,11 @@ const LearnCprScoreScreen = () => {
   }, [navigation]);
 
   return (
-    <>
-      <StatusBar hidden={false} style={currentThemeStatus} />
+    <Layout
+      removeDefaultPaddingHorizontal
+      statusBarTheme={currentThemeStatus}
+      statusBarHidden={false}
+    >
       <AppBar style={styles.appbar}>
         <Text style={styles.appbarTitle}>Scoring</Text>
       </AppBar>
@@ -197,7 +201,7 @@ const LearnCprScoreScreen = () => {
           />
         </View>
       </ScrollView>
-    </>
+    </Layout>
   );
 };
 

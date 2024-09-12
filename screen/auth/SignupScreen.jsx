@@ -3,14 +3,13 @@ import { Text } from "react-native-paper";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
-import StatusBar from "../../components/common/StatusBar";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
 import useBoundStore from "../../zustand/useBoundStore";
 import StepOneContent from "../../components/auth/signup/StepOneContent";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
-import NoInternetBar from "../../components/common/NoInternetBar";
+import Layout from "../../components/common/Layout";
 const StepTwoContent = lazy(() =>
   import("../../components/auth/signup/StepTwoContent")
 );
@@ -109,7 +108,7 @@ const SignupScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <AppBar style={styles.appBar}>
         <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
         <Text style={styles.appBarTitle}>Signup</Text>
@@ -135,10 +134,7 @@ const SignupScreen = ({ navigation }) => {
           onPressCancel={hideConfirmationDialog}
         />
       </ScrollView>
-
-      <StatusBar />
-      <NoInternetBar />
-    </>
+    </Layout>
   );
 };
 

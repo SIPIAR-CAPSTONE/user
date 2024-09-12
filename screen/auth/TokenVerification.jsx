@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import {  StyleSheet} from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
 
@@ -11,10 +11,9 @@ import useSendToken from "../../hooks/useSendToken";
 import useBoundStore from "../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
-import NoInternetBar from "../../components/common/NoInternetBar";
-import StatusBar from "../../components/common/StatusBar";
 import ResendCountdown from "../../components/auth/tokenVerification/ResendCountdown";
 import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
 
 const TokenVerification = () => {
   const { styles } = useStyles(stylesheet);
@@ -71,7 +70,7 @@ const TokenVerification = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <Form style={styles.form}>
         <FormHeader
           title="Enter Your Token"
@@ -97,10 +96,7 @@ const TokenVerification = () => {
 
         <Button label="Verify" onPress={handleSubmit} isLoading={loading} />
       </Form>
-
-      <NoInternetBar />
-      <StatusBar />
-    </>
+    </Layout>
   );
 };
 

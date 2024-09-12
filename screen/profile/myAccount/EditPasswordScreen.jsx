@@ -7,6 +7,7 @@ import Button from "../../../components/ui/Button";
 import StatusBar from "../../../components/common/StatusBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import Form from "../../../components/common/Form";
+import Layout from "../../../components/common/Layout";
 
 const EditPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -67,7 +68,7 @@ const EditPasswordScreen = () => {
   };
 
   return (
-    <>
+    <Layout removeDefaultPaddingHorizontal>
       <Form style={styles.form}>
         <FormHeader
           title="Change Password"
@@ -115,8 +116,7 @@ const EditPasswordScreen = () => {
         onPressConfirmation={handleSubmit}
         onPressCancel={hideConfirmationDialog}
       />
-      <StatusBar />
-    </>
+    </Layout>
   );
 };
 

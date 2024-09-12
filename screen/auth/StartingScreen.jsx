@@ -7,16 +7,16 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import StatusBar from "../../components/common/StatusBar";
 import Button from "../../components/ui/Button";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
 const StartingScreen = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
 
   return (
-    <View style={styles.container}>
+    <Layout contentContainerStyle={styles.container} scrollable>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logoImage}
@@ -40,9 +40,7 @@ const StartingScreen = () => {
           onPress={() => navigation.navigate("Signup")}
         />
       </View>
-
-      <StatusBar />
-    </View>
+    </Layout>
   );
 };
 
@@ -54,8 +52,7 @@ const stylesheet = createStyleSheet((theme) =>
       flex: 1,
       justifyContent: "space-between",
       paddingTop: RNStatusBar.currentHeight + 50,
-      paddingBottom: 80,
-      paddingHorizontal: theme.padding.body.horizontal,
+      paddingBottom: 50,
     },
     logoContainer: {
       alignItems: "center",

@@ -1,14 +1,14 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
-import StatusBar from "../../../components/common/StatusBar";
 import NextActionIcon from "../../../components/common/NextActionIcon";
 import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import Layout from "../../../components/common/Layout";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingsScreen = () => {
@@ -49,10 +49,7 @@ const SettingsScreen = () => {
   const handleChangeNotification = (value) => setNotificationStatus(value);
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.listItems}
-      showsVerticalScrollIndicator={false}
-    >
+    <Layout style={styles.listItems}>
       {/* Notification */}
       <ListItem
         size="medium"
@@ -101,9 +98,7 @@ const SettingsScreen = () => {
         renderActionIcon={() => <NextActionIcon />}
         onPress={() => navigation.navigate("DeleteAccount")}
       />
-
-      <StatusBar />
-    </ScrollView>
+    </Layout>
   );
 };
 

@@ -1,14 +1,14 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import {  StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import StatusBar from "../../components/common/StatusBar";
 import MaterialCard from "../../components/learn/MaterialCard";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
 const LearnScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
 
   return (
-    <ScrollView style={styles.container}>
+    <Layout scrollable>
       <View style={styles.section}>
         <Text variant="titleMedium" style={styles.sectionLabel}>
           Practice
@@ -29,9 +29,7 @@ const LearnScreen = ({ navigation }) => {
           Learning Materials
         </Text>
       </View>
-
-      <StatusBar />
-    </ScrollView>
+    </Layout>
   );
 };
 
@@ -39,9 +37,6 @@ export default LearnScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
     section: {
       marginBottom: theme.margin.body.vertical,
     },

@@ -1,7 +1,3 @@
-import { ScrollView } from "react-native";
-import { useTheme } from "react-native-paper";
-
-import StatusBar from "../../../components/common/StatusBar";
 import {
   Title,
   H1,
@@ -11,17 +7,12 @@ import {
   Strong,
   Time,
 } from "../../../components/terms and policy/Typography";
+import Layout from "../../../components/common/Layout";
 
 const TermsAndConditionScreen = () => {
-  const theme = useTheme();
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingVertical: theme.padding.body.vertical,
-        paddingHorizontal: theme.padding.body.horizontal,
-      }}
-    >
+    <Layout scrollable>
       <Title>SIPIAR Terms and Conditions</Title>
 
       <H1>1. Acceptance of Terms</H1>
@@ -131,9 +122,7 @@ const TermsAndConditionScreen = () => {
       </P>
 
       <Time style={{ marginTop: 50 }}>Last updated: May 15, 2024</Time>
-
-      <StatusBar />
-    </ScrollView>
+    </Layout>
   );
 };
 
