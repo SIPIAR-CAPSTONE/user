@@ -3,12 +3,13 @@ import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import NoInternetBar from "../../components/common/NoInternetBar";
+import Form from "../../components/common/Form";
 
 const ResetPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -81,8 +82,8 @@ const ResetPasswordScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
+    <>
+      <Form style={styles.form}>
         <FormHeader
           title="Reset Password"
           titleSize="large"
@@ -108,18 +109,12 @@ const ResetPasswordScreen = () => {
           disabled={loading}
         />
 
-        {/* next button */}
-        <PrimaryButton
-          label="Next"
-          onPress={handleSubmit}
-          isLoading={loading}
-          style={styles.button}
-        />
-      </View>
+        <Button label="Next" onPress={handleSubmit} isLoading={loading} />
+      </Form>
 
       <NoInternetBar />
       <StatusBar />
-    </View>
+    </>
   );
 };
 
@@ -127,16 +122,8 @@ export default ResetPasswordScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
     form: {
-      rowGap: theme.gap.lg,
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: theme.borderRadius.base,
+      paddingHorizontal: theme.padding.body.horizontal,
     },
   })
 );

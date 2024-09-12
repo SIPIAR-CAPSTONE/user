@@ -1,6 +1,5 @@
-import { View, ScrollView, StyleSheet } from "react-native";
-import { Divider, Text } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { ScrollView, StyleSheet } from "react-native";
+import { Divider } from "react-native-paper";
 
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
@@ -8,6 +7,7 @@ import NextActionIcon from "../../common/NextActionIcon";
 import { Fragment, useState, lazy } from "react";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
+import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
 
 const StepThreeContent = ({ goNextStep }) => {
   const { styles, theme } = useStyles(stylesheet);
@@ -65,26 +65,6 @@ const StepThreeContent = ({ goNextStep }) => {
   );
 };
 
-// Secondary heading local component for the second heading
-const SecondaryHeader = (props) => {
-  const { styles, theme } = useStyles(stylesheet);
-  const { title, desc } = props;
-
-  return (
-    <View style={styles.headerSecondContent}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title} variant="titleLarge">
-          {title}
-        </Text>
-        <AntDesign name="idcard" size={33} color={theme.colors.primary} />
-      </View>
-      <Text style={styles.desc} variant="bodyMedium">
-        {desc}
-      </Text>
-    </View>
-  );
-};
-
 export default StepThreeContent;
 
 const stylesheet = createStyleSheet((theme) =>
@@ -97,24 +77,8 @@ const stylesheet = createStyleSheet((theme) =>
       backgroundColor: theme.colors.background,
       paddingEnd: 1,
     },
-    headerSecondContent: {
-      marginTop: 10,
-      marginBottom: 20,
-    },
     divider: {
       marginVertical: 8,
-    },
-    titleContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    title: {
-      fontWeight: "bold",
-      color: theme.colors.typography.primary,
-    },
-    desc: {
-      color: theme.colors.typography.secondary,
     },
   })
 );

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import ImageFrame from "./StepFourComponents/ImageFrame";
 import { Divider } from "react-native-paper";
-import PrimaryButton from "../../ui/PrimaryButton";
+import Button from "../../ui/Button";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { useNavigation } from "@react-navigation/native";
 import useImagePicker from "../../../hooks/useImagePicker";
@@ -79,11 +79,11 @@ const StepFourContent = () => {
         isLoading={loading}
       />
 
-      <PrimaryButton
+      <Button
         label="Submit"
         onPress={handleSubmit}
-        style={styles.submitButton}
         isLoading={loading}
+        marginVertical={40}
       />
     </View>
   );
@@ -96,16 +96,12 @@ const stylesheet = createStyleSheet((theme) =>
     container: {
       flex: 1,
       justifyContent: "center",
-      paddingVertical: 24,
+      paddingTop: 24,
       paddingHorizontal: theme.padding.body.horizontal,
     },
     divider: {
       marginVertical: 26,
       backgroundColor: "gray",
-    },
-    submitButton: {
-      marginVertical: 40,
-      borderRadius: theme.borderRadius.base,
     },
   })
 );

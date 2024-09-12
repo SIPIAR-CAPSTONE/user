@@ -1,12 +1,12 @@
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button as NPButton, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 
 import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
@@ -14,6 +14,7 @@ import useUserMetadata from "../../hooks/useUserMetadata";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import NoInternetBar from "../../components/common/NoInternetBar";
+import Form from "../../components/common/Form";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -116,54 +117,44 @@ const LoginScreen = () => {
 
   return (
     <>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.containerContent}
-      >
-        <View style={styles.form}>
-          <FormHeader
-            title="Sign In"
-            titleSize="large"
-            desc="Please login to your account to access all app features."
-          />
+      <Form style={styles.form}>
+        <FormHeader
+          title="Sign In"
+          titleSize="large"
+          desc="Please login to your account to access all app features."
+        />
 
-          <TextInput
-            placeholder="Email Address"
-            value={email}
-            inputMode="email"
-            onChangeText={setEmail}
-            error={errors.email}
-            disabled={loading}
-          />
-          <TextInput
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChangeText={setPassword}
-            error={errors.password}
-            disabled={loading}
-          />
+        <TextInput
+          placeholder="Email Address"
+          value={email}
+          inputMode="email"
+          onChangeText={setEmail}
+          error={errors.email}
+          disabled={loading}
+        />
+        <TextInput
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChangeText={setPassword}
+          error={errors.password}
+          disabled={loading}
+        />
 
-          <Button
-            compact
-            mode="text"
-            style={styles.forgotPassButton}
-            onPress={() => navigation.navigate("ForgotPassword")}
-          >
-            Forgot Password
-          </Button>
+        <NPButton
+          compact
+          mode="text"
+          style={styles.forgotPassButton}
+          onPress={() => navigation.navigate("ForgotPassword")}
+        >
+          Forgot Password
+        </NPButton>
 
-          <PrimaryButton
-            label="Sign In"
-            onPress={handleSubmit}
-            style={styles.signinButton}
-            isLoading={loading}
-          />
-        </View>
+        <Button label="Sign In" onPress={handleSubmit} isLoading={loading} />
 
         <View style={styles.footer}>
           <Text variant="labelLarge">Don't Have an Account?</Text>
-          <Button
+          <NPButton
             mode="text"
             compact
             onPress={() => navigation.navigate("Signup")}
@@ -171,9 +162,9 @@ const LoginScreen = () => {
             labelStyle={styles.signinButtonLabel}
           >
             Sign Up
-          </Button>
+          </NPButton>
         </View>
-      </ScrollView>
+      </Form>
 
       <NoInternetBar />
       <StatusBar />
@@ -185,28 +176,14 @@ export default LoginScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
-    containerContent: {
-      flex: 1,
-      justifyContent: "space-between",
-    },
-    header: {
-      marginVertical: 20,
-    },
     form: {
-      rowGap: theme.gap.lg,
+      paddingHorizontal: theme.padding.body.horizontal,
     },
     forgotPassButton: {
       maxWidth: 180,
       alignSelf: "flex-end",
       marginBottom: 20,
       borderRadius: theme.borderRadius.md,
-    },
-    signinButton: {
-      borderRadius: theme.borderRadius.base,
     },
     signupButton: {
       borderRadius: theme.borderRadius.base,
@@ -218,6 +195,7 @@ const stylesheet = createStyleSheet((theme) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
+      marginTop: 14,
     },
   })
 );

@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import StatusBar from "../../components/common/StatusBar";
 import useSendToken from "../../hooks/useSendToken";
 import { supabase } from "../../utils/supabase/config";
@@ -10,6 +10,7 @@ import useBoundStore from "../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import NoInternetBar from "../../components/common/NoInternetBar";
+import Form from "../../components/common/Form";
 
 /**
  * ForgotPasswordScreen component
@@ -46,14 +47,14 @@ const ForgotPasswordScreen = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-
     // Add email as a global prop
     setResetEmail(email);
 
     const isFormValid = validateForm();
 
     if (isFormValid) {
+      setLoading(true);
+
       try {
         const { data } = await supabase
           .from("bystander")
@@ -79,29 +80,22 @@ const ForgotPasswordScreen = () => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <View style={styles.form}>
-          <FormHeader
-            title="Forgot Password"
-            titleSize="large"
-            desc="Please provide your registered email."
-          />
-          <TextInput
-            placeholder="Email Address"
-            value={email}
-            inputMode="email"
-            onChangeText={setEmail}
-            error={errors.email}
-            disabled={loading}
-          />
-          <PrimaryButton
-            label="Send Token"
-            onPress={handleSubmit}
-            isLoading={loading}
-            style={styles.button}
-          />
-        </View>
-      </ScrollView>
+      <Form style={styles.form}>
+        <FormHeader
+          title="Forgot Password"
+          titleSize="large"
+          desc="Please provide your registered email."
+        />
+        <TextInput
+          placeholder="Email Address"
+          value={email}
+          inputMode="email"
+          onChangeText={setEmail}
+          error={errors.email}
+          disabled={loading}
+        />
+        <Button label="Send Token" onPress={handleSubmit} isLoading={loading} />
+      </Form>
 
       <NoInternetBar />
       <StatusBar />
@@ -113,16 +107,8 @@ export default ForgotPasswordScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
     form: {
-      rowGap: theme.gap.lg,
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: theme.borderRadius.base,
+      paddingHorizontal: theme.padding.body.horizontal,
     },
   })
 );

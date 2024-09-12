@@ -2,7 +2,6 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useState } from "react";
 
-import PrimaryButton from "../../ui/PrimaryButton";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { supabase } from "../../../utils/supabase/config";
@@ -10,6 +9,8 @@ import { LargeSecureStore } from "../../../utils/SecureLocalStorage";
 import useUserMetadata from "../../../hooks/useUserMetadata";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import TextInput from "../../ui/TextInput";
+import Button from "../../ui/Button";
+import Form from "../../common/Form";
 
 const StepThreeContent = () => {
   const { styles } = useStyles(stylesheet);
@@ -111,49 +112,46 @@ const StepThreeContent = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <FormHeader
-          title="Sign Up"
-          titleSize="large"
-          desc="Please fill in the information below."
-        />
-        <TextInput
-          placeholder="Email"
-          value={signupForm.email}
-          inputMode="email"
-          onChangeText={(value) => setSignupForm("email", value)}
-          error={errors.email}
-          disabled={loading}
-        />
-        <View style={{ height: 16 }} />
-        <TextInput
-          placeholder="Password"
-          type="password"
-          value={signupForm.password}
-          onChangeText={(value) => setSignupForm("password", value)}
-          error={errors.password}
-          disabled={loading}
-        />
-        <TextInput
-          placeholder="Confirm Password"
-          type="password"
-          value={signupForm.confirmPassword}
-          onChangeText={(value) => setSignupForm("confirmPassword", value)}
-          error={errors.confirmPassword}
-          disabled={loading}
-        />
+    <Form>
+      <FormHeader
+        title="Sign Up"
+        titleSize="large"
+        desc="Please fill in the information below."
+      />
+      <TextInput
+        placeholder="Email"
+        value={signupForm.email}
+        inputMode="email"
+        onChangeText={(value) => setSignupForm("email", value)}
+        error={errors.email}
+        disabled={loading}
+      />
+      <View style={{ height: 16 }} />
+      <TextInput
+        placeholder="Password"
+        type="password"
+        value={signupForm.password}
+        onChangeText={(value) => setSignupForm("password", value)}
+        error={errors.password}
+        disabled={loading}
+      />
+      <TextInput
+        placeholder="Confirm Password"
+        type="password"
+        value={signupForm.confirmPassword}
+        onChangeText={(value) => setSignupForm("confirmPassword", value)}
+        error={errors.confirmPassword}
+        disabled={loading}
+      />
 
-        <Text style={styles.serverErrorMessage}>{signUpError}</Text>
-
-        <PrimaryButton
-          label="Next"
-          onPress={handleSubmit}
-          isLoading={loading}
-          style={styles.nextButton}
-        />
-      </View>
-    </View>
+      <Text style={styles.serverErrorMessage}>{signUpError}</Text>
+      <Button
+        label="Next"
+        onPress={handleSubmit}
+        isLoading={loading}
+        marginVertical={20}
+      />
+    </Form>
   );
 };
 
@@ -161,18 +159,8 @@ export default StepThreeContent;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-    },
-    form: {
-      rowGap: theme.gap.lg,
-    },
     serverErrorMessage: {
       color: theme.colors.primary,
-    },
-    nextButton: {
-      marginTop: 20,
-      borderRadius: theme.borderRadius.base,
     },
   })
 );

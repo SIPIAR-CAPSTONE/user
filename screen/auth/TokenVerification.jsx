@@ -3,7 +3,7 @@ import { Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
-import PrimaryButton from "../../components/ui/PrimaryButton";
+import Button from "../../components/ui/Button";
 import useCountdown from "../../hooks/useCountdown";
 import { useNavigation } from "@react-navigation/native";
 import { supabase } from "../../utils/supabase/config";
@@ -13,10 +13,13 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import NoInternetBar from "../../components/common/NoInternetBar";
 import StatusBar from "../../components/common/StatusBar";
+import ResendCountdown from "../../components/auth/tokenVerification/ResendCountdown";
+import Form from "../../components/common/Form";
 
 const TokenVerification = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
   const { time, pause } = useCountdown(70); //* it should be 70 constant, this is for interval in supabase
   const [tokenHash, setTokenHash] = useState("");
@@ -48,11 +51,15 @@ const TokenVerification = () => {
 
   const handleSubmit = async () => {
     if (isFilled) {
+      setLoading(true);
+
       //* verify provied token
-      const { data, error } = await supabase.auth.verifyOtp({
-        token_hash: tokenHash,
-        type: "email",
-      });
+      const { data, error } = await supabase.auth
+        .verifyOtp({
+          token_hash: tokenHash,
+          type: "email",
+        })
+        .finally(() => setLoading(false));
 
       if (error) {
         setServerError(error);
@@ -65,38 +72,31 @@ const TokenVerification = () => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        <View style={styles.form}>
-          <FormHeader
-            title="Enter Your Token"
-            titleSize="large"
-            desc="We have sent the verification token to your email address."
-          />
+      <Form style={styles.form}>
+        <FormHeader
+          title="Enter Your Token"
+          titleSize="large"
+          desc="We have sent the verification token to your email address."
+        />
 
-          <TextInput
-            placeholder="Token Hash"
-            value={tokenHash}
-            onChangeText={setTokenHash}
-          />
+        <TextInput
+          placeholder="Token Hash"
+          value={tokenHash}
+          onChangeText={setTokenHash}
+        />
 
-          <Text style={styles.serverErrorMessage}>{serverError}</Text>
+        <Text style={styles.serverErrorMessage}>{serverError}</Text>
 
-          {time === 0 ? (
-            <Text variant="labelLarge" style={styles.resentMessage}>
-              Resent, please wait a while.
-            </Text>
-          ) : (
-            <ResendCountdown time={time} styles={styles} />
-          )}
+        {time === 0 ? (
+          <Text variant="labelLarge" style={styles.resentMessage}>
+            Resent, please wait a while.
+          </Text>
+        ) : (
+          <ResendCountdown time={time} />
+        )}
 
-          <PrimaryButton
-            label="Verify"
-            onPress={handleSubmit}
-            isLoading={!isFilled}
-            style={styles.button}
-          />
-        </View>
-      </ScrollView>
+        <Button label="Verify" onPress={handleSubmit} isLoading={loading} />
+      </Form>
 
       <NoInternetBar />
       <StatusBar />
@@ -104,28 +104,12 @@ const TokenVerification = () => {
   );
 };
 
-const ResendCountdown = ({ time, styles }) => {
-  return (
-    <Text variant="labelMedium" style={styles.timerContainer}>
-      Resend Token in{" "}
-      <Text variant="labelLarge" style={styles.time}>
-        {time}
-      </Text>{" "}
-      Sec
-    </Text>
-  );
-};
-
 export default TokenVerification;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
     form: {
-      rowGap: theme.gap.lg,
+      paddingHorizontal: theme.padding.body.horizontal,
     },
     serverErrorMessage: {
       color: theme.colors.primary,
@@ -133,16 +117,6 @@ const stylesheet = createStyleSheet((theme) =>
     resentMessage: {
       color: theme.colors.primary,
       textAlign: "center",
-    },
-    button: {
-      marginTop: 20,
-      borderRadius: theme.borderRadius.base,
-    },
-    timerContainer: {
-      textAlign: "center",
-    },
-    time: {
-      color: theme.colors.primary,
     },
   })
 );

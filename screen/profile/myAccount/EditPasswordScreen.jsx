@@ -3,9 +3,10 @@ import React, { useRef, useState } from "react";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import FormHeader from "../../../components/common/FormHeader";
 import TextInput from "../../../components/ui/TextInput";
-import PrimaryButton from "../../../components/ui/PrimaryButton";
+import Button from "../../../components/ui/Button";
 import StatusBar from "../../../components/common/StatusBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import Form from "../../../components/common/Form";
 
 const EditPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -66,11 +67,8 @@ const EditPasswordScreen = () => {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-    >
-      <View style={styles.form}>
+    <>
+      <Form style={styles.form}>
         <FormHeader
           title="Change Password"
           desc="Please provide your old and new password."
@@ -104,13 +102,12 @@ const EditPasswordScreen = () => {
           disabled={loading}
         />
 
-        <PrimaryButton
+        <Button
           label="Submit"
           onPress={showConfirmationDialog}
-          style={styles.submitButton}
           isLoading={loading}
         />
-      </View>
+      </Form>
 
       <ConfirmationDialog
         title="Are you sure you change your password?"
@@ -119,7 +116,7 @@ const EditPasswordScreen = () => {
         onPressCancel={hideConfirmationDialog}
       />
       <StatusBar />
-    </ScrollView>
+    </>
   );
 };
 
@@ -127,20 +124,8 @@ export default EditPasswordScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: theme.padding.body.horizontal,
-    },
-    containerContent: {
-      flex: 1,
-      justifyContent: "space-between",
-    },
     form: {
-      rowGap: theme.gap.lg,
-    },
-    submitButton: {
-      marginTop: 10,
-      borderRadius: theme.borderRadius.base,
+      paddingHorizontal: theme.padding.body.horizontal,
     },
   })
 );

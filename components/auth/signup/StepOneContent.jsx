@@ -1,14 +1,15 @@
 import { StyleSheet, View } from "react-native";
-import { Text, Button } from "react-native-paper";
+import { Text, Button as NPButton } from "react-native-paper";
 import { useState } from "react";
 
-import PrimaryButton from "../../ui/PrimaryButton";
+import Button from "../../ui/Button";
 import FormHeader from "../../common/FormHeader";
 import { useNavigation } from "@react-navigation/native";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import BirthdatePicker from "../../ui/BirthdayPicker";
 import TextInput from "../../ui/TextInput";
+import Form from "../../common/Form";
 
 const StepOneContent = ({ goNextStep }) => {
   const { styles } = useStyles(stylesheet);
@@ -52,70 +53,63 @@ const StepOneContent = ({ goNextStep }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <FormHeader
-          title="Tell us something about yourself"
-          desc="Only provide information that is true and correct."
-        />
-        <TextInput
-          placeholder="First Name"
-          value={signupForm.firstName}
-          onChangeText={(value) => setSignupForm("firstName", value)}
-          error={errors.firstName}
-        />
-        <TextInput
-          placeholder="Middle Name"
-          value={signupForm.middleName}
-          onChangeText={(value) => setSignupForm("middleName", value)}
-          error={errors.middleName}
-        />
-        <TextInput
-          placeholder="Last Name"
-          value={signupForm.lastName}
-          onChangeText={(value) => setSignupForm("lastName", value)}
-          error={errors.lastName}
-        />
-        <TextInput
-          placeholder="Suffix"
-          value={signupForm.suffix}
-          onChangeText={(value) => setSignupForm("suffix", value)}
-          error={errors.suffix}
-        />
-        <BirthdatePicker
-          date={signupForm.birthday}
-          setDate={setSignupForm}
-          error={errors.birthday}
-        />
-        <TextInput
-          placeholder="Phone Number"
-          inputMode="tel"
-          value={signupForm.phone}
-          onChangeText={(value) => setSignupForm("phone", value)}
-          error={errors.phone}
-        />
+    <Form>
+      <FormHeader
+        title="Tell us something about yourself"
+        desc="Only provide information that is true and correct."
+      />
+      <TextInput
+        placeholder="First Name"
+        value={signupForm.firstName}
+        onChangeText={(value) => setSignupForm("firstName", value)}
+        error={errors.firstName}
+      />
+      <TextInput
+        placeholder="Middle Name"
+        value={signupForm.middleName}
+        onChangeText={(value) => setSignupForm("middleName", value)}
+        error={errors.middleName}
+      />
+      <TextInput
+        placeholder="Last Name"
+        value={signupForm.lastName}
+        onChangeText={(value) => setSignupForm("lastName", value)}
+        error={errors.lastName}
+      />
+      <TextInput
+        placeholder="Suffix"
+        value={signupForm.suffix}
+        onChangeText={(value) => setSignupForm("suffix", value)}
+        error={errors.suffix}
+      />
+      <BirthdatePicker
+        date={signupForm.birthday}
+        setDate={setSignupForm}
+        error={errors.birthday}
+      />
+      <TextInput
+        placeholder="Phone Number"
+        inputMode="tel"
+        value={signupForm.phone}
+        onChangeText={(value) => setSignupForm("phone", value)}
+        error={errors.phone}
+      />
 
-        {/* Submit or Next Button */}
-        <PrimaryButton
-          label="Next"
-          onPress={handleSubmit}
-          style={styles.nextButton}
-        />
-      </View>
+      <Button label="Next" marginVertical={20} onPress={handleSubmit} />
 
       <View style={styles.footer}>
         <Text variant="labelLarge">Already have an Account?</Text>
-        <Button
+        <NPButton
           mode="text"
           compact
           onPress={() => navigation.navigate("Login")}
-          style={styles.signinButton}
           labelStyle={styles.signinButtonLabel}
+          style={styles.signinButton}
         >
           Sign In
-        </Button>
+        </NPButton>
       </View>
-    </View>
+    </Form>
   );
 };
 
@@ -123,19 +117,6 @@ export default StepOneContent;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-    },
-    form: {
-      rowGap: theme.gap.lg,
-    },
-    header: {
-      marginVertical: 20,
-    },
-    nextButton: {
-      marginVertical: 20,
-      borderRadius: theme.borderRadius.base,
-    },
     signinButton: {
       borderRadius: theme.borderRadius.base,
     },

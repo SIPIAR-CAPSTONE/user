@@ -1,16 +1,13 @@
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
-import PrimaryButton from "../../ui/PrimaryButton";
+import Button from "../../ui/Button";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import TextInput from "../../ui/TextInput";
 import BirthdatePicker from "../../ui/BirthdayPicker";
+import Form from "../../common/Form";
 
 const StepOneContent = ({ goNextStep }) => {
-  const { styles } = useStyles(stylesheet);
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
     (state) => state.setVerificationForm
@@ -74,74 +71,53 @@ const StepOneContent = ({ goNextStep }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <FormHeader
-          title="Confirm if your information is correct"
-          desc="Only provide information that is true and correct."
-        />
-        <TextInput
-          placeholder="First Name"
-          value={verificationForm.firstName}
-          onChangeText={(value) => setVerificationForm("firstName", value)}
-          error={errors.firstName}
-        />
-        <TextInput
-          placeholder="Middle Name"
-          value={verificationForm.middleName}
-          onChangeText={(value) => setVerificationForm("middleName", value)}
-          error={errors.middleName}
-        />
-        <TextInput
-          placeholder="Last Name"
-          value={verificationForm.lastName}
-          onChangeText={(value) => setVerificationForm("lastName", value)}
-          error={errors.lastName}
-        />
-        <TextInput
-          placeholder="Suffix"
-          value={verificationForm.suffix}
-          onChangeText={(value) => setVerificationForm("suffix", value)}
-          error={errors.suffix}
-        />
-        <BirthdatePicker
-          placeholder="Birthday"
-          givenDate={verificationForm.birthday}
-          date={verificationForm.birthday}
-          setDate={setVerificationForm}
-          error={errors.birthday}
-        />
-        <TextInput
-          placeholder="Phone Number"
-          inputMode="tel"
-          value={verificationForm.phone}
-          onChangeText={(value) => setVerificationForm("phone", value)}
-          error={errors.phone}
-        />
+    <Form>
+      <FormHeader
+        title="Confirm if your information is correct"
+        desc="Only provide information that is true and correct."
+      />
+      <TextInput
+        placeholder="First Name"
+        value={verificationForm.firstName}
+        onChangeText={(value) => setVerificationForm("firstName", value)}
+        error={errors.firstName}
+      />
+      <TextInput
+        placeholder="Middle Name"
+        value={verificationForm.middleName}
+        onChangeText={(value) => setVerificationForm("middleName", value)}
+        error={errors.middleName}
+      />
+      <TextInput
+        placeholder="Last Name"
+        value={verificationForm.lastName}
+        onChangeText={(value) => setVerificationForm("lastName", value)}
+        error={errors.lastName}
+      />
+      <TextInput
+        placeholder="Suffix"
+        value={verificationForm.suffix}
+        onChangeText={(value) => setVerificationForm("suffix", value)}
+        error={errors.suffix}
+      />
+      <BirthdatePicker
+        placeholder="Birthday"
+        givenDate={verificationForm.birthday}
+        date={verificationForm.birthday}
+        setDate={setVerificationForm}
+        error={errors.birthday}
+      />
+      <TextInput
+        placeholder="Phone Number"
+        inputMode="tel"
+        value={verificationForm.phone}
+        onChangeText={(value) => setVerificationForm("phone", value)}
+        error={errors.phone}
+      />
 
-        <PrimaryButton
-          label="Next"
-          onPress={handleSubmit}
-          style={styles.nextButton}
-        />
-      </View>
-    </View>
+      <Button label="Next" marginVertical={20} onPress={handleSubmit} />
+    </Form>
   );
 };
 
 export default StepOneContent;
-
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-    },
-    form: {
-      rowGap: theme.gap.lg,
-    },
-    nextButton: {
-      marginVertical: 20,
-      borderRadius: theme.borderRadius.base,
-    },
-  })
-);
