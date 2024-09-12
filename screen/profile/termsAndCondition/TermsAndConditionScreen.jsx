@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import {
   Title,
   H1,
@@ -10,9 +11,8 @@ import {
 import Layout from "../../../components/common/Layout";
 
 const TermsAndConditionScreen = () => {
-
   return (
-    <Layout scrollable>
+    <Layout scrollable contentContainerStyle={styles.container}>
       <Title>SIPIAR Terms and Conditions</Title>
 
       <H1>1. Acceptance of Terms</H1>
@@ -127,3 +127,9 @@ const TermsAndConditionScreen = () => {
 };
 
 export default TermsAndConditionScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 30,
+  },
+});

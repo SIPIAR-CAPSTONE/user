@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import Layout from "../../../components/common/Layout";
 import {
   Title,
@@ -9,7 +10,7 @@ import {
 
 const PrivacyAndPolicyScreen = () => {
   return (
-    <Layout scrollable>
+    <Layout scrollable contentContainerStyle={styles.container}>
       <Title>SIPIAR Privacy Policy</Title>
 
       <P>
@@ -105,3 +106,9 @@ const PrivacyAndPolicyScreen = () => {
 };
 
 export default PrivacyAndPolicyScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 30,
+  },
+})
