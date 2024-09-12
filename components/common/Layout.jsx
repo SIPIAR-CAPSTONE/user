@@ -51,8 +51,11 @@ const Layout = ({
         {children}
       </View>
 
-      {!removeDefaultStatusBar && <StatusBar style={statusBarTheme} />}
+      {!removeDefaultStatusBar && (
+        <StatusBar style={statusBarTheme} hidden={statusBarHidden} />
+      )}
       {addNoInternetAlert && <NotInternetAlert />}
+      {addNoInternetBar && <NotInternetAlert />}
     </>
   );
 };
