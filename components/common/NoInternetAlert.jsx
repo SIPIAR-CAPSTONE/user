@@ -10,7 +10,7 @@ const NotInternetAlert = () => {
   const { styles, theme } = useStyles(stylesheet);
   const { hasInternet } = useInternet();
 
-  if (!hasInternet) return;
+  if (hasInternet) return;
 
   return (
     <View style={styles.modal}>
@@ -41,7 +41,7 @@ const stylesheet = createStyleSheet((theme) =>
       flex: 1,
       backgroundColor: "rgba(1,1,1,0.1)",
       alignItems: "center",
-      justifyContent: "center", 
+      justifyContent: "center",
       position: "absolute",
       top: 0,
       bottom: 0,
