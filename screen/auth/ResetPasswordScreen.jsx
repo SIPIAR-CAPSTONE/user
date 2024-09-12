@@ -9,6 +9,7 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import SuccessConfirmation from "../../components/common/SuccessConfirmation";
 
 const ResetPasswordScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -17,6 +18,7 @@ const ResetPasswordScreen = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   /*
    *
@@ -70,12 +72,7 @@ const ResetPasswordScreen = () => {
         errors.confirmNewPassword = error.message;
         setErrors(errors);
       } else if (!error) {
-        //* navigate to success confirmation screen
-        navigation.navigate("SuccessConfirmation", {
-          title: "Reset Password Successfully!",
-          desc: "You can now login your new password credentials.",
-          nextScreen: "StartingScreen",
-        });
+        setShowSuccessAlert(true);
       }
     }
   };
@@ -110,6 +107,14 @@ const ResetPasswordScreen = () => {
 
         <Button label="Next" onPress={handleSubmit} isLoading={loading} />
       </Form>
+
+      <SuccessConfirmation
+        open={showSuccessAlert}
+        setOpen={setShowSuccessAlert}
+        title="Reset Password Successfully!"
+        desc="You can now login your new password credentials."
+        onDelayEnd={() => navigation.navigate("StartingScreen")}
+      />
     </Layout>
   );
 };

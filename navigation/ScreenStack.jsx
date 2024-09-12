@@ -6,7 +6,6 @@ import SignupScreen from "../screen/auth/SignupScreen";
 import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
 import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
-import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
 import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
 import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
@@ -25,16 +24,6 @@ import CprScreen from "../screen/CPR/CprScreen";
 
 const Stack = createNativeStackNavigator();
 
-/**
- * commonScreenStack: A stack of screens that exist on both signed in and signed out stacks.
- */
-const commonScreenStack = (
-  <Stack.Screen
-    name="SuccessConfirmation"
-    component={SuccessConfirmationScreen}
-    options={{ headerShown: false }}
-  />
-);
 
 /**
  * SignedOutStack: A stack of screens that are displayed to unauthenticated users.
@@ -71,7 +60,6 @@ export const SignedOutStack = (
       component={ForgotPasswordScreen}
       options={{ headerTitle: "" }}
     />
-    {commonScreenStack}
   </>
 );
 
@@ -154,6 +142,5 @@ export const SignedInStack = (
       options={{ orientation: "landscape" }}
       component={VideoPlayerScreen}
     />
-    {commonScreenStack}
   </>
 );

@@ -8,11 +8,13 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import { useNavigation } from "@react-navigation/native";
 import useImagePicker from "../../../hooks/useImagePicker";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import SuccessConfirmation from "../../common/SuccessConfirmation";
 
 const StepFourContent = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
 
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const [frontIdImage, setFrontIdImage] = useState(null);
   const [backIdImage, setBackIdImage] = useState(null);
@@ -51,12 +53,8 @@ const StepFourContent = () => {
     if (isFormValid) {
       setLoading(true);
 
-      //TODO: fetching
-      navigation.navigate("SuccessConfirmation", {
-        title: "Verification Request Submitted",
-        desc: "You successfully submitted account verification request. Please just wait until your account is verified. Thank you.",
-        nextScreen: "ProfileScreen",
-      });
+      setShowSuccessAlert(true);
+
       setLoading(false);
     }
   };
@@ -84,6 +82,14 @@ const StepFourContent = () => {
         onPress={handleSubmit}
         isLoading={loading}
         marginVertical={40}
+      />
+
+      <SuccessConfirmation
+        open={showSuccessAlert}
+        setOpen={setShowSuccessAlert}
+        title="Verification Request Submitted"
+        desc="You successfully submitted account verification request. Please just wait until your account is verified. Thank you."
+        onDelayEnd={() => navigation.navigate("ProfileScreen")}
       />
     </View>
   );
