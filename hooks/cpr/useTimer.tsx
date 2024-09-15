@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { formatTime } from "./helper";
+import { formatTime } from "./useCpr.helper";
 
 type Timer = {
   rawTimer: number;

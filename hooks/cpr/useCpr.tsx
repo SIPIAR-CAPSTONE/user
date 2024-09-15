@@ -1,9 +1,14 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Accelerometer } from "expo-sensors";
-import { getDepthScore, getOverallScore, getTimingScore } from "./helper";
+import {
+  getDepthScore,
+  getOverallScore,
+  getTimingScore,
+} from "./useCpr.helper";
 import useAudioCue from "./useAudioCue";
 import useTimer from "./useTimer";
-import { type Compression, type CompressionRecord } from "./useCpr.types";
+import { type Compression } from "./useCpr.types";
+import useCompressionHistory from "./useCompressionHistory";
 
 // Initial empty compression value
 const EMPTY_COMPRESSION_VALUE: Compression = {
@@ -27,14 +32,18 @@ const useCpr = () => {
     resetTimer,
     resetMsCounter,
   } = useTimer();
+  const {
+    clearCompressionHistory,
+    compressionHistory,
+    recordCompressionHistory,
+  } = useCompressionHistory();
 
   const [currentCompressionScore, setCurrentCompressionScore] =
     useState<Compression>(EMPTY_COMPRESSION_VALUE);
   const prevCompressionScore = useRef<Compression>(EMPTY_COMPRESSION_VALUE); //it is used for voice cue
-  const compressionHistory = useRef<Array<CompressionRecord>>([]);
   const formattedTime = (rawTimer * 0.001).toFixed(1);
 
-  // perform playinfAudioCue and getting compression score when conditions are met
+  // play Audio Cue and getting compression score when conditions are met
   useEffect(() => {
     if (timerOn) {
       if (msCounter >= 500 && msCounter < 600) {
@@ -50,9 +59,9 @@ const useCpr = () => {
   const calculateDepth = useCallback(
     (z: number): void => {
       const deltaZ: number = z - prevZ.current;
-      const calibrationFactor: number = 10;
-      const gForceToInches: number = 0.3937;
-      const compressionDepth: number = Math.abs(
+      const gForceToInches = 0.3937;
+      const calibrationFactor = 10;
+      const compressionDepth = Math.abs(
         deltaZ * calibrationFactor * gForceToInches
       );
       depth.current = Number(compressionDepth.toFixed(1));
@@ -83,6 +92,7 @@ const useCpr = () => {
         recordCompressionHistory(currentScore, formattedTime);
 
         // Clear the current compression score after a brief delay
+        // the delay is the duration the score is displayed on the screen
         setTimeout(() => {
           setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
         }, 150);
@@ -90,19 +100,6 @@ const useCpr = () => {
     },
     [timerOn]
   );
-
-  const recordCompressionHistory = (score: Compression, time: string): void => {
-    const currentCompressionRecord: CompressionRecord = {
-      score: score,
-      time: time,
-    };
-
-    compressionHistory.current.push(currentCompressionRecord);
-  };
-
-  const clearCompressionHistory = (): void => {
-    compressionHistory.current.length = 0;
-  };
 
   const subscribe = useCallback((): void => {
     Accelerometer.setUpdateInterval(16);

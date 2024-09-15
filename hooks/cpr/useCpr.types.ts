@@ -11,7 +11,7 @@ export type SoundFile = {
 
 export type Score = "yellow" | "green" | "red" | "gray"
 
-export type TimingScore = Exclude<Score, "yellow">
+export type TimingScore = Exclude<Score, "yellow" | "gray">
 
 export type Compression = {
   depthAttempt: number | null;
