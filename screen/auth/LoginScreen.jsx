@@ -65,36 +65,38 @@ const LoginScreen = () => {
   };
 
   const handleSubmit = async () => {
-    if (isFormValid(fields, { email, password }, setErrors)) {
-      setLoading(true);
+    try {
+      if (isFormValid(fields, { email, password }, setErrors)) {
+        setLoading(true);
 
-      //* If form valid, sign in account
-      const { data, error } = await supabase.auth
-        .signInWithPassword({
+        //* If form valid, sign in account
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: email,
           password: password,
-        })
-        .finally(() => setLoading(false));
+        });
 
-      if (error) {
-        let errors = {};
-        errors.password = error.message;
-        setErrors(errors);
-      } else if (!error) {
-        //* call the setItem in which it encrypt the session and store in secure local storage
-        encryptedSession = await largeSecureStore.setItem(
-          "session",
-          JSON.stringify(data["session"])
-        );
+        if (error) {
+          let errors = {};
+          errors.password = error.message;
+          setErrors(errors);
+        } else if (!error) {
+          //* call the setItem in which it encrypt the session and store in secure local storage
+          encryptedSession = await largeSecureStore.setItem(
+            "session",
+            JSON.stringify(data["session"])
+          );
 
-        setSession(encryptedSession);
+          setSession(encryptedSession);
 
-        //* set session global state variables
-        setState(data["session"]);
+          //* set session global state variables
+          setState(data["session"]);
 
-        //* CALL IMAGE DOWNLOADER FUNC
-        imageDownload(data["session"]["user"]["user_metadata"]["email"]);
+          //* CALL IMAGE DOWNLOADER FUNC
+          imageDownload(data["session"]["user"]["user_metadata"]["email"]);
+        }
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -162,7 +164,7 @@ const stylesheet = createStyleSheet((theme) =>
     forgotPassButton: {
       maxWidth: 180,
       alignSelf: "flex-end",
-      marginBottom: 20,
+      marginBottom: 10,
       borderRadius: theme.borderRadius.md,
     },
     signupButton: {
