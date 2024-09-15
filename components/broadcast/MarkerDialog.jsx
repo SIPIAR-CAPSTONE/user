@@ -1,10 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text, Dialog, Portal, Button } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
 import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import InfoField from "./InfoField";
 
 const EMPTY_PLACEHOLDER = " - ";
 
@@ -69,25 +69,29 @@ const MarkerDialog = ({
             icon="user"
             label="User"
             value={name}
-            colors={{ background: "#FBF2DD", color: "#D2BD84" }}
+            iconBackgroundColor="#FBF2DD"
+            iconColor="#D2BD84"
           />
           <InfoField
             icon="map-pin"
             label="Distance"
             value={distanceGap}
-            colors={{ background: "#c3ffcc", color: "#53a661" }}
+            iconBackgroundColor="#c3ffcc"
+            iconColor="#53a661"
           />
           <InfoField
             icon="clock"
             label="Time Requested"
             value={timeGap}
-            colors={{ background: "#D9E8FE", color: "#688CA9" }}
+            iconBackgroundColor="#D9E8FE"
+            iconColor="#688CA9"
           />
           <InfoField
             icon="calendar"
             label="Date Requested"
             value={dateRequested}
-            colors={{ background: "#FFD8CC", color: "#BB655D" }}
+            iconBackgroundColor="#FFD8CC"
+            iconColor="#BB655D"
           />
         </Dialog.Content>
         <Dialog.Actions>
@@ -100,39 +104,6 @@ const MarkerDialog = ({
   );
 };
 
-/**
- * InfoField component displays a single piece of information with its corresponding icon.
- *
- * @param {string} props.icon - The name of the icon to be displayed.
- * @param {string} props.label - The label of the information field.
- * @param {string} props.value - The value of the information field.
- * @param {Object} props.colors - The background and color of the icon container.
- * @param {string} props.colors.background - The background color of the icon container.
- * @param {string} props.colors.color - The text color of the icon.
- */
-const InfoField = ({ icon, label, value, colors }) => {
-  const { styles } = useStyles(stylesheet);
-
-  return (
-    <View style={styles.infoField}>
-      <View
-        style={[styles.iconContainer, { backgroundColor: colors.background }]}
-      >
-        <Feather name={icon} size={18} color={colors.color} />
-      </View>
-      {/* Container for the label and value */}
-      <View>
-        <Text style={styles.fieldValue} variant="titleMedium">
-          {value}
-        </Text>
-        <Text style={styles.fieldLabel} variant="bodySmall">
-          {label}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
 export default MarkerDialog;
 
 const stylesheet = createStyleSheet((theme) =>
@@ -141,27 +112,8 @@ const stylesheet = createStyleSheet((theme) =>
       fontWeight: "bold",
     },
     infoFieldsContainer: {
-      marginTop: theme.spacing.sm,
-      rowGap: theme.spacing.base,
-    },
-    infoField: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: theme.spacing.base,
-    },
-    iconContainer: {
-      backgroundColor: "red",
-      padding: theme.spacing.md,
-      backgroundColor: theme.colors.background,
-      borderRadius: theme.borderRadius.full,
-    },
-    fieldValue: {
-      height: 25,
-      color: theme.colors.text,
-    },
-    fieldLabel: {
-      height: 22,
-      color: theme.colors.text2,
+      marginTop: theme.spacing.xxs,
+      rowGap: theme.spacing.xs,
     },
   })
 );
