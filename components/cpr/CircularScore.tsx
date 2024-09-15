@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
 });
 
 const sizeStyle = {
-  lg: 170,
-  sm: 140,
+  lg: 160,
+  sm: 130,
 };
 
 const colorStyle = {

@@ -48,7 +48,7 @@ function CprScreen() {
           <OverallScoreBar score={overallScore} />
         </View>
         <View style={styles.circularScoreContainer}>
-          <CircularScore size="sm" value={timer} label="TIMER" fontSize={38} />
+          <CircularScore size="sm" value={timer} label="TIMER" fontSize={34} />
           <CircularScore
             color={timingScore}
             value={
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   scoreBarContainer: {
     flex: 1,
-    maxHeight: "35%",
+    maxHeight: "28%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
