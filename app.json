@@ -27,7 +27,7 @@
       "package": "com.sipiar.user"
     },
     "web": {
-      "favicon": "./assets/AppIcon.png"
+      "favicon": "./assets/appIcon.png"
     },
     "extra": {
       "eas": {
