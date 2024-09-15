@@ -221,6 +221,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
     desc: {
       flex: 1,
+      fontSize: 13
     },
   })
 );

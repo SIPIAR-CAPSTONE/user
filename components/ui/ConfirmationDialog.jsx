@@ -3,6 +3,7 @@ import { Dialog, Portal, useTheme } from "react-native-paper";
 import React from "react";
 
 import Button from "./Button";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 const ConfirmationDialog = ({
   isVisible,
@@ -15,6 +16,7 @@ const ConfirmationDialog = ({
   containerStyle = {},
   dismissable = false,
 }) => {
+  const { styles } = useStyles(stylesheet);
 
   return (
     <Portal>
@@ -25,7 +27,9 @@ const ConfirmationDialog = ({
         dismissable={dismissable}
       >
         <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-        {content && <Dialog.Content>{content}</Dialog.Content>}
+        {content && (
+          <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
+        )}
 
         <Dialog.Actions style={styles.buttonsContainer}>
           <Button label={confirmationLabel} onPress={onPressConfirmation} />
@@ -38,18 +42,21 @@ const ConfirmationDialog = ({
 
 export default ConfirmationDialog;
 
-const styles = StyleSheet.create({
-  dialog: {
-    paddingTop: 20,
-  },
-  title: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  buttonsContainer: {
-    marginTop: 28,
-    flexDirection: "column",
-    alignItems: "baseline",
-    rowGap: 6,
-  },
-});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    dialog: {
+      paddingTop: 15,
+    },
+    title: {
+      textAlign: "center",
+      fontWeight: "bold",
+      fontSize: theme.fontSize.xl,
+    },
+    buttonsContainer: {
+      marginTop: 18,
+      flexDirection: "column",
+      alignItems: "baseline",
+      rowGap: theme.spacing.xxs,
+    },
+  })
+);

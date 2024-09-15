@@ -110,6 +110,7 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     title: {
       fontWeight: "bold",
+      fontSize: theme.fontSize.lg
     },
     infoFieldsContainer: {
       marginTop: theme.spacing.xxs,

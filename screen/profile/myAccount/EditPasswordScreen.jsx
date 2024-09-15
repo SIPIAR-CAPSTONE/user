@@ -98,6 +98,7 @@ const EditPasswordScreen = () => {
         />
 
         <Button
+          style={styles.button}
           label="Submit"
           onPress={showConfirmationDialog}
           isLoading={loading}
@@ -121,5 +122,8 @@ const stylesheet = createStyleSheet((theme) =>
     form: {
       paddingHorizontal: theme.spacing.base,
     },
+    button: {
+      marginTop: theme.spacing.base
+    }
   })
 );

@@ -6,6 +6,7 @@ import { Portal, Appbar, useTheme, Text } from "react-native-paper";
 import CircularIcon from "../../../ui/CircularIcon";
 import Button from "../../../ui/Button";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { createStyleSheet, useStyles } from "../../../../hooks/useStyles";
 
 /**
  * Select ID Modal component for account verification step 3.
@@ -15,28 +16,16 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
  * @param {string} props.idImageSource - Image source of the selected ID.
  */
 const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
-  const theme = useTheme();
+  const { styles, theme } = useStyles(stylesheet);
   const bottomSheetRef = useRef(null);
 
   //Render the instructions in the bottom sheet
   const renderInstructions = INSTRUCTION_DATA.map((instruction) => (
     <View key={instruction.id} style={styles.instructionContainer}>
-      <View
-        style={[
-          styles.circularNumber,
-          {
-            backgroundColor: theme.colors.primary,
-            borderRadius: theme.borderRadius.full,
-          },
-        ]}
-      >
-        <Text
-          style={{ color: theme.colors.onPrimary, fontSize: theme.fontSize.xs }}
-        >
-          {instruction.number}
-        </Text>
+      <View style={styles.circularNumber}>
+        <Text style={styles.number}>{instruction.number}</Text>
       </View>
-      <Text variant="bodyMedium" style={{ flex: 1 }}>
+      <Text variant="bodyMedium" style={styles.desc}>
         {instruction.desc}
       </Text>
     </View>
@@ -79,29 +68,17 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
         <BottomSheet
           ref={bottomSheetRef}
-          snapPoints={[380]}
-          handleStyle={{
-            backgroundColor: theme.colors.elevation.level3,
-            borderTopEndRadius: 14,
-            borderTopStartRadius: 14,
-          }}
+          snapPoints={[385]}
+          handleStyle={styles.handleStyle}
         >
-          <BottomSheetView
-            style={[
-              styles.contentContainer,
-              { backgroundColor: theme.colors.elevation.level3 },
-            ]}
-          >
+          <BottomSheetView style={styles.contentContainer}>
             <View style={styles.titleContainer}>
               <AntDesign name="idcard" size={33} color={theme.colors.primary} />
               <Text style={styles.title} variant="titleLarge">
                 {idTitle}
               </Text>
             </View>
-            <Text
-              variant="bodyMedium"
-              style={{ color: theme.colors.text2 }}
-            >
+            <Text variant="bodyMedium" style={{ color: theme.colors.text2 }}>
               Make sure to follow these tips!
             </Text>
 
@@ -119,64 +96,82 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
 export default SelectIdModal;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  customHeader: {
-    height: 56,
-    paddingHorizontal: 16,
-    textAlign: "center",
-    justifyContent: "space-between",
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "rgba(1,1,1,0.5)",
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 14,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-    marginBottom: 2,
-  },
-  title: {
-    fontWeight: "bold",
-  },
-  imageContainer: {
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  idSampleImage: {
-    width: 310,
-    maxWidth: "88%",
-    height: 190,
-    maxHeight: "54%",
-  },
-  instructionsContainer: {
-    rowGap: 10,
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  instructionContainer: {
-    flexDirection: "row",
-    columnGap: 10,
-    alignItems: "center",
-  },
-  circularNumber: {
-    height: 22,
-    width: 22,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 2,
-  },
-});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    customHeader: {
+      height: 56,
+      paddingHorizontal: 16,
+      textAlign: "center",
+      justifyContent: "space-between",
+    },
+    body: {
+      flex: 1,
+      backgroundColor: "rgba(1,1,1,0.5)",
+    },
+    handleStyle: {
+      backgroundColor: theme.colors.elevation.level3,
+      borderTopEndRadius: 14,
+      borderTopStartRadius: 14,
+    },
+    contentContainer: {
+      flex: 1,
+      paddingHorizontal: 14,
+      backgroundColor: theme.colors.elevation.level3,
+    },
+    titleContainer: {
+      flexDirection: "row",
+      columnGap: 10,
+      alignItems: "center",
+      marginBottom: 2,
+    },
+    title: {
+      fontWeight: "bold",
+    },
+    desc: {
+      flex: 1,
+      fontSize: 13,
+    },
+    imageContainer: {
+      height: "50%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    idSampleImage: {
+      width: 310,
+      maxWidth: "88%",
+      height: 190,
+      maxHeight: "50%",
+    },
+    instructionsContainer: {
+      rowGap: theme.spacing.xs,
+      marginTop: 20,
+      marginBottom: 30,
+    },
+    instructionContainer: {
+      flexDirection: "row",
+      columnGap: theme.spacing.sm,
+      alignItems: "center",
+    },
+    number: {
+      color: theme.colors.onPrimary,
+      fontSize: theme.fontSize.xs,
+    },
+    circularNumber: {
+      height: 22,
+      width: 22,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 2,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+    },
+  })
+);
 
 const INSTRUCTION_DATA = [
   {
