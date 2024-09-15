@@ -96,13 +96,13 @@ const stylesheet = createStyleSheet((theme) =>
       fontSize: 10,
       fontWeight: "bold",
       marginLeft: 1,
-      marginTop: 6,
+      marginTop: 5,
     },
   })
 );
 
 const sizeStyle = {
   lg: 130,
-  md: 64,
-  sm: 50,
+  md: 56,
+  sm: 48,
 };

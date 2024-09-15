@@ -18,18 +18,14 @@ function ScorePointsListItem({
       title={title}
       titleStyle={styles.titleStyle}
       left={(props) => (
-        <List.Icon
-          {...props}
-          icon={iconName}
-          color={theme.colors.text}
-        />
+        <List.Icon {...props} icon={iconName} color={theme.colors.text} />
       )}
       right={() => (
         <ScorePoints
           progress={progress}
           points={points}
           progressColor={progressColor}
-          pointsFontSize={16}
+          pointsFontSize={14}
           pointsSuffix={pointsSuffix}
         />
       )}
