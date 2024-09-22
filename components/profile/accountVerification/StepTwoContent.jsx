@@ -1,31 +1,38 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useState, useEffect, useMemo } from "react";
+import { View, StyleSheet } from 'react-native'
+import { useTheme } from 'react-native-paper'
+import { useState, useEffect, useMemo } from 'react'
 
-import { TextFormField, SelectFormField } from "../../ui/FormField";
-import PrimaryButton from "../../ui/PrimaryButton";
-import cdoBarangayData from "../../../utils/cdoBarangayData";
-import FormHeader from "../../common/FormHeader";
-import useBoundStore from "../../../zustand/useBoundStore";
+import { TextFormField, SelectFormField } from '../../ui/FormField'
+import PrimaryButton from '../../ui/PrimaryButton'
+import cdoBarangayData from '../../../utils/cdoBarangayData'
+import FormHeader from '../../common/FormHeader'
+import useBoundStore from '../../../zustand/useBoundStore'
 
 const StepTwoContent = ({ goNextStep }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
-  const verificationForm = useBoundStore((state) => state.verificationForm);
+  const theme = useTheme()
+  const styles = useMemo(() => makeStyles(theme), [theme])
   const setVerificationForm = useBoundStore(
-    (state) => state.setVerificationForm
-  );
-  const [errors, setErrors] = useState({});
+    (state) => state.setVerificationForm,
+  )
+  const userData = useBoundStore((state) => state.userMetaData)
+  const [errors, setErrors] = useState({})
 
-  //TODO: diri
-  useEffect(() => {
-    const fetchverificationFormData = () => {
-      //TODO: e set dayon
-      setVerificationForm();
-    };
+  //! provide default value for verification form
+  const [userInfo, setUserInfo] = useState({
+    barangay: userData['barangay'],
+    street: userData['street'],
+    houseNumber: userData['houseNumber'],
+  })
 
-    fetchverificationFormData();
-  }, []);
+  const handleFieldChange = (key, newValue) => {
+    setVerificationForm(key, newValue)
+    setUserInfo((prevUserInfo) => {
+      return {
+        ...prevUserInfo,
+        [key]: newValue,
+      }
+    })
+  }
 
   /**
    * Function to validate the form
@@ -34,15 +41,15 @@ const StepTwoContent = ({ goNextStep }) => {
    *
    */
   const validateForm = () => {
-    const errors = {};
+    const errors = {}
 
-    if (!verificationForm.barangay) errors.barangay = "Barangay is required.";
-    if (!verificationForm.street) errors.street = "Street is required.";
+    if (!userInfo.barangay) errors.barangay = 'Barangay is required.'
+    if (!userInfo.street) errors.street = 'Street is required.'
 
-    setErrors(errors);
+    setErrors(errors)
 
-    return Object.keys(errors).length === 0;
-  };
+    return Object.keys(errors).length === 0
+  }
 
   /*
    *
@@ -51,13 +58,18 @@ const StepTwoContent = ({ goNextStep }) => {
    */
   const handleSubmit = () => {
     //validateForm will return true if there is no error
-    const isFormValid = validateForm();
+    const isFormValid = validateForm()
 
     if (isFormValid) {
+      //! add default value for verification form if no changes in fields
+      for (let x in userInfo) {
+        setVerificationForm(x, userInfo[x])
+      }
+
       //if form is valid go to next step screen
-      goNextStep();
+      goNextStep()
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -68,21 +80,21 @@ const StepTwoContent = ({ goNextStep }) => {
         />
         <SelectFormField
           label="Barangay"
-          value={verificationForm.barangay}
+          value={userInfo.barangay}
           items={cdoBarangayData}
-          onChange={(item) => setVerificationForm("barangay", item.value)}
+          onChange={(item) => handleFieldChange('barangay', item.value)}
           error={errors.barangay}
         />
         <TextFormField
           label="Street"
-          value={verificationForm.street}
-          onChangeText={(value) => setVerificationForm("street", value)}
+          value={userInfo.street}
+          onChangeText={(value) => handleFieldChange('street', value)}
           error={errors.street}
         />
         <TextFormField
           label="House Number"
-          value={verificationForm.houseNumber}
-          onChangeText={(value) => setVerificationForm("houseNumber", value)}
+          value={userInfo.houseNumber}
+          onChangeText={(value) => handleFieldChange('houseNumber', value)}
           error={errors.houseNumber}
         />
 
@@ -93,10 +105,10 @@ const StepTwoContent = ({ goNextStep }) => {
         />
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default StepTwoContent;
+export default StepTwoContent
 
 const makeStyles = ({ gap, borderRadius }) =>
   StyleSheet.create({
@@ -110,4 +122,4 @@ const makeStyles = ({ gap, borderRadius }) =>
       marginVertical: 20,
       borderRadius: borderRadius.base,
     },
-  });
+  })

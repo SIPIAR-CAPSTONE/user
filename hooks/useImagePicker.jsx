@@ -7,6 +7,9 @@ import useBoundStore from "../zustand/useBoundStore";
 const useImagePicker = () => {
   const navigation = useNavigation();
   const setBase64ImageFormat = useBoundStore((state) => state.setBase64ImageFormat)
+  const setBase64VerOne = useBoundStore((state) => state.setBase64VerOne)
+  const setBase64VerTwo = useBoundStore((state) => state.setBase64VerTwo)
+
 
   // On first screen load ask user permision to access their camera
   useEffect(() => {
@@ -45,8 +48,9 @@ const useImagePicker = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      base64: true
     });
-
+    setBase64ImageFormat(result.assets[0].base64)
     if (!result.canceled) {
       setImageCallBack(result.assets[0].uri);
     }
@@ -66,8 +70,38 @@ const useImagePicker = () => {
       setImageCallBack(result.assets[0].uri);
     }
   };
+  
+  const verificationIdCapturerOne = async (setImageCallBack) => {
+    // Launch the camera
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true
+    });
+    setBase64VerOne(result.assets[0].base64)
+    if (!result.canceled) {
+      setImageCallBack(result.assets[0].uri);
+    }
+  };
 
-  return { takePicture, pickImage };
+  const verificationIdCapturerTwo = async (setImageCallBack) => {
+    // Launch the camera
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true
+    });
+    setBase64VerTwo(result.assets[0].base64)
+    if (!result.canceled) {
+      setImageCallBack(result.assets[0].uri);
+    }
+  };
+
+  return { takePicture, pickImage, verificationIdCapturerOne, verificationIdCapturerTwo };
 };
 
 export default useImagePicker;
