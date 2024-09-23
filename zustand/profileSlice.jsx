@@ -1,38 +1,58 @@
-import { setItem } from '../utils/LocalStorage'
+import { setItem } from "../utils/LocalStorage";
 
 const DEFAULT_VERIFICATION_FORM = {
-  firstName: '',
-  middleName: '',
-  lastName: '',
-  suffix: '',
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  suffix: "",
   birthday: new Date(),
   phone: 0,
-  barangay: '',
-  street: '',
-  houseNumber: '',
-  selectedIdType: '',
-}
+  barangay: "",
+  street: "",
+  houseNumber: "",
+  selectedIdType: "",
+};
 
-export const createProfileSlice = (set) => ({
+export const createProfileSlice = (set, get) => ({
   currentThemeStatus: "light",
-  verificationForm: DEFAULT_VERIFICATION_FORM,
+  verificationForm: DEFAULT_VERIFICATION_FORM, // Initialize with default values
   profilePicturePath: null,
+
   setVerificationForm: (key, newValue) =>
     set((state) => ({
       verificationForm: { ...state.verificationForm, [key]: newValue },
     })),
-  resetVerification: () => set({ verificationForm: DEFAULT_VERIFICATION_FORM }),
+
+  resetVerification: () => {
+    const userMetaData = get().userMetaData || {};
+    set({
+      verificationForm: {
+        ...DEFAULT_VERIFICATION_FORM,
+        ...userMetaData, // Reset with userMetaData if available
+      },
+    });
+  },
+
+  //!temporary solution
+  initializeVerificationForm: () => {
+    const userMetaData = get().userMetaData || {};
+    set({
+      verificationForm: {
+        ...DEFAULT_VERIFICATION_FORM,
+        ...userMetaData, // Merge userMetaData into verificationForm
+      },
+    });
+  },
+
   setThemeStatus: (newThemeStatus) => {
     if (newThemeStatus == null) {
-      //if given new theme is null set current theme with light theme as default
-      set({ currentThemeStatus: "light" })
+      set({ currentThemeStatus: "light" });
     } else {
-      //set new theme in state
-      set({ currentThemeStatus: newThemeStatus })
-      //set new theme in localStorage
-      setItem('theme', newThemeStatus)
+      set({ currentThemeStatus: newThemeStatus });
+      setItem("theme", newThemeStatus);
     }
   },
+
   setProfilePicturePath: (state) => set({ profilePicturePath: state }),
   removeProfilePicturePath: () => set({ profilePicturePath: null }),
-})
+});

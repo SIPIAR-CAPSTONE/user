@@ -5,7 +5,6 @@ import { useEffect, lazy, useState } from "react";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
-import StatusBar from "../../../components/common/StatusBar";
 import AppBar from "../../../components/ui/AppBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
@@ -29,6 +28,17 @@ const AccountVerificationScreen = ({ navigation }) => {
 
   const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
   const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
+
+  //!temporary solution for populating verification form with userData
+  const initializeVerificationForm = useBoundStore(
+    (state) => state.initializeVerificationForm
+  );
+  const userData = useBoundStore((state) => state.userMetaData);
+  useEffect(() => {
+    if (userData) {
+      initializeVerificationForm();
+    }
+  }, [userData]);
 
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
