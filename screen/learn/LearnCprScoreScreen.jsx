@@ -175,7 +175,7 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="Too Much Depth"
+            title="Too Deep Depth"
             iconName="arrow-expand-vertical"
             points={tooMuchDepthCount}
             progress={tooMuchDepthInPercentage}
@@ -183,7 +183,7 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="Too Little Depth"
+            title="Too Shallow Depth"
             iconName="arrow-expand-vertical"
             points={tooLittleDepthCount}
             progress={tooLittleDepthInPercentage}
@@ -191,7 +191,7 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="Average Perfect Timing"
+            title="Avg. Perfect Timing"
             iconName="altimeter"
             points={perfectTimingInPercentage}
             pointsSuffix="%"

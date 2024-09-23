@@ -45,14 +45,6 @@ function CprScreen() {
     navigation.dispatch(StackActions.replace("LearnCprScore"));
   };
 
-  /**
-   * Stop CPR and go back to the previous screen.
-   */
-  const handleEnd = () => {
-    stopCpr();
-    navigation.goBack();
-  };
-
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
@@ -70,10 +62,6 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
-                : timingScore === "Too Late"
-                ? "red"
-                : timingScore === "Too Early"
-                ? "yellow"
                 : timingScore === "Missed"
                 ? "red"
                 : "gray"
@@ -86,9 +74,9 @@ function CprScreen() {
               depthScore === "Perfect"
                 ? "green"
                 : depthScore === "Too Shallow"
-                ? "red"
-                : depthScore === "Too Deep"
                 ? "yellow"
+                : depthScore === "Too Deep"
+                ? "red"
                 : depthScore === "Missed"
                 ? "red"
                 : "gray"
@@ -101,9 +89,9 @@ function CprScreen() {
               depthScore === "Perfect"
                 ? "green"
                 : depthScore === "Too Shallow"
-                ? "red"
-                : depthScore === "Too Deep"
                 ? "yellow"
+                : depthScore === "Too Deep"
+                ? "red"
                 : depthScore === "Missed"
                 ? "red"
                 : "gray"
