@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { formatTime } from "./useCpr.helper";
 
 type Timer = {
@@ -14,33 +14,29 @@ type Timer = {
 export default function useTimer(): Timer {
   const [timerOn, setTimerOn] = useState<boolean>(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [timer, setTimer] = useState<string>("00:00");
-  const timerInSeconds = useRef(0);
+  const [rawTimer, setRawTimer] = useState<number>(0);
+  const timer = useMemo(() => formatTime(rawTimer), [rawTimer]);
+  const timerInSeconds = useMemo(() => Math.floor(rawTimer / 1000), [rawTimer]);
 
-  const [compressionTimer, setCompressionTimer] = useState<number>(100);
+  const compressionTimer = useRef(100);
   const lastUpdateTime = useRef<number>(0);
 
   useEffect(() => {
     if (timerOn) {
       const startTime = Date.now();
+      lastUpdateTime.current = startTime;
 
       timerRef.current = setInterval(() => {
         const currentTime = Date.now();
         const elapsed = currentTime - startTime;
+        setRawTimer(elapsed);
 
-        //this update the timer for every 100ms
-        const formattedTime = formatTime(elapsed);
-        const timeInSeconds = Math.floor(elapsed / 1000);
-        timerInSeconds.current = timeInSeconds;
-        setTimer(formattedTime);
-
-        //compressionTimer or miliseconds timer for compression is used to count the time between 0.1 to 6 second
-        //its purpose is to determine the time the compression attempt should be performed
-        //because the compression attempt is needed to be performed every 0.6 second based on 120 compression per minute
+        //compressionTimer served as a counter for the time between 0.1 to 6 second based on 120 compression per minute
+        //compressionTimer will be the basis for when audio cue will be played and when to get compressionScore
         const delta = currentTime - lastUpdateTime.current;
         lastUpdateTime.current = currentTime;
 
-        setCompressionTimer((prevTime) => prevTime + delta);
+        compressionTimer.current = compressionTimer.current + delta;
       }, 100);
     }
 
@@ -56,7 +52,7 @@ export default function useTimer(): Timer {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       setTimerOn(false);
-      setTimer("00:00");
+      setRawTimer(0);
       resetCompressionTimer();
     }
   };
@@ -66,15 +62,15 @@ export default function useTimer(): Timer {
   };
 
   const resetCompressionTimer = (): void => {
-    setCompressionTimer(100);
+    compressionTimer.current = 100;
     lastUpdateTime.current = Date.now();
   };
 
   return {
     timer,
-    timerInSeconds: timerInSeconds.current,
+    timerInSeconds,
     timerOn,
-    compressionTimer,
+    compressionTimer: compressionTimer.current,
     resetTimer,
     startTimer,
     resetCompressionTimer,
