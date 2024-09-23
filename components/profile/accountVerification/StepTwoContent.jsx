@@ -17,26 +17,39 @@ const fields = [
 const StepTwoContent = ({ goNextStep }) => {
   const verificationForm = useBoundStore((state) => state.verificationForm);
   const setVerificationForm = useBoundStore(
-    (state) => state.setVerificationForm
-  );
-  const [errors, setErrors] = useState({});
+    (state) => state.setVerificationForm,
+  )
+  const userData = useBoundStore((state) => state.userMetaData)
+  const [errors, setErrors] = useState({})
 
-  //TODO: diri
-  useEffect(() => {
-    const fetchverificationFormData = () => {
-      //TODO: e set dayon
-      setVerificationForm();
-    };
+  //! provide default value for verification form
+  const [userInfo, setUserInfo] = useState({
+    barangay: userData['barangay'],
+    street: userData['street'],
+    houseNumber: userData['houseNumber'],
+  })
 
-    fetchverificationFormData();
-  }, []);
+  const handleFieldChange = (key, newValue) => {
+    setVerificationForm(key, newValue)
+    setUserInfo((prevUserInfo) => {
+      return {
+        ...prevUserInfo,
+        [key]: newValue,
+      }
+    })
+  }
 
   const handleSubmit = () => {
     if (isFormValid(fields, verificationForm, setErrors)) {
+           //! add default value for verification form if no changes in fields
+           for (let x in userInfo) {
+            setVerificationForm(x, userInfo[x])
+          }
+
       //if form is valid go to next step screen
-      goNextStep();
+      goNextStep()
     }
-  };
+  }
 
   return (
     <Form>

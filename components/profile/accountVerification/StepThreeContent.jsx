@@ -6,6 +6,7 @@ import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
 import { Fragment, useState, lazy } from "react";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import useBoundStore from "../../../zustand/useBoundStore";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
 
@@ -13,6 +14,9 @@ const StepThreeContent = ({ goNextStep }) => {
   const { styles, theme } = useStyles(stylesheet);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const setVerificationForm = useBoundStore(
+    (state) => state.setVerificationForm,
+  )  
 
   const IdItems = ID_ITEMS_DATA.map((item) => (
     <Fragment key={item.id}>
@@ -56,6 +60,7 @@ const StepThreeContent = ({ goNextStep }) => {
           onConfirmed={() => {
             setModalVisible(false);
             goNextStep();
+            setVerificationForm('selectedIdType', selectedId['type'])
           }}
           idTitle={selectedId.title}
           idImageSource={selectedId.imageSource}
