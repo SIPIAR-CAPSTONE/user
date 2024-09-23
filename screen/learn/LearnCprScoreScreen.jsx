@@ -22,6 +22,9 @@ const LearnCprScoreScreen = () => {
   const navigation = useNavigation();
   const { styles, theme } = useStyles(stylesheet);
   const compressionHistory = useBoundStore((state) => state.compressionHistory);
+  const clearCompressionHistory = useBoundStore(
+    (state) => state.clearCompressionHistory
+  );
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
 
   const currentDate = getFormattedCurrentDate();
@@ -43,40 +46,50 @@ const LearnCprScoreScreen = () => {
   const perfectTimingInPercentage = getScorePercentage(
     compressionHistory,
     "timingScore",
-    "green"
+    "Perfect"
   );
   const perfectDepthInPercentage = getScorePercentage(
     compressionHistory,
     "depthScore",
-    "green"
+    "Perfect"
   );
   const perfectDepthCount = countScore(
     compressionHistory,
     "depthScore",
-    "green"
+    "Perfect"
   );
   const tooMuchDepthInPercentage = getScorePercentage(
     compressionHistory,
     "depthScore",
-    "red"
+    "Too Deep"
   );
   const tooMuchDepthCount = countScore(compressionHistory, "depthScore", "red");
   const tooLittleDepthInPercentage = getScorePercentage(
     compressionHistory,
     "depthScore",
-    "yellow"
+    "Too Shallow"
   );
   const tooLittleDepthCount = countScore(
     compressionHistory,
     "depthScore",
-    "yellow"
+    "Too Shallow"
   );
-  const zeroDepthInPercentage = getScorePercentage(
+  const missedCompressionInPercentage = getScorePercentage(
     compressionHistory,
-    "depthScore",
-    "gray"
+    "timingScore",
+    "Missed"
   );
-  const zeroDepthCount = countScore(compressionHistory, "depthScore", "gray");
+
+  const missedCompressionCount = countScore(
+    compressionHistory,
+    "timingScore",
+    "Missed"
+  );
+
+  const handleExitScreen = () => {
+    clearCompressionHistory();
+    navigation.navigate("LearnScreen");
+  };
 
   //prevent going back to previous screen
   useEffect(() => {
@@ -146,6 +159,14 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
+            title="Missed Compressions"
+            iconName="arrow-expand-vertical"
+            points={missedCompressionCount}
+            progress={missedCompressionInPercentage}
+            progressColor={Color.red}
+          />
+          <Divider />
+          <ScorePointsListItem
             title="Perfect Depth"
             iconName="arrow-expand-vertical"
             points={perfectDepthCount}
@@ -170,14 +191,6 @@ const LearnCprScoreScreen = () => {
           />
           <Divider />
           <ScorePointsListItem
-            title="Zero Depth"
-            iconName="arrow-expand-vertical"
-            points={zeroDepthCount}
-            progress={zeroDepthInPercentage}
-            progressColor={Color.gray}
-          />
-          <Divider />
-          <ScorePointsListItem
             title="Average Perfect Timing"
             iconName="altimeter"
             points={perfectTimingInPercentage}
@@ -195,10 +208,7 @@ const LearnCprScoreScreen = () => {
         </View>
 
         <View style={styles.finishButtonContainer}>
-          <Button
-            label="Finish"
-            onPress={() => navigation.navigate("LearnScreen")}
-          />
+          <Button label="Finish" onPress={handleExitScreen} />
         </View>
       </ScrollView>
     </Layout>

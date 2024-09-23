@@ -2,8 +2,6 @@ import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
-import useCpr from "../../hooks/cpr/useCpr";
-import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useState } from "react";
@@ -11,10 +9,16 @@ import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
+import useCpr from "../../hooks/cpr/useCpr";
 
 function CprScreen() {
-  const { timer, startCpr, stopCpr, currentCompressionScore } = useCpr();
-  const { depthAttempt, depthScore, timingScore, overallScore } =
+  const {
+    timer,
+    start: startCpr,
+    stop: stopCpr,
+    currentCompressionScore,
+  } = useCpr();
+  const { compressionDepth, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
   const [isDialogVisible, setIsDialogVisible] = useState(true);
@@ -50,26 +54,50 @@ function CprScreen() {
         <View style={styles.circularScoreContainer}>
           <CircularScore size="sm" value={timer} label="TIMER" fontSize={34} />
           <CircularScore
-            color={timingScore}
-            value={
-              timingScore
-                ? timingScoreValue[timingScore]
-                : timingScoreValue.gray
-            }
             label="TIMING"
-          />
-          <CircularScore
-            color={depthScore}
-            value={
-              depthScore ? depthScoreValue[depthScore] : depthScoreValue.gray
+            value={timingScore}
+            color={
+              timingScore === "Perfect"
+                ? "green"
+                : timingScore === "Too Late"
+                ? "red"
+                : timingScore === "Too Early"
+                ? "yellow"
+                : timingScore === "Missed"
+                ? "red"
+                : "gray"
             }
-            label="DEPTH"
           />
           <CircularScore
-            size="sm"
-            value={depthAttempt}
-            valueColor={depthScore}
+            label="DEPTH"
+            value={depthScore}
+            color={
+              depthScore === "Perfect"
+                ? "green"
+                : depthScore === "Too Shallow"
+                ? "red"
+                : depthScore === "Too Deep"
+                ? "yellow"
+                : depthScore === "Missed"
+                ? "red"
+                : "gray"
+            }
+          />
+          <CircularScore
             label="DEPTH(in)"
+            value={compressionDepth}
+            valueColor={
+              depthScore === "Perfect"
+                ? "green"
+                : depthScore === "Too Shallow"
+                ? "red"
+                : depthScore === "Too Deep"
+                ? "yellow"
+                : depthScore === "Missed"
+                ? "red"
+                : "gray"
+            }
+            size="sm"
             fontSize={44}
           />
         </View>
@@ -118,16 +146,3 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
 });
-
-const depthScoreValue: Record<Score, string> = {
-  green: "Perfect",
-  yellow: "Too  Little",
-  red: "Too Much",
-  gray: "",
-};
-
-const timingScoreValue: Record<TimingScore, string> = {
-  green: "Perfect",
-  red: "Bad",
-  gray: "",
-};

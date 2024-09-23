@@ -1,11 +1,35 @@
 import { View, Text, StyleSheet } from "react-native";
-import { type Score } from "../../hooks/cpr/useCpr.types";
+import { type Size, type ColorStyle, type Color } from "./CircularScore.type";
+
+const sizeStyle = {
+  lg: 160,
+  sm: 130,
+};
+
+const colorStyle: ColorStyle = {
+  green: {
+    backgroundColor: "#22C55E",
+    borderColor: "#1CAE52",
+  },
+  red: {
+    backgroundColor: "#DC2626",
+    borderColor: "#BB1E1E",
+  },
+  yellow: {
+    backgroundColor: "#F59E0B",
+    borderColor: "#D48806",
+  },
+  gray: {
+    backgroundColor: "#bab8b8",
+    borderColor: "#a6a6a6",
+  },
+};
 
 type CircularScoreProps = {
-  size?: "lg" | "sm";
-  color?: Score | null;
-  value: string | number | Score | null;
-  valueColor?: Score | null;
+  size?: Size;
+  color?: Color | null;
+  value: string | number | null;
+  valueColor?: Color | null;
   label: string;
   fontSize?: number;
 };
@@ -79,27 +103,3 @@ const styles = StyleSheet.create({
     bottom: 12,
   },
 });
-
-const sizeStyle = {
-  lg: 160,
-  sm: 130,
-};
-
-const colorStyle = {
-  green: {
-    backgroundColor: "#22C55E",
-    borderColor: "#1CAE52",
-  },
-  red: {
-    backgroundColor: "#DC2626",
-    borderColor: "#BB1E1E",
-  },
-  yellow: {
-    backgroundColor: "#F59E0B",
-    borderColor: "#D48806",
-  },
-  gray: {
-    backgroundColor: "#bab8b8",
-    borderColor: "#a6a6a6",
-  },
-};

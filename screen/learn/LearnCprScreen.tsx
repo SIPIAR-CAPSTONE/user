@@ -2,90 +2,120 @@ import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
-import useCpr from "../../hooks/cpr/useCpr";
-import { type Score, type TimingScore } from "../../hooks/cpr/useCpr.types";
 import { CprHeader } from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useState } from "react";
 import { useNavigation, StackActions } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
-import useBoundStore from "../../zustand/useBoundStore";
 import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
+import useCpr from "../../hooks/cpr/useCpr";
+import useBoundStore from "../../zustand/useBoundStore";
 
-const LearnCprScreen = () => {
-  const navigation = useNavigation();
+function CprScreen() {
   const {
     timer,
-    startCpr,
-    stopCpr,
+    start: startCpr,
+    stop: stopCpr,
     currentCompressionScore,
-    compressionHistory,
+    history,
   } = useCpr();
-  const { depthAttempt, depthScore, timingScore, overallScore } =
+  const { compressionDepth, depthScore, timingScore, overallScore } =
     currentCompressionScore;
-
   const {
     time: countdown,
     timerOn: countdownOn,
     start: startCountdown,
   } = useCountdown(3, false, startCpr);
+  const [isDialogVisible, setIsDialogVisible] = useState(true);
+  const navigation = useNavigation();
 
   const setCompressionHistory = useBoundStore(
     (state) => state.setCompressionHistory
   );
-  const [isCprStartDialogVisible, setIsCprStartDialogVisible] = useState(true);
 
   const handleStartCpr = () => {
-    setIsCprStartDialogVisible(false);
+    setIsDialogVisible(false);
     startCountdown();
   };
 
-  const handleEnd = () => {
-    setCompressionHistory([...compressionHistory]);
+  const handleEndCpr = () => {
+    setCompressionHistory([...history]);
     stopCpr();
     navigation.dispatch(StackActions.replace("LearnCprScore"));
+  };
+
+  /**
+   * Stop CPR and go back to the previous screen.
+   */
+  const handleEnd = () => {
+    stopCpr();
+    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEnd} />
+      <CprHeader handleEnd={handleEndCpr} />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
           <OverallScoreBar score={overallScore} />
         </View>
         <View style={styles.circularScoreContainer}>
-          <CircularScore size="sm" value={timer} label="TIMER" fontSize={38} />
+          <CircularScore size="sm" value={timer} label="TIMER" fontSize={34} />
           <CircularScore
-            color={timingScore}
-            value={
-              timingScore
-                ? timingScoreValue[timingScore]
-                : timingScoreValue.gray
-            }
             label="TIMING"
-          />
-          <CircularScore
-            color={depthScore}
-            value={
-              depthScore ? depthScoreValue[depthScore] : depthScoreValue.gray
+            value={timingScore}
+            color={
+              timingScore === "Perfect"
+                ? "green"
+                : timingScore === "Too Late"
+                ? "red"
+                : timingScore === "Too Early"
+                ? "yellow"
+                : timingScore === "Missed"
+                ? "red"
+                : "gray"
             }
-            label="DEPTH"
           />
           <CircularScore
-            size="sm"
-            value={depthAttempt}
-            valueColor={depthScore}
+            label="DEPTH"
+            value={depthScore}
+            color={
+              depthScore === "Perfect"
+                ? "green"
+                : depthScore === "Too Shallow"
+                ? "red"
+                : depthScore === "Too Deep"
+                ? "yellow"
+                : depthScore === "Missed"
+                ? "red"
+                : "gray"
+            }
+          />
+          <CircularScore
             label="DEPTH(in)"
+            value={compressionDepth}
+            valueColor={
+              depthScore === "Perfect"
+                ? "green"
+                : depthScore === "Too Shallow"
+                ? "red"
+                : depthScore === "Too Deep"
+                ? "yellow"
+                : depthScore === "Missed"
+                ? "red"
+                : "gray"
+            }
+            size="sm"
             fontSize={44}
           />
         </View>
       </View>
 
       <ConfirmationDialog
-        isVisible={isCprStartDialogVisible}
+        isVisible={isDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
@@ -96,9 +126,9 @@ const LearnCprScreen = () => {
       <StatusBar hidden translucent />
     </View>
   );
-};
+}
 
-export default LearnCprScreen;
+export default CprScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -109,7 +139,7 @@ const styles = StyleSheet.create({
   },
   scoreBarContainer: {
     flex: 1,
-    maxHeight: "35%",
+    maxHeight: "28%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -127,16 +157,3 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
 });
-
-const depthScoreValue: Record<Score, string> = {
-  green: "Perfect",
-  yellow: "Too  Little",
-  red: "Too Much",
-  gray: "",
-};
-
-const timingScoreValue: Record<TimingScore, string> = {
-  green: "Perfect",
-  red: "Bad",
-  gray: "",
-};

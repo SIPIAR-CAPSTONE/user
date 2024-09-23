@@ -15,7 +15,7 @@ export function getFormattedCurrentDate() {
 export function getScorePercentage(records, scoreType, score) {
   const totalRecords = records.length;
   const scoreCount = records.filter(
-    (record) => record.score[scoreType] === score
+    (record) => record.scores[scoreType] === score
   ).length;
 
   if (totalRecords === 0 || scoreCount === 0) {
@@ -28,18 +28,18 @@ export function getScorePercentage(records, scoreType, score) {
 
 // Get the count of records with a specific color score
 export function countScore(records, scoreType, score) {
-  return records.filter((record) => record.score[scoreType] === score).length;
+  if (records.length === 0) return 0;
+  return records.filter((record) => record.scores[scoreType] === score).length;
 }
 
 //get the total duration of rocords by getting the last record time
 export function getTotalTimeDuration(records) {
-  const lastRecord = records[records.length - 1];
+  const lastRecordItem = records[records.length - 1];
 
-  if (!records || !lastRecord) {
+  if (!records || !lastRecordItem || records.length === 0) {
     return 0;
   }
-
-  const totalDuration = Number(lastRecord?.time).toFixed(0);
+  const totalDuration = lastRecordItem?.time;
   return totalDuration;
 }
 
