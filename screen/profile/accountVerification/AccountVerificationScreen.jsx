@@ -1,11 +1,14 @@
-import { ScrollView } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
-import StatusBar from "../../../components/common/StatusBar";
+import AppBar from "../../../components/ui/AppBar";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
+import Layout from "../../../components/common/Layout";
 const StepTwoContent = lazy(() =>
   import("../../../components/profile/accountVerification/StepTwoContent")
 );
@@ -17,12 +20,36 @@ const StepFourContent = lazy(() =>
 );
 
 const AccountVerificationScreen = ({ navigation }) => {
-  const theme = useTheme();
+  const { styles, theme } = useStyles(stylesheet);
   const [currentStep, setCurrentStep] = useState(0);
   const resetVerification = useBoundStore((state) => state.resetVerification);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
+
+  //!temporary solution for populating verification form with userData
+  const initializeVerificationForm = useBoundStore(
+    (state) => state.initializeVerificationForm
+  );
+  const userData = useBoundStore((state) => state.userMetaData);
+  useEffect(() => {
+    if (userData) {
+      initializeVerificationForm();
+    }
+  }, [userData]);
 
   const goNextStep = () =>
     setCurrentStep((prevCurrentStep) => prevCurrentStep + 1);
+
+  const goBackStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
+    } else {
+      showConfirmationDialog();
+    }
+  };
 
   /**
    * The content of each step of the verification process
@@ -71,7 +98,7 @@ const AccountVerificationScreen = ({ navigation }) => {
      */
     marker: {
       text: {
-        normal: theme.colors.typography.tertiary,
+        normal: theme.colors.text3,
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
@@ -79,7 +106,7 @@ const AccountVerificationScreen = ({ navigation }) => {
        * it is the line that connect the circles or the marker
        */
       line: {
-        normal: theme.colors.typography.tertiary,
+        normal: theme.colors.text3,
         active: theme.colors.primary,
         completed: theme.colors.primary,
       },
@@ -106,23 +133,49 @@ const AccountVerificationScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        paddingVertical: theme.padding.body.vertical,
-        paddingHorizontal: theme.padding.body.horizontal,
-      }}
-    >
-      <ProgressSteps
-        currentStep={currentStep}
-        orientation="horizontal"
-        steps={steps}
-        colors={customColors}
-      />
+    <Layout removeDefaultPaddingHorizontal>
+      <AppBar>
+        <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
+      </AppBar>
 
-      <StatusBar />
-    </ScrollView>
+      <ScrollView
+        style={{
+          flex: 1,
+        }}
+      >
+        <View style={styles.content}>
+          <ProgressSteps
+            currentStep={currentStep}
+            orientation="horizontal"
+            steps={steps}
+            colors={customColors}
+          />
+        </View>
+
+        <ConfirmationDialog
+          title="Are you sure you want to exit?"
+          isVisible={isConfirmationDialogVisible}
+          onPressConfirmation={() => navigation.goBack()}
+          onPressCancel={hideConfirmationDialog}
+        />
+      </ScrollView>
+    </Layout>
   );
 };
 
 export default AccountVerificationScreen;
+
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    appBarTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
+    content: {
+      marginTop: 10,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.base,
+    },
+  })
+);

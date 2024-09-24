@@ -6,7 +6,6 @@ import SignupScreen from "../screen/auth/SignupScreen";
 import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
 import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
-import SuccessConfirmationScreen from "../screen/auth/SuccessConfirmationScreen";
 import Tabs from "./BottomTab";
 import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
 import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
@@ -14,21 +13,17 @@ import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
 import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
 import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
-import SettingScreen from "../screen/profile/setting/SettingScreen";
+import SettingsScreen from "../screen/profile/setting/SettingsScreen";
 import MapviewScreen from "../screen/broadcast/MapviewScreen";
+import EditPasswordScreen from "../screen/profile/myAccount/EditPasswordScreen";
+import LearnCprScreen from "../screen/learn/LearnCprScreen";
+import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
+import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
+import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
+import CprScreen from "../screen/CPR/CprScreen";
 
 const Stack = createNativeStackNavigator();
 
-/**
- * commonScreenStack: A stack of screens that exist on both signed in and signed out stacks.
- */
-const commonScreenStack = (
-  <Stack.Screen
-    name="SuccessConfirmation"
-    component={SuccessConfirmationScreen}
-    options={{ headerShown: false }}
-  />
-);
 
 /**
  * SignedOutStack: A stack of screens that are displayed to unauthenticated users.
@@ -58,14 +53,13 @@ export const SignedOutStack = (
     <Stack.Screen
       name="Signup"
       component={SignupScreen}
-      options={{ headerTitle: "Register" }}
+      options={{ headerShown: false }}
     />
     <Stack.Screen
       name="ForgotPassword"
       component={ForgotPasswordScreen}
       options={{ headerTitle: "" }}
     />
-    {commonScreenStack}
   </>
 );
 
@@ -92,18 +86,23 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="EditProfile"
-      options={{ headerTitle: "Edit Profile" }}
+      options={{ headerShown: false }}
       component={EditProfileScreen}
     />
     <Stack.Screen
+      name="EditPassword"
+      options={{ headerTitle: " " }}
+      component={EditPasswordScreen}
+    />
+    <Stack.Screen
       name="AccountVerification"
-      options={{ headerTitle: "Account Verification" }}
+      options={{ headerShown: false }}
       component={AccountVerificationScreen}
     />
-    <Stack.Screen name="Setting" component={SettingScreen} />
+    <Stack.Screen name="Settings" component={SettingsScreen} />
     <Stack.Screen
       name="DeleteAccount"
-      options={{ headerTitle: "Delete Account" }}
+      options={{ headerTitle: " " }}
       component={DeleteAccountScreen}
     />
     <Stack.Screen
@@ -116,6 +115,32 @@ export const SignedInStack = (
       options={{ headerTitle: "Privacy and Policy" }}
       component={PrivacyAndPolicyScreen}
     />
-    {commonScreenStack}
+    <Stack.Screen
+      name="Cpr"
+      component={CprScreen}
+      options={{
+        headerShown: false,
+        orientation: "landscape",
+      }}
+    />
+    <Stack.Screen
+      name="LearnCpr"
+      component={LearnCprScreen}
+      options={{
+        headerShown: false,
+        orientation: "landscape",
+      }}
+    />
+    <Stack.Screen
+      name="LearnCprScore"
+      options={{ headerShown: false }}
+      component={LearnCprScoreScreen}
+    />
+    <Stack.Screen name="LearnCourse" component={LearnCourseScreen} />
+    <Stack.Screen
+      name="VideoPlayer"
+      options={{ orientation: "landscape" }}
+      component={VideoPlayerScreen}
+    />
   </>
 );

@@ -2,27 +2,27 @@ import { Text } from "react-native-paper";
 import {
   View,
   Image,
-  StyleSheet,
   StatusBar as RNStatusBar,
+  StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "react-native-paper";
 
-import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import { useMemo } from "react";
+import Button from "../../components/ui/Button";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
 const StartingScreen = () => {
   const navigation = useNavigation();
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   return (
-    <View style={styles.container}>
+    <Layout contentContainerStyle={styles.container} scrollable>
       <View style={styles.logoContainer}>
         <Image
           style={styles.logoImage}
           source={require("../../assets/logo.png")}
+          resizeMode="contain"
+          resizeMethod="resize"
         />
         <Text variant="headlineMedium" style={styles.appName}>
           SIPIAR
@@ -33,33 +33,26 @@ const StartingScreen = () => {
       </View>
 
       <View style={styles.buttonsContainer}>
-        <PrimaryButton
-          label="Sign In"
-          onPress={() => navigation.navigate("Login")}
-        />
-        <PrimaryButton
+        <Button label="Sign In" onPress={() => navigation.navigate("Login")} />
+        <Button
           label="Sign Up"
-          mode="outlined"
+          variant="outlined"
           onPress={() => navigation.navigate("Signup")}
-          style={styles.signupButton}
         />
       </View>
-
-      <StatusBar />
-    </View>
+    </Layout>
   );
 };
 
 export default StartingScreen;
 
-const makeStyles = ({ colors, padding, gap, borderRadius }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "space-between",
       paddingTop: RNStatusBar.currentHeight + 50,
-      paddingBottom: 80,
-      paddingHorizontal: padding.body.horizontal,
+      paddingBottom: 50,
     },
     logoContainer: {
       alignItems: "center",
@@ -70,18 +63,14 @@ const makeStyles = ({ colors, padding, gap, borderRadius }) =>
       marginBottom: 8,
     },
     tagLine: {
-      color: colors.typography.secondary,
+      color: theme.colors.text2,
     },
     logoImage: {
-      height: 130,
+      height: 160,
       width: 160,
     },
     buttonsContainer: {
-      rowGap: gap.md,
+      rowGap: theme.spacing.sm,
     },
-    signupButton: {
-      borderRadius: borderRadius.base,
-      borderColor: colors.primary,
-      borderWidth: 2,
-    },
-  });
+  })
+);

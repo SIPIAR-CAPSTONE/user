@@ -1,50 +1,60 @@
-import { View, ScrollView, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useState, lazy, useRef, useMemo } from "react";
-import StatusBar from "../../../components/common/StatusBar";
-import PrimaryButton from "../../../components/ui/PrimaryButton";
+import { View, ScrollView } from "react-native";
+import { useState, lazy } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableRipple, Text } from "react-native-paper";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import Button from "../../../components/ui/Button";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
 import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
-import {
-  BirthdayFormField,
-  SelectFormField,
-  TextFormField,
-} from "../../../components/profile/EditProfileFormField";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useNavigation } from "@react-navigation/native";
 import useUserMetadata from "../../../hooks/useUserMetadata";
 import { decode } from "base64-arraybuffer";
+import TextInput from "../../../components/ui/TextInput";
+import BirthdayPicker from "../../../components/ui/BirthdayPicker";
+import SelectItem from "../../../components/ui/SelectItem";
+import AppBar from "../../../components/ui/AppBar";
 import useImageReader from "../../../hooks/useImageReader";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import { StyleSheet } from "react-native";
+import Layout from "../../../components/common/Layout";
+import { isFormValid } from "../../../utils/formValidation";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
 
+const fields = [
+  { name: "firstName", rules: [{ type: "required" }] },
+  { name: "lastName", rules: [{ type: "required" }] },
+  { name: "birthday", rules: [{ type: "required" }] },
+];
+
 const EditProfileScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
   const [profilePicture, setProfilePicture] = useState(null);
   const userMetaData = useBoundStore((state) => state.userMetaData);
   const navigation = useNavigation();
   const { setState } = useUserMetadata();
 
-  //! settter for global state profile path variable
+  //* settter for global state profile path variable
   const setglobalStateProfilePath = useBoundStore(
     (state) => state.setProfilePicturePath
   );
 
-  //!access base 64 formatted image
+  //* access base 64 formatted image
   const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat);
 
-  //! retrieve dafault profile picture
+  //* retrieve dafault profile picture
   useImageReader(setProfilePicture);
 
-  //! format date to yy-mm-dd (remove trails ex. T:14:00:08)
+  //* format date to yy-mm-dd (remove trails ex. T:14:00:08)
   const date = new Date(userMetaData["birthday"]);
   const formattedDate = date.toISOString().split("T")[0];
 
-  //! default value to input fields
+  //* default value to input fields
   const [userInfo, setUserInfo] = useState({
     firstName: userMetaData["firstName"],
     middleName: userMetaData["middleName"],
@@ -57,7 +67,11 @@ const EditProfileScreen = () => {
     houseNumber: userMetaData["houseNumber"],
   });
   const [errors, setErrors] = useState({});
-  const sumbitConfirmationDialogRef = useRef(null);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const handleFieldChange = (key, newValue) => {
     setUserInfo((prevUserInfo) => {
@@ -68,31 +82,6 @@ const EditProfileScreen = () => {
     });
   };
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!userInfo.firstName) errors.firstName = "First Name is required.";
-    if (!userInfo.lastName) errors.lastName = "Last Name is required.";
-    if (!userInfo.birthday) errors.birthday = "Birthday is required.";
-
-    // Set the errors and update form validity if it is empty
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission to proceed next step
-   *
-   */
   const handleSubmit = async () => {
     //! update profile picture, if exist, replace
     const { error } = await supabase.storage
@@ -108,14 +97,12 @@ const EditProfileScreen = () => {
 
     if (error) {
       //todo: more appropriate error handling for all
-      console.log("error update profile", error.message);
+      console.error("error update profile", error.message);
     } else if (!error) {
       setglobalStateProfilePath(profilePicture);
     }
 
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-    if (isFormValid) {
+    if (isFormValid(fields, userInfo, setErrors)) {
       const { data, error } = await supabase.auth.updateUser({
         data: {
           first_name: userInfo["firstName"],
@@ -131,124 +118,145 @@ const EditProfileScreen = () => {
       });
       if (error) {
         //todo: more appropriate error handling for all
-        console.log("error update", error.message);
+        console.error("error update", error.message);
       } else if (!error) {
-        //! update session global state variables
+        //* update session global state variables
         setState(data);
-        //! navigate to my account page if success
+        //* navigate to my account page if success
         navigation.navigate("MyAccount");
       }
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <EditUserProfileCard
-        name="John"
-        imageSource={""}
-        image={profilePicture}
-        setImage={setProfilePicture}
-      />
+    <Layout removeDefaultPaddingHorizontal>
+      <AppBar>
+        <CircularIcon
+          name="arrow-back"
+          pressable
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.appBarTitle}>Edit Profile</Text>
+        <TouchableRipple
+          borderless
+          style={styles.changePassButton}
+          onPress={() => navigation.navigate("EditPassword")}
+        >
+          <MaterialIcons name="password" size={24} color={theme.colors.text} />
+        </TouchableRipple>
+      </AppBar>
 
-      <SectionHeader title="Personal Information" />
-      <View style={styles.formFields}>
-        <TextFormField
-          label="First Name"
-          value={userInfo.firstName}
-          onChangeText={(item) => handleFieldChange("firstName", item)}
-          error={errors.firstName}
-        />
-        <TextFormField
-          label="Middle Name"
-          value={userInfo.middleName}
-          onChangeText={(item) => handleFieldChange("middleName", item)}
-        />
-        <TextFormField
-          label="Last Name"
-          value={userInfo.lastName}
-          onChangeText={(item) => handleFieldChange("lastName", item)}
-          error={errors.lastName}
-        />
-        <TextFormField
-          label="Suffix"
-          value={userInfo.suffix}
-          onChangeText={(item) => handleFieldChange("suffix", item)}
-        />
-        <BirthdayFormField
-          label="Birthday"
-          givenDate={userInfo.birthday}
-          setDate={handleFieldChange}
-          error={errors.birthday}
-        />
-        <TextFormField
-          label="Phone"
-          value={userInfo.phone}
-          onChangeText={(item) => handleFieldChange("phone", item)}
-        />
-      </View>
-
-      <SectionHeader title="Address" />
-      <View style={styles.formFields}>
-        <SelectFormField
-          label="Barangay"
-          value={userInfo.barangay}
-          items={cdoBarangayData}
-          onChange={(item) => handleFieldChange("barangay", item.value)}
-          error={errors.barangay}
-        />
-        <TextFormField
-          label="Street"
-          value={userInfo.street}
-          onChangeText={(item) => handleFieldChange("street", item)}
-        />
-        <TextFormField
-          label="House Number"
-          value={userInfo.houseNumber}
-          onChangeText={(item) => handleFieldChange("houseNumber", item)}
+      <ScrollView>
+        <EditUserProfileCard
+          name="John"
+          imageSource={""}
+          image={profilePicture}
+          setImage={setProfilePicture}
         />
 
-        <PrimaryButton
-          label="Save Changes"
-          onPress={() => sumbitConfirmationDialogRef.current.showDialog()}
-          style={styles.saveButton}
-        />
-        {/* When save changes submit, show confirmation */}
-        <ConfirmationDialog
-          ref={sumbitConfirmationDialogRef}
-          title="Are you sure you want to save changes?"
-          buttons={[
-            {
-              label: "Save Changes",
-              onPress: handleSubmit,
-              mode: "contained",
-            },
-            {
-              label: "Cancel",
-              onPress: () => sumbitConfirmationDialogRef.current.hideDialog(),
-              mode: "text",
-            },
-          ]}
-        />
-      </View>
+        <SectionHeader title="Personal Information" />
+        <View style={styles.formFields}>
+          <TextInput
+            variant="outlined"
+            label="First Name"
+            value={userInfo.firstName}
+            onChangeText={(item) => handleFieldChange("firstName", item)}
+            error={errors.firstName}
+          />
+          <TextInput
+            variant="outlined"
+            label="Middle Name"
+            value={userInfo.middleName}
+            onChangeText={(item) => handleFieldChange("middleName", item)}
+          />
+          <TextInput
+            variant="outlined"
+            label="Last Name"
+            value={userInfo.lastName}
+            onChangeText={(item) => handleFieldChange("lastName", item)}
+            error={errors.lastName}
+          />
+          <TextInput
+            variant="outlined"
+            label="Suffix"
+            value={userInfo.suffix}
+            onChangeText={(item) => handleFieldChange("suffix", item)}
+          />
+          <BirthdayPicker
+            variant="outlined"
+            label="Birthday"
+            givenDate={userInfo.birthday}
+            setDate={handleFieldChange}
+            error={errors.birthday}
+          />
+          <TextInput
+            variant="outlined"
+            label="Phone"
+            value={userInfo.phone}
+            onChangeText={(item) => handleFieldChange("phone", item)}
+          />
+        </View>
 
-      <StatusBar />
-    </ScrollView>
+        <SectionHeader title="Address" />
+        <View style={styles.formFields}>
+          <SelectItem
+            variant="outlined"
+            label="Barangay"
+            value={userInfo.barangay}
+            data={cdoBarangayData}
+            onChange={(value) => handleFieldChange("barangay", value)}
+            error={errors.barangay}
+          />
+          <TextInput
+            variant="outlined"
+            label="Street"
+            value={userInfo.street}
+            onChangeText={(item) => handleFieldChange("street", item)}
+          />
+          <TextInput
+            variant="outlined"
+            label="House Number"
+            value={userInfo.houseNumber}
+            onChangeText={(item) => handleFieldChange("houseNumber", item)}
+          />
+
+          <Button
+            label="Save Changes"
+            onPress={showConfirmationDialog}
+            marginVertical={30}
+          />
+
+          {/* When save changes submit, show confirmation */}
+          <ConfirmationDialog
+            title="Are you sure you want to save changes?"
+            isVisible={isConfirmationDialogVisible}
+            onPressConfirmation={handleSubmit}
+            onPressCancel={hideConfirmationDialog}
+          />
+        </View>
+      </ScrollView>
+    </Layout>
   );
 };
 
 export default EditProfileScreen;
 
-const makeStyles = ({ padding, borderRadius }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingVertical: padding.body.vertical,
+    appBarTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
+    changePassButton: {
+      backgroundColor: theme.colors.background,
+      padding: 6,
+      borderRadius: 99,
     },
     formFields: {
-      paddingHorizontal: padding.body.horizontal,
-      paddingBottom: padding.body.vertical,
+      paddingHorizontal: theme.spacing.base,
+      paddingBottom: theme.spacing.md,
+      rowGap: theme.spacing.base,
     },
-    saveButton: {
-      borderRadius: borderRadius.base,
-      marginTop: 44,
-    },
-  });
+  })
+);

@@ -1,64 +1,62 @@
 import { StyleSheet } from "react-native";
 import { Dialog, Portal, useTheme } from "react-native-paper";
-import React, { useState, useImperativeHandle, forwardRef } from "react";
+import React from "react";
 
-import PrimaryButton from "./PrimaryButton";
+import Button from "./Button";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
-const ConfirmationDialog = forwardRef(
-  ({ title, content, buttons = [] }, ref) => {
-    const theme = useTheme();
-    const [isDialogVisible, setIsDialogVisible] = useState(false);
+const ConfirmationDialog = ({
+  isVisible,
+  title,
+  content = "",
+  confirmationLabel = "Confirm",
+  cancelLabel = "Cancel",
+  onPressConfirmation,
+  onPressCancel,
+  containerStyle = {},
+  dismissable = false,
+}) => {
+  const { styles } = useStyles(stylesheet);
 
-    const hideDialog = () => setIsDialogVisible(false);
+  return (
+    <Portal>
+      <Dialog
+        visible={isVisible}
+        onDismiss={onPressCancel}
+        style={[styles.dialog, containerStyle]}
+        dismissable={dismissable}
+      >
+        <Dialog.Title style={styles.title}>{title}</Dialog.Title>
+        {content && (
+          <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
+        )}
 
-    const showDialog = () => setIsDialogVisible(true);
-
-    // Expose functions to the parent component
-    useImperativeHandle(ref, () => ({
-      showDialog,
-      hideDialog,
-    }));
-
-    return (
-      <Portal>
-        <Dialog
-          visible={isDialogVisible}
-          onDismiss={hideDialog}
-          style={styles.container}
-        >
-          <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-          {content && <Dialog.Content>{content}</Dialog.Content>}
-          <Dialog.Actions style={styles.buttonsContainer}>
-            {buttons.map((button, index) => (
-              <PrimaryButton
-                key={index}
-                label={button.label}
-                onPress={button.onPress}
-                mode={button.mode}
-                style={{ borderRadius: theme.borderRadius.base, width: "100%" }}
-              />
-            ))}
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-    );
-  }
-);
+        <Dialog.Actions style={styles.buttonsContainer}>
+          <Button label={confirmationLabel} onPress={onPressConfirmation} />
+          <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
+  );
+};
 
 export default ConfirmationDialog;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-  },
-  title: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  buttonsContainer: {
-    marginTop: 28,
-    flexDirection: "column",
-    alignItems: "baseline",
-    rowGap: 6,
-  },
-});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    dialog: {
+      paddingTop: 15,
+    },
+    title: {
+      textAlign: "center",
+      fontWeight: "bold",
+      fontSize: theme.fontSize.xl,
+    },
+    buttonsContainer: {
+      marginTop: 18,
+      flexDirection: "column",
+      alignItems: "baseline",
+      rowGap: theme.spacing.xxs,
+    },
+  })
+);

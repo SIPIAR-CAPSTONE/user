@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { lightTheme, darkTheme, themeStatus } from "./utils/theme";
+import { lightTheme, darkTheme } from "./utils/theme";
 import { SignedInStack, SignedOutStack } from "./navigation/ScreenStack";
 import CircularIcon from "./components/ui/CircularIcon";
 import useBoundStore from "./zustand/useBoundStore";
@@ -18,7 +18,7 @@ export default function App() {
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
   const setThemeStatus = useBoundStore((state) => state.setThemeStatus);
   const selectedTheme =
-    currentThemeStatus == themeStatus.light ? lightTheme : darkTheme;
+    currentThemeStatus == "light" ? lightTheme : darkTheme;
   const globalStateEncryptedSession = useBoundStore((state) => state.session);
 
   /**
@@ -49,7 +49,7 @@ export default function App() {
     headerTitleAlign: "center",
     headerTitleStyle: {
       fontWeight: "bold",
-      color: selectedTheme.colors.typography.primary,
+      color: selectedTheme.colors.text,
     },
     headerLeft: () => (
       <CircularIcon

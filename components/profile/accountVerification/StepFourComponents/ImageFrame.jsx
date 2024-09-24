@@ -2,7 +2,7 @@ import { Image, View, StyleSheet } from "react-native";
 import { TouchableRipple, Text, useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
-const ImageFrame = ({ label, image, onPress, disabled, error }) => {
+const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
   const theme = useTheme();
 
   return (
@@ -10,7 +10,7 @@ const ImageFrame = ({ label, image, onPress, disabled, error }) => {
       <Text style={[styles.label, { fontSize: theme.fontSize.lg }]}>
         {label}
       </Text>
-      <TouchableRipple onPress={onPress} disabled={disabled}>
+      <TouchableRipple onPress={onPress} disabled={isLoading}>
         <View
           style={[
             styles.imageFrame,

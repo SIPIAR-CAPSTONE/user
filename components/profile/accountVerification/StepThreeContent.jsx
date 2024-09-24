@@ -1,17 +1,17 @@
-import { View, StyleSheet, ScrollView } from "react-native";
-import { useTheme, Divider, Text } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { ScrollView, StyleSheet } from "react-native";
+import { Divider } from "react-native-paper";
 
 import FormHeader from "../../common/FormHeader";
 import ListItem from "../../ui/ListItem";
 import NextActionIcon from "../../common/NextActionIcon";
-import { Fragment, useState, lazy, useMemo } from "react";
+import { Fragment, useState, lazy } from "react";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import useBoundStore from "../../../zustand/useBoundStore";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
+import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
 
 const StepThreeContent = ({ goNextStep }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const setVerificationForm = useBoundStore(
@@ -70,62 +70,25 @@ const StepThreeContent = ({ goNextStep }) => {
   );
 };
 
-// Secondary heading local component for the second heading
-const SecondaryHeader = (props) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
-  const { title, desc } = props;
-
-  return (
-    <View style={styles.headerSecondContent}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title} variant="titleLarge">
-          {title}
-        </Text>
-        <AntDesign name="idcard" size={33} color={theme.colors.primary} />
-      </View>
-      <Text style={styles.desc} variant="bodyMedium">
-        {desc}
-      </Text>
-    </View>
-  );
-};
-
 export default StepThreeContent;
 
-const makeStyles = ({ colors }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     container: {
       paddingBottom: 70,
       height: 600,
     },
     listItem: {
-      backgroundColor: colors.background,
+      backgroundColor: theme.colors.background,
       paddingEnd: 1,
-    },
-    headerSecondContent: {
-      marginTop: 10,
-      marginBottom: 20,
     },
     divider: {
       marginVertical: 8,
     },
-    titleContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    title: {
-      fontWeight: "bold",
-      color: colors.typography.primary,
-    },
-    desc: {
-      color: colors.typography.secondary,
-    },
-  });
+  })
+);
 
 //Data for each id list item
-
 const ID_ITEMS_DATA = [
   {
     id: 0,

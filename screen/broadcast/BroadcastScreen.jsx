@@ -1,17 +1,19 @@
-import { View, FlatList, StyleSheet, RefreshControl } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { View, FlatList, RefreshControl } from "react-native";
+import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
-import { getTimeGap, getDistanceGap } from "../../utils/dateAndDistanceGap";
+import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { StyleSheet } from "react-native";
+import NotInternetAlert from "../../components/common/NoInternetAlert";
 
 const BroadcastScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [alerts, setAlerts] = useState([]);
   const alertsCount = alerts.length;
@@ -57,58 +59,64 @@ const BroadcastScreen = () => {
   /**
    * Renders the alert item in the list.
    */
-  const renderAlertItem = ({ item }) => (
-    <ListItem
-      key={item.id}
-      title={`${item.first_name} ${item.last_name}`}
-      titleSize={14}
-      subTitle={getTimeGap(item.createdAt)}
-      desc={item.address}
-      descSize={11}
-      onPress={() =>
-        navigation.navigate("Mapview", {
-          initialCoordinate: item.coordinate,
-          selectedAlertId: item.id,
-        })
-      }
-      renderIcon={() => (
-        <DistanceIcon
-          distance={getDistanceGap(userLocation, item.coordinate)}
-          status={item.condition}
-        />
-      )}
-      renderActionIcon={() => <NextActionIcon />}
-    />
-  );
+  const renderAlertItem = ({ item }) => {
+    const userFullName = `${item.first_name} ${item.last_name}`;
+    const distanceGap = getDistanceGap(userLocation, item.coordinate);
+    const timeGap = getTimeGap(item.createdAt);
+
+    return (
+      <ListItem
+        key={item.id}
+        title={userFullName}
+        titleSize={14}
+        subTitle={timeGap}
+        desc={item.address}
+        descSize={11}
+        onPress={() =>
+          navigation.navigate("Mapview", {
+            initialCoordinate: item.coordinate,
+            selectedAlertId: item.id,
+          })
+        }
+        renderIcon={() => (
+          <DistanceIcon distance={distanceGap} status={item.condition} />
+        )}
+        renderActionIcon={() => <NextActionIcon />}
+      />
+    );
+  };
 
   return (
-    <FlatList
-      data={alerts}
-      keyExtractor={(item) => item.id}
-      renderItem={renderAlertItem}
-      ListHeaderComponent={<Header />}
-      ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
-      contentContainerStyle={styles.contentContainer}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor="#F8852D"
-        />
-      }
-    />
+    <>
+      <FlatList
+        data={alerts}
+        keyExtractor={(item) => item.id}
+        renderItem={renderAlertItem}
+        ListHeaderComponent={<Header />}
+        ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#F8852D"
+          />
+        }
+      />
+      <NotInternetAlert />
+    </>
   );
 };
 
 export default BroadcastScreen;
 
-const makeStyles = ({ margin, colors, borderRadius, padding }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     header: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginVertical: margin.heading.vertical,
+      marginVertical: theme.spacing.md,
     },
     countContainer: {
       height: 24,
@@ -116,17 +124,18 @@ const makeStyles = ({ margin, colors, borderRadius, padding }) =>
       marginEnd: 6,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: colors.primary,
-      borderRadius: borderRadius.full,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
     },
     count: {
-      color: colors.onPrimary,
+      color: theme.colors.onPrimary,
     },
     contentContainer: {
-      paddingVertical: padding.body.vertical,
-      paddingHorizontal: padding.body.horizontal,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.base,
     },
-  });
+  })
+);
 
 //!remove this after applying fetching
 const TEMP_ALERTS_DATA = [

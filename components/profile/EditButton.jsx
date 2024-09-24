@@ -1,18 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
-import { Text, useTheme, TouchableRipple } from "react-native-paper";
+import { Text, TouchableRipple } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
-import { useMemo } from "react";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
-const EditButton = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
-  const navigation = useNavigation();
+const EditButton = ({onPress}) => {
+  const { styles, theme } = useStyles(stylesheet);
 
   return (
     <TouchableRipple
       borderless
-      onPress={() => navigation.navigate("EditProfile")}
+      onPress={onPress}
       style={styles.touchableRipple}
     >
       <View style={styles.editButton}>
@@ -25,22 +22,23 @@ const EditButton = () => {
 
 export default EditButton;
 
-const makeStyles = ({ colors, borderRadius }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     touchableRipple: {
-      borderRadius: borderRadius.full,
-      marginTop: 12,
+      borderRadius: theme.borderRadius.full,
+      marginTop: theme.spacing.base,
     },
     editButton: {
       flexDirection: "row",
       alignItems: "center",
       columnGap: 4,
-      paddingVertical: 7,
-      paddingHorizontal: 16,
-      backgroundColor: colors.primary,
-      borderRadius: borderRadius.full,
+      paddingVertical: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.lg,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
     },
     label: {
-      color: colors.onPrimary,
+      color: theme.colors.onPrimary,
     },
-  });
+  })
+);

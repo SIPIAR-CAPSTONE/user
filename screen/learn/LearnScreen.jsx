@@ -1,17 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import StatusBar from "../../components/common/StatusBar";
+import {  StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import MaterialCard from "../../components/learn/MaterialCard";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import Layout from "../../components/common/Layout";
 
-const LearnScreen = () => {
+const LearnScreen = ({ navigation }) => {
+  const { styles, theme } = useStyles(stylesheet);
+
   return (
-    <View>
-      <Text>LearnScreen</Text>
+    <Layout scrollable>
+      <View style={styles.section}>
+        <Text variant="titleMedium" style={styles.sectionLabel}>
+          Practice
+        </Text>
+        <MaterialCard
+          size="large"
+          direction="left"
+          title="Hands-on CPR Guide Training"
+          backgroundColor={theme.colors.primary}
+          buttonLabel="Practice CPR"
+          imageSource={require("../../assets/images/hand-white.png")}
+          onPress={() => navigation.navigate("LearnCpr")}
+        />
+      </View>
 
-      <StatusBar />
-    </View>
+      <View style={styles.section}>
+        <Text variant="titleMedium" style={styles.sectionLabel}>
+          Learning Materials
+        </Text>
+      </View>
+    </Layout>
   );
 };
 
 export default LearnScreen;
 
-const styles = StyleSheet.create({});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    section: {
+      marginBottom: theme.spacing.xl,
+    },
+    sectionLabel: {
+      marginVertical: theme.spacing.md,
+      fontWeight: "bold",
+    },
+  })
+);

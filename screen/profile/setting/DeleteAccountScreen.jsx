@@ -1,15 +1,85 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import StatusBar from '../../../components/common/StatusBar'
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
+import { useState } from "react";
+import FormHeader from "../../../components/common/FormHeader";
+import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
+import TextInput from "../../../components/ui/TextInput";
+import Button from "../../../components/ui/Button";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import Layout from "../../../components/common/Layout";
+import { isFormValid } from "../../../utils/formValidation";
+
+const fields = [{ name: "password", rules: [{ type: "required" }] }];
 
 const DeleteAccountScreen = () => {
+  const { theme, styles } = useStyles(stylesheet);
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => {
+    if (isFormValid(fields, { password }, setErrors)) {
+      setIsConfirmationDialogVisible(true);
+    }
+    return;
+  };
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
+
+  const handleDeleteAccount = () => {
+    console.log("account deleted");
+  };
+
   return (
-    <View>
-      <Text>DeleteAccountScreen</Text>
+    <Layout>
+      <FormHeader
+        title="WARNING:"
+        titleStyle={{ color: theme.colors.primary }}
+        titleSize="large"
+        desc="By deleting your account it will permanently remove in our system including all your related information."
+      />
 
-      <StatusBar />
-    </View>
-  )
-}
+      <Text style={styles.instruction} variant="bodyMedium">
+        To continue, please provide your password
+      </Text>
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        type="password"
+        error={errors.password}
+      />
 
-export default DeleteAccountScreen
+      <View style={styles.buttonContainer}>
+        <Button label="Delete Account" onPress={showConfirmationDialog} />
+      </View>
+
+      <ConfirmationDialog
+        title="Are you sure you want to delete your account?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={handleDeleteAccount}
+        onPressCancel={hideConfirmationDialog}
+      />
+    </Layout>
+  );
+};
+
+export default DeleteAccountScreen;
+
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    instruction: {
+      marginHorizontal: "auto",
+      marginTop: 40,
+      marginBottom: 20,
+      color: theme.colors.text,
+    },
+    buttonContainer: {
+      marginTop: 60,
+      rowGap: theme.spacing.xxs,
+    },
+    cancelButton: {
+      borderRadius: theme.borderRadius.sm,
+    },
+  })
+);

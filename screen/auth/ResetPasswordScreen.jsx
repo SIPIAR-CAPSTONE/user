@@ -1,59 +1,46 @@
-import { View, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
-import { useMemo, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import StatusBar from "../../components/common/StatusBar";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import { PasswordFormField } from "../../components/ui/FormField";
+import Button from "../../components/ui/Button";
 import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
+import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
+import SuccessConfirmation from "../../components/common/SuccessConfirmation";
+import { isFormValid } from "../../utils/formValidation";
+
+const fields = [
+  {
+    name: "newPassword",
+    rules: [{ type: "required" }],
+  },
+  {
+    name: "confirmNewPassword",
+    rules: [
+      { type: "required" },
+      {
+        type: "match",
+        matchField: "newPassword",
+        message: "The Confirmation Password does not match.",
+      },
+    ],
+  },
+];
 
 const ResetPasswordScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!newPassword) errors.newPassword = "Password is required.";
-    if (!confirmNewPassword) {
-      errors.confirmNewPassword = "Confirm Password is required.";
-    }
-    if (newPassword !== confirmNewPassword) {
-      errors.confirmNewPassword =
-        "Password and Confirm Password must be match.";
-      errors.newPassword = "Password and Confirm Password must be match.";
-    }
-
-    // Set the errors and update form validity if it is empty
-    setErrors(errors);
-
-    // return true if there is no error
-    // false if error length is greater than zero
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = async () => {
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
+    if (isFormValid(fields, { newPassword, confirmNewPassword }, setErrors)) {
       setLoading(true);
 
       //* update password of user
@@ -70,19 +57,14 @@ const ResetPasswordScreen = () => {
         errors.confirmNewPassword = error.message;
         setErrors(errors);
       } else if (!error) {
-        //* navigate to success confirmation screen
-        navigation.navigate("SuccessConfirmation", {
-          title: "Reset Password Successfully!",
-          desc: "You can now login your new password credentials.",
-          nextScreen: "StartingScreen",
-        });
+        setShowSuccessAlert(true);
       }
     }
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
+      <Form style={styles.form}>
         <FormHeader
           title="Reset Password"
           titleSize="large"
@@ -91,48 +73,43 @@ const ResetPasswordScreen = () => {
 
         <View style={{ height: 16 }} />
 
-        <PasswordFormField
-          label="New Password"
+        <TextInput
+          placeholder="New Password"
+          type="password"
           value={newPassword}
           onChangeText={setNewPassword}
           error={errors.newPassword}
           disabled={loading}
         />
-        <PasswordFormField
-          label="Confirm New Password"
+        <TextInput
+          placeholder="Confirm New Password"
+          type="password"
           value={confirmNewPassword}
           onChangeText={setConfirmNewPassword}
           error={errors.confirmNewPassword}
           disabled={loading}
         />
 
-        {/* next button */}
-        <PrimaryButton
-          label="Next"
-          onPress={handleSubmit}
-          disabled={loading}
-          style={styles.button}
-        />
-      </View>
+        <Button label="Next" onPress={handleSubmit} isLoading={loading} />
+      </Form>
 
-      <StatusBar />
-    </View>
+      <SuccessConfirmation
+        open={showSuccessAlert}
+        setOpen={setShowSuccessAlert}
+        title="Reset Password Successfully!"
+        desc="You can now login your new password credentials."
+        onDelayEnd={() => navigation.navigate("StartingScreen")}
+      />
+    </Layout>
   );
 };
 
 export default ResetPasswordScreen;
 
-const makeStyles = ({ borderRadius, padding, gap }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
     form: {
-      rowGap: gap.lg,
+      paddingHorizontal: theme.spacing.base,
     },
-    button: {
-      marginTop: 20,
-      borderRadius: borderRadius.base,
-    },
-  });
+  })
+);

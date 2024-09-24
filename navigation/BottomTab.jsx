@@ -1,9 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useTheme } from "react-native-paper";
 
 import HomeScreen from "../screen/home/HomeScreen";
 import BroadcastScreen from "../screen/broadcast/BroadcastScreen";
-import CprScreen from "../screen/CPR/CprScreen";
+import CprConfirmationScreen from "../screen/CPR/CprConfirmationScreen";
 import LearnScreen from "../screen/learn/LearnScreen";
 import ProfileScreen from "../screen/profile/ProfileScreen";
 
@@ -11,14 +10,13 @@ import CircularIcon from "../components/ui/CircularIcon";
 import LogoTitle from "../components/navigation/LogoTitle";
 import TabBarIcon from "../components/navigation/TabBarIcon";
 import CprTabBarIcon from "../components/navigation/CprTabBarIcon";
-import { useMemo } from "react";
+import { useStyles, createStyleSheet } from "../hooks/useStyles";
 import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = ({ navigation }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles, theme } = useStyles(stylesheet);
 
   const screenOptions = {
     tabBarStyle: styles.tabBar,
@@ -61,8 +59,8 @@ const Tabs = ({ navigation }) => {
         }}
       />
       <Tab.Screen
-        name="CPRScreen"
-        component={CprScreen}
+        name="CprConfirmationScreen"
+        component={CprConfirmationScreen}
         options={{
           title: "",
           tabBarIcon: () => <CprTabBarIcon />,
@@ -96,14 +94,14 @@ const Tabs = ({ navigation }) => {
 
 export default Tabs;
 
-const makeStyles = ({ colors }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     sceneContainer: {
-      backgroundColor: colors.background,
+      backgroundColor: theme.colors.background,
     },
     tabBar: {
       height: 46,
-      backgroundColor: colors.background,
+      backgroundColor: theme.colors.background,
       paddingTop: 2,
     },
     tabBarLabel: {
@@ -113,14 +111,15 @@ const makeStyles = ({ colors }) =>
     },
     header: {
       elevation: 0,
-      backgroundColor: colors.background,
+      backgroundColor: theme.colors.background,
     },
     headerTitle: {
       fontWeight: "bold",
       fontSize: 22,
-      color: colors.typography.primary,
+      color: theme.colors.text,
     },
     headerRightContainer: {
       marginEnd: 14,
     },
-  });
+  })
+);

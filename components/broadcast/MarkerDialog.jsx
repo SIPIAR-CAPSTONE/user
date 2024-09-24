@@ -1,9 +1,10 @@
-import { StyleSheet, View } from "react-native";
-import { Text, Dialog, Portal, Button, useTheme } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
-import { getDistanceGap, getTimeGap } from "../../utils/dateAndDistanceGap";
+import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import InfoField from "./InfoField";
 
 const EMPTY_PLACEHOLDER = " - ";
 
@@ -21,8 +22,7 @@ const MarkerDialog = ({
   selectedMarker,
   userLocation,
 }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
   const FULL_NAME = `${selectedMarker?.first_name} ${selectedMarker?.last_name}`;
@@ -69,25 +69,29 @@ const MarkerDialog = ({
             icon="user"
             label="User"
             value={name}
-            colors={{ background: "#FBF2DD", color: "#D2BD84" }}
+            iconBackgroundColor="#FBF2DD"
+            iconColor="#D2BD84"
           />
           <InfoField
             icon="map-pin"
             label="Distance"
             value={distanceGap}
-            colors={{ background: "#c3ffcc", color: "#53a661" }}
+            iconBackgroundColor="#c3ffcc"
+            iconColor="#53a661"
           />
           <InfoField
             icon="clock"
             label="Time Requested"
             value={timeGap}
-            colors={{ background: "#D9E8FE", color: "#688CA9" }}
+            iconBackgroundColor="#D9E8FE"
+            iconColor="#688CA9"
           />
           <InfoField
             icon="calendar"
             label="Date Requested"
             value={dateRequested}
-            colors={{ background: "#FFD8CC", color: "#BB655D" }}
+            iconBackgroundColor="#FFD8CC"
+            iconColor="#BB655D"
           />
         </Dialog.Content>
         <Dialog.Actions>
@@ -100,66 +104,17 @@ const MarkerDialog = ({
   );
 };
 
-/**
- * InfoField component displays a single piece of information with its corresponding icon.
- *
- * @param {string} props.icon - The name of the icon to be displayed.
- * @param {string} props.label - The label of the information field.
- * @param {string} props.value - The value of the information field.
- * @param {Object} props.colors - The background and color of the icon container.
- * @param {string} props.colors.background - The background color of the icon container.
- * @param {string} props.colors.color - The text color of the icon.
- */
-const InfoField = ({ icon, label, value, colors }) => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
-
-  return (
-    <View style={styles.infoField}>
-      <View style={styles.iconContainer}>
-        <Feather name={icon} size={18} color={colors.color} />
-      </View>
-      {/* Container for the label and value */}
-      <View>
-        <Text style={styles.fieldValue} variant="titleMedium">
-          {value}
-        </Text>
-        <Text style={styles.fieldLabel} variant="bodySmall">
-          {label}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
 export default MarkerDialog;
 
-const makeStyles = ({ colors, borderRadius }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     title: {
       fontWeight: "bold",
+      fontSize: theme.fontSize.lg
     },
     infoFieldsContainer: {
-      marginTop: 10,
-      rowGap: 12,
+      marginTop: theme.spacing.xxs,
+      rowGap: theme.spacing.xs,
     },
-    infoField: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: 12,
-    },
-    iconContainer: {
-      backgroundColor: "red",
-      padding: 14,
-      backgroundColor: colors.background,
-      borderRadius: borderRadius.full,
-    },
-    fieldValue: {
-      height: 25,
-      color: colors.typography.primary,
-    },
-    fieldLabel: {
-      height: 22,
-      color: colors.typography.secondary,
-    },
-  });
+  })
+);

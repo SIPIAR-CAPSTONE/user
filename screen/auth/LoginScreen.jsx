@@ -1,20 +1,28 @@
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Button, useTheme, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Button as NPButton, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-import StatusBar from "../../components/common/StatusBar";
 import FormHeader from "../../components/common/FormHeader";
-import PrimaryButton from "../../components/ui/PrimaryButton";
-import {
-  TextFormField,
-  PasswordFormField,
-} from "../../components/ui/FormField";
+import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import TextInput from "../../components/ui/TextInput";
+import Form from "../../components/common/Form";
+import Layout from "../../components/common/Layout";
+import { isFormValid } from "../../utils/formValidation";
+
+const fields = [
+  { name: "email", rules: [{ type: "required" }] },
+  {
+    name: "password",
+    rules: [{ type: "required" }],
+  },
+];
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -25,8 +33,7 @@ const LoginScreen = () => {
   const setSession = useBoundStore((state) => state.setSession);
   const largeSecureStore = new LargeSecureStore();
   const { setState } = useUserMetadata();
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const { styles } = useStyles(stylesheet);
 
   //* PROFILE PICTURE SETTER
   const setProfilePicturePath = useBoundStore(
@@ -57,164 +64,120 @@ const LoginScreen = () => {
     }
   };
 
-  /*
-   *
-   * Form Validation
-   *
-   */
-  const validateForm = () => {
-    const errors = {};
-
-    if (!email) errors.email = "Email is required.";
-    if (!password) errors.password = "Password is required.";
-
-    setErrors(errors);
-
-    // if error is no more than 0 means the form is valid
-    return Object.keys(errors).length === 0;
-  };
-
-  /*
-   *
-   *  Handle submission for signup
-   *
-   */
   const handleSubmit = async () => {
-    setLoading(true);
+    try {
+      if (isFormValid(fields, { email, password }, setErrors)) {
+        setLoading(true);
 
-    //validateForm will return true if there is no error
-    const isFormValid = validateForm();
-
-    if (isFormValid) {
-      //* If form valid, sign in account
-      const { data, error } = await supabase.auth
-        .signInWithPassword({
+        //* If form valid, sign in account
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: email,
           password: password,
-        })
-        .finally(() => setLoading(false));
+        });
 
-      if (error) {
-        let errors = {};
-        errors.password = error.message;
-        setErrors(errors);
-      } else if (!error) {
-        //* call the setItem in which it encrypt the session and store in secure local storage
-        encryptedSession = await largeSecureStore.setItem(
-          "session",
-          JSON.stringify(data["session"])
-        );
+        if (error) {
+          let errors = {};
+          errors.password = error.message;
+          setErrors(errors);
+        } else if (!error) {
+          //* call the setItem in which it encrypt the session and store in secure local storage
+          encryptedSession = await largeSecureStore.setItem(
+            "session",
+            JSON.stringify(data["session"])
+          );
 
-        setSession(encryptedSession);
+          setSession(encryptedSession);
 
-        //! set session global state variables
-        setState(data["session"]);
+          //* set session global state variables
+          setState(data["session"]);
 
-        //! CALL IMAGE DOWNLOADER FUNC
-        imageDownload(data["session"]["user"]["user_metadata"]["email"]);
+          //* CALL IMAGE DOWNLOADER FUNC
+          imageDownload(data["session"]["user"]["user_metadata"]["email"]);
+        }
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.containerContent}
-    >
-      <View style={styles.form}>
+    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
+      <Form style={styles.form}>
         <FormHeader
           title="Sign In"
           titleSize="large"
           desc="Please login to your account to access all app features."
         />
 
-        <TextFormField
-          label="Email Address"
+        <TextInput
+          placeholder="Email Address"
           value={email}
           inputMode="email"
           onChangeText={setEmail}
           error={errors.email}
           disabled={loading}
         />
-        <PasswordFormField
-          label="Password"
+        <TextInput
+          placeholder="Password"
+          type="password"
           value={password}
           onChangeText={setPassword}
           error={errors.password}
           disabled={loading}
         />
 
-        <Button
+        <NPButton
           compact
           mode="text"
           style={styles.forgotPassButton}
           onPress={() => navigation.navigate("ForgotPassword")}
         >
           Forgot Password
-        </Button>
+        </NPButton>
 
-        <PrimaryButton
-          label="Sign In"
-          onPress={handleSubmit}
-          style={styles.signinButton}
-          disabled={loading}
-        />
-      </View>
+        <Button label="Sign In" onPress={handleSubmit} isLoading={loading} />
 
-      <View style={styles.footer}>
-        <Text variant="labelMedium">Don't Have an Account?</Text>
-        <Button
-          mode="text"
-          compact
-          onPress={() => navigation.navigate("Signup")}
-          style={styles.signupButton}
-          labelStyle={styles.signinButtonLabel}
-        >
-          Sign Up
-        </Button>
-      </View>
-
-      <StatusBar />
-    </ScrollView>
+        <View style={styles.footer}>
+          <Text variant="labelLarge">Don't Have an Account?</Text>
+          <NPButton
+            mode="text"
+            compact
+            onPress={() => navigation.navigate("Signup")}
+            style={styles.signupButton}
+            labelStyle={styles.signinButtonLabel}
+          >
+            Sign Up
+          </NPButton>
+        </View>
+      </Form>
+    </Layout>
   );
 };
 
 export default LoginScreen;
 
-const makeStyles = ({ padding, gap, borderRadius, fontSize }) =>
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      paddingHorizontal: padding.body.horizontal,
-    },
-    containerContent: {
-      flex: 1,
-      justifyContent: "space-between",
-    },
-    header: {
-      marginVertical: 20,
-    },
     form: {
-      rowGap: gap.lg,
+      paddingHorizontal: theme.spacing.base,
     },
     forgotPassButton: {
       maxWidth: 180,
       alignSelf: "flex-end",
-      marginBottom: 20,
-      borderRadius: borderRadius.md,
-    },
-    signinButton: {
-      borderRadius: borderRadius.base,
+      marginBottom: 10,
+      borderRadius: theme.borderRadius.md,
     },
     signupButton: {
-      borderRadius: borderRadius.base,
+      borderRadius: theme.borderRadius.base,
     },
     signinButtonLabel: {
-      fontSize: fontSize.xs,
+      fontSize: theme.fontSize.sm,
     },
     footer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
+      marginTop: 14,
     },
-  });
+  })
+);

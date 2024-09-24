@@ -8,7 +8,7 @@ const LogoTitle = () => {
   return (
     <View style={styles.logoTitle}>
       <Image style={styles.logo} source={require("../../assets/logo.png")} />
-      <Text style={[styles.title, { color: theme.colors.typography.primary }]}>
+      <Text style={[styles.title, { color: theme.colors.text }]}>
         SIPIAR
       </Text>
     </View>
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     columnGap: 7,
   },
   logo: {
-    height: 42,
-    width: 42,
+    height: 38,
+    width: 38,
   },
   title: {
     fontSize: 22,

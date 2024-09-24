@@ -1,7 +1,5 @@
-import { ScrollView } from "react-native";
-import { useTheme } from "react-native-paper";
-
-import StatusBar from "../../../components/common/StatusBar";
+import { StyleSheet } from "react-native";
+import Layout from "../../../components/common/Layout";
 import {
   Title,
   H1,
@@ -11,15 +9,8 @@ import {
 } from "../../../components/terms and policy/Typography";
 
 const PrivacyAndPolicyScreen = () => {
-  const theme = useTheme();
-
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingVertical: theme.padding.body.vertical,
-        paddingHorizontal: theme.padding.body.horizontal,
-      }}
-    >
+    <Layout scrollable contentContainerStyle={styles.container}>
       <Title>SIPIAR Privacy Policy</Title>
 
       <P>
@@ -110,10 +101,14 @@ const PrivacyAndPolicyScreen = () => {
         If you have any questions or concerns about this Privacy Policy, please
         contact us at <Strong>sipiar@gmail.com.</Strong>
       </P>
-
-      <StatusBar />
-    </ScrollView>
+    </Layout>
   );
 };
 
 export default PrivacyAndPolicyScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 30,
+  },
+})

@@ -1,24 +1,37 @@
 import { SectionList, StyleSheet } from "react-native";
-import { Divider, useTheme } from "react-native-paper";
+import { Divider } from "react-native-paper";
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import { useNavigation } from "@react-navigation/native";
 
 const MyAccountScreen = () => {
-  const theme = useTheme();
-  const styles = useMemo(() => makeStyles(theme), [theme]);
+  const navigation = useNavigation();
+  const { styles } = useStyles(stylesheet);
   const userMetaData = useBoundStore((state) => state.userMetaData);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
 
-  //! retrieve profile picture upon screen load
+  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
+
+  const handleConfirmation = () => {
+    hideConfirmationDialog();
+    navigation.navigate("EditProfile");
+  };
+
+  //* retrieve profile picture upon screen load
   const [profilePictureUri, setProfilePictureUri] = useState(null);
   useImageReader(setProfilePictureUri);
 
-  //! format date to string (ex.july 1, 2024)
+  //* format date to string (ex.july 1, 2024)
   const formatDate = (date) => {
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -30,8 +43,8 @@ const MyAccountScreen = () => {
   const date = new Date(userMetaData["birthday"]);
   const formattedDate = formatDate(date);
 
-  //! array template for UI rendering
-  const SAMPLE_USER_DATA = [
+  //* array template for UI rendering
+  const USER_DATA = [
     {
       title: "Personal Information",
       data: [
@@ -66,7 +79,7 @@ const MyAccountScreen = () => {
   return (
     <>
       <SectionList
-        sections={SAMPLE_USER_DATA}
+        sections={USER_DATA}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
@@ -76,11 +89,18 @@ const MyAccountScreen = () => {
             imageSource={profilePictureUri}
             name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
             email={userMetaData["email"]}
-            renderFooter={() => <EditButton />}
+            renderFooter={() => <EditButton onPress={showConfirmationDialog} />}
           />
         }
         ItemSeparatorComponent={renderItemSeperator}
         contentContainerStyle={styles.contentContainer}
+      />
+
+      <ConfirmationDialog
+        title="Are you sure you want to edit your account?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={handleConfirmation}
+        onPressCancel={hideConfirmationDialog}
       />
 
       <StatusBar />
@@ -88,17 +108,18 @@ const MyAccountScreen = () => {
   );
 };
 
-const makeStyles = ({ padding }) =>
+export default MyAccountScreen;
+
+const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     contentContainer: {
-      paddingVertical: padding.body.vertical,
+      paddingBottom: theme.spacing.md,
     },
     divider: {
-      marginHorizontal: padding.body.horizontal,
+      marginHorizontal: theme.spacing.base,
     },
     listHeaderContainer: {
       marginBottom: 16,
     },
-  });
-
-export default MyAccountScreen;
+  })
+);

@@ -16,49 +16,28 @@ const commonTheme = {
     md: 10,
     lg: 12,
     xl: 14,
+    curve: 28,
     full: 100,
   },
-  padding: {
-    body: {
-      horizontal: 12,
-      vertical: 14,
-    },
-    button: {
-      xs: 1,
-      sm: 2,
-      base: 4,
-      md: 6,
-      lg: 8,
-      xl: 10,
-    },
-  },
-  margin: {
-    heading: {
-      vertical: 14,
-    },
-    body: {
-      horizontal: 16,
-      vertical: 18,
-    },
-  },
-  gap: {
-    xs: 4,
-    sm: 6,
-    base: 8,
-    md: 10,
-    lg: 12,
-    xl: 14,
+  spacing: {
+    xxxs: 4,
+    xxs: 6,
+    xs: 8,
+    sm: 10,
+    base: 12,
+    md: 14,
+    lg: 16,
+    xl: 18,
+    xxl: 20,
+    xxxl: 24,
   },
 };
 
 const lightTheme = {
   colors: {
-    typography: {
-      primary: "#000000",
-      onPrimary: "#ffffff",
-      secondary: "#6b6b6b",
-      tertiary: "#aeaeae",
-    },
+    text: "#000000",
+    text2: "#6b6b6b",
+    text3: "#aeaeae",
     dialogBackground: "#ee4048",
     primary: "#ee4048",
     onPrimary: "#ffffff",
@@ -108,12 +87,9 @@ const lightTheme = {
 };
 const darkTheme = {
   colors: {
-    typography: {
-      primary: "#ffffff",
-      onPrimary: "#000000",
-      secondary: "#c8c8c8",
-      tertiary: "#969696",
-    },
+    text: "#ffffff",
+    text2: "#c8c8c8",
+    text3: "#969696",
     primary: "#ee4048",
     onPrimary: "#ffffff",
     primaryContainer: "#782024",
@@ -161,9 +137,4 @@ const darkTheme = {
   ...commonTheme,
 };
 
-const themeStatus = {
-  dark: "dark",
-  light: "light",
-};
-
-export { lightTheme, darkTheme, themeStatus };
+export { lightTheme, darkTheme };

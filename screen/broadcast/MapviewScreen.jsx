@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 
 import MarkerDialog from "../../components/broadcast/MarkerDialog";
 import useLocation from "../../hooks/useLocation";
+import NotInternetAlert from "../../components/common/NoInternetAlert";
 
 const MapviewScreen = ({ route }) => {
   const { initialCoordinate, selectedAlertId } = route.params;
@@ -66,6 +67,8 @@ const MapviewScreen = ({ route }) => {
         selectedMarker={selectedAlert}
         userLocation={userLocation}
       />
+
+      <NotInternetAlert />
     </>
   );
 };
