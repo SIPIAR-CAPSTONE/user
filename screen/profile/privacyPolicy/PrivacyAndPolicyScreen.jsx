@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Layout from "../../../components/common/Layout";
 import {
   Title,
@@ -7,10 +7,34 @@ import {
   P,
   Strong,
 } from "../../../components/terms and policy/Typography";
+import AppBar from "../../../components/ui/AppBar";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import { Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 
 const PrivacyAndPolicyScreen = () => {
+  const navigation = useNavigation();
+  const { styles } = useStyles(stylesheet);
+
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon
+        name="arrow-back"
+        pressable
+        onPress={() => navigation.goBack()}
+      />
+      <Text style={styles.appBarTitle}>Privacy Policy</Text>
+      <View style={{ width: 30 }} />
+    </AppBar>
+  );
+
   return (
-    <Layout scrollable contentContainerStyle={styles.container}>
+    <Layout
+      scrollable
+      contentContainerStyle={styles.container}
+      AppbarComponent={CustomAppBar}
+    >
       <Title>SIPIAR Privacy Policy</Title>
 
       <P>
@@ -107,8 +131,15 @@ const PrivacyAndPolicyScreen = () => {
 
 export default PrivacyAndPolicyScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 30,
-  },
-})
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
+    container: {
+      paddingVertical: 30,
+    },
+  })
+);

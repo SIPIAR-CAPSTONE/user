@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   Title,
   H1,
@@ -9,10 +9,33 @@ import {
   Time,
 } from "../../../components/terms and policy/Typography";
 import Layout from "../../../components/common/Layout";
+import AppBar from "../../../components/ui/AppBar";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import { useNavigation } from "@react-navigation/native";
+import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
+import { Text } from "react-native-paper";
 
 const TermsAndConditionScreen = () => {
+  const navigation = useNavigation();
+  const { styles } = useStyles(stylesheet);
+
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon
+        name="arrow-back"
+        pressable
+        onPress={() => navigation.goBack()}
+      />
+      <Text style={styles.appBarTitle}>Terms and Conditions</Text>
+      <View style={{ width: 30 }} />
+    </AppBar>
+  );
   return (
-    <Layout scrollable contentContainerStyle={styles.container}>
+    <Layout
+      scrollable
+      contentContainerStyle={styles.container}
+      AppbarComponent={CustomAppBar}
+    >
       <Title>SIPIAR Terms and Conditions</Title>
 
       <H1>1. Acceptance of Terms</H1>
@@ -128,8 +151,15 @@ const TermsAndConditionScreen = () => {
 
 export default TermsAndConditionScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 30,
-  },
-});
+const stylesheet = createStyleSheet((theme) =>
+  StyleSheet.create({
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
+    container: {
+      paddingVertical: 30,
+    },
+  })
+);

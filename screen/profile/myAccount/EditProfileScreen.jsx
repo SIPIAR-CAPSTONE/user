@@ -244,7 +244,7 @@ export default EditProfileScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     appBarTitle: {
-      fontSize: 20,
+      fontSize: 23,
       fontWeight: "bold",
       color: theme.colors.text,
     },

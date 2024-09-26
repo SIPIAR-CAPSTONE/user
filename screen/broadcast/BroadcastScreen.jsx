@@ -1,7 +1,7 @@
 import { View, FlatList, RefreshControl } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
@@ -11,32 +11,52 @@ import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import { StyleSheet } from "react-native";
 import NotInternetAlert from "../../components/common/NoInternetAlert";
+import AppBar from "../../components/ui/AppBar";
+import CircularIcon from "../../components/ui/CircularIcon";
+import SortBottomSheet from "../../components/broadcast/SortBottomSheet";
+import Header from "../../components/broadcast/Header";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [alerts, setAlerts] = useState([]);
   const alertsCount = alerts.length;
-
-  //location of the user of the device
+  const bottomSheetRef = useRef(null);
+  const [showSortSheet, setShowSortSheet] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("name");
+  const [refreshing, setRefreshing] = useState(false);
   const { userLocation } = useLocation();
 
-  //For refreshing the list functionality
-  const [refreshing, setRefreshing] = useState(false);
+  const closeSortSheet = () => setShowSortSheet(false);
 
-  const fetchAlerts = async () => {
-    //TODO: fetch
-    setAlerts(TEMP_ALERTS_DATA); //!remove this
-  };
+  const sortedAlerts = alerts.sort((a, b) => {
+    if (selectedSort === "name") {
+      return a.first_name.localeCompare(b.first_name);
+    } else if (selectedSort === "address") {
+      return a.address.localeCompare(b.address);
+    } else if (selectedSort === "timeRequested") {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else if (selectedSort === "distance") {
+      //split to remove the distance unit like m and km
+      const bDistance = getDistanceGap(userLocation, b.coordinate).split(
+        " "
+      )[0];
+      const aDistance = getDistanceGap(userLocation, a.coordinate).split(
+        " "
+      )[0];
+      return bDistance - aDistance;
+    }
+  });
 
   useEffect(() => {
     fetchAlerts();
   }, []);
 
-  /**
-   * when user drag the screen from top to bottom it will execute fetchAlerts
-   * to refresh the data of the list
-   */
+  const fetchAlerts = async () => {
+    //TODO: fetch
+    setAlerts(TEMP_ALERTS_DATA); //!change this this
+  };
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -45,20 +65,6 @@ const BroadcastScreen = () => {
     }, 2000);
   }, []);
 
-  const Header = () => (
-    <View style={styles.header}>
-      <Text variant="titleMedium">EMERGENCY ALERTS</Text>
-      <View style={styles.countContainer}>
-        <Text variant="labelSmall" style={styles.count}>
-          {alertsCount}
-        </Text>
-      </View>
-    </View>
-  );
-
-  /**
-   * Renders the alert item in the list.
-   */
   const renderAlertItem = ({ item }) => {
     const userFullName = `${item.first_name} ${item.last_name}`;
     const distanceGap = getDistanceGap(userLocation, item.coordinate);
@@ -88,11 +94,19 @@ const BroadcastScreen = () => {
 
   return (
     <>
+      <AppBar>
+        <Text style={styles.appBarTitle}>Broadcast</Text>
+        <CircularIcon
+          name="filter"
+          pressable
+          onPress={() => setShowSortSheet((prevState) => !prevState)}
+        />
+      </AppBar>
       <FlatList
-        data={alerts}
+        data={sortedAlerts}
         keyExtractor={(item) => item.id}
         renderItem={renderAlertItem}
-        ListHeaderComponent={<Header />}
+        ListHeaderComponent={<Header count={alertsCount} />}
         ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
         contentContainerStyle={styles.contentContainer}
         refreshControl={
@@ -103,6 +117,13 @@ const BroadcastScreen = () => {
           />
         }
       />
+      <SortBottomSheet
+        ref={bottomSheetRef}
+        isVisible={showSortSheet}
+        close={closeSortSheet}
+        selectedOption={selectedSort}
+        setSelectedOption={setSelectedSort}
+      />
       <NotInternetAlert />
     </>
   );
@@ -112,26 +133,12 @@ export default BroadcastScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginVertical: theme.spacing.md,
-    },
-    countContainer: {
-      height: 24,
-      width: 24,
-      marginEnd: 6,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-    },
-    count: {
-      color: theme.colors.onPrimary,
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
     },
     contentContainer: {
-      paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.base,
     },
   })
@@ -172,7 +179,7 @@ const TEMP_ALERTS_DATA = [
   {
     id: 4,
     distance: 510,
-    createdAt: "2024-07-01T09:45:23.123Z",
+    createdAt: "2024-08-01T09:45:23.123Z",
     address: "Lakeside, 22 Willow Road",
     condition: false,
     first_name: "Emma",

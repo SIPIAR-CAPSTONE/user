@@ -8,6 +8,9 @@ import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import Form from "../../../components/common/Form";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
+import AppBar from "../../../components/ui/AppBar";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import { useNavigation } from "@react-navigation/native";
 
 const fields = [
   {
@@ -32,6 +35,7 @@ const fields = [
 ];
 
 const EditPasswordScreen = () => {
+  const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const [form, setForm] = useState({
     oldPassword: "",
@@ -61,8 +65,18 @@ const EditPasswordScreen = () => {
     //TODO: diri and query
   };
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon
+        name="arrow-back"
+        pressable
+        onPress={() => navigation.goBack()}
+      />
+    </AppBar>
+  );
+
   return (
-    <Layout removeDefaultPaddingHorizontal>
+    <Layout removeDefaultPaddingHorizontal AppbarComponent={CustomAppBar}>
       <Form style={styles.form}>
         <FormHeader
           title="Change Password"
@@ -123,7 +137,7 @@ const stylesheet = createStyleSheet((theme) =>
       paddingHorizontal: theme.spacing.base,
     },
     button: {
-      marginTop: theme.spacing.base
-    }
+      marginTop: theme.spacing.base,
+    },
   })
 );

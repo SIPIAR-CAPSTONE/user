@@ -16,6 +16,7 @@ import * as FileSystem from "expo-file-system";
 import useImageReader from "../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
+import AppBar from "../../components/ui/AppBar";
 
 /**
  * Profile screen component
@@ -86,8 +87,14 @@ const ProfileScreen = () => {
     }, 10);
   };
 
+  const CustomAppBar = () => (
+    <AppBar centerContent>
+      <Text style={styles.appBarTitle}>Profile</Text>
+    </AppBar>
+  );
+
   return (
-    <Layout scrollable>
+    <Layout scrollable AppbarComponent={CustomAppBar}>
       <UserProfileCard
         name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
         email={userMetaData["email"]}
@@ -193,6 +200,11 @@ export default ProfileScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
     listItems: {
       marginTop: 20,
       rowGap: 7,
@@ -221,7 +233,7 @@ const stylesheet = createStyleSheet((theme) =>
     },
     desc: {
       flex: 1,
-      fontSize: 13
+      fontSize: 13,
     },
   })
 );
