@@ -58,32 +58,36 @@ const LearnCprScoreScreen = () => {
     "depthScore",
     "Perfect"
   );
-  const tooMuchDepthInPercentage = getScorePercentage(
+  const tooDeepDepthInPercentage = getScorePercentage(
     compressionHistory,
     "depthScore",
     "Too Deep"
   );
-  const tooMuchDepthCount = countScore(compressionHistory, "depthScore", "red");
-  const tooLittleDepthInPercentage = getScorePercentage(
+  const tooDeepDepthCount = countScore(
+    compressionHistory,
+    "depthScore",
+    "Too Deep"
+  );
+  const tooShallowDepthInPercentage = getScorePercentage(
     compressionHistory,
     "depthScore",
     "Too Shallow"
   );
-  const tooLittleDepthCount = countScore(
+  const tooShallowDepthCount = countScore(
     compressionHistory,
     "depthScore",
     "Too Shallow"
   );
   const missedCompressionInPercentage = getScorePercentage(
     compressionHistory,
-    "timingScore",
-    "Missed"
+    "depthScore",
+    null
   );
 
   const missedCompressionCount = countScore(
     compressionHistory,
-    "timingScore",
-    "Missed"
+    "depthScore",
+    null
   );
 
   const handleExitScreen = () => {
@@ -177,16 +181,16 @@ const LearnCprScoreScreen = () => {
           <ScorePointsListItem
             title="Too Deep Depth"
             iconName="arrow-expand-vertical"
-            points={tooMuchDepthCount}
-            progress={tooMuchDepthInPercentage}
+            points={tooDeepDepthCount}
+            progress={tooDeepDepthInPercentage}
             progressColor={Color.red}
           />
           <Divider />
           <ScorePointsListItem
             title="Too Shallow Depth"
             iconName="arrow-expand-vertical"
-            points={tooLittleDepthCount}
-            progress={tooLittleDepthInPercentage}
+            points={tooShallowDepthCount}
+            progress={tooShallowDepthInPercentage}
             progressColor={Color.yellow}
           />
           <Divider />
