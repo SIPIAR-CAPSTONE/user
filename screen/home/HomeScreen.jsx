@@ -1,13 +1,33 @@
-import { View, Text } from "react-native";
-import StatusBar from "../../components/common/StatusBar";
+import Layout from "../../components/common/Layout";
+import EmergencyAlerts from "../../components/home/EmergencyAlerts";
+import ContactCards from "../../components/home/ContactCards";
+import CprPracticeScores from "../../components/home/CprPracticeScores";
+import AppBar from "../../components/ui/AppBar";
+import CircularIcon from "../../components/ui/CircularIcon";
+import LogoTitle from "../../components/navigation/LogoTitle";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
+  const CustomAppBar = () => (
+    <AppBar>
+      <LogoTitle />
+      <CircularIcon
+        name="notifications"
+        pressable
+        onPress={() => navigation.navigate("Notification")}
+      />
+    </AppBar>
+  );
+
   return (
-    <View>
-      <Text>HomeScreen</Text>
-
-      <StatusBar />
-    </View>
+    <Layout
+      scrollable
+      removeDefaultPaddingHorizontal
+      AppbarComponent={CustomAppBar}
+    >
+      <ContactCards />
+      <EmergencyAlerts />
+      <CprPracticeScores />
+    </Layout>
   );
 };
 
