@@ -16,6 +16,7 @@ const Layout = ({
   style,
   contentContainerStyle,
   children,
+  AppbarComponent,
   ...props
 }) => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const Layout = ({
   if (scrollable) {
     return (
       <>
+        {AppbarComponent && <AppbarComponent />}
         <ScrollView
           style={style}
           contentContainerStyle={[
@@ -48,6 +50,7 @@ const Layout = ({
 
   return (
     <>
+      {AppbarComponent && <AppbarComponent />}
       <View style={[{ flex: 1 }, style, paddingHorizontalStyle]}>
         {children}
       </View>

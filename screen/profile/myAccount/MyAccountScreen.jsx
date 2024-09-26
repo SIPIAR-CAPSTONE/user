@@ -1,5 +1,5 @@
-import { SectionList, StyleSheet } from "react-native";
-import { Divider } from "react-native-paper";
+import { SectionList, StyleSheet, View } from "react-native";
+import { Divider, Text } from "react-native-paper";
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
@@ -11,6 +11,8 @@ import useImageReader from "../../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import { useNavigation } from "@react-navigation/native";
+import AppBar from "../../../components/ui/AppBar";
+import CircularIcon from "../../../components/ui/CircularIcon";
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
@@ -78,6 +80,15 @@ const MyAccountScreen = () => {
 
   return (
     <>
+      <AppBar>
+        <CircularIcon
+          name="arrow-back"
+          pressable
+          onPress={() => navigation.goBack()}
+        />
+        <Text style={styles.appBarTitle}>My Account</Text>
+        <View style={{ width: 40 }} />
+      </AppBar>
       <SectionList
         sections={USER_DATA}
         keyExtractor={(item, index) => item + index}
@@ -112,6 +123,11 @@ export default MyAccountScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
     contentContainer: {
       paddingBottom: theme.spacing.md,
     },

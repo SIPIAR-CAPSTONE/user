@@ -15,7 +15,7 @@ import { StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = ({ navigation }) => {
+const Tabs = () => {
   const { styles, theme } = useStyles(stylesheet);
 
   const screenOptions = {
@@ -37,14 +37,8 @@ const Tabs = ({ navigation }) => {
         component={HomeScreen}
         options={{
           title: "Home",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerTitle: (props) => <LogoTitle {...props} />,
-          headerRight: () => (
-            <CircularIcon
-              name="notifications"
-              onPress={() => navigation.navigate("Notification")}
-            />
-          ),
         }}
       />
       <Tab.Screen
@@ -52,10 +46,8 @@ const Tabs = ({ navigation }) => {
         component={BroadcastScreen}
         options={{
           title: "Broadcast",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
-          headerRight: () => (
-            <CircularIcon name="filter" pressable onPress={() => {}} />
-          ),
         }}
       />
       <Tab.Screen
@@ -71,11 +63,9 @@ const Tabs = ({ navigation }) => {
         component={LearnScreen}
         options={{
           title: "Learn",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="book-open" color={color} />
-          ),
-          headerRight: () => (
-            <CircularIcon name="search" pressable onPress={() => {}} />
           ),
         }}
       />
@@ -83,7 +73,7 @@ const Tabs = ({ navigation }) => {
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           title: "Profile",
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}

@@ -21,9 +21,10 @@ import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
 import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
 import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
 import CprScreen from "../screen/CPR/CprScreen";
+import DocumentMaterial from "../screen/learn/DocumentMaterial";
+import ReportIssueScreen from "../screen/profile/setting/ReportIssueScreen";
 
 const Stack = createNativeStackNavigator();
-
 
 /**
  * SignedOutStack: A stack of screens that are displayed to unauthenticated users.
@@ -73,7 +74,11 @@ export const SignedInStack = (
       component={Tabs}
       options={{ headerShown: false }}
     />
-    <Stack.Screen name="Notification" component={NotificationScreen} />
+    <Stack.Screen
+      name="Notification"
+      options={{ headerShown: false }}
+      component={NotificationScreen}
+    />
     <Stack.Screen
       name="Mapview"
       options={{ headerTitle: "Map View" }}
@@ -81,7 +86,7 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="MyAccount"
-      options={{ headerTitle: "My Account" }}
+      options={{ headerShown: false }}
       component={MyAccountScreen}
     />
     <Stack.Screen
@@ -91,7 +96,7 @@ export const SignedInStack = (
     />
     <Stack.Screen
       name="EditPassword"
-      options={{ headerTitle: " " }}
+      options={{ headerShown: false }}
       component={EditPasswordScreen}
     />
     <Stack.Screen
@@ -99,20 +104,29 @@ export const SignedInStack = (
       options={{ headerShown: false }}
       component={AccountVerificationScreen}
     />
-    <Stack.Screen name="Settings" component={SettingsScreen} />
+    <Stack.Screen
+      name="Settings"
+      options={{ headerShown: false }}
+      component={SettingsScreen}
+    />
     <Stack.Screen
       name="DeleteAccount"
-      options={{ headerTitle: " " }}
+      options={{ headerShown: false }}
       component={DeleteAccountScreen}
     />
     <Stack.Screen
+      name="ReportIssue"
+      options={{ headerShown: false }}
+      component={ReportIssueScreen}
+    />
+    <Stack.Screen
       name="TermsAndConditions"
-      options={{ headerTitle: "Terms and Condition" }}
+      options={{ headerShown: false }}
       component={TermsAndConditionsScreen}
     />
     <Stack.Screen
       name="PrivacyPolicy"
-      options={{ headerTitle: "Privacy and Policy" }}
+      options={{ headerShown: false }}
       component={PrivacyAndPolicyScreen}
     />
     <Stack.Screen
@@ -141,6 +155,11 @@ export const SignedInStack = (
       name="VideoPlayer"
       options={{ orientation: "landscape" }}
       component={VideoPlayerScreen}
+    />
+    <Stack.Screen
+      name="DocumentMaterial"
+      options={{ headerTitle: " " }}
+      component={DocumentMaterial}
     />
   </>
 );

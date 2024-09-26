@@ -51,12 +51,12 @@ const SelectItem = ({
           onPress={showSelectItem}
           style={[
             styles.button,
-            error && styles.buttonError,
             styles.button.variants.variant[variant],
+            error && styles.buttonError,
           ]}
         >
           <>
-            <Text style={{ color: theme.colors.text }}>
+            <Text style={{ color: theme.colors.text2 }}>
               {selected ? selected : placeholder}
             </Text>
             <Ionicons

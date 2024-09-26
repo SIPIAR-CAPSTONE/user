@@ -31,7 +31,7 @@ const MaterialCard = ({
       button: { borderRadius: 10, width: 150 },
       buttonLabel: { fontSize: 14 },
       cardPadding: 18,
-      cardBorderRadius: 16,
+      cardBorderRadius: 14,
     },
     normal: {
       width: 300,
@@ -40,7 +40,7 @@ const MaterialCard = ({
       button: { borderRadius: 10, width: 120 },
       buttonLabel: { fontSize: 12 },
       cardPadding: 14,
-      cardBorderRadius: 12,
+      cardBorderRadius: 10,
     },
   };
   return (

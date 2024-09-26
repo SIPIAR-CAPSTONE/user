@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
 
@@ -9,6 +9,8 @@ import NextActionIcon from "../../../components/common/NextActionIcon";
 import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Layout from "../../../components/common/Layout";
+import AppBar from "../../../components/ui/AppBar";
+import { Text } from "react-native-paper";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingsScreen = () => {
@@ -48,8 +50,20 @@ const SettingsScreen = () => {
 
   const handleChangeNotification = (value) => setNotificationStatus(value);
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon
+        name="arrow-back"
+        pressable
+        onPress={() => navigation.goBack()}
+      />
+      <Text style={styles.appBarTitle}>Settings</Text>
+      <View style={{ width: 40 }} />
+    </AppBar>
+  );
+
   return (
-    <Layout style={styles.listItems}>
+    <Layout style={styles.listItems} AppbarComponent={CustomAppBar}>
       {/* Notification */}
       <ListItem
         size="medium"
@@ -88,7 +102,6 @@ const SettingsScreen = () => {
         setSelectedValue={handleChangeTheme}
       />
 
-      {/* Delete Account */}
       <ListItem
         size="medium"
         title="Delete Account"
@@ -98,6 +111,16 @@ const SettingsScreen = () => {
         renderActionIcon={() => <NextActionIcon />}
         onPress={() => navigation.navigate("DeleteAccount")}
       />
+
+      <ListItem
+        size="medium"
+        title="Report Issue"
+        renderIcon={() => (
+          <CircularIcon name="bug-sharp" variant="primary" size={14} />
+        )}
+        renderActionIcon={() => <NextActionIcon />}
+        onPress={() => navigation.navigate("ReportIssue")}
+      />
     </Layout>
   );
 };
@@ -106,6 +129,11 @@ export default SettingsScreen;
 
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
+    appBarTitle: {
+      fontSize: 23,
+      fontWeight: "bold",
+      color: theme.colors.text,
+    },
     listItems: {
       marginTop: 20,
       rowGap: 10,

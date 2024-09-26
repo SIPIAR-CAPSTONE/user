@@ -21,9 +21,9 @@ const ListItem = ({
 
   const sizeStyle = {
     large: {
-      height: 70,
+      height: 90,
       paddingHorizontal: 12,
-      paddingVertical: 16,
+      paddingVertical: 14,
       borderRadius: 12,
     },
     medium: {

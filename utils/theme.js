@@ -1,5 +1,7 @@
 const commonTheme = {
   fontSize: {
+    xxxs: 8,
+    xxs: 10,
     xs: 12,
     sm: 14,
     base: 16,

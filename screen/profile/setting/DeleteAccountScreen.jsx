@@ -8,10 +8,14 @@ import Button from "../../../components/ui/Button";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
+import AppBar from "../../../components/ui/AppBar";
+import CircularIcon from "../../../components/ui/CircularIcon";
+import { useNavigation } from "@react-navigation/native";
 
 const fields = [{ name: "password", rules: [{ type: "required" }] }];
 
 const DeleteAccountScreen = () => {
+  const navigation = useNavigation();
   const { theme, styles } = useStyles(stylesheet);
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -30,8 +34,18 @@ const DeleteAccountScreen = () => {
     console.log("account deleted");
   };
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon
+        name="arrow-back"
+        pressable
+        onPress={() => navigation.goBack()}
+      />
+    </AppBar>
+  );
+
   return (
-    <Layout>
+    <Layout AppbarComponent={CustomAppBar}>
       <FormHeader
         title="WARNING:"
         titleStyle={{ color: theme.colors.primary }}
