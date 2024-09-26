@@ -62,6 +62,10 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
+                : timingScore === "Too Late"
+                ? "red"
+                : timingScore === "Too Early"
+                ? "yellow"
                 : timingScore === "Missed"
                 ? "red"
                 : "gray"
