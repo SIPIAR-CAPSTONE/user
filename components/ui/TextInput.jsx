@@ -37,8 +37,8 @@ const TextInput = ({
         style={[
           styles.input,
           disabled && styles.inputDisabled,
-          error && styles.inputError,
           styles.input.variants.variant[variant],
+          error && styles.inputError,
         ]}
         cursorColor={theme.colors.text3}
         selectionColor="lightgray"
