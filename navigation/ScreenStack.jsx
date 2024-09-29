@@ -21,7 +21,7 @@ import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
 import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
 import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
 import CprScreen from "../screen/CPR/CprScreen";
-import DocumentMaterial from "../screen/learn/DocumentMaterial";
+import DocumentMaterialScreen from "../screen/learn/DocumentMaterialScreen";
 import ReportIssueScreen from "../screen/profile/setting/ReportIssueScreen";
 
 const Stack = createNativeStackNavigator();
@@ -159,7 +159,7 @@ export const SignedInStack = (
     <Stack.Screen
       name="DocumentMaterial"
       options={{ headerTitle: " " }}
-      component={DocumentMaterial}
+      component={DocumentMaterialScreen}
     />
   </>
 );

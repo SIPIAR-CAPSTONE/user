@@ -5,9 +5,9 @@ import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
 import Layout from "../../components/common/Layout";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
-const DocumentMaterial = ({ route }) => {
+const DocumentMaterialScreen = ({ route }) => {
   const { data } = route.params;
   const { styles } = useStyles(stylesheet);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,16 +24,18 @@ const DocumentMaterial = ({ route }) => {
     }
   };
 
+  const paginationDots = data.map((_, i) => (
+    <View
+      key={i}
+      style={[
+        styles.dot,
+        i === currentIndex ? styles.activeDot : styles.inactiveDot,
+      ]}
+    />
+  ));
+
   const renderStep = ({ item }) => (
-    <View style={styles.stepContainer}>
-      <View style={styles.header}>
-        <Text variant="titleMedium" style={styles.title}>
-          How to Perform CPR - Adult CPR Steps
-        </Text>
-        <Text variant="bodySmall" style={styles.sourceReference}>
-          Source: American Red Cross
-        </Text>
-      </View>
+    <>
       <View style={styles.textContainer}>
         <Text style={styles.stepNumber}>
           {item.number ? `Step ${item.number}` : ""}
@@ -51,44 +53,45 @@ const DocumentMaterial = ({ route }) => {
           resizeMode="contain"
         />
       )}
-    </View>
+    </>
   );
 
   return (
     <Layout>
-      <FlatList
-        data={[data[currentIndex]]}
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-        pagingEnabled
-        renderItem={renderStep}
-      />
+      <View style={styles.stepContainer}>
+        <FlatList
+          data={[data[currentIndex]]}
+          keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          renderItem={renderStep}
+          ListHeaderComponent={() => (
+            <View style={styles.header}>
+              <Text variant="titleMedium" style={styles.title}>
+                How to Perform CPR - Adult CPR Steps
+              </Text>
+              <Text variant="bodySmall" style={styles.sourceReference}>
+                Source: American Red Cross
+              </Text>
+            </View>
+          )}
+        />
 
-      <View style={styles.pagination}>
-        {data.map((_, i) => (
-          <View
-            key={i}
-            style={[
-              styles.dot,
-              i === currentIndex ? styles.activeDot : styles.inactiveDot,
-            ]}
+        <View style={styles.pagination}>{paginationDots}</View>
+        <View style={styles.navigationContainer}>
+          <Button
+            label="Previous"
+            onPress={handlePrevious}
+            disabled={currentIndex === 0}
+            style={styles.navButton}
           />
-        ))}
-      </View>
-
-      <View style={styles.navigationContainer}>
-        <Button
-          label="Previous"
-          onPress={handlePrevious}
-          disabled={currentIndex === 0}
-          style={styles.navButton}
-        />
-        <Button
-          label="Next"
-          onPress={handleNext}
-          disabled={currentIndex === data.length - 1}
-          style={styles.navButton}
-        />
+          <Button
+            label="Next"
+            onPress={handleNext}
+            disabled={currentIndex === data.length - 1}
+            style={styles.navButton}
+          />
+        </View>
       </View>
     </Layout>
   );
@@ -108,6 +111,7 @@ const stylesheet = createStyleSheet((theme) =>
       textAlign: "center",
     },
     stepContainer: {
+      flex: 1,
       width: width * 0.94,
       alignItems: "center",
     },
@@ -156,4 +160,4 @@ const stylesheet = createStyleSheet((theme) =>
   })
 );
 
-export default DocumentMaterial;
+export default DocumentMaterialScreen;
