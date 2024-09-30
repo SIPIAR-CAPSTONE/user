@@ -11,11 +11,11 @@ export const isCompressionEnded = (prevZ: number, currentZ: number, isCompressin
 };
 
 
-export const getTimeGap = (previousTime: number, currentTime: number): number => {
-  const timeGap: number = currentTime - previousTime;
-  const timeGapInSeconds: number = timeGap / 1000;
+export const getcompressionTimer = (previousTime: number, currentTime: number): number => {
+  const compressionTimer: number = currentTime - previousTime;
+  const compressionTimerInSeconds: number = compressionTimer / 1000;
 
-  return timeGapInSeconds;
+  return compressionTimerInSeconds;
 };
 
 export const getLowestZ = (lowestZ: number, currentZ: number): number => {
@@ -24,15 +24,16 @@ export const getLowestZ = (lowestZ: number, currentZ: number): number => {
 };
 
 
-export const getTimingScore = (timeGap: number): TimingScore => {
-  if (timeGap >= 0.3 && timeGap <= 0.7) {
+export const getTimingScore = (compressionTimer: number): TimingScore => {
+  if (compressionTimer >= 350 && compressionTimer <= 600) {
     return "Perfect"
-  } else if (timeGap < 0.3) {
+  } else if (compressionTimer < 350) {
     return "Too Early"
   }
-  else if (timeGap > 0.7) {
+  else if(compressionTimer > 600) {
     return "Too Late"
   }
+
   return "Missed";
 }
 

@@ -9,7 +9,6 @@ import {
 import {
   isCompressionStarted,
   isCompressionEnded,
-  getTimeGap,
   getLowestZ,
   getTimingScore,
   getDepthScore,
@@ -54,36 +53,36 @@ const useCpr = () => {
   const prevZ = useRef(0);
   const lowestZ = useRef(0);
   const isCompressing = useRef(false);
-  const prevCompressionTime = useRef(0);
 
-  useEffect(() => {
-    if (compressionTimer >= 500 && compressionTimer < 600) {
-      playAudioCue(prevCompressionScores.current);
-    }
-    if (compressionTimer >= 600) {
-      getCompressionScores(timerInSeconds);
-      resetCompressionTimer();
-    }
-  }, [compressionTimer]);
+  useEffect(() => {}, [compressionTimer]);
 
   // this will be executed when start and stop cpr is called
   useEffect(() => {
     if (isSubscribed) {
+      // here we observe the acceleration of z data to determine if compression is performed
       Accelerometer.setUpdateInterval(16);
-
       const subscription = Accelerometer.addListener((data) => {
-        const currentTime = Date.now();
-        observeAcceleration(data.z, currentTime);
+        observeAcceleration(data.z, compressionTimer);
       });
+
+      //This is where we check if the audio cue should be played and when should get the compression score
+      if (compressionTimer >= 400 && compressionTimer < 600) {
+        playAudioCue(prevCompressionScores.current);
+      }
+      if (compressionTimer >= 600) {
+        getCompressionScores(timerInSeconds);
+        resetCompressionTimer();
+      }
+
       return () => subscription && subscription.remove();
     }
 
     return () => Accelerometer.removeAllListeners();
-  }, [isSubscribed]);
+  }, [isSubscribed, compressionTimer]);
 
   // This will observe the acceleration of z data to check if there is movement or compression is performed
   const observeAcceleration = useCallback(
-    (currentZ: number, currentTime: number) => {
+    (currentZ: number, compressionTimer: number) => {
       const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
 
       if (isCompressionStarted(prevZ.current, currentZ)) {
@@ -94,8 +93,7 @@ const useCpr = () => {
         const calculatedDepth = calculateDepth(currentLowestZ, currentZ);
         compressionDepth.current = calculatedDepth;
 
-        const calculatedTimingScore = calculateCompressionTiming(currentTime);
-        timingScore.current = calculatedTimingScore;
+        timingScore.current = getTimingScore(compressionTimer);
 
         //reset compression state
         isCompressing.current = false;
@@ -108,6 +106,7 @@ const useCpr = () => {
     []
   );
 
+ 
   const getCompressionScores = useCallback((currentTimeInSeconds: number) => {
     const currentCompressionDepth = compressionDepth.current;
     const currentTimingScore = timingScore.current ?? "Missed";
@@ -133,24 +132,14 @@ const useCpr = () => {
     };
     recordHistory(compressionScoreRecord);
 
+    //reset compression state
+    compressionDepth.current = null;
+    timingScore.current = null;
     //The timeout delay is the duration the score ui will be shown
     setTimeout(() => {
-      compressionDepth.current = null;
-      timingScore.current = null;
       setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
     }, 150);
   }, []);
-
-  const calculateCompressionTiming = useCallback(
-    (currentTime: number): TimingScore => {
-      const timeGap = getTimeGap(prevCompressionTime.current, currentTime);
-      timingScore.current = getTimingScore(timeGap);
-
-      prevCompressionTime.current = currentTime;
-      return timingScore.current;
-    },
-    []
-  );
 
   // Function to calculate compression depth in inches
   const calculateDepth = useCallback(
@@ -183,7 +172,6 @@ const useCpr = () => {
 
   const clearCprState = () => {
     lowestZ.current = 0;
-    prevCompressionTime.current = 0;
     prevZ.current = 0;
     timingScore.current = null;
     compressionDepth.current = null;
