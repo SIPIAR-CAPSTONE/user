@@ -71,7 +71,7 @@ const stylesheet = createStyleSheet((theme) =>
       rowGap: theme.spacing.sm,
     },
     listItem: {
-      height: 86,
+      height: 80,
       flexDirection: "row",
       padding: theme.spacing.sm,
       columnGap: theme.spacing.sm,
@@ -95,16 +95,16 @@ const stylesheet = createStyleSheet((theme) =>
       fontWeight: "bold",
     },
     date: {
-      marginTop: 6,
+      marginTop: 4,
       fontSize: theme.fontSize.xs,
     },
     score: {
-      marginTop: 4,
+      marginTop: 2,
       fontSize: theme.fontSize.sm,
     },
     duration: {
       marginTop: 2,
-      fontSize: theme.fontSize.base,
+      fontSize: theme.fontSize.sm,
     },
   })
 );
