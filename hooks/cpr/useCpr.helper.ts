@@ -25,13 +25,10 @@ export const getLowestZ = (lowestZ: number, currentZ: number): number => {
 
 
 export const getTimingScore = (compressionTimer: number): TimingScore => {
-  if (compressionTimer >= 350 && compressionTimer <= 600) {
+  if (compressionTimer >= 400 && compressionTimer <= 600) {
     return "Perfect"
-  } else if (compressionTimer < 350) {
+  } else if (compressionTimer < 400) {
     return "Too Early"
-  }
-  else if(compressionTimer > 600) {
-    return "Too Late"
   }
 
   return "Missed";
@@ -58,25 +55,16 @@ export const getOverallScore = (timingScore: TimingScore | null, depthScore: Dep
   else if (timingScore === "Perfect" && depthScore === "Too Shallow") {
     return "yellow"
   }
-  else if (timingScore === "Perfect" && depthScore === "Too Deep") {
-    return "red"
-  }
   else if (timingScore === "Too Early" && depthScore === "Perfect") {
     return "yellow"
   }
   else if (timingScore === "Too Early" && depthScore === "Too Shallow") {
     return "yellow"
   }
-  else if (timingScore === "Too Early" && depthScore === "Too Deep") {
+  else if (timingScore === "Perfect" && depthScore === "Too Deep") {
     return "red"
   }
-  else if (timingScore === "Too Late" && depthScore === "Perfect") {
-    return "yellow"
-  }
-  else if (timingScore === "Too Late" && depthScore === "Too Shallow") {
-    return "yellow"
-  }
-  else if (timingScore === "Too Late" && depthScore === "Too Deep") {
+  else if (timingScore === "Too Early" && depthScore === "Too Deep") {
     return "red"
   }
   else if (timingScore === "Missed") {

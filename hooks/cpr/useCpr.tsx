@@ -47,14 +47,11 @@ const useCpr = () => {
   const [currentCompressionScore, setCurrentCompressionScore] =
     useState<Compression>(EMPTY_COMPRESSION_VALUE);
 
-  // Variables to track previous state
   //prevCompressionScores stores the previous compression scores to be use for audio cue
   const prevCompressionScores = useRef<Compression>(EMPTY_COMPRESSION_VALUE);
   const prevZ = useRef(0);
   const lowestZ = useRef(0);
   const isCompressing = useRef(false);
-
-  useEffect(() => {}, [compressionTimer]);
 
   // this will be executed when start and stop cpr is called
   useEffect(() => {
@@ -84,15 +81,13 @@ const useCpr = () => {
   const observeAcceleration = useCallback(
     (currentZ: number, compressionTimer: number) => {
       const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
-
+      
       if (isCompressionStarted(prevZ.current, currentZ)) {
         isCompressing.current = true;
         lowestZ.current = currentLowestZ;
       }
       if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
-        const calculatedDepth = calculateDepth(currentLowestZ, currentZ);
-        compressionDepth.current = calculatedDepth;
-
+        compressionDepth.current = calculateDepth(currentLowestZ, currentZ);
         timingScore.current = getTimingScore(compressionTimer);
 
         //reset compression state
@@ -106,7 +101,6 @@ const useCpr = () => {
     []
   );
 
- 
   const getCompressionScores = useCallback((currentTimeInSeconds: number) => {
     const currentCompressionDepth = compressionDepth.current;
     const currentTimingScore = timingScore.current ?? "Missed";

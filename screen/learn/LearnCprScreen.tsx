@@ -62,8 +62,6 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
-                : timingScore === "Too Late"
-                ? "red"
                 : timingScore === "Too Early"
                 ? "yellow"
                 : timingScore === "Missed"
@@ -112,7 +110,7 @@ function CprScreen() {
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
         onPressConfirmation={handleStartCpr}
-        title={"Start CPR?"}
+        title={"Are you ready to start?"}
         containerStyle={styles.dialog}
       />
       <StatusBar hidden translucent />

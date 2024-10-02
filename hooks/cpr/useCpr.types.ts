@@ -9,7 +9,7 @@ export type SoundFile = {
   file: AVPlaybackSource;
 };
 
-export type TimingScore = "Perfect" | "Too Early" | "Too Late" | "Missed";
+export type TimingScore = "Perfect" | "Too Early" | "Missed";
 
 export type DepthScore = "Perfect" | "Too Deep" | "Too Shallow";
 

@@ -34,10 +34,7 @@ function CprScreen() {
     startCountdown();
   };
 
-  /**
-   * Stop CPR and go back to the previous screen.
-   */
-  const handleEnd = () => {
+  const handleEndCpr = () => {
     stopCpr();
     navigation.goBack();
   };
@@ -45,7 +42,7 @@ function CprScreen() {
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEnd} />
+      <CprHeader handleEnd={handleEndCpr} />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -59,8 +56,6 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
-                : timingScore === "Too Late"
-                ? "red"
                 : timingScore === "Too Early"
                 ? "yellow"
                 : timingScore === "Missed"
@@ -109,7 +104,7 @@ function CprScreen() {
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
         onPressConfirmation={handleStartCpr}
-        title={"Start CPR?"}
+        title={"Are you ready to start?"}
         containerStyle={styles.dialog}
       />
       <StatusBar hidden translucent />
