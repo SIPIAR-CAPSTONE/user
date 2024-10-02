@@ -81,7 +81,7 @@ const stylesheet = createStyleSheet((theme) =>
     listItemCard: {
       flex: 1,
       borderRadius: theme.borderRadius.md,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.elevation.level3,
       alignItems: "center",
       paddingVertical: theme.spacing.xs,
     },
