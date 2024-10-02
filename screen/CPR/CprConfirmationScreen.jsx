@@ -13,7 +13,7 @@ const CprConfirmationScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <Layout scrollable>
+    <Layout scrollable contentContainerStyle={styles.container}>
       <Button label="PROCEED" onPress={() => navigation.navigate("Cpr")} />
       <Divider style={styles.divider} />
 
@@ -40,8 +40,8 @@ const CprConfirmationScreen = () => {
               <View key={item.title} style={styles.list}>
                 <View style={styles.textWrapper}>
                   <H2>{item.title}</H2>
-                  {item.descriptions.map((desc) => (
-                    <OL>{desc}</OL>
+                  {item.descriptions.map((desc, index) => (
+                    <OL key={index}>{desc}</OL>
                   ))}
                 </View>
                 <Image
@@ -63,7 +63,7 @@ export default CprConfirmationScreen;
 const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     container: {
-      paddingBottom: 70,
+      paddingBottom: 40,
     },
     divider: {
       marginTop: theme.spacing.md,
@@ -105,7 +105,7 @@ const CPR_INFO_DATA = [
   {
     title: "TIMING",
     descriptions: [
-      "This shows the current compression timing score for every 0.6 seconds.",
+      "This shows the current compression timing score every 0.6 seconds.",
     ],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/timingscore.png"),
   },
@@ -114,8 +114,8 @@ const CPR_INFO_DATA = [
     descriptions: [
       "This shows the current compression depth score for every 0.6 seconds.",
       "Perfect: depth is in between 2 and 2.5 inches.",
-      "Too Shallow: depth is below 2 inches.",
-      "Too Deep: depth is above 2.5 inches.",
+      "Too Shallow: depth is less than 2 inches.",
+      "Too Deep: depth is greater than 2.5 inches.",
     ],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/depthscore.png"),
   },
@@ -127,9 +127,9 @@ const CPR_INFO_DATA = [
   {
     title: "OVERALL SCORE",
     descriptions: [
-      "This shows the current compression overall score for every 0.6 seconds based on the score in TIMING and DEPTH.",
+      "This shows the overall compression score every 0.6 seconds based on the scores in TIMING and DEPTH.",
       "For example:",
-      "If TIMING is Perfect but DEPTH is Too Shallow then the the overall score is Yellow",
+      "If TIMING is Perfect but DEPTH is Too Shallow, then the overall score is Yellow.",
     ],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/overallscore.png"),
   },
