@@ -73,8 +73,8 @@ const MaterialCard = ({
         <Button
           mode="contained"
           compact
-          buttonColor={theme.colors.black}
-          textColor={theme.colors.onBlack}
+          buttonColor="black"
+          textColor="white"
           style={sizeStyle[size].button}
           labelStyle={sizeStyle[size].buttonLabel}
           onPress={onPress}
