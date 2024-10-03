@@ -77,31 +77,32 @@ const LearnScreen = ({ navigation }) => {
           onRequestClose={closeModal}
           transparent
         >
-          <View style={styles.modalContainer}>
-            <Searchbar
-              icon="arrow-left"
-              onIconPress={closeModal}
-              value={searchQuery}
-              onChangeText={handleSearch}
-              style={styles.searchInput}
-              rippleColor={theme.colors.elevation.level5}
-            />
-            <FlatList
-              data={filteredData}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <TouchableRipple
-                  style={styles.searchResultItem}
-                  onPress={() => handleNavigate(item.route, item.params)}
-                >
-                  <>
-                    <Text style={styles.searchResult}>{item.title}</Text>
-                    <NextActionIcon styles={styles.nextAction} />
-                  </>
-                </TouchableRipple>
-              )}
-            />
-          </View>
+          <TouchableRipple style={{ flex: 1 }} onPress={closeModal}>
+            <View style={styles.modalContainer}>
+              <Searchbar
+                onIconPress={closeModal}
+                value={searchQuery}
+                onChangeText={handleSearch}
+                style={styles.searchInput}
+                rippleColor={theme.colors.elevation.level5}
+              />
+              <FlatList
+                data={filteredData}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <TouchableRipple
+                    style={styles.searchResultItem}
+                    onPress={() => handleNavigate(item.route, item.params)}
+                  >
+                    <>
+                      <Text style={styles.searchResult}>{item.title}</Text>
+                      <NextActionIcon styles={styles.nextAction} />
+                    </>
+                  </TouchableRipple>
+                )}
+              />
+            </View>
+          </TouchableRipple>
         </Modal>
       </Portal>
     </Layout>
