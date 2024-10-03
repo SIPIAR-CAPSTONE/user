@@ -4,12 +4,14 @@ import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
 import Layout from "../../components/common/Layout";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
 const DocumentMaterialScreen = ({ route }) => {
   const { data } = route.params;
-  const { styles } = useStyles(stylesheet);
+  const navigation = useNavigation();
+  const { styles, theme } = useStyles(stylesheet);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -22,6 +24,10 @@ const DocumentMaterialScreen = ({ route }) => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
+  };
+
+  const handleExitViewing = () => {
+    navigation.navigate("FinishedView");
   };
 
   const paginationDots = data.map((_, i) => (
@@ -85,12 +91,22 @@ const DocumentMaterialScreen = ({ route }) => {
             disabled={currentIndex === 0}
             style={styles.navButton}
           />
-          <Button
-            label="Next"
-            onPress={handleNext}
-            disabled={currentIndex === data.length - 1}
-            style={styles.navButton}
-          />
+          {currentIndex === data.length - 1 ? (
+            <Button
+              label="Finish"
+              onPress={handleExitViewing}
+              style={[
+                styles.navButton,
+                { backgroundColor: theme.colors.green },
+              ]}
+            />
+          ) : (
+            <Button
+              label="Next"
+              onPress={handleNext}
+              style={styles.navButton}
+            />
+          )}
         </View>
       </View>
     </Layout>

@@ -73,7 +73,7 @@ const MaterialCard = ({
         <Button
           mode="contained"
           compact
-          buttonColor="black"
+          buttonColor="#18181b"
           textColor="white"
           style={sizeStyle[size].button}
           labelStyle={sizeStyle[size].buttonLabel}
