@@ -57,7 +57,7 @@ const stylesheet = createStyleSheet((theme) =>
         backgroundColor: theme.colors.background,
       },
       text: {
-        backgroundColor: theme.colors.background,
+        backgroundColor: "transparent",
       },
     },
   })
