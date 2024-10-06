@@ -1,3 +1,4 @@
+import moment from "moment";
 import { DepthScore, OverallScore, TimingScore } from "./useCpr.types";
 
 const ACCELERATION_THRESHOLD = 0.3;
@@ -78,7 +79,8 @@ export const formatTime = (time: number): string => {
   const totalSeconds: number = Math.floor(time / 1000);
   const minutes: number = Math.floor(totalSeconds / 60);
   const seconds: number = totalSeconds % 60;
+  const formattedTime = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
+    }${seconds}`
 
-  return `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
-    }${seconds}`;
+  return formattedTime;
 };

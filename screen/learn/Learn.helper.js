@@ -1,11 +1,9 @@
+import moment from "moment";
+
 //get current date in format: "July 1, 2024"
 export function getFormattedCurrentDate() {
-  const today = new Date();
-  const formattedCurrentDate = today.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-  });
+  const today = moment();
+  const formattedCurrentDate = moment(today).format("LL");
 
   return formattedCurrentDate;
 }

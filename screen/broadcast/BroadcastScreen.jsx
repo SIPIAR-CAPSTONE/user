@@ -15,6 +15,7 @@ import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
 import SortBottomSheet from "../../components/broadcast/SortBottomSheet";
 import Header from "../../components/broadcast/Header";
+import moment from "moment";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -35,7 +36,7 @@ const BroadcastScreen = () => {
     } else if (selectedSort === "address") {
       return a.address.localeCompare(b.address);
     } else if (selectedSort === "timeRequested") {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return moment(b.createdAt) - moment(a.createdAt);
     } else if (selectedSort === "distance") {
       //split to remove the distance unit like m and km
       const bDistance = getDistanceGap(userLocation, b.coordinate).split(

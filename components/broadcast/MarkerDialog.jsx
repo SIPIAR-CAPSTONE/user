@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import InfoField from "./InfoField";
+import moment from "moment";
 
 const EMPTY_PLACEHOLDER = " - ";
 
@@ -34,13 +35,14 @@ const MarkerDialog = ({
     [selectedMarker?.first_name, selectedMarker?.last_name]
   );
 
-  // Calculate the distance gap between the user's location and the selected marker's location.
   const distanceGap = useMemo(
-    () => getDistanceGap(userLocation, selectedMarker?.coordinate),
+    () =>
+      selectedMarker?.coordinate
+        ? getDistanceGap(userLocation, selectedMarker?.coordinate)
+        : EMPTY_PLACEHOLDER,
     [userLocation, selectedMarker?.coordinate]
   );
 
-  // Calculate the time gap between the selected marker's createdAt and the current time.
   const timeGap = useMemo(
     () =>
       selectedMarker?.createdAt
@@ -49,11 +51,10 @@ const MarkerDialog = ({
     [selectedMarker?.createdAt]
   );
 
-  // Get the date requested from the selected marker's createdAt, or use the EMPTY_PLACEHOLDER if unavailable.
   const dateRequested = useMemo(
     () =>
       selectedMarker?.createdAt
-        ? new Date(selectedMarker?.createdAt).toLocaleDateString()
+        ? moment(selectedMarker?.createdAt).format("LL")
         : EMPTY_PLACEHOLDER,
     [selectedMarker?.createdAt]
   );
@@ -110,7 +111,7 @@ const stylesheet = createStyleSheet((theme) =>
   StyleSheet.create({
     title: {
       fontWeight: "bold",
-      fontSize: theme.fontSize.lg
+      fontSize: theme.fontSize.lg,
     },
     infoFieldsContainer: {
       marginTop: theme.spacing.xxs,

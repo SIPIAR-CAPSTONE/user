@@ -5,27 +5,23 @@ import DatePicker from "react-native-date-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import useBoundStore from "../../zustand/useBoundStore";
+import moment from "moment";
 
 const BirthdatePicker = ({
   placeholder = "Birthday",
   label,
   error,
-  date = "2024-07-27T06:42:51.927Z",
+  date: strDate,
   setDate,
   disabled,
   variant,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
-  const [open, setOpen] = useState(false);
   const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-
-  const dateValue = new Date(date) || new Date();
-  const formattedDate = dateValue.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-
+  const [open, setOpen] = useState(false);
+  const date = moment(strDate).toDate();
+  const formattedDate = moment(date).format("LL");
+  
   const handleOnCancel = () => setOpen(false);
   const handleOnPress = () => setOpen(true);
   const handleOnConfirm = (date) => {
@@ -41,7 +37,7 @@ const BirthdatePicker = ({
         mode="date"
         theme={currentThemeStatus}
         open={open}
-        date={dateValue}
+        date={date}
         buttonColor={theme.colors.text}
         dividerColor={theme.colors.text}
         title={" "}

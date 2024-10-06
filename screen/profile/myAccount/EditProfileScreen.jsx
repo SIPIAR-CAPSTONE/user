@@ -22,6 +22,7 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import { StyleSheet } from "react-native";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
+import moment from "moment";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
@@ -50,9 +51,7 @@ const EditProfileScreen = () => {
   //* retrieve dafault profile picture
   useImageReader(setProfilePicture);
 
-  //* format date to yy-mm-dd (remove trails ex. T:14:00:08)
-  const date = new Date(userMetaData["birthday"]);
-  const formattedDate = date.toISOString().split("T")[0];
+  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
 
   //* default value to input fields
   const [userInfo, setUserInfo] = useState({

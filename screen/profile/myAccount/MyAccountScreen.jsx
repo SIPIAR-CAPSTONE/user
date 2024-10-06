@@ -13,6 +13,7 @@ import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import { useNavigation } from "@react-navigation/native";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
+import moment from "moment";
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
@@ -33,17 +34,7 @@ const MyAccountScreen = () => {
   const [profilePictureUri, setProfilePictureUri] = useState(null);
   useImageReader(setProfilePictureUri);
 
-  //* format date to string (ex.july 1, 2024)
-  const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const date = new Date(userMetaData["birthday"]);
-  const formattedDate = formatDate(date);
+  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
 
   //* array template for UI rendering
   const USER_DATA = [
