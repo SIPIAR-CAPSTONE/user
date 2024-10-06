@@ -57,16 +57,26 @@ const LearnScreen = ({ navigation }) => {
         <Text variant="titleMedium" style={styles.sectionLabel}>
           Learning Materials
         </Text>
-        <MaterialCard
-          size="large"
-          title="How to Perform CPR"
-          backgroundColor="#B6A4F8"
-          buttonLabel="View Tutorial"
-          imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprCover.png")}
-          onPress={() =>
-            navigation.navigate("DocumentMaterial", { data: CPR_STEPS_DATA })
-          }
-        />
+        <View style={styles.materialCards}>
+          <MaterialCard
+            size="large"
+            title="How to Perform CPR"
+            backgroundColor="#B6A4F8"
+            buttonLabel="View Tutorial"
+            imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprCover.png")}
+            onPress={() =>
+              navigation.navigate("DocumentMaterial", { data: CPR_STEPS_DATA })
+            }
+          />
+          <MaterialCard
+            size="large"
+            title="QUIZ: How to Perform CPR"
+            backgroundColor="#99DBCD"
+            buttonLabel="Answer Quiz"
+            imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprQuizCover.png")}
+            onPress={() => navigation.navigate("Quiz", { id: "1" })}
+          />
+        </View>
       </View>
 
       {/* Modal for search */}
@@ -124,6 +134,9 @@ const stylesheet = createStyleSheet((theme) =>
       fontSize: 23,
       fontWeight: "bold",
       color: theme.colors.text,
+    },
+    materialCards: {
+      rowGap: theme.spacing.md,
     },
     modalContainer: {
       flex: 1,
@@ -232,5 +245,11 @@ const SEARCH_DATA = [
     title: "How to Perform CPR",
     route: "DocumentMaterial",
     params: { data: CPR_STEPS_DATA },
+  },
+  {
+    id: 3,
+    title: "QUIZ: How to Perform CPR",
+    route: "Quiz",
+    params: { data: "1" },
   },
 ];

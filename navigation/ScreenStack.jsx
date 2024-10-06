@@ -169,6 +169,15 @@ export const SignedInStack = (
       options={{ headerShown: false }}
       component={FinishedViewScreen}
     />
-   
+    <Stack.Screen
+      name="Quiz"
+      options={{ headerShown: false }}
+      component={QuizScreen}
+    />
+    <Stack.Screen
+      name="QuizScore"
+      options={{ headerShown: false }}
+      component={QuizScoreScreen}
+    />
   </>
 );

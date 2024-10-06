@@ -46,3 +46,13 @@ export function getTotalTimeDuration(records) {
 export function getPercentage(value, totalValue) {
   return Number(((value / totalValue) * 100).toFixed(0));
 }
+
+export function getAnswerScore(answerId, currentCorrectAnswerId) {
+  if (answerId === "missed") return "missed";
+  else if (answerId === currentCorrectAnswerId) return "correct";
+  else return "wrong";
+}
+
+export function isLastQuestion(currentQuestionIndex, quiz) {
+  return currentQuestionIndex < quiz.length - 1;
+}
