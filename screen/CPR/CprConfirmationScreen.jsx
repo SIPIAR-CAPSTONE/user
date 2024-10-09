@@ -1,10 +1,15 @@
-import { Image, StyleSheet, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import Button from "../../components/ui/Button";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import { useNavigation } from "@react-navigation/native";
 import Layout from "../../components/common/Layout";
-import { Divider } from "react-native-paper";
+import { Divider, Text } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { H2, OL, Strong } from "../../components/terms and policy/Typography";
 
@@ -30,7 +35,18 @@ const CprConfirmationScreen = () => {
             responder will respond and come to your location.
           </OL>
           <OL>
-            <Strong>Please use cautiously.</Strong>
+            <Strong style={{ color: theme.colors.primary }}>
+              Please use cautiously.
+            </Strong>
+          </OL>
+          <OL>
+            But if you just want to try or practice the CPR guide feature.
+            Please click{" "}
+            <TouchableWithoutFeedback
+              onPress={() => navigation.navigate("LearnCpr")}
+            >
+              <Text style={styles.anchorButtonText}>Practice CPR Guide</Text>
+            </TouchableWithoutFeedback>
           </OL>
         </View>
 
@@ -92,6 +108,10 @@ const stylesheet = createStyleSheet((theme) =>
       height: 150,
       width: 150,
       borderWidth: 1,
+    },
+    anchorButtonText: {
+      color: "blue",
+      textDecorationLine: "underline",
     },
   })
 );

@@ -53,10 +53,10 @@ const OL = ({ children }) => {
   );
 };
 
-const Strong = ({ children, ...props }) => {
+const Strong = ({ children, style, ...props }) => {
   return (
     children && (
-      <Text variant="bodyMedium" style={styles.strong} {...props}>
+      <Text variant="bodyMedium" style={[styles.strong, style]} {...props}>
         {children}
       </Text>
     )
