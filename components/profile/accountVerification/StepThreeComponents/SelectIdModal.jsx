@@ -104,7 +104,7 @@ const stylesheet = createStyleSheet((theme) =>
       justifyContent: "center",
     },
     customHeader: {
-      height: 56,
+      height: 47,
       paddingHorizontal: 16,
       textAlign: "center",
       justifyContent: "space-between",
