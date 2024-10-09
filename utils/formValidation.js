@@ -23,6 +23,9 @@ const validateFields = (fields, values) => {
       if (rule.type === "match" && value !== values[rule.matchField]) {
         errors[name] = rule.message || `${name} must match ${rule.matchField}.`;
       }
+      if (rule.type === "validPhNumber" && !/^(09)[0-9]{9}$/.test(value)) {
+        errors[name] = 'Phone number should start with "09"';
+      }
     });
   });
 
