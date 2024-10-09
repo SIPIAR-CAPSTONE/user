@@ -12,7 +12,7 @@ import Button from "../../components/ui/Button";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 import Color from "../../utils/Color";
 
 const QuizScoreScreen = ({ route }) => {
@@ -23,7 +23,7 @@ const QuizScoreScreen = ({ route }) => {
   const currentDate = getFormattedCurrentDate();
 
   const handleExit = () => {
-    navigation.navigate("LearnScreen");
+    navigation.dispatch(StackActions.popToTop());
   };
 
   const totalCompression = quizAnswersHistory.length;
@@ -93,7 +93,7 @@ const QuizScoreScreen = ({ route }) => {
             title="Correct Answer"
             iconName="check"
             points={correctScoreCount}
-            progress={correctScoreCount}
+            progress={correctScorePercentage}
             progressColor={Color.green}
           />
           <Divider />
