@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
 import Layout from "../../components/common/Layout";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -27,15 +27,15 @@ const DocumentMaterialScreen = ({ route }) => {
   };
 
   const handleExitViewing = () => {
-    navigation.navigate("FinishedView");
+    navigation.dispatch(StackActions.replace("FinishedView", { id: 1 }));
   };
 
-  const paginationDots = data.map((_, i) => (
+  const paginationDots = data.map((page, index) => (
     <View
-      key={i}
+      key={page.id}
       style={[
         styles.dot,
-        i === currentIndex ? styles.activeDot : styles.inactiveDot,
+        index === currentIndex ? styles.activeDot : styles.inactiveDot,
       ]}
     />
   ));

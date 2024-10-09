@@ -5,9 +5,10 @@ import Layout from "../../components/common/Layout";
 
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
-const FinishedViewScreen = () => {
+const FinishedViewScreen = ({ route }) => {
+  const { id } = route.params;
   const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
   return (
@@ -23,13 +24,17 @@ const FinishedViewScreen = () => {
         </Text>
         <View style={styles.buttonsContainer}>
           <Button
-            label="Answer Quiz"
-            onPress={() => navigation.navigate("Quiz", { id: 1 })}
-          />
-          <Button
+            style={styles.button}
             label="Exit"
             variant="outlined"
             onPress={() => navigation.navigate("LearnScreen")}
+          />
+          <Button
+            style={styles.button}
+            label="Answer Quiz"
+            onPress={() =>
+              navigation.dispatch(StackActions.replace("Quiz", { id: id }))
+            }
           />
         </View>
       </View>
@@ -62,8 +67,12 @@ const stylesheet = createStyleSheet((theme) =>
     },
     buttonsContainer: {
       width: "100%",
-      rowGap: theme.spacing.base,
+      flexDirection: "row",
+      columnGap: theme.spacing.base,
       marginTop: theme.spacing.xxxl,
+    },
+    button: {
+      flex: 1,
     },
   })
 );
