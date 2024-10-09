@@ -133,7 +133,7 @@ const AccountVerificationScreen = ({ navigation }) => {
   }, [navigation]);
 
   return (
-    <Layout removeDefaultPaddingHorizontal>
+    <Layout removeDefaultPaddingHorizontal addNoInternetAlert>
       <AppBar>
         <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
       </AppBar>

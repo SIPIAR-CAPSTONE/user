@@ -45,7 +45,7 @@ const DeleteAccountScreen = () => {
   );
 
   return (
-    <Layout AppbarComponent={CustomAppBar}>
+    <Layout AppbarComponent={CustomAppBar} addNoInternetAlert>
       <FormHeader
         title="WARNING:"
         titleStyle={{ color: theme.colors.primary }}

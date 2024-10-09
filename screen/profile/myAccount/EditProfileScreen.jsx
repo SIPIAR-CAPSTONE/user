@@ -2,7 +2,7 @@ import { View, ScrollView } from "react-native";
 import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple, Text } from "react-native-paper";
-import { MaterialIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Button from "../../../components/ui/Button";
@@ -128,7 +128,7 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <Layout removeDefaultPaddingHorizontal>
+    <Layout removeDefaultPaddingHorizontal addNoInternetAlert>
       <AppBar>
         <CircularIcon
           name="arrow-back"
@@ -141,7 +141,11 @@ const EditProfileScreen = () => {
           style={styles.changePassButton}
           onPress={() => navigation.navigate("EditPassword")}
         >
-          <MaterialIcons name="password" size={24} color={theme.colors.text} />
+          <MaterialCommunityIcons
+            name="form-textbox-password"
+            size={24}
+            color={theme.colors.text}
+          />
         </TouchableRipple>
       </AppBar>
 
@@ -251,6 +255,7 @@ const stylesheet = createStyleSheet((theme) =>
       backgroundColor: theme.colors.background,
       padding: 6,
       borderRadius: 99,
+      width: 37,
     },
     formFields: {
       paddingHorizontal: theme.spacing.base,

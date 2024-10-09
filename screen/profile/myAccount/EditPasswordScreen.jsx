@@ -76,7 +76,11 @@ const EditPasswordScreen = () => {
   );
 
   return (
-    <Layout removeDefaultPaddingHorizontal AppbarComponent={CustomAppBar}>
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetAlert
+      AppbarComponent={CustomAppBar}
+    >
       <Form style={styles.form}>
         <FormHeader
           title="Change Password"
