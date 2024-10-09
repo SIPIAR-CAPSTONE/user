@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Button from "../../ui/Button";
 import FormHeader from "../../common/FormHeader";
@@ -17,10 +17,11 @@ const fields = [
     name: "phone",
     rules: [
       { type: "required" },
+      { type: "validPhNumber" },
       {
         type: "exactLength",
         length: 11,
-        message: "Phone should contain 11 numbers.",
+        message: "Phone number should be exactly 11 digits long.",
       },
     ],
   },
@@ -32,7 +33,6 @@ const StepOneContent = ({ goNextStep }) => {
     (state) => state.setVerificationForm
   );
   const [errors, setErrors] = useState({});
-
 
   const handleSubmit = () => {
     if (isFormValid(fields, verificationForm, setErrors)) {

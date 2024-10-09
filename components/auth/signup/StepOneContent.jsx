@@ -21,10 +21,11 @@ const fields = [
     name: "phone",
     rules: [
       { type: "required" },
+      { type: "validPhNumber" },
       {
         type: "exactLength",
         length: 11,
-        message: "Phone should contain 11 numbers."
+        message: "Phone number should be exactly 11 digits long.",
       },
     ],
   },
