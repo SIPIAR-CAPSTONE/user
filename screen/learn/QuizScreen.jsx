@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 
 import Layout from "../../components/common/Layout";
@@ -181,68 +181,66 @@ const QuizScreen = ({ route }) => {
 
 export default QuizScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    headerBox: {
-      minHeight: 280,
-      maxHeight: "40%",
-      borderRadius: theme.borderRadius.curve,
-      backgroundColor: theme.colors.primary,
-    },
-    questionCard: {
-      minHeight: 200,
-      width: "85%",
-      position: "absolute",
-      top: "40%",
-      alignSelf: "center",
-      alignItems: "center",
-      backgroundColor: theme.colors.elevation.level3,
-      borderRadius: theme.borderRadius.curve,
-      elevation: 5,
-      padding: 12,
-      paddingTop: 40,
-    },
-    timerWrapper: {
-      height: 70,
-      width: 70,
-      position: "absolute",
-      top: -35,
-      backgroundColor: theme.colors.elevation.level3,
-      borderRadius: theme.borderRadius.full,
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 3,
-    },
-    timer: {
-      height: "100%",
-      width: "100%",
-      borderRadius: theme.borderRadius.full,
-      textAlign: "center",
-      textAlignVertical: "center",
-      fontWeight: "semibold",
-      borderWidth: 2,
-      borderColor: theme.colors.primary,
-      color: theme.colors.primary,
-      fontSize: theme.fontSize.xl,
-    },
-    questionNumber: {
-      color: theme.colors.primary,
-    },
-    question: {
-      marginTop: theme.spacing.xs,
-    },
-    answerOptions: {
-      flex: 1,
-      marginTop: 60,
-      paddingVertical: theme.spacing.xl,
-      rowGap: theme.spacing.lg,
-    },
-    dialog: {
-      width: 360,
-      marginHorizontal: "auto",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  headerBox: {
+    minHeight: 280,
+    maxHeight: "40%",
+    borderRadius: theme.borderRadius.curve,
+    backgroundColor: theme.colors.primary,
+  },
+  questionCard: {
+    minHeight: 200,
+    width: "85%",
+    position: "absolute",
+    top: "40%",
+    alignSelf: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors.elevation.level3,
+    borderRadius: theme.borderRadius.curve,
+    elevation: 5,
+    padding: 12,
+    paddingTop: 40,
+  },
+  timerWrapper: {
+    height: 70,
+    width: 70,
+    position: "absolute",
+    top: -35,
+    backgroundColor: theme.colors.elevation.level3,
+    borderRadius: theme.borderRadius.full,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 3,
+  },
+  timer: {
+    height: "100%",
+    width: "100%",
+    borderRadius: theme.borderRadius.full,
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontWeight: "semibold",
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
+    color: theme.colors.primary,
+    fontSize: theme.fontSize.xl,
+  },
+  questionNumber: {
+    color: theme.colors.primary,
+  },
+  question: {
+    marginTop: theme.spacing.xs,
+  },
+  answerOptions: {
+    flex: 1,
+    marginTop: 60,
+    paddingVertical: theme.spacing.xl,
+    rowGap: theme.spacing.lg,
+  },
+  dialog: {
+    width: 360,
+    marginHorizontal: "auto",
+  },
+}));
 
 //!temp
 const QUIZ_QUESTION_SAMPLE = [

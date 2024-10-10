@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
@@ -107,15 +106,13 @@ const MarkerDialog = ({
 
 export default MarkerDialog;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    title: {
-      fontWeight: "bold",
-      fontSize: theme.fontSize.lg,
-    },
-    infoFieldsContainer: {
-      marginTop: theme.spacing.xxs,
-      rowGap: theme.spacing.xs,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  title: {
+    fontWeight: "bold",
+    fontSize: theme.fontSize.lg,
+  },
+  infoFieldsContainer: {
+    marginTop: theme.spacing.xxs,
+    rowGap: theme.spacing.xs,
+  },
+}));

@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native";
+import {  ScrollView } from "react-native";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 const Form = ({ style, children, ...props }) => {
@@ -13,11 +13,9 @@ const Form = ({ style, children, ...props }) => {
 
 export default Form;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      rowGap: theme.spacing.base,
-      paddingBottom: 70,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    rowGap: theme.spacing.base,
+    paddingBottom: 70,
+  },
+}));

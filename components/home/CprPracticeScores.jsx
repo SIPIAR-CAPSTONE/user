@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
@@ -53,61 +53,59 @@ const CprPracticeScores = () => {
 
 export default CprPracticeScores;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    cprPracticeScores: {
-      marginTop: 10,
-      paddingHorizontal: theme.spacing.base,
-    },
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    listLabel: {
-      marginVertical: theme.spacing.base,
-    },
-    list: {
-      rowGap: theme.spacing.sm,
-    },
-    listItem: {
-      height: 80,
-      flexDirection: "row",
-      padding: theme.spacing.sm,
-      columnGap: theme.spacing.sm,
-      borderRadius: theme.borderRadius.lg,
-      backgroundColor: theme.colors.secondary,
-    },
-    listItemCard: {
-      flex: 1,
-      borderRadius: theme.borderRadius.md,
-      backgroundColor: theme.colors.elevation.level3,
-      alignItems: "center",
-      paddingVertical: theme.spacing.xs,
-    },
-    cardLabel: {
-      fontSize: theme.fontSize.xxs,
-      fontWeight: "bold",
-      color: theme.colors.primary,
-    },
-    cardValue: {
-      color: theme.colors.text,
-      fontWeight: "bold",
-    },
-    date: {
-      marginTop: 4,
-      fontSize: theme.fontSize.xs,
-    },
-    score: {
-      marginTop: 2,
-      fontSize: theme.fontSize.sm,
-    },
-    duration: {
-      marginTop: 2,
-      fontSize: theme.fontSize.sm,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  cprPracticeScores: {
+    marginTop: 10,
+    paddingHorizontal: theme.spacing.base,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  listLabel: {
+    marginVertical: theme.spacing.base,
+  },
+  list: {
+    rowGap: theme.spacing.sm,
+  },
+  listItem: {
+    height: 80,
+    flexDirection: "row",
+    padding: theme.spacing.sm,
+    columnGap: theme.spacing.sm,
+    borderRadius: theme.borderRadius.lg,
+    backgroundColor: theme.colors.secondary,
+  },
+  listItemCard: {
+    flex: 1,
+    borderRadius: theme.borderRadius.md,
+    backgroundColor: theme.colors.elevation.level3,
+    alignItems: "center",
+    paddingVertical: theme.spacing.xs,
+  },
+  cardLabel: {
+    fontSize: theme.fontSize.xxs,
+    fontWeight: "bold",
+    color: theme.colors.primary,
+  },
+  cardValue: {
+    color: theme.colors.text,
+    fontWeight: "bold",
+  },
+  date: {
+    marginTop: 4,
+    fontSize: theme.fontSize.xs,
+  },
+  score: {
+    marginTop: 2,
+    fontSize: theme.fontSize.sm,
+  },
+  duration: {
+    marginTop: 2,
+    fontSize: theme.fontSize.sm,
+  },
+}));
 
 const TEMP_SCORES_DATA = [
   {

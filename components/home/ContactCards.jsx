@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, View, Linking } from "react-native";
+import { FlatList, View, Linking } from "react-native";
 import { Text } from "react-native-paper";
 
 import ContactCard from "./ContactCard";
@@ -47,15 +47,13 @@ const ContactCards = () => {
 
 export default ContactCards;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    contactCards: {
-      columnGap: 14,
-      paddingHorizontal: theme.spacing.base,
-    },
-    header: {
-      marginStart: theme.spacing.base,
-      marginVertical: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  contactCards: {
+    columnGap: 14,
+    paddingHorizontal: theme.spacing.base,
+  },
+  header: {
+    marginStart: theme.spacing.base,
+    marginVertical: theme.spacing.base,
+  },
+}));

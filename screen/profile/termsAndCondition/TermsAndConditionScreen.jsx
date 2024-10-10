@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import {
   Title,
   H1,
@@ -22,7 +22,7 @@ const TermsAndConditionScreen = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const { isTACAccepted } = useAskTermAndConditions();
-  
+
   const handleAcceptTAC = () => {
     setItem("termAndConditions", "true");
     navigation.navigate("HomeScreen");
@@ -171,19 +171,17 @@ const TermsAndConditionScreen = () => {
 
 export default TermsAndConditionScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    container: {
-      paddingVertical: 30,
-    },
-    buttonsContainer: {
-      rowGap: theme.spacing.sm,
-      marginTop: theme.spacing.xxxl,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  container: {
+    paddingVertical: 30,
+  },
+  buttonsContainer: {
+    rowGap: theme.spacing.sm,
+    marginTop: theme.spacing.xxxl,
+  },
+}));

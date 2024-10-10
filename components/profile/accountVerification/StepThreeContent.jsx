@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { Divider } from "react-native-paper";
 
 import FormHeader from "../../common/FormHeader";
@@ -15,8 +15,8 @@ const StepThreeContent = ({ goNextStep }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const setVerificationForm = useBoundStore(
-    (state) => state.setVerificationForm,
-  )  
+    (state) => state.setVerificationForm
+  );
 
   const IdItems = ID_ITEMS_DATA.map((item) => (
     <Fragment key={item.id}>
@@ -60,7 +60,7 @@ const StepThreeContent = ({ goNextStep }) => {
           onConfirmed={() => {
             setModalVisible(false);
             goNextStep();
-            setVerificationForm('selectedIdType', selectedId['type'])
+            setVerificationForm("selectedIdType", selectedId["type"]);
           }}
           idTitle={selectedId.title}
           idImageSource={selectedId.imageSource}
@@ -72,21 +72,19 @@ const StepThreeContent = ({ goNextStep }) => {
 
 export default StepThreeContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      height: 600,
-    },
-    listItem: {
-      backgroundColor: theme.colors.background,
-      paddingEnd: 1,
-    },
-    divider: {
-      marginVertical: 8,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingBottom: 70,
+    height: 600,
+  },
+  listItem: {
+    backgroundColor: theme.colors.background,
+    paddingEnd: 1,
+  },
+  divider: {
+    marginVertical: 8,
+  },
+}));
 
 //Data for each id list item
 const ID_ITEMS_DATA = [

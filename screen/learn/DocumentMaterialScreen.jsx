@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, FlatList, StyleSheet, Dimensions } from "react-native";
+import { View, Image, FlatList, Dimensions } from "react-native";
 import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
@@ -113,67 +113,65 @@ const DocumentMaterialScreen = ({ route }) => {
   );
 };
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    header: {
-      marginVertical: theme.spacing.base,
-    },
-    title: {
-      color: theme.colors.primary,
-      textAlign: "center",
-    },
-    sourceReference: {
-      color: theme.colors.text2,
-      textAlign: "center",
-    },
-    stepContainer: {
-      flex: 1,
-      width: width * 0.94,
-      alignItems: "center",
-    },
-    stepNumber: {
-      fontSize: theme.fontSize.lg,
-      fontWeight: "bold",
-      textAlign: "center",
-    },
-    stepMessage: {
-      marginVertical: theme.spacing.xxxs,
-      fontSize: theme.fontSize.sm,
-    },
-    stepImage: {
-      marginTop: theme.spacing.xs,
-      maxHeight: "40%",
-      width: "100%",
-      backgroundColor: "#f9f8f8",
-    },
-    pagination: {
-      flexDirection: "row",
-      marginTop: 10,
-      justifyContent: "center",
-    },
-    dot: {
-      width: 10,
-      height: 10,
-      borderRadius: 5,
-      marginHorizontal: 4,
-    },
-    activeDot: {
-      backgroundColor: theme.colors.primary,
-    },
-    inactiveDot: {
-      backgroundColor: "#D3D3D3",
-    },
-    navigationContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      columnGap: theme.spacing.xxs,
-      marginTop: theme.spacing.base,
-      marginBottom: theme.spacing.sm,
-    },
-    navButton: {
-      flex: 1,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  header: {
+    marginVertical: theme.spacing.base,
+  },
+  title: {
+    color: theme.colors.primary,
+    textAlign: "center",
+  },
+  sourceReference: {
+    color: theme.colors.text2,
+    textAlign: "center",
+  },
+  stepContainer: {
+    flex: 1,
+    width: width * 0.94,
+    alignItems: "center",
+  },
+  stepNumber: {
+    fontSize: theme.fontSize.lg,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  stepMessage: {
+    marginVertical: theme.spacing.xxxs,
+    fontSize: theme.fontSize.sm,
+  },
+  stepImage: {
+    marginTop: theme.spacing.xs,
+    maxHeight: "40%",
+    width: "100%",
+    backgroundColor: "#f9f8f8",
+  },
+  pagination: {
+    flexDirection: "row",
+    marginTop: 10,
+    justifyContent: "center",
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: theme.colors.primary,
+  },
+  inactiveDot: {
+    backgroundColor: "#D3D3D3",
+  },
+  navigationContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    columnGap: theme.spacing.xxs,
+    marginTop: theme.spacing.base,
+    marginBottom: theme.spacing.sm,
+  },
+  navButton: {
+    flex: 1,
+  },
+}));
 
 export default DocumentMaterialScreen;

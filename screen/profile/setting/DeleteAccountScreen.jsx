@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useState } from "react";
 import FormHeader from "../../../components/common/FormHeader";
@@ -80,20 +80,18 @@ const DeleteAccountScreen = () => {
 
 export default DeleteAccountScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    instruction: {
-      marginHorizontal: "auto",
-      marginTop: 40,
-      marginBottom: 20,
-      color: theme.colors.text,
-    },
-    buttonContainer: {
-      marginTop: 60,
-      rowGap: theme.spacing.xxs,
-    },
-    cancelButton: {
-      borderRadius: theme.borderRadius.sm,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  instruction: {
+    marginHorizontal: "auto",
+    marginTop: 40,
+    marginBottom: 20,
+    color: theme.colors.text,
+  },
+  buttonContainer: {
+    marginTop: 60,
+    rowGap: theme.spacing.xxs,
+  },
+  cancelButton: {
+    borderRadius: theme.borderRadius.sm,
+  },
+}));

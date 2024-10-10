@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { Dialog, Portal, useTheme } from "react-native-paper";
+import { Dialog, Portal } from "react-native-paper";
 import React from "react";
 
 import Button from "./Button";
@@ -42,21 +41,19 @@ const ConfirmationDialog = ({
 
 export default ConfirmationDialog;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    dialog: {
-      paddingTop: 15,
-    },
-    title: {
-      textAlign: "center",
-      fontWeight: "bold",
-      fontSize: theme.fontSize.xl,
-    },
-    buttonsContainer: {
-      marginTop: 18,
-      flexDirection: "column",
-      alignItems: "baseline",
-      rowGap: theme.spacing.xxs,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  dialog: {
+    paddingTop: 15,
+  },
+  title: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: theme.fontSize.xl,
+  },
+  buttonsContainer: {
+    marginTop: 18,
+    flexDirection: "column",
+    alignItems: "baseline",
+    rowGap: theme.spacing.xxs,
+  },
+}));

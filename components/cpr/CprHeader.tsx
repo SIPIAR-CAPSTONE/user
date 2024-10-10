@@ -1,10 +1,8 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { useState, memo } from "react";
-import { Divider, Menu, TouchableRipple } from "react-native-paper";
+import { Menu, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import MenuItem from "react-native-paper/lib/typescript/components/Menu/MenuItem";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import { MD3Theme } from "react-native-paper";
 
 type CprHeaderProps = {
   handleEnd: () => void;
@@ -47,25 +45,23 @@ function MoreOptionActionButton({ onPress }: MoreOptionActionButtonProps) {
 
 export const CprHeader = memo(Header);
 
-const stylesheet = createStyleSheet((theme: MD3Theme) =>
-  StyleSheet.create({
-    header: {
-      height: 50,
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 10,
-      justifyContent: "flex-end",
-    },
-    menu: {
-      backgroundColor: theme.colors.elevation.level3,
-    },
-    optionButton: {
-      width: 33,
-      height: 33,
-      borderRadius: 33,
-      backgroundColor: "lightgray",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  header: {
+    height: 50,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    justifyContent: "flex-end",
+  },
+  menu: {
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  optionButton: {
+    width: 33,
+    height: 33,
+    borderRadius: 33,
+    backgroundColor: "lightgray",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));

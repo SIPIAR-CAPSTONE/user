@@ -1,4 +1,4 @@
-import { StyleSheet, View, Modal, FlatList } from "react-native";
+import { View, Modal, FlatList } from "react-native";
 import { Text, Searchbar, Portal, TouchableRipple } from "react-native-paper";
 import MaterialCard from "../../components/learn/MaterialCard";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
@@ -121,47 +121,45 @@ const LearnScreen = ({ navigation }) => {
 
 export default LearnScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    section: {
-      marginBottom: theme.spacing.xl,
-    },
-    sectionLabel: {
-      marginVertical: theme.spacing.md,
-      fontWeight: "bold",
-    },
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    materialCards: {
-      rowGap: theme.spacing.md,
-    },
-    modalContainer: {
-      flex: 1,
-      padding: theme.spacing.base,
-      justifyContent: "center",
-      backgroundColor: "rgba(1,1,1,0.6)",
-    },
-    searchInput: {
-      marginBottom: 20,
-      backgroundColor: theme.colors.elevation.level3,
-    },
-    searchResult: {
-      padding: 20,
-    },
-    searchResultItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: theme.colors.elevation.level3,
-      paddingRight: theme.spacing.sm,
-    },
-    nextAction: {
-      marginLeft: "auto",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  section: {
+    marginBottom: theme.spacing.xl,
+  },
+  sectionLabel: {
+    marginVertical: theme.spacing.md,
+    fontWeight: "bold",
+  },
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  materialCards: {
+    rowGap: theme.spacing.md,
+  },
+  modalContainer: {
+    flex: 1,
+    padding: theme.spacing.base,
+    justifyContent: "center",
+    backgroundColor: "rgba(1,1,1,0.6)",
+  },
+  searchInput: {
+    marginBottom: 20,
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  searchResult: {
+    padding: 20,
+  },
+  searchResultItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: theme.colors.elevation.level3,
+    paddingRight: theme.spacing.sm,
+  },
+  nextAction: {
+    marginLeft: "auto",
+  },
+}));
 
 const CPR_STEPS_DATA = [
   {

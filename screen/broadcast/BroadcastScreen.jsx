@@ -9,7 +9,6 @@ import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import { StyleSheet } from "react-native";
 import NotInternetAlert from "../../components/common/NoInternetAlert";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
@@ -132,18 +131,16 @@ const BroadcastScreen = () => {
 
 export default BroadcastScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    contentContainer: {
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  contentContainer: {
+    paddingHorizontal: theme.spacing.base,
+  },
+}));
 
 //!remove this after applying fetching
 const TEMP_ALERTS_DATA = [

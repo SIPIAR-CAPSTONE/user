@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Divider, Text } from "react-native-paper";
 import AppBar from "../../components/ui/AppBar";
 import Layout from "../../components/common/Layout";
@@ -125,42 +125,40 @@ const QuizScoreScreen = ({ route }) => {
 
 export default QuizScoreScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appbar: {
-      justifyContent: "center",
-      backgroundColor: theme.colors.primary,
-    },
-    appbarTitle: {
-      fontWeight: "bold",
-      fontSize: 24,
-      color: theme.colors.background,
-    },
+const stylesheet = createStyleSheet((theme) => ({
+  appbar: {
+    justifyContent: "center",
+    backgroundColor: theme.colors.primary,
+  },
+  appbarTitle: {
+    fontWeight: "bold",
+    fontSize: 24,
+    color: theme.colors.background,
+  },
 
-    mainContent: {
-      flex: 1,
-    },
-    overallScoreContainer: {
-      backgroundColor: theme.colors.primary,
-      alignItems: "center",
-      paddingTop: 20,
-      paddingBottom: 40,
-    },
-    currentDate: {
-      fontSize: theme.fontSize.sm,
-      marginTop: 14,
-      marginBottom: 4,
-      color: theme.colors.background,
-    },
-    detailedScoreContainer: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-    },
+  mainContent: {
+    flex: 1,
+  },
+  overallScoreContainer: {
+    backgroundColor: theme.colors.primary,
+    alignItems: "center",
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  currentDate: {
+    fontSize: theme.fontSize.sm,
+    marginTop: 14,
+    marginBottom: 4,
+    color: theme.colors.background,
+  },
+  detailedScoreContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
 
-    finishButtonContainer: {
-      paddingHorizontal: theme.spacing.base,
-      paddingVertical: 26,
-      justifyContent: "flex-end",
-    },
-  })
-);
+  finishButtonContainer: {
+    paddingHorizontal: theme.spacing.base,
+    paddingVertical: 26,
+    justifyContent: "flex-end",
+  },
+}));

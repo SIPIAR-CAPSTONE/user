@@ -30,8 +30,17 @@ function CprScreen() {
   } = useCountdown(3, false, startCpr);
 
   const handleStartCpr = () => {
+    const ifUserIsValidated = true; //!temp
+    if (ifUserIsValidated) {
+      sendEmergencyAlertRequest();
+    }
+
     setIsDialogVisible(false);
     startCountdown();
+  };
+
+  const sendEmergencyAlertRequest = () => {
+    console.log("send emergency alert request to admin");
   };
 
   const handleEndCpr = () => {

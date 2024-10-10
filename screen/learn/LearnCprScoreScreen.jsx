@@ -1,10 +1,9 @@
-import { View, Text, Dimensions, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import React, { useEffect } from "react";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import AppBar from "../../components/ui/AppBar";
 import Button from "../../components/ui/Button";
 import { useNavigation } from "@react-navigation/native";
-import StatusBar from "../../components/common/StatusBar";
 import useBoundStore from "../../zustand/useBoundStore";
 import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
@@ -90,7 +89,7 @@ const LearnCprScoreScreen = () => {
     null
   );
 
-  const handleExitScreen = () => {
+  const handleExit = () => {
     clearCompressionHistory();
     navigation.navigate("LearnScreen");
   };
@@ -212,7 +211,7 @@ const LearnCprScoreScreen = () => {
         </View>
 
         <View style={styles.finishButtonContainer}>
-          <Button label="Finish" onPress={handleExitScreen} />
+          <Button label="Finish" onPress={handleExit} />
         </View>
       </ScrollView>
     </Layout>
@@ -221,42 +220,40 @@ const LearnCprScoreScreen = () => {
 
 export default LearnCprScoreScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appbar: {
-      justifyContent: "center",
-      backgroundColor: theme.colors.primary,
-    },
-    appbarTitle: {
-      fontWeight: "bold",
-      fontSize: 24,
-      color: theme.colors.background,
-    },
+const stylesheet = createStyleSheet((theme) => ({
+  appbar: {
+    justifyContent: "center",
+    backgroundColor: theme.colors.primary,
+  },
+  appbarTitle: {
+    fontWeight: "bold",
+    fontSize: 24,
+    color: theme.colors.background,
+  },
 
-    mainContent: {
-      flex: 1,
-    },
-    overallScoreContainer: {
-      backgroundColor: theme.colors.primary,
-      alignItems: "center",
-      paddingTop: 20,
-      paddingBottom: 40,
-    },
-    currentDate: {
-      fontSize: theme.fontSize.sm,
-      marginTop: 14,
-      marginBottom: 4,
-      color: theme.colors.background,
-    },
-    detailedScoreContainer: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-    },
+  mainContent: {
+    flex: 1,
+  },
+  overallScoreContainer: {
+    backgroundColor: theme.colors.primary,
+    alignItems: "center",
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  currentDate: {
+    fontSize: theme.fontSize.sm,
+    marginTop: 14,
+    marginBottom: 4,
+    color: theme.colors.background,
+  },
+  detailedScoreContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
 
-    finishButtonContainer: {
-      paddingHorizontal: theme.spacing.base,
-      paddingVertical: 26,
-      justifyContent: "flex-end",
-    },
-  })
-);
+  finishButtonContainer: {
+    paddingHorizontal: theme.spacing.base,
+    paddingVertical: 26,
+    justifyContent: "flex-end",
+  },
+}));

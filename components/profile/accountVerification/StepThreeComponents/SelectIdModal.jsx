@@ -1,8 +1,8 @@
-import { StyleSheet, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { useRef } from "react";
 import { AntDesign } from "@expo/vector-icons";
 
-import { Portal, Appbar, useTheme, Text } from "react-native-paper";
+import { Portal, Appbar, Text } from "react-native-paper";
 import CircularIcon from "../../../ui/CircularIcon";
 import Button from "../../../ui/Button";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -96,82 +96,80 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
 export default SelectIdModal;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    customHeader: {
-      height: 47,
-      paddingHorizontal: 16,
-      textAlign: "center",
-      justifyContent: "space-between",
-    },
-    body: {
-      flex: 1,
-      backgroundColor: "rgba(1,1,1,0.5)",
-    },
-    handleStyle: {
-      backgroundColor: theme.colors.elevation.level3,
-      borderTopEndRadius: 14,
-      borderTopStartRadius: 14,
-    },
-    contentContainer: {
-      flex: 1,
-      paddingHorizontal: 14,
-      backgroundColor: theme.colors.elevation.level3,
-    },
-    titleContainer: {
-      flexDirection: "row",
-      columnGap: 10,
-      alignItems: "center",
-      marginBottom: 2,
-    },
-    title: {
-      fontWeight: "bold",
-    },
-    desc: {
-      flex: 1,
-      fontSize: 13,
-    },
-    imageContainer: {
-      height: "50%",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    idSampleImage: {
-      width: 310,
-      maxWidth: "88%",
-      height: 190,
-      maxHeight: "50%",
-    },
-    instructionsContainer: {
-      rowGap: theme.spacing.xs,
-      marginTop: 20,
-      marginBottom: 30,
-    },
-    instructionContainer: {
-      flexDirection: "row",
-      columnGap: theme.spacing.sm,
-      alignItems: "center",
-    },
-    number: {
-      color: theme.colors.onPrimary,
-      fontSize: theme.fontSize.xs,
-    },
-    circularNumber: {
-      height: 22,
-      width: 22,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 2,
-      backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  customHeader: {
+    height: 47,
+    paddingHorizontal: 16,
+    textAlign: "center",
+    justifyContent: "space-between",
+  },
+  body: {
+    flex: 1,
+    backgroundColor: "rgba(1,1,1,0.5)",
+  },
+  handleStyle: {
+    backgroundColor: theme.colors.elevation.level3,
+    borderTopEndRadius: 14,
+    borderTopStartRadius: 14,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 14,
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    columnGap: 10,
+    alignItems: "center",
+    marginBottom: 2,
+  },
+  title: {
+    fontWeight: "bold",
+  },
+  desc: {
+    flex: 1,
+    fontSize: 13,
+  },
+  imageContainer: {
+    height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  idSampleImage: {
+    width: 310,
+    maxWidth: "88%",
+    height: 190,
+    maxHeight: "50%",
+  },
+  instructionsContainer: {
+    rowGap: theme.spacing.xs,
+    marginTop: 20,
+    marginBottom: 30,
+  },
+  instructionContainer: {
+    flexDirection: "row",
+    columnGap: theme.spacing.sm,
+    alignItems: "center",
+  },
+  number: {
+    color: theme.colors.onPrimary,
+    fontSize: theme.fontSize.xs,
+  },
+  circularNumber: {
+    height: 22,
+    width: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+  },
+}));
 
 const INSTRUCTION_DATA = [
   {

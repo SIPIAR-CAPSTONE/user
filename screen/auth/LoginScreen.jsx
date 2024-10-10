@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
@@ -156,28 +156,26 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-    forgotPassButton: {
-      maxWidth: 180,
-      alignSelf: "flex-end",
-      marginBottom: 10,
-      borderRadius: theme.borderRadius.md,
-    },
-    signupButton: {
-      borderRadius: theme.borderRadius.base,
-    },
-    signinButtonLabel: {
-      fontSize: theme.fontSize.sm,
-    },
-    footer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 14,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+  },
+  forgotPassButton: {
+    maxWidth: 180,
+    alignSelf: "flex-end",
+    marginBottom: 10,
+    borderRadius: theme.borderRadius.md,
+  },
+  signupButton: {
+    borderRadius: theme.borderRadius.base,
+  },
+  signinButtonLabel: {
+    fontSize: theme.fontSize.sm,
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 14,
+  },
+}));

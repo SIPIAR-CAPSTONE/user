@@ -1,6 +1,5 @@
 import { Button as NPButton } from "react-native-paper";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
-import { StyleSheet } from "react-native";
 
 const Button = ({
   label = "",
@@ -36,29 +35,27 @@ const Button = ({
 
 export default Button;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    button: {
-      borderRadius: theme.borderRadius.base,
-      width: "100%",
-    },
-    buttonLabel: {
-      fontSize: theme.fontSize.base,
-    },
-    buttonContent: {
-      padding: theme.spacing.xxxs,
-    },
+const stylesheet = createStyleSheet((theme) => ({
+  button: {
+    borderRadius: theme.borderRadius.base,
+    width: "100%",
+  },
+  buttonLabel: {
+    fontSize: theme.fontSize.base,
+  },
+  buttonContent: {
+    padding: theme.spacing.xxxs,
+  },
 
-    variant: {
-      contained: {},
-      outlined: {
-        borderColor: theme.colors.primary,
-        borderWidth: 2,
-        backgroundColor: theme.colors.background,
-      },
-      text: {
-        backgroundColor: "transparent",
-      },
+  variant: {
+    contained: {},
+    outlined: {
+      borderColor: theme.colors.primary,
+      borderWidth: 2,
+      backgroundColor: theme.colors.background,
     },
-  })
-);
+    text: {
+      backgroundColor: "transparent",
+    },
+  },
+}));

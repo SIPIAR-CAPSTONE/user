@@ -1,4 +1,3 @@
-import {  StyleSheet} from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
 
@@ -102,17 +101,15 @@ const TokenVerification = () => {
 
 export default TokenVerification;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-    serverErrorMessage: {
-      color: theme.colors.primary,
-    },
-    resentMessage: {
-      color: theme.colors.primary,
-      textAlign: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+  },
+  serverErrorMessage: {
+    color: theme.colors.primary,
+  },
+  resentMessage: {
+    color: theme.colors.primary,
+    textAlign: "center",
+  },
+}));

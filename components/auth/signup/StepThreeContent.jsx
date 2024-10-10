@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useState } from "react";
 
@@ -135,10 +135,8 @@ const StepThreeContent = () => {
 
 export default StepThreeContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    serverErrorMessage: {
-      color: theme.colors.primary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  serverErrorMessage: {
+    color: theme.colors.primary,
+  },
+}));

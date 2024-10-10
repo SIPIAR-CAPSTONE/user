@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -23,23 +23,21 @@ const SecondaryHeader = ({ title, desc }) => {
 
 export default SecondaryHeader;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    headerSecondContent: {
-      marginTop: 10,
-      marginBottom: 20,
-    },
-    titleContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    title: {
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    desc: {
-      color: theme.colors.text2,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  headerSecondContent: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  title: {
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  desc: {
+    color: theme.colors.text2,
+  },
+}));

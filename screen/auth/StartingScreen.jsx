@@ -1,10 +1,5 @@
 import { Text } from "react-native-paper";
-import {
-  View,
-  Image,
-  StatusBar as RNStatusBar,
-  StyleSheet,
-} from "react-native";
+import { View, Image, StatusBar as RNStatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import Button from "../../components/ui/Button";
@@ -46,31 +41,29 @@ const StartingScreen = () => {
 
 export default StartingScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "space-between",
-      paddingTop: RNStatusBar.currentHeight + 50,
-      paddingBottom: 50,
-    },
-    logoContainer: {
-      alignItems: "center",
-    },
-    appName: {
-      fontWeight: "bold",
-      letterSpacing: 1,
-      marginBottom: 8,
-    },
-    tagLine: {
-      color: theme.colors.text2,
-    },
-    logoImage: {
-      height: 160,
-      width: 160,
-    },
-    buttonsContainer: {
-      rowGap: theme.spacing.sm,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingTop: RNStatusBar.currentHeight + 50,
+    paddingBottom: 50,
+  },
+  logoContainer: {
+    alignItems: "center",
+  },
+  appName: {
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  tagLine: {
+    color: theme.colors.text2,
+  },
+  logoImage: {
+    height: 160,
+    width: 160,
+  },
+  buttonsContainer: {
+    rowGap: theme.spacing.sm,
+  },
+}));

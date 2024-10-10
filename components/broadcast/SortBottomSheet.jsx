@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import React, { forwardRef } from "react";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
@@ -60,34 +60,32 @@ const SortBottomSheet = forwardRef(function SortBottomSheet(
 
 export default SortBottomSheet;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "rgba(1,1,1, 0.2)",
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      zIndex: 99,
-      justifyContent: "center",
-    },
-    sheetContainer: {
-      backgroundColor: theme.colors.elevation.level3,
-    },
-    sheetContent: {
-      paddingVertical: theme.spacing.xl,
-    },
-    sortTitle: {
-      paddingHorizontal: theme.spacing.xxxl,
-    },
-    sortOption: {
-      paddingHorizontal: theme.spacing.xxxl,
-    },
-    activeSortOption: {
-      color: theme.colors.primary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(1,1,1, 0.2)",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: 99,
+    justifyContent: "center",
+  },
+  sheetContainer: {
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  sheetContent: {
+    paddingVertical: theme.spacing.xl,
+  },
+  sortTitle: {
+    paddingHorizontal: theme.spacing.xxxl,
+  },
+  sortOption: {
+    paddingHorizontal: theme.spacing.xxxl,
+  },
+  activeSortOption: {
+    color: theme.colors.primary,
+  },
+}));
 
 const SORT_OPTIONS = [
   { id: 1, title: "Name", value: "name", icon: "order-alphabetical-ascending" },

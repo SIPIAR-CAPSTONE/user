@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
@@ -19,25 +19,23 @@ const Header = ({ count }) => {
 
 export default Header;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginVertical: theme.spacing.md,
-    },
-    countContainer: {
-      height: 24,
-      width: 24,
-      marginEnd: 6,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-    },
-    count: {
-      color: theme.colors.onPrimary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginVertical: theme.spacing.md,
+  },
+  countContainer: {
+    height: 24,
+    width: 24,
+    marginEnd: 6,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+  },
+  count: {
+    color: theme.colors.onPrimary,
+  },
+}));

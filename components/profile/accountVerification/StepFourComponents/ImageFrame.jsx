@@ -1,4 +1,4 @@
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View } from "react-native";
 import { TouchableRipple, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { createStyleSheet, useStyles } from "../../../../hooks/useStyles";
@@ -43,39 +43,37 @@ const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
 
 export default ImageFrame;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    imageFrameContainer: {
-      rowGap: 10,
-      alignItems: "center",
-    },
-    label: {
-      fontSize: theme.fontSize.lg,
-      textAlign: "center",
-      color: "gray",
-    },
-    imageFrame: {
-      borderWidth: 2,
-      borderStyle: "dashed",
-      borderRadius: 10,
-      width: 267,
-      height: 200,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    image: {
-      width: "100%",
-      height: "100%",
-      borderRadius: 10,
-      objectFit: "contain",
-    },
-    errorLabel: {
-      paddingStart: 14,
-      paddingTop: 4,
-      marginBottom: 4,
-    },
-    placeholder: {
-      color: theme.colors.primary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  imageFrameContainer: {
+    rowGap: 10,
+    alignItems: "center",
+  },
+  label: {
+    fontSize: theme.fontSize.lg,
+    textAlign: "center",
+    color: "gray",
+  },
+  imageFrame: {
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderRadius: 10,
+    width: 267,
+    height: 200,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    objectFit: "contain",
+  },
+  errorLabel: {
+    paddingStart: 14,
+    paddingTop: 4,
+    marginBottom: 4,
+  },
+  placeholder: {
+    color: theme.colors.primary,
+  },
+}));

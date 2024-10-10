@@ -1,6 +1,6 @@
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 import MarkerDialog from "../../components/broadcast/MarkerDialog";
 import useLocation from "../../hooks/useLocation";

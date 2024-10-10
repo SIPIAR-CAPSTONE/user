@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 
@@ -29,26 +29,24 @@ const InfoField = ({ icon, label, value, iconColor, iconBackgroundColor }) => {
 
 export default InfoField;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    infoField: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: theme.spacing.base,
-    },
-    iconContainer: {
-      backgroundColor: "red",
-      padding: theme.spacing.md,
-      backgroundColor: theme.colors.background,
-      borderRadius: theme.borderRadius.full,
-    },
-    fieldValue: {
-      height: 25,
-      color: theme.colors.text,
-    },
-    fieldLabel: {
-      height: 22,
-      color: theme.colors.text2,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  infoField: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: theme.spacing.base,
+  },
+  iconContainer: {
+    backgroundColor: "red",
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.full,
+  },
+  fieldValue: {
+    height: 25,
+    color: theme.colors.text,
+  },
+  fieldLabel: {
+    height: 22,
+    color: theme.colors.text2,
+  },
+}));

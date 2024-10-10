@@ -19,7 +19,6 @@ import SelectItem from "../../../components/ui/SelectItem";
 import AppBar from "../../../components/ui/AppBar";
 import useImageReader from "../../../hooks/useImageReader";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import { StyleSheet } from "react-native";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
 import moment from "moment";
@@ -244,23 +243,21 @@ const EditProfileScreen = () => {
 
 export default EditProfileScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    changePassButton: {
-      backgroundColor: theme.colors.background,
-      padding: 6,
-      borderRadius: 99,
-      width: 37,
-    },
-    formFields: {
-      paddingHorizontal: theme.spacing.base,
-      paddingBottom: theme.spacing.md,
-      rowGap: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  changePassButton: {
+    backgroundColor: theme.colors.background,
+    padding: 6,
+    borderRadius: 99,
+    width: 37,
+  },
+  formFields: {
+    paddingHorizontal: theme.spacing.base,
+    paddingBottom: theme.spacing.md,
+    rowGap: theme.spacing.base,
+  },
+}));

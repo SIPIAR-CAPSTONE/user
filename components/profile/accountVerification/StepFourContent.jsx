@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
 import ImageFrame from "./StepFourComponents/ImageFrame";
 import { Divider } from "react-native-paper";
@@ -161,17 +161,15 @@ const StepFourContent = () => {
 
 export default StepFourContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      paddingTop: 24,
-      paddingHorizontal: theme.spacing.base,
-    },
-    divider: {
-      marginVertical: 26,
-      backgroundColor: "gray",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 24,
+    paddingHorizontal: theme.spacing.base,
+  },
+  divider: {
+    marginVertical: 26,
+    backgroundColor: "gray",
+  },
+}));

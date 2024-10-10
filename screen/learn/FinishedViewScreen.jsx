@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Layout from "../../components/common/Layout";
@@ -44,35 +44,33 @@ const FinishedViewScreen = ({ route }) => {
 
 export default FinishedViewScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingBottom: 100,
-      rowGap: theme.spacing.md,
-      backgroundColor: theme.colors.background,
-    },
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 100,
+    rowGap: theme.spacing.md,
+    backgroundColor: theme.colors.background,
+  },
 
-    title: {
-      fontSize: theme.fontSize.xl,
-      fontWeight: "bold",
-      textAlign: "center",
-      marginTop: theme.spacing.sm,
-    },
-    desc: {
-      textAlign: "center",
-      color: theme.colors.text2,
-    },
-    buttonsContainer: {
-      width: "100%",
-      flexDirection: "row",
-      columnGap: theme.spacing.base,
-      marginTop: theme.spacing.xxxl,
-    },
-    button: {
-      flex: 1,
-    },
-  })
-);
+  title: {
+    fontSize: theme.fontSize.xl,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: theme.spacing.sm,
+  },
+  desc: {
+    textAlign: "center",
+    color: theme.colors.text2,
+  },
+  buttonsContainer: {
+    width: "100%",
+    flexDirection: "row",
+    columnGap: theme.spacing.base,
+    marginTop: theme.spacing.xxxl,
+  },
+  button: {
+    flex: 1,
+  },
+}));

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
 
@@ -127,18 +127,16 @@ const SettingsScreen = () => {
 
 export default SettingsScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    listItems: {
-      marginTop: 20,
-      rowGap: 10,
-      paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  listItems: {
+    marginTop: 20,
+    rowGap: 10,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.base,
+  },
+}));

@@ -1,7 +1,6 @@
 import { List } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import ScorePoints from "./ScorePoints";
-import { StyleSheet } from "react-native";
 
 function ScorePointsListItem({
   iconName,
@@ -35,11 +34,9 @@ function ScorePointsListItem({
 
 export default ScorePointsListItem;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    titleStyle: {
-      color: theme.colors.text,
-      fontSize: 17,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  titleStyle: {
+    color: theme.colors.text,
+    fontSize: 17,
+  },
+}));

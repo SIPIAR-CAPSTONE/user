@@ -1,6 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import Form from "../../../components/common/Form";
 import FormHeader from "../../../components/common/FormHeader";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import SelectItem from "../../../components/ui/SelectItem";
@@ -114,27 +112,25 @@ const ReportIssueScreen = () => {
 
 export default ReportIssueScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-      rowGap: theme.spacing.base,
-    },
-    issueDesc: {
-      backgroundColor: theme.colors.background,
-      borderWidth: 1,
-      borderColor: "#e1e2e3",
-      borderRadius: theme.borderRadius.sm,
-      height: 200,
-      padding: 14,
-    },
-    inputError: {
-      borderWidth: 1.5,
-      color: theme.colors.primary,
-      borderColor: theme.colors.primary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+    rowGap: theme.spacing.base,
+  },
+  issueDesc: {
+    backgroundColor: theme.colors.background,
+    borderWidth: 1,
+    borderColor: "#e1e2e3",
+    borderRadius: theme.borderRadius.sm,
+    height: 200,
+    padding: 14,
+  },
+  inputError: {
+    borderWidth: 1.5,
+    color: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+}));
 
 const ISSUE_TYPES = [
   { label: "Hands-On CPR Issue", value: "Hands-On CPR Issue" },

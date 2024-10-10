@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -106,10 +106,8 @@ const ResetPasswordScreen = () => {
 
 export default ResetPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+  },
+}));

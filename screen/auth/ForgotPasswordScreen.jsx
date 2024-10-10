@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import { useState } from "react";
 
 import FormHeader from "../../components/common/FormHeader";
@@ -85,10 +84,8 @@ const ForgotPasswordScreen = () => {
 
 export default ForgotPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+  },
+}));

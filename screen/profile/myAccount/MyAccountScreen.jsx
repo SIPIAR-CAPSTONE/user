@@ -1,4 +1,4 @@
-import { SectionList, StyleSheet, View } from "react-native";
+import { SectionList, View } from "react-native";
 import { Divider, Text } from "react-native-paper";
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
@@ -112,21 +112,19 @@ const MyAccountScreen = () => {
 
 export default MyAccountScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    contentContainer: {
-      paddingBottom: theme.spacing.md,
-    },
-    divider: {
-      marginHorizontal: theme.spacing.base,
-    },
-    listHeaderContainer: {
-      marginBottom: 16,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  contentContainer: {
+    paddingBottom: theme.spacing.md,
+  },
+  divider: {
+    marginHorizontal: theme.spacing.base,
+  },
+  listHeaderContainer: {
+    marginBottom: 16,
+  },
+}));

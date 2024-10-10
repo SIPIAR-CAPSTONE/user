@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -48,24 +48,22 @@ const AnswerOption = ({ isCorrect = null, onPress, text, disabled }) => {
 
 export default AnswerOption;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      borderWidth: 1.5,
-      borderRadius: theme.borderRadius.lg,
-      minHeight: 52,
-      padding: 14,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    answer: {
-      textAlign: "center",
-      paddingHorizontal: 20,
-    },
-    checkIcon: {
-      position: "absolute",
-      right: 10,
-      top: "50%",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    borderWidth: 1.5,
+    borderRadius: theme.borderRadius.lg,
+    minHeight: 52,
+    padding: 14,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  answer: {
+    textAlign: "center",
+    paddingHorizontal: 20,
+  },
+  checkIcon: {
+    position: "absolute",
+    right: 10,
+    top: "50%",
+  },
+}));

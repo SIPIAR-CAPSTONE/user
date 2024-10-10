@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import Layout from "../../../components/common/Layout";
 import {
   Title,
@@ -131,15 +131,13 @@ const PrivacyAndPolicyScreen = () => {
 
 export default PrivacyAndPolicyScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    container: {
-      paddingVertical: 30,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  appBarTitle: {
+    fontSize: 23,
+    fontWeight: "bold",
+    color: theme.colors.text,
+  },
+  container: {
+    paddingVertical: 30,
+  },
+}));

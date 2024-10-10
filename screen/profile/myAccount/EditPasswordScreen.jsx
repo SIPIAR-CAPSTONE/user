@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import FormHeader from "../../../components/common/FormHeader";
@@ -135,13 +135,11 @@ const EditPasswordScreen = () => {
 
 export default EditPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-    button: {
-      marginTop: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    paddingHorizontal: theme.spacing.base,
+  },
+  button: {
+    marginTop: theme.spacing.base,
+  },
+}));
