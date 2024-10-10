@@ -14,10 +14,19 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import { useNavigation } from "@react-navigation/native";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import { Text } from "react-native-paper";
+import Button from "../../../components/ui/Button";
+import { setItem } from "../../../utils/LocalStorage";
+import useAskTermAndConditions from "../../../hooks/useAskTermAndConditions";
 
 const TermsAndConditionScreen = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
+  const { isTACAccepted } = useAskTermAndConditions();
+  
+  const handleAcceptTAC = () => {
+    setItem("termAndConditions", "true");
+    navigation.navigate("HomeScreen");
+  };
 
   const CustomAppBar = () => (
     <AppBar>
@@ -144,7 +153,18 @@ const TermsAndConditionScreen = () => {
         agree to be bound by these Terms and our Privacy Policy.
       </P>
 
-      <Time style={{ marginTop: 50 }}>Last updated: May 15, 2024</Time>
+      <Time style={{ marginVertical: 20 }}>Last updated: May 15, 2024</Time>
+
+      {!isTACAccepted && (
+        <View style={styles.buttonsContainer}>
+          <Button label="Accept" onPress={handleAcceptTAC} />
+          <Button
+            variant="outlined"
+            label="Decline"
+            onPress={() => navigation.goBack()}
+          />
+        </View>
+      )}
     </Layout>
   );
 };
@@ -160,6 +180,10 @@ const stylesheet = createStyleSheet((theme) =>
     },
     container: {
       paddingVertical: 30,
+    },
+    buttonsContainer: {
+      rowGap: theme.spacing.sm,
+      marginTop: theme.spacing.xxxl,
     },
   })
 );
