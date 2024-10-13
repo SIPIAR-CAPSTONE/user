@@ -33,7 +33,7 @@ const LearnScreen = ({ navigation }) => {
   const CustomAppBar = () => (
     <AppBar>
       <Text style={styles.appBarTitle}>Learn</Text>
-      <CircularIcon name="search" pressable onPress={openModal} />
+      <CircularIcon name="search" onPress={openModal} />
     </AppBar>
   );
 

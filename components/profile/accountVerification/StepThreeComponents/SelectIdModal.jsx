@@ -39,7 +39,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
           { backgroundColor: theme.colors.background },
         ]}
       >
-        <CircularIcon name="arrow-back" pressable onPress={onClose} />
+        <CircularIcon name="arrow-back" onPress={onClose} />
         <Text
           style={{
             fontWeight: "bold",

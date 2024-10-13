@@ -54,7 +54,6 @@ const SettingsScreen = () => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => navigation.goBack()}
       />
       <Text style={styles.appBarTitle}>Settings</Text>

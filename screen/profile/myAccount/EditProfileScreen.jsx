@@ -131,7 +131,6 @@ const EditProfileScreen = () => {
       <AppBar>
         <CircularIcon
           name="arrow-back"
-          pressable
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.appBarTitle}>Edit Profile</Text>

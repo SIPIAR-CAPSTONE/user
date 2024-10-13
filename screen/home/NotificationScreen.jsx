@@ -32,8 +32,7 @@ const NotificationScreen = () => {
   const CustomAppBar = () => (
     <AppBar>
       <CircularIcon
-        name="arrow-back"
-        pressable
+        name="arrow-back"    
         onPress={() => navigation.goBack()}
       />
       <Text style={styles.appBarTitle}>Notification</Text>

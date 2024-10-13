@@ -32,7 +32,6 @@ const TermsAndConditionScreen = () => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => navigation.goBack()}
       />
       <Text style={styles.appBarTitle}>Terms and Conditions</Text>

@@ -21,7 +21,6 @@ const PrivacyAndPolicyScreen = () => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => navigation.goBack()}
       />
       <Text style={styles.appBarTitle}>Privacy Policy</Text>

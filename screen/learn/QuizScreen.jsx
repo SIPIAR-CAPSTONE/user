@@ -78,7 +78,6 @@ const QuizScreen = ({ route }) => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => setIsExitDialogVisible(true)}
       />
     </AppBar>

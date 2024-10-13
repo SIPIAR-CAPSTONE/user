@@ -69,7 +69,6 @@ const EditPasswordScreen = () => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => navigation.goBack()}
       />
     </AppBar>

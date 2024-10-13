@@ -110,7 +110,7 @@ const SignupScreen = ({ navigation }) => {
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
       <AppBar style={styles.appBar}>
-        <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
+        <CircularIcon name="arrow-back" onPress={goBackStep} />
         <Text style={styles.appBarTitle}>Signup</Text>
 
         {/* invisible element, just to make the title center */}

@@ -98,7 +98,6 @@ const BroadcastScreen = () => {
         <Text style={styles.appBarTitle}>Broadcast</Text>
         <CircularIcon
           name="filter"
-          pressable
           onPress={() => setShowSortSheet((prevState) => !prevState)}
         />
       </AppBar>

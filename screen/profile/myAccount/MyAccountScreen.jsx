@@ -74,7 +74,6 @@ const MyAccountScreen = () => {
       <AppBar>
         <CircularIcon
           name="arrow-back"
-          pressable
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.appBarTitle}>My Account</Text>
