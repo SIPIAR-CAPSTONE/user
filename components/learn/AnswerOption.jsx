@@ -9,7 +9,7 @@ const AnswerOption = ({ isCorrect = null, onPress, text, disabled }) => {
   const colorStyle = {
     true: theme.colors.green,
     false: theme.colors.primary,
-    default: theme.colors.black,
+    null: theme.colors.text,
   };
 
   return (

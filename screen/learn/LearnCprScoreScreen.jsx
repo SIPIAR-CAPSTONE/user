@@ -129,6 +129,7 @@ const LearnCprScoreScreen = () => {
         <View style={styles.overallScoreContainer}>
           <ScorePoints
             label="Score"
+            labelColor="white"
             points={overallScore}
             progress={perfectOverallScorePercentage}
             size="lg"
@@ -136,7 +137,7 @@ const LearnCprScoreScreen = () => {
               //the larger the totalCompression the smaller the fontSize of points
               totalCompression < 10 ? 40 : totalCompression < 100 ? 30 : 24
             }
-            pointsColor={theme.colors.background}
+            pointsColor="white"
             progressColor={
               perfectOverallScorePercentage < 40
                 ? Color.red
@@ -242,7 +243,7 @@ const stylesheet = createStyleSheet((theme) => ({
     fontSize: theme.fontSize.sm,
     marginTop: 14,
     marginBottom: 4,
-    color: theme.colors.background,
+    color: "white",
   },
   detailedScoreContainer: {
     flex: 1,

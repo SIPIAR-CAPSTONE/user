@@ -68,17 +68,20 @@ const QuizScoreScreen = ({ route }) => {
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>
-        <AppBarTitle size="lg" style={{color: "white"}}>Scoring</AppBarTitle>
+        <AppBarTitle size="lg" style={{ color: "white" }}>
+          Scoring
+        </AppBarTitle>
       </AppBar>
 
       <ScrollView style={styles.mainContent}>
         <View style={styles.overallScoreContainer}>
           <ScorePoints
             label="Score"
+            labelColor="white"
             points={overallScore}
             progress={correctScorePercentage}
             size="lg"
-            pointsColor={theme.colors.background}
+            pointsColor="white"
             progressColor={
               correctScorePercentage < 40
                 ? Color.red
@@ -145,7 +148,7 @@ const stylesheet = createStyleSheet((theme) => ({
     fontSize: theme.fontSize.sm,
     marginTop: 14,
     marginBottom: 4,
-    color: theme.colors.background,
+    color: "white",
   },
   detailedScoreContainer: {
     flex: 1,

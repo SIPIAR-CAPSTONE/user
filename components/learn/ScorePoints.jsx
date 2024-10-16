@@ -9,6 +9,7 @@ export default function ScorePoints({
   pointsFontSize,
   pointsColor,
   label,
+  labelColor,
   progressColor = "#22C55E",
   backgroundColor = "#D9D9D9",
   size = "md",
@@ -36,7 +37,7 @@ export default function ScorePoints({
               {pointsSuffix ? pointsSuffix : " "}
             </Text>
           </View>
-          <Text style={styles.label}>{label}</Text>
+          <Text style={[styles.label, { color: labelColor }]}>{label}</Text>
         </View>
       );
     }
