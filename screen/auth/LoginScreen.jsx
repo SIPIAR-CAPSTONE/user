@@ -102,7 +102,7 @@ const LoginScreen = () => {
 
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <Form style={styles.form}>
+      <Form>
         <FormHeader
           title="Sign In"
           titleSize="large"
@@ -157,9 +157,6 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  form: {
-    paddingHorizontal: theme.spacing.base,
-  },
   forgotPassButton: {
     maxWidth: 180,
     alignSelf: "flex-end",

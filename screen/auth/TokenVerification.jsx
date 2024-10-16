@@ -68,31 +68,30 @@ const TokenVerification = () => {
     }
   };
 
+  const countdown =
+    time === 0 ? (
+      <Text variant="labelLarge" style={styles.resentMessage}>
+        Resent, please wait a while.
+      </Text>
+    ) : (
+      <ResendCountdown time={time} />
+    );
+
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <Form style={styles.form}>
+      <Form>
         <FormHeader
           title="Enter Your Token"
           titleSize="large"
           desc="We have sent the verification token to your email address."
         />
-
         <TextInput
           placeholder="Token Hash"
           value={tokenHash}
           onChangeText={setTokenHash}
         />
-
         <Text style={styles.serverErrorMessage}>{serverError}</Text>
-
-        {time === 0 ? (
-          <Text variant="labelLarge" style={styles.resentMessage}>
-            Resent, please wait a while.
-          </Text>
-        ) : (
-          <ResendCountdown time={time} />
-        )}
-
+        {countdown}
         <Button label="Verify" onPress={handleSubmit} isLoading={loading} />
       </Form>
     </Layout>
@@ -102,9 +101,6 @@ const TokenVerification = () => {
 export default TokenVerification;
 
 const stylesheet = createStyleSheet((theme) => ({
-  form: {
-    paddingHorizontal: theme.spacing.base,
-  },
   serverErrorMessage: {
     color: theme.colors.primary,
   },

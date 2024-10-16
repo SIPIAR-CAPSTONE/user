@@ -9,6 +9,7 @@ import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import useBoundStore from "../../../zustand/useBoundStore";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
+import Form from "../../common/Form";
 
 const StepThreeContent = ({ goNextStep }) => {
   const { styles, theme } = useStyles(stylesheet);
@@ -36,7 +37,7 @@ const StepThreeContent = ({ goNextStep }) => {
   ));
 
   return (
-    <ScrollView style={styles.container}>
+    <Form contentContainerStyle={styles.form}>
       <FormHeader
         title="Tell us about yourself"
         desc="Please complete the information below"
@@ -66,16 +67,15 @@ const StepThreeContent = ({ goNextStep }) => {
           idImageSource={selectedId.imageSource}
         />
       )}
-    </ScrollView>
+    </Form>
   );
 };
 
 export default StepThreeContent;
 
 const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    paddingBottom: 70,
-    height: 600,
+  form: {
+    rowGap: 0,
   },
   listItem: {
     backgroundColor: theme.colors.background,

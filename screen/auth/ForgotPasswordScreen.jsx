@@ -1,40 +1,31 @@
 import { useState } from "react";
 
-import FormHeader from "../../components/common/FormHeader";
-import Button from "../../components/ui/Button";
 import useSendToken from "../../hooks/useSendToken";
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
-import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import Form from "../../components/common/Form";
+import FormHeader from "../../components/common/FormHeader";
+import Button from "../../components/ui/Button";
 import { isFormValid } from "../../utils/formValidation";
 
 const fields = [
   { name: "email", rules: [{ type: "required" }, { type: "email" }] },
 ];
 
-/**
- * ForgotPasswordScreen component
- *
- * where the user can enter their email and request a password reset token.
- * It also handles the form validation and submission.
- */
 const ForgotPasswordScreen = () => {
-  const { styles } = useStyles(stylesheet);
-
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { errors, setErrors, process } = useSendToken(email, true); // Hook for sending password reset token
   const setResetEmail = useBoundStore((state) => state.setPasswordResetEmail);
+  const form = { email };
 
   const handleSubmit = async () => {
     // Add email as a global prop
     setResetEmail(email);
 
-    if (isFormValid(fields, { email }, setErrors)) {
+    if (isFormValid(fields, form, setErrors)) {
       setLoading(true);
 
       try {
@@ -62,7 +53,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <Form style={styles.form}>
+      <Form>
         <FormHeader
           title="Forgot Password"
           titleSize="large"
@@ -83,9 +74,3 @@ const ForgotPasswordScreen = () => {
 };
 
 export default ForgotPasswordScreen;
-
-const stylesheet = createStyleSheet((theme) => ({
-  form: {
-    paddingHorizontal: theme.spacing.base,
-  },
-}));

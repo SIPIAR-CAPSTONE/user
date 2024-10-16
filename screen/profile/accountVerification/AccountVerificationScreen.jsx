@@ -132,33 +132,33 @@ const AccountVerificationScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon name="arrow-back" onPress={goBackStep} />
+    </AppBar>
+  );
+
   return (
-    <Layout removeDefaultPaddingHorizontal addNoInternetAlert>
-      <AppBar>
-        <CircularIcon name="arrow-back" onPress={goBackStep} />
-      </AppBar>
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetAlert
+      AppbarComponent={CustomAppBar}
+      scrollable
+      contentContainerStyle={styles.container}
+    >
+      <ProgressSteps
+        currentStep={currentStep}
+        orientation="horizontal"
+        steps={steps}
+        colors={customColors}
+      />
 
-      <ScrollView
-        style={{
-          flex: 1,
-        }}
-      >
-        <View style={styles.content}>
-          <ProgressSteps
-            currentStep={currentStep}
-            orientation="horizontal"
-            steps={steps}
-            colors={customColors}
-          />
-        </View>
-
-        <ConfirmationDialog
-          title="Are you sure you want to exit?"
-          isVisible={isConfirmationDialogVisible}
-          onPressConfirmation={() => navigation.goBack()}
-          onPressCancel={hideConfirmationDialog}
-        />
-      </ScrollView>
+      <ConfirmationDialog
+        title="Are you sure you want to exit?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={() => navigation.goBack()}
+        onPressCancel={hideConfirmationDialog}
+      />
     </Layout>
   );
 };
@@ -171,9 +171,7 @@ const stylesheet = createStyleSheet((theme) => ({
     fontWeight: "bold",
     color: theme.colors.text,
   },
-  content: {
-    marginTop: 10,
-    paddingVertical: theme.spacing.md,
-    paddingHorizontal: theme.spacing.base,
+  container: {
+    paddingTop: 10,
   },
 }));

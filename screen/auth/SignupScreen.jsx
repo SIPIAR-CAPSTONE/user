@@ -107,33 +107,36 @@ const SignupScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const CustomAppBar = () => (
+    <AppBar style={styles.appBar}>
+      <CircularIcon name="arrow-back" onPress={goBackStep} />
+      <Text style={styles.appBarTitle}>Signup</Text>
+
+      {/* invisible element, just to make the title center */}
+      <View style={{ width: 30 }} />
+    </AppBar>
+  );
+
   return (
-    <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <AppBar style={styles.appBar}>
-        <CircularIcon name="arrow-back" onPress={goBackStep} />
-        <Text style={styles.appBarTitle}>Signup</Text>
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetBar
+      AppbarComponent={CustomAppBar}
+      scrollable
+    >
+      <ProgressSteps
+        currentStep={currentStep}
+        orientation="horizontal"
+        steps={steps}
+        colors={customColors}
+      />
 
-        {/* invisible element, just to make the title center */}
-        <View style={{ width: 30 }} />
-      </AppBar>
-
-      <ScrollView style={styles.container}>
-        <View style={styles.content}>
-          <ProgressSteps
-            currentStep={currentStep}
-            orientation="horizontal"
-            steps={steps}
-            colors={customColors}
-          />
-        </View>
-
-        <ConfirmationDialog
-          title="Are you sure you want to exit?"
-          isVisible={isConfirmationDialogVisible}
-          onPressConfirmation={() => navigation.goBack()}
-          onPressCancel={hideConfirmationDialog}
-        />
-      </ScrollView>
+      <ConfirmationDialog
+        title="Are you sure you want to exit?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={() => navigation.goBack()}
+        onPressCancel={hideConfirmationDialog}
+      />
     </Layout>
   );
 };
@@ -141,9 +144,6 @@ const SignupScreen = ({ navigation }) => {
 export default SignupScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-  },
   appBar: {
     height: 110,
   },
@@ -151,8 +151,5 @@ const stylesheet = createStyleSheet((theme) => ({
     fontSize: 20,
     fontWeight: "bold",
     color: theme.colors.text,
-  },
-  content: {
-    paddingHorizontal: theme.spacing.base,
   },
 }));
