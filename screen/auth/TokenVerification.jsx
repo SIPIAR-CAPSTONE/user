@@ -13,6 +13,7 @@ import TextInput from "../../components/ui/TextInput";
 import ResendCountdown from "../../components/auth/tokenVerification/ResendCountdown";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import ServerErrorMessage from "../../components/ui/ServerErrorMessage";
 
 const TokenVerification = () => {
   const { styles } = useStyles(stylesheet);
@@ -90,7 +91,7 @@ const TokenVerification = () => {
           value={tokenHash}
           onChangeText={setTokenHash}
         />
-        <Text style={styles.serverErrorMessage}>{serverError}</Text>
+        <ServerErrorMessage>{serverError}</ServerErrorMessage>
         {countdown}
         <Button label="Verify" onPress={handleSubmit} isLoading={loading} />
       </Form>
@@ -101,9 +102,6 @@ const TokenVerification = () => {
 export default TokenVerification;
 
 const stylesheet = createStyleSheet((theme) => ({
-  serverErrorMessage: {
-    color: theme.colors.primary,
-  },
   resentMessage: {
     color: theme.colors.primary,
     textAlign: "center",
