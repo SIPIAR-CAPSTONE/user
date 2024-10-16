@@ -1,10 +1,10 @@
 import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
-export default function ServerErrorMessage({ className, children, ...props }) {
+export default function ServerErrorMessage({ style, children, ...props }) {
   const { styles } = useStyles(stylesheet);
   return (
-    <Text className={[styles.serverErrorMessage, className]} {...props}>
+    <Text style={[styles.serverErrorMessage, style]} {...props}>
       {children}
     </Text>
   );
