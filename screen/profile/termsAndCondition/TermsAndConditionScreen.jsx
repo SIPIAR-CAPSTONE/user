@@ -1,4 +1,6 @@
 import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   Title,
   H1,
@@ -11,12 +13,11 @@ import {
 import Layout from "../../../components/common/Layout";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import { useNavigation } from "@react-navigation/native";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
-import { Text } from "react-native-paper";
 import Button from "../../../components/ui/Button";
 import { setItem } from "../../../utils/LocalStorage";
 import useAskTermAndConditions from "../../../hooks/useAskTermAndConditions";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 
 const TermsAndConditionScreen = () => {
   const navigation = useNavigation();
@@ -34,8 +35,8 @@ const TermsAndConditionScreen = () => {
         name="arrow-back"
         onPress={() => navigation.goBack()}
       />
-      <Text style={styles.appBarTitle}>Terms and Conditions</Text>
-      <View style={{ width: 30 }} />
+      <AppBarTitle>Terms and Conditions</AppBarTitle>
+      <View style={{ width: 40 }} />
     </AppBar>
   );
   return (
@@ -171,11 +172,6 @@ const TermsAndConditionScreen = () => {
 export default TermsAndConditionScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   container: {
     paddingVertical: 30,
   },

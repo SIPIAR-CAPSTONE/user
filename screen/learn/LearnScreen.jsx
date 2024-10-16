@@ -1,12 +1,14 @@
 import { View, Modal, FlatList } from "react-native";
 import { Text, Searchbar, Portal, TouchableRipple } from "react-native-paper";
+import { useState } from "react";
+
 import MaterialCard from "../../components/learn/MaterialCard";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
-import { useState } from "react";
 import NextActionIcon from "../../components/common/NextActionIcon";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 
 const LearnScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
@@ -32,14 +34,13 @@ const LearnScreen = ({ navigation }) => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <Text style={styles.appBarTitle}>Learn</Text>
+      <AppBarTitle>Learn</AppBarTitle>
       <CircularIcon name="search" onPress={openModal} />
     </AppBar>
   );
 
   return (
     <Layout scrollable AppbarComponent={CustomAppBar}>
-      {/* CPR Content */}
       <View style={styles.section}>
         <Text variant="titleMedium" style={styles.sectionLabel}>
           Practice
@@ -79,7 +80,7 @@ const LearnScreen = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Modal for search */}
+ 
       <Portal>
         <Modal
           visible={isModalVisible}
@@ -128,11 +129,6 @@ const stylesheet = createStyleSheet((theme) => ({
   sectionLabel: {
     marginVertical: theme.spacing.md,
     fontWeight: "bold",
-  },
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
   },
   materialCards: {
     rowGap: theme.spacing.md,

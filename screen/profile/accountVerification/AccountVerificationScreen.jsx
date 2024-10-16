@@ -1,4 +1,3 @@
-import { ScrollView, View } from "react-native";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
@@ -9,6 +8,8 @@ import AppBar from "../../../components/ui/AppBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
 import Layout from "../../../components/common/Layout";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
+import { View } from "react-native";
 const StepTwoContent = lazy(() =>
   import("../../../components/profile/accountVerification/StepTwoContent")
 );
@@ -135,6 +136,8 @@ const AccountVerificationScreen = ({ navigation }) => {
   const CustomAppBar = () => (
     <AppBar>
       <CircularIcon name="arrow-back" onPress={goBackStep} />
+      <AppBarTitle>Account Verification</AppBarTitle>
+      <View style={{ width: 40 }} />
     </AppBar>
   );
 
@@ -166,11 +169,6 @@ const AccountVerificationScreen = ({ navigation }) => {
 export default AccountVerificationScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   container: {
     paddingTop: 10,
   },

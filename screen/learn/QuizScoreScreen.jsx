@@ -1,19 +1,21 @@
 import { View, ScrollView } from "react-native";
 import { Divider, Text } from "react-native-paper";
+import { useNavigation, StackActions } from "@react-navigation/native";
+
 import AppBar from "../../components/ui/AppBar";
 import Layout from "../../components/common/Layout";
 import useBoundStore from "../../zustand/useBoundStore";
+import Button from "../../components/ui/Button";
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import ScorePoints from "../../components/learn/ScorePoints";
+import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
+import Color from "../../utils/Color";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 import {
   countScore,
   getFormattedCurrentDate,
   getScorePercentage,
 } from "./Learn.helper";
-import Button from "../../components/ui/Button";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
-import ScorePoints from "../../components/learn/ScorePoints";
-import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
-import { useNavigation, StackActions } from "@react-navigation/native";
-import Color from "../../utils/Color";
 
 const QuizScoreScreen = ({ route }) => {
   const { quizAnswersHistory } = route.params;
@@ -66,7 +68,7 @@ const QuizScoreScreen = ({ route }) => {
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>
-        <Text style={styles.appbarTitle}>Scoring</Text>
+        <AppBarTitle size="lg" style={{color: "white"}}>Scoring</AppBarTitle>
       </AppBar>
 
       <ScrollView style={styles.mainContent}>
@@ -130,12 +132,6 @@ const stylesheet = createStyleSheet((theme) => ({
     justifyContent: "center",
     backgroundColor: theme.colors.primary,
   },
-  appbarTitle: {
-    fontWeight: "bold",
-    fontSize: 24,
-    color: theme.colors.background,
-  },
-
   mainContent: {
     flex: 1,
   },

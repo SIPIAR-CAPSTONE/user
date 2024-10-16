@@ -1,16 +1,16 @@
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
+import switchTheme from "react-native-theme-switch-animation";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
 import NextActionIcon from "../../../components/common/NextActionIcon";
-import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Layout from "../../../components/common/Layout";
 import AppBar from "../../../components/ui/AppBar";
-import { Text } from "react-native-paper";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingsScreen = () => {
@@ -56,7 +56,7 @@ const SettingsScreen = () => {
         name="arrow-back"
         onPress={() => navigation.goBack()}
       />
-      <Text style={styles.appBarTitle}>Settings</Text>
+      <AppBarTitle>Settings</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
   );
@@ -127,11 +127,6 @@ const SettingsScreen = () => {
 export default SettingsScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   listItems: {
     marginTop: 20,
     rowGap: 10,

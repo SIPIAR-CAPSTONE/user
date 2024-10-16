@@ -1,21 +1,23 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { Divider } from "react-native-paper";
+
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import AppBar from "../../components/ui/AppBar";
 import Button from "../../components/ui/Button";
-import { useNavigation } from "@react-navigation/native";
 import useBoundStore from "../../zustand/useBoundStore";
 import ScorePoints from "../../components/learn/ScorePoints";
 import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
-import { Divider } from "react-native-paper";
+import Color from "../../utils/Color";
+import Layout from "../../components/common/Layout";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 import {
   countScore,
   getFormattedCurrentDate,
   getTotalTimeDuration,
   getScorePercentage,
 } from "./Learn.helper";
-import Color from "../../utils/Color";
-import Layout from "../../components/common/Layout";
 
 const LearnCprScoreScreen = () => {
   const navigation = useNavigation();
@@ -118,7 +120,9 @@ const LearnCprScoreScreen = () => {
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>
-        <Text style={styles.appbarTitle}>Scoring</Text>
+        <AppBarTitle size="lg" style={{ color: "white" }}>
+          Scoring
+        </AppBarTitle>
       </AppBar>
 
       <ScrollView style={styles.mainContent}>
@@ -225,12 +229,6 @@ const stylesheet = createStyleSheet((theme) => ({
     justifyContent: "center",
     backgroundColor: theme.colors.primary,
   },
-  appbarTitle: {
-    fontWeight: "bold",
-    fontSize: 24,
-    color: theme.colors.background,
-  },
-
   mainContent: {
     flex: 1,
   },

@@ -1,19 +1,21 @@
 import { SectionList, View } from "react-native";
-import { Divider, Text } from "react-native-paper";
+import { Divider } from "react-native-paper";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
+
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
-import { useNavigation } from "@react-navigation/native";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import moment from "moment";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
@@ -72,11 +74,8 @@ const MyAccountScreen = () => {
   return (
     <>
       <AppBar>
-        <CircularIcon
-          name="arrow-back"
-          onPress={() => navigation.goBack()}
-        />
-        <Text style={styles.appBarTitle}>My Account</Text>
+        <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+        <AppBarTitle>My Account</AppBarTitle>
         <View style={{ width: 40 }} />
       </AppBar>
       <SectionList
@@ -112,11 +111,6 @@ const MyAccountScreen = () => {
 export default MyAccountScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   contentContainer: {
     paddingBottom: theme.spacing.md,
   },

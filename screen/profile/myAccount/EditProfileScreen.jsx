@@ -1,8 +1,10 @@
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableRipple, Text } from "react-native-paper";
+import { TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { decode } from "base64-arraybuffer";
+import moment from "moment";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Button from "../../../components/ui/Button";
@@ -12,7 +14,6 @@ import SectionHeader from "../../../components/profile/SectionHeader";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
 import useUserMetadata from "../../../hooks/useUserMetadata";
-import { decode } from "base64-arraybuffer";
 import TextInput from "../../../components/ui/TextInput";
 import BirthdayPicker from "../../../components/ui/BirthdayPicker";
 import SelectItem from "../../../components/ui/SelectItem";
@@ -21,7 +22,7 @@ import useImageReader from "../../../hooks/useImageReader";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
-import moment from "moment";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
@@ -126,116 +127,118 @@ const EditProfileScreen = () => {
     }
   };
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      <AppBarTitle>Edit Profile</AppBarTitle>
+      <TouchableRipple
+        borderless
+        style={styles.changePassButton}
+        onPress={() => navigation.navigate("EditPassword")}
+      >
+        <MaterialCommunityIcons
+          name="form-textbox-password"
+          size={24}
+          color={theme.colors.text}
+        />
+      </TouchableRipple>
+    </AppBar>
+  );
+
   return (
-    <Layout removeDefaultPaddingHorizontal addNoInternetAlert>
-      <AppBar>
-        <CircularIcon
-          name="arrow-back"
-          onPress={() => navigation.goBack()}
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetAlert
+      AppbarComponent={CustomAppBar}
+      scrollable
+    >
+      <EditUserProfileCard
+        name="John"
+        imageSource={""}
+        image={profilePicture}
+        setImage={setProfilePicture}
+      />
+
+      <SectionHeader title="Personal Information" />
+      <View style={styles.formFields}>
+        <TextInput
+          variant="outlined"
+          label="First Name"
+          value={userInfo.firstName}
+          onChangeText={(item) => handleFieldChange("firstName", item)}
+          error={errors.firstName}
         />
-        <Text style={styles.appBarTitle}>Edit Profile</Text>
-        <TouchableRipple
-          borderless
-          style={styles.changePassButton}
-          onPress={() => navigation.navigate("EditPassword")}
-        >
-          <MaterialCommunityIcons
-            name="form-textbox-password"
-            size={24}
-            color={theme.colors.text}
-          />
-        </TouchableRipple>
-      </AppBar>
+        <TextInput
+          variant="outlined"
+          label="Middle Name"
+          value={userInfo.middleName}
+          onChangeText={(item) => handleFieldChange("middleName", item)}
+        />
+        <TextInput
+          variant="outlined"
+          label="Last Name"
+          value={userInfo.lastName}
+          onChangeText={(item) => handleFieldChange("lastName", item)}
+          error={errors.lastName}
+        />
+        <TextInput
+          variant="outlined"
+          label="Suffix"
+          value={userInfo.suffix}
+          onChangeText={(item) => handleFieldChange("suffix", item)}
+        />
+        <BirthdayPicker
+          variant="outlined"
+          label="Birthday"
+          givenDate={userInfo.birthday}
+          setDate={handleFieldChange}
+          error={errors.birthday}
+        />
+        <TextInput
+          variant="outlined"
+          label="Phone"
+          value={userInfo.phone}
+          onChangeText={(item) => handleFieldChange("phone", item)}
+        />
+      </View>
 
-      <ScrollView>
-        <EditUserProfileCard
-          name="John"
-          imageSource={""}
-          image={profilePicture}
-          setImage={setProfilePicture}
+      <SectionHeader title="Address" />
+      <View style={styles.formFields}>
+        <SelectItem
+          variant="outlined"
+          label="Barangay"
+          value={userInfo.barangay}
+          data={cdoBarangayData}
+          onChange={(value) => handleFieldChange("barangay", value)}
+          error={errors.barangay}
+        />
+        <TextInput
+          variant="outlined"
+          label="Street"
+          value={userInfo.street}
+          onChangeText={(item) => handleFieldChange("street", item)}
+        />
+        <TextInput
+          variant="outlined"
+          label="House Number"
+          value={userInfo.houseNumber}
+          onChangeText={(item) => handleFieldChange("houseNumber", item)}
         />
 
-        <SectionHeader title="Personal Information" />
-        <View style={styles.formFields}>
-          <TextInput
-            variant="outlined"
-            label="First Name"
-            value={userInfo.firstName}
-            onChangeText={(item) => handleFieldChange("firstName", item)}
-            error={errors.firstName}
-          />
-          <TextInput
-            variant="outlined"
-            label="Middle Name"
-            value={userInfo.middleName}
-            onChangeText={(item) => handleFieldChange("middleName", item)}
-          />
-          <TextInput
-            variant="outlined"
-            label="Last Name"
-            value={userInfo.lastName}
-            onChangeText={(item) => handleFieldChange("lastName", item)}
-            error={errors.lastName}
-          />
-          <TextInput
-            variant="outlined"
-            label="Suffix"
-            value={userInfo.suffix}
-            onChangeText={(item) => handleFieldChange("suffix", item)}
-          />
-          <BirthdayPicker
-            variant="outlined"
-            label="Birthday"
-            givenDate={userInfo.birthday}
-            setDate={handleFieldChange}
-            error={errors.birthday}
-          />
-          <TextInput
-            variant="outlined"
-            label="Phone"
-            value={userInfo.phone}
-            onChangeText={(item) => handleFieldChange("phone", item)}
-          />
-        </View>
+        <Button
+          label="Save Changes"
+          onPress={showConfirmationDialog}
+          marginVertical={30}
+        />
 
-        <SectionHeader title="Address" />
-        <View style={styles.formFields}>
-          <SelectItem
-            variant="outlined"
-            label="Barangay"
-            value={userInfo.barangay}
-            data={cdoBarangayData}
-            onChange={(value) => handleFieldChange("barangay", value)}
-            error={errors.barangay}
-          />
-          <TextInput
-            variant="outlined"
-            label="Street"
-            value={userInfo.street}
-            onChangeText={(item) => handleFieldChange("street", item)}
-          />
-          <TextInput
-            variant="outlined"
-            label="House Number"
-            value={userInfo.houseNumber}
-            onChangeText={(item) => handleFieldChange("houseNumber", item)}
-          />
-
-          <Button
-            label="Save Changes"
-            onPress={showConfirmationDialog}
-            marginVertical={30}
-          />
-
-          {/* When save changes submit, show confirmation */}
-          <ConfirmationDialog
-            title="Are you sure you want to save changes?"
-            isVisible={isConfirmationDialogVisible}
-            onPressConfirmation={handleSubmit}
-            onPressCancel={hideConfirmationDialog}
-          />
-        </View>
-      </ScrollView>
+        {/* When save changes submit, show confirmation */}
+        <ConfirmationDialog
+          title="Are you sure you want to save changes?"
+          isVisible={isConfirmationDialogVisible}
+          onPressConfirmation={handleSubmit}
+          onPressCancel={hideConfirmationDialog}
+        />
+      </View>
     </Layout>
   );
 };
@@ -243,11 +246,6 @@ const EditProfileScreen = () => {
 export default EditProfileScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   changePassButton: {
     backgroundColor: theme.colors.background,
     padding: 6,

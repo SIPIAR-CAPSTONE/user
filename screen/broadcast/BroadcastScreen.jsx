@@ -1,7 +1,7 @@
 import { View, FlatList, RefreshControl } from "react-native";
-import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState, useCallback, useRef } from "react";
+import moment from "moment";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
@@ -14,7 +14,7 @@ import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
 import SortBottomSheet from "../../components/broadcast/SortBottomSheet";
 import Header from "../../components/broadcast/Header";
-import moment from "moment";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -95,7 +95,7 @@ const BroadcastScreen = () => {
   return (
     <>
       <AppBar>
-        <Text style={styles.appBarTitle}>Broadcast</Text>
+        <AppBarTitle>Broadcast</AppBarTitle>
         <CircularIcon
           name="filter"
           onPress={() => setShowSortSheet((prevState) => !prevState)}
@@ -131,11 +131,6 @@ const BroadcastScreen = () => {
 export default BroadcastScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   contentContainer: {
     paddingHorizontal: theme.spacing.base,
   },

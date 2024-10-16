@@ -1,5 +1,4 @@
-import { View, ScrollView } from "react-native";
-import { Text } from "react-native-paper";
+import { View } from "react-native";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
@@ -10,6 +9,7 @@ import StepOneContent from "../../components/auth/signup/StepOneContent";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 const StepTwoContent = lazy(() =>
   import("../../components/auth/signup/StepTwoContent")
 );
@@ -39,10 +39,6 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
-  /**
-   * The content of each step of the signup process
-   * Only one step will be displayed at a time based on the currentStep
-   */
   const steps = [
     {
       id: 1,
@@ -72,19 +68,12 @@ const SignupScreen = ({ navigation }) => {
 
   // Step progress color customization
   const customColors = {
-    /**
-     * it is the circle with step number inside
-     * its located at the top side
-     */
     marker: {
       text: {
         normal: theme.colors.text3,
         active: theme.colors.primary,
         completed: theme.colors.onPrimary,
       },
-      /**
-       * it is the line that connect the circles or the marker
-       */
       line: {
         normal: theme.colors.text3,
         active: theme.colors.primary,
@@ -110,7 +99,8 @@ const SignupScreen = ({ navigation }) => {
   const CustomAppBar = () => (
     <AppBar style={styles.appBar}>
       <CircularIcon name="arrow-back" onPress={goBackStep} />
-      <Text style={styles.appBarTitle}>Signup</Text>
+
+      <AppBarTitle size="sm">Signup</AppBarTitle>
 
       {/* invisible element, just to make the title center */}
       <View style={{ width: 30 }} />
@@ -143,13 +133,8 @@ const SignupScreen = ({ navigation }) => {
 
 export default SignupScreen;
 
-const stylesheet = createStyleSheet((theme) => ({
+const stylesheet = createStyleSheet(() => ({
   appBar: {
     height: 110,
-  },
-  appBarTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: theme.colors.text,
   },
 }));

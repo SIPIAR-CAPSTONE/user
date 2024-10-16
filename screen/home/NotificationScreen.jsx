@@ -7,6 +7,7 @@ import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import { useNavigation } from "@react-navigation/native";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 
 const NotificationScreen = () => {
   const navigation = useNavigation();
@@ -31,11 +32,8 @@ const NotificationScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"    
-        onPress={() => navigation.goBack()}
-      />
-      <Text style={styles.appBarTitle}>Notification</Text>
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      <AppBarTitle>Notification</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
   );
@@ -57,11 +55,6 @@ const NotificationScreen = () => {
 export default NotificationScreen;
 
 const stylesheet = createStyleSheet((theme) => ({
-  appBarTitle: {
-    fontSize: 23,
-    fontWeight: "bold",
-    color: theme.colors.text,
-  },
   notifications: {
     paddingHorizontal: theme.spacing.base,
     paddingTop: theme.spacing.base,
