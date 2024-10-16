@@ -17,7 +17,7 @@ const BirthdatePicker = ({
   variant,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
   const [open, setOpen] = useState(false);
   const date = moment(strDate).toDate();
   const formattedDate = moment(date).format("LL");
@@ -35,7 +35,7 @@ const BirthdatePicker = ({
       <DatePicker
         modal
         mode="date"
-        theme={currentThemeStatus}
+        theme={currentThemeScheme}
         open={open}
         date={date}
         buttonColor={theme.colors.text}

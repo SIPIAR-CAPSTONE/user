@@ -15,8 +15,8 @@ const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingsScreen = () => {
   const { styles } = useStyles(stylesheet);
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-  const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
+  const setCurrentThemeScheme = useBoundStore((state) => state.setThemeScheme);
   const navigation = useNavigation();
 
   // Set initial state for dialog visibility and notification status
@@ -35,7 +35,7 @@ const SettingsScreen = () => {
   const handleChangeTheme = (value) => {
     switchTheme({
       switchThemeFunction: () => {
-        setCurrentThemeStatus(value);
+        setCurrentThemeScheme(value);
       },
       animationConfig: {
         type: "circular",
@@ -97,7 +97,7 @@ const SettingsScreen = () => {
         visible={visible.appearance}
         hideDialog={() => hideDialog("appearance")}
         data={["light", "dark"]}
-        selectedValue={currentThemeStatus}
+        selectedValue={currentThemeScheme}
         setSelectedValue={handleChangeTheme}
       />
 

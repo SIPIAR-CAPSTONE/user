@@ -24,7 +24,7 @@ const LearnCprScoreScreen = () => {
   const clearCompressionHistory = useBoundStore(
     (state) => state.clearCompressionHistory
   );
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
 
   const currentDate = getFormattedCurrentDate();
   const totalCompression = compressionHistory.length;
@@ -114,7 +114,7 @@ const LearnCprScoreScreen = () => {
   return (
     <Layout
       removeDefaultPaddingHorizontal
-      statusBarTheme={currentThemeStatus}
+      statusBarTheme={currentThemeScheme}
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>

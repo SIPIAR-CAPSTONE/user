@@ -18,6 +18,8 @@ const commonTheme = {
     md: 10,
     lg: 12,
     xl: 14,
+    xxl: 16,
+    xxxl: 20,
     curve: 28,
     full: 100,
   },

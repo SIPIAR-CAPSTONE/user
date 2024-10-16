@@ -1,27 +1,25 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+
 import useBoundStore from "../../zustand/useBoundStore";
 
 const StatusBar = ({ style = null, ...props }) => {
-  // Get the current theme status from the store.
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-  let selectedStatusStyle = currentThemeStatus;
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
+  let selectedSchemeStyle = currentThemeScheme;
 
   // If there is a custom style, use it.
   if (style) {
-    selectedStatusStyle = style;
+    selectedSchemeStyle = style;
   }
 
-  // If the current theme status is light, use the dark status bar style.
-  else if (currentThemeStatus == "light") {
-    selectedStatusStyle = "dark";
+  // If the current theme Scheme is light then use the dark Scheme bar style.
+  else if (currentThemeScheme == "light") {
+    selectedSchemeStyle = "dark";
   }
-
-  // If the current theme status is dark, use the light status bar style.
   else {
-    selectedStatusStyle = "light";
+    selectedSchemeStyle = "light";
   }
 
-  return <ExpoStatusBar style={selectedStatusStyle} {...props} />;
+  return <ExpoStatusBar style={selectedSchemeStyle} {...props} />;
 };
 
 export default StatusBar;

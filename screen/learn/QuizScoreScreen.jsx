@@ -19,7 +19,7 @@ const QuizScoreScreen = ({ route }) => {
   const { quizAnswersHistory } = route.params;
   const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
   const currentDate = getFormattedCurrentDate();
 
   const handleExit = () => {
@@ -62,7 +62,7 @@ const QuizScoreScreen = ({ route }) => {
   return (
     <Layout
       removeDefaultPaddingHorizontal
-      statusBarTheme={currentThemeStatus}
+      statusBarTheme={currentThemeScheme}
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>
