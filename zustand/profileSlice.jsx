@@ -14,7 +14,6 @@ const DEFAULT_VERIFICATION_FORM = {
 };
 
 export const createProfileSlice = (set, get) => ({
-  currentThemeStatus: "light",
   verificationForm: DEFAULT_VERIFICATION_FORM, // Initialize with default values
   profilePicturePath: null,
 
@@ -39,20 +38,10 @@ export const createProfileSlice = (set, get) => ({
     set({
       verificationForm: {
         ...DEFAULT_VERIFICATION_FORM,
-        ...userMetaData, // Merge userMetaData into verificationForm
+        ...userMetaData, // Override the default_verification_form date with userMetaData
       },
     });
   },
-
-  setThemeStatus: (newThemeStatus) => {
-    if (newThemeStatus == null) {
-      set({ currentThemeStatus: "light" });
-    } else {
-      set({ currentThemeStatus: newThemeStatus });
-      setItem("theme", newThemeStatus);
-    }
-  },
-
   setProfilePicturePath: (state) => set({ profilePicturePath: state }),
   removeProfilePicturePath: () => set({ profilePicturePath: null }),
 });
