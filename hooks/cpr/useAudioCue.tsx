@@ -15,6 +15,8 @@ const PushHarderAudio =
   require("../../assets/audio/pushHarder.mp3") as AVPlaybackSource;
 const PushSoftlyAudio =
   require("../../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
+const pushSlowlyAudio =
+  require("../../assets/audio/pushSlowly.mp3") as AVPlaybackSource;
 
 const useAudioCue = () => {
   const soundsRef = useRef<TSoundRef>({
@@ -22,6 +24,7 @@ const useAudioCue = () => {
     pushFaster: new Audio.Sound(),
     pushHarder: new Audio.Sound(),
     pushSoftly: new Audio.Sound(),
+    pushSlowly: new Audio.Sound(),
   });
 
   // Preload all sounds
@@ -33,6 +36,7 @@ const useAudioCue = () => {
           { name: "pushFaster", file: PushFasterAudio },
           { name: "pushHarder", file: PushHarderAudio },
           { name: "pushSoftly", file: PushSoftlyAudio },
+          { name: "pushSlowly", file: pushSlowlyAudio },
         ];
 
         for (const { name, file } of soundFiles) {
@@ -67,11 +71,9 @@ const useAudioCue = () => {
     } else if (depthScore === "Too Deep") {
       audioClip = "pushSoftly";
     } else if (timingScore === "Too Early") {
-      audioClip = "pushFaster";
-    } else if (timingScore === "Too Late") {
-      audioClip = "pushFaster";
+      audioClip = "pushSlowly";
     } else if (timingScore === "Missed") {
-      audioClip = "push";
+      audioClip = "pushFaster";
     } else {
       audioClip = "push";
     }
