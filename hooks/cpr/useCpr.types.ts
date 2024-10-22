@@ -1,6 +1,6 @@
 import { Audio, AVPlaybackSource } from "expo-av";
 
-export type AudioCue = "push" | "pushFaster" | "pushHarder" | "pushSoftly";
+export type AudioCue = "push" | "pushFaster" | "pushHarder" | "pushSoftly" | "pushSlowly";
 
 export type TSoundRef = Record<AudioCue, Audio.Sound>;
 
