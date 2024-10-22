@@ -1,4 +1,3 @@
-import moment from "moment";
 import { DepthScore, OverallScore, TimingScore } from "./useCpr.types";
 
 const ACCELERATION_THRESHOLD = 0.3;

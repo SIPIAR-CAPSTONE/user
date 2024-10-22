@@ -1,5 +1,3 @@
-import { setItem } from "../utils/LocalStorage";
-
 const DEFAULT_VERIFICATION_FORM = {
   firstName: "",
   middleName: "",

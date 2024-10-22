@@ -104,21 +104,11 @@ const StepFourContent = () => {
             return;
           }
         }
-
-        // Success: Navigate to confirmation screen
-        console.log("Success: Verification request submitted");
-        navigation.navigate("SuccessConfirmation", {
-          title: "Verification Request Submitted",
-          desc: "You successfully submitted account verification request. Please just wait until your account is verified. Thank you.",
-          nextScreen: "ProfileScreen",
-        });
+        setShowSuccessAlert(true);
       } catch (error) {
         // Catch unexpected errors
         console.log("Unexpected Error:", error);
       }
-
-      setShowSuccessAlert(true);
-
       setLoading(false);
     }
   };
