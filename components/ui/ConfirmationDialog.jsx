@@ -17,6 +17,8 @@ const ConfirmationDialog = ({
 }) => {
   const { styles } = useStyles(stylesheet);
 
+  if (!isVisible) return null;
+
   return (
     <Portal>
       <Dialog

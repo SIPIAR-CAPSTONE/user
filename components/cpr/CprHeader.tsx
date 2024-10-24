@@ -8,10 +8,9 @@ type CprHeaderProps = {
   handleEnd: () => void;
 };
 
-function Header({ handleEnd }: CprHeaderProps) {
+function CprHeader({ handleEnd }: CprHeaderProps) {
   const { styles } = useStyles(stylesheet);
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
-
   const openActionMenu = (): void => setVisibleActionMenu(true);
   const closeActionMenu = (): void => setVisibleActionMenu(false);
 
@@ -43,7 +42,7 @@ function MoreOptionActionButton({ onPress }: MoreOptionActionButtonProps) {
   );
 }
 
-export const CprHeader = memo(Header);
+export default memo(CprHeader);
 
 const stylesheet = createStyleSheet((theme) => ({
   header: {

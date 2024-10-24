@@ -2,9 +2,9 @@ import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
-import { CprHeader } from "../../components/cpr/CprHeader";
+import CprHeader from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
@@ -43,10 +43,10 @@ function CprScreen() {
     console.log("send emergency alert request to admin");
   };
 
-  const handleEndCpr = () => {
+  const handleEndCpr = useCallback(() => {
     stopCpr();
     navigation.goBack();
-  };
+  }, []);
 
   return (
     <View style={styles.container}>

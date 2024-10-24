@@ -1,6 +1,7 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 
 import useBoundStore from "../../zustand/useBoundStore";
+import { memo } from "react";
 
 const StatusBar = ({ style = null, ...props }) => {
   const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
@@ -14,12 +15,11 @@ const StatusBar = ({ style = null, ...props }) => {
   // If the current theme Scheme is light then use the dark Scheme bar style.
   else if (currentThemeScheme == "light") {
     selectedSchemeStyle = "dark";
-  }
-  else {
+  } else {
     selectedSchemeStyle = "light";
   }
 
   return <ExpoStatusBar style={selectedSchemeStyle} {...props} />;
 };
 
-export default StatusBar;
+export default memo(StatusBar);
