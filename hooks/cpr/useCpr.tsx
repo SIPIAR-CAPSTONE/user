@@ -81,7 +81,7 @@ const useCpr = () => {
   const observeAcceleration = useCallback(
     (currentZ: number, compressionTimer: number) => {
       const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
-      
+
       if (isCompressionStarted(prevZ.current, currentZ)) {
         isCompressing.current = true;
         lowestZ.current = currentLowestZ;
@@ -117,6 +117,7 @@ const useCpr = () => {
       timingScore: currentTimingScore,
     };
     setCurrentCompressionScore(currentCompressionScore);
+    //hold current compression scores in prevCompressionScores for audio cue
     prevCompressionScores.current = currentCompressionScore;
 
     //record cpr scores for history purpose
@@ -140,10 +141,9 @@ const useCpr = () => {
     (lowestZ: number, currentZ: number): number => {
       const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
       const gForceToInches = 0.3937;
-      //* for tuning accuracy, the greater the number the more sensitive
-      const calibrationFactor = 4;
+      const sensitivity = 4; //* for tuning accuracy, the greater the number the more sensitive it is
       const depthInInches = Math.abs(
-        zAccelerationPeakGap * calibrationFactor * gForceToInches
+        zAccelerationPeakGap * gForceToInches * sensitivity
       );
       return Number(depthInInches.toFixed(1));
     },

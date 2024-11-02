@@ -21,17 +21,7 @@ const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
       >
         {title}
       </Text>
-      <Text
-        style={[
-          styles.desc,
-          {
-            color: theme.colors.text2,
-            fontSize: theme.fontSize.sm,
-          },
-        ]}
-      >
-        {desc}
-      </Text>
+      <Text style={styles.desc}>{desc}</Text>
     </View>
   );
 };
@@ -48,5 +38,7 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   desc: {
     textAlign: "center",
+    color: theme.colors.text2,
+    fontSize: theme.fontSize.sm,
   },
 }));

@@ -41,7 +41,7 @@ const CprConfirmationScreen = () => {
           </OL>
           <OL>
             But if you just want to try or practice the CPR guide feature.
-            Please click{" "}
+            Please proceed to{" "}
             <TouchableWithoutFeedback
               onPress={() => navigation.navigate("LearnCpr")}
             >
