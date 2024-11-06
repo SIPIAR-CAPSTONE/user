@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { Divider } from "react-native-paper";
 
 import FormHeader from "../../common/FormHeader";
@@ -9,14 +9,15 @@ import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import useBoundStore from "../../../zustand/useBoundStore";
 const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
 import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
+import Form from "../../common/Form";
 
 const StepThreeContent = ({ goNextStep }) => {
   const { styles, theme } = useStyles(stylesheet);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const setVerificationForm = useBoundStore(
-    (state) => state.setVerificationForm,
-  )  
+    (state) => state.setVerificationForm
+  );
 
   const IdItems = ID_ITEMS_DATA.map((item) => (
     <Fragment key={item.id}>
@@ -36,7 +37,7 @@ const StepThreeContent = ({ goNextStep }) => {
   ));
 
   return (
-    <ScrollView style={styles.container}>
+    <Form contentContainerStyle={styles.form}>
       <FormHeader
         title="Tell us about yourself"
         desc="Please complete the information below"
@@ -60,33 +61,30 @@ const StepThreeContent = ({ goNextStep }) => {
           onConfirmed={() => {
             setModalVisible(false);
             goNextStep();
-            setVerificationForm('selectedIdType', selectedId['type'])
+            setVerificationForm("selectedIdType", selectedId["type"]);
           }}
           idTitle={selectedId.title}
           idImageSource={selectedId.imageSource}
         />
       )}
-    </ScrollView>
+    </Form>
   );
 };
 
 export default StepThreeContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      paddingBottom: 70,
-      height: 600,
-    },
-    listItem: {
-      backgroundColor: theme.colors.background,
-      paddingEnd: 1,
-    },
-    divider: {
-      marginVertical: 8,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  form: {
+    rowGap: 0,
+  },
+  listItem: {
+    backgroundColor: theme.colors.background,
+    paddingEnd: 1,
+  },
+  divider: {
+    marginVertical: 8,
+  },
+}));
 
 //Data for each id list item
 const ID_ITEMS_DATA = [

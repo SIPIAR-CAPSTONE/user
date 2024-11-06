@@ -1,5 +1,7 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import FormHeader from "../../../components/common/FormHeader";
 import TextInput from "../../../components/ui/TextInput";
@@ -10,7 +12,6 @@ import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
-import { useNavigation } from "@react-navigation/native";
 
 const fields = [
   {
@@ -67,17 +68,17 @@ const EditPasswordScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"
-        pressable
-        onPress={() => navigation.goBack()}
-      />
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
     </AppBar>
   );
 
   return (
-    <Layout removeDefaultPaddingHorizontal AppbarComponent={CustomAppBar}>
-      <Form style={styles.form}>
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetAlert
+      AppbarComponent={CustomAppBar}
+    >
+      <Form>
         <FormHeader
           title="Change Password"
           desc="Please provide your old and new password."
@@ -131,13 +132,8 @@ const EditPasswordScreen = () => {
 
 export default EditPasswordScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-    button: {
-      marginTop: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  button: {
+    marginTop: theme.spacing.base,
+  },
+}));

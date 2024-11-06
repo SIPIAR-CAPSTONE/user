@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text, Button as NPButton } from "react-native-paper";
 import { useState } from "react";
 
@@ -21,10 +21,11 @@ const fields = [
     name: "phone",
     rules: [
       { type: "required" },
+      { type: "validPhNumber" },
       {
         type: "exactLength",
         length: 11,
-        message: "Phone should contain 11 numbers."
+        message: "Phone number should be exactly 11 digits long.",
       },
     ],
   },
@@ -112,18 +113,16 @@ const StepOneContent = ({ goNextStep }) => {
 
 export default StepOneContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    signinButton: {
-      borderRadius: theme.borderRadius.base,
-    },
-    signinButtonLabel: {
-      fontSize: theme.fontSize.sm,
-    },
-    footer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  signinButton: {
+    borderRadius: theme.borderRadius.base,
+  },
+  signinButtonLabel: {
+    fontSize: theme.fontSize.sm,
+  },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+}));

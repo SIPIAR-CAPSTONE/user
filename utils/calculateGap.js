@@ -1,13 +1,14 @@
+import moment from "moment";
+
 /*
  *
  * get the time gap between the given date and the current date
  *
  *
  */
-const getTimeGap = (datetimeCreated) => {
-  // Convert given string datetimeCreated into date object
-  const createdDate = new Date(datetimeCreated);
-  const currentDate = new Date();
+const getTimeGap = (datetimeCreated, isFormatted = true) => {
+  const createdDate = moment(datetimeCreated).toDate();
+  const currentDate = moment().toDate();
 
   const MILLISECONDS_IN_A_MINUTE = 1000 * 60;
   const MILLISECONDS_IN_AN_HOUR = MILLISECONDS_IN_A_MINUTE * 60;
@@ -29,24 +30,29 @@ const getTimeGap = (datetimeCreated) => {
     (differenceInMillis % MILLISECONDS_IN_AN_HOUR) / MILLISECONDS_IN_A_MINUTE
   );
 
-  const formatTimeGap = (months, days, hours, minutes) => {
-    if (months > 0) {
-      return `${months} month${months > 1 ? "s" : ""} ago`;
-    } else if (days > 0) {
-      return `${days} day${days > 1 ? "s" : ""} ago`;
-    } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    } else {
-      return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
-    }
-  };
+  if (isFormatted) {
+    return formatTimeGap(
+      monthsDifference,
+      daysDifference,
+      hoursDifference,
+      minutesDifference
+    );
+  }
 
-  return formatTimeGap(
-    monthsDifference,
-    daysDifference,
-    hoursDifference,
-    minutesDifference
-  );
+  return [monthsDifference, daysDifference, hoursDifference, minutesDifference];
+};
+
+//format: "1 month ago"
+const formatTimeGap = (months, days, hours, minutes) => {
+  if (months > 0) {
+    return `${months} month${months > 1 ? "s" : ""} ago`;
+  } else if (days > 0) {
+    return `${days} day${days > 1 ? "s" : ""} ago`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  } else {
+    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  }
 };
 
 /*

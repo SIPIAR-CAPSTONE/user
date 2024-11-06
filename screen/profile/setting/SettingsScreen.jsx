@@ -1,22 +1,22 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState, lazy } from "react";
+import switchTheme from "react-native-theme-switch-animation";
 
 import ListItem from "../../../components/ui/ListItem";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import useBoundStore from "../../../zustand/useBoundStore";
 import NextActionIcon from "../../../components/common/NextActionIcon";
-import switchTheme from "react-native-theme-switch-animation";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Layout from "../../../components/common/Layout";
 import AppBar from "../../../components/ui/AppBar";
-import { Text } from "react-native-paper";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 const RadioDialog = lazy(() => import("../../../components/ui/RadioDialog"));
 
 const SettingsScreen = () => {
   const { styles } = useStyles(stylesheet);
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-  const setCurrentThemeStatus = useBoundStore((state) => state.setThemeStatus);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
+  const setCurrentThemeScheme = useBoundStore((state) => state.setThemeScheme);
   const navigation = useNavigation();
 
   // Set initial state for dialog visibility and notification status
@@ -35,7 +35,7 @@ const SettingsScreen = () => {
   const handleChangeTheme = (value) => {
     switchTheme({
       switchThemeFunction: () => {
-        setCurrentThemeStatus(value);
+        setCurrentThemeScheme(value);
       },
       animationConfig: {
         type: "circular",
@@ -54,10 +54,9 @@ const SettingsScreen = () => {
     <AppBar>
       <CircularIcon
         name="arrow-back"
-        pressable
         onPress={() => navigation.goBack()}
       />
-      <Text style={styles.appBarTitle}>Settings</Text>
+      <AppBarTitle>Settings</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
   );
@@ -98,7 +97,7 @@ const SettingsScreen = () => {
         visible={visible.appearance}
         hideDialog={() => hideDialog("appearance")}
         data={["light", "dark"]}
-        selectedValue={currentThemeStatus}
+        selectedValue={currentThemeScheme}
         setSelectedValue={handleChangeTheme}
       />
 
@@ -127,18 +126,11 @@ const SettingsScreen = () => {
 
 export default SettingsScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    listItems: {
-      marginTop: 20,
-      rowGap: 10,
-      paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  listItems: {
+    marginTop: 20,
+    rowGap: 10,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.base,
+  },
+}));

@@ -1,4 +1,3 @@
-import {  StyleSheet} from "react-native";
 import { Text } from "react-native-paper";
 import { useEffect, useState, useRef } from "react";
 
@@ -14,6 +13,7 @@ import TextInput from "../../components/ui/TextInput";
 import ResendCountdown from "../../components/auth/tokenVerification/ResendCountdown";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
+import ServerErrorMessage from "../../components/ui/ServerErrorMessage";
 
 const TokenVerification = () => {
   const { styles } = useStyles(stylesheet);
@@ -69,31 +69,30 @@ const TokenVerification = () => {
     }
   };
 
+  const countdown =
+    time === 0 ? (
+      <Text variant="labelLarge" style={styles.resentMessage}>
+        Resent, please wait a while.
+      </Text>
+    ) : (
+      <ResendCountdown time={time} />
+    );
+
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <Form style={styles.form}>
+      <Form>
         <FormHeader
           title="Enter Your Token"
           titleSize="large"
           desc="We have sent the verification token to your email address."
         />
-
         <TextInput
           placeholder="Token Hash"
           value={tokenHash}
           onChangeText={setTokenHash}
         />
-
-        <Text style={styles.serverErrorMessage}>{serverError}</Text>
-
-        {time === 0 ? (
-          <Text variant="labelLarge" style={styles.resentMessage}>
-            Resent, please wait a while.
-          </Text>
-        ) : (
-          <ResendCountdown time={time} />
-        )}
-
+        <ServerErrorMessage>{serverError}</ServerErrorMessage>
+        {countdown}
         <Button label="Verify" onPress={handleSubmit} isLoading={loading} />
       </Form>
     </Layout>
@@ -102,17 +101,9 @@ const TokenVerification = () => {
 
 export default TokenVerification;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-    serverErrorMessage: {
-      color: theme.colors.primary,
-    },
-    resentMessage: {
-      color: theme.colors.primary,
-      textAlign: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  resentMessage: {
+    color: theme.colors.primary,
+    textAlign: "center",
+  },
+}));

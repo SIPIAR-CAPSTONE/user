@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
 import ImageFrame from "./StepFourComponents/ImageFrame";
 import { Divider } from "react-native-paper";
@@ -104,21 +104,11 @@ const StepFourContent = () => {
             return;
           }
         }
-
-        // Success: Navigate to confirmation screen
-        console.log("Success: Verification request submitted");
-        navigation.navigate("SuccessConfirmation", {
-          title: "Verification Request Submitted",
-          desc: "You successfully submitted account verification request. Please just wait until your account is verified. Thank you.",
-          nextScreen: "ProfileScreen",
-        });
+        setShowSuccessAlert(true);
       } catch (error) {
         // Catch unexpected errors
         console.log("Unexpected Error:", error);
       }
-
-      setShowSuccessAlert(true);
-
       setLoading(false);
     }
   };
@@ -161,17 +151,15 @@ const StepFourContent = () => {
 
 export default StepFourContent;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      paddingTop: 24,
-      paddingHorizontal: theme.spacing.base,
-    },
-    divider: {
-      marginVertical: 26,
-      backgroundColor: "gray",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 24,
+    paddingHorizontal: theme.spacing.base,
+  },
+  divider: {
+    marginVertical: 26,
+    backgroundColor: "gray",
+  },
+}));

@@ -1,30 +1,26 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import DatePicker from "react-native-date-picker";
 import { Ionicons } from "@expo/vector-icons";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import useBoundStore from "../../zustand/useBoundStore";
+import moment from "moment";
 
 const BirthdatePicker = ({
   placeholder = "Birthday",
   label,
   error,
-  date = "2024-07-27T06:42:51.927Z",
+  date: strDate,
   setDate,
   disabled,
   variant,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
   const [open, setOpen] = useState(false);
-  const currentThemeStatus = useBoundStore((state) => state.currentThemeStatus);
-
-  const dateValue = new Date(date) || new Date();
-  const formattedDate = dateValue.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const date = moment(strDate).toDate();
+  const formattedDate = moment(date).format("LL");
 
   const handleOnCancel = () => setOpen(false);
   const handleOnPress = () => setOpen(true);
@@ -39,9 +35,9 @@ const BirthdatePicker = ({
       <DatePicker
         modal
         mode="date"
-        theme={currentThemeStatus}
+        theme={currentThemeScheme}
         open={open}
-        date={dateValue}
+        date={date}
         buttonColor={theme.colors.text}
         dividerColor={theme.colors.text}
         title={" "}
@@ -81,61 +77,59 @@ const BirthdatePicker = ({
 
 export default BirthdatePicker;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    input: {
-      backgroundColor: theme.colors.secondary,
-      color: theme.colors.text,
-      height: 50,
-      paddingHorizontal: 14,
-      borderRadius: theme.borderRadius.sm,
+const stylesheet = createStyleSheet((theme) => ({
+  input: {
+    backgroundColor: theme.colors.secondary,
+    color: theme.colors.text,
+    height: 50,
+    paddingHorizontal: 14,
+    borderRadius: theme.borderRadius.sm,
 
-      variants: {
-        variant: {
-          outlined: {
-            borderWidth: 1,
-            borderColor: "#e1e2e3",
-            color: theme.colors.text,
-            backgroundColor: theme.colors.background,
-          },
+    variants: {
+      variant: {
+        outlined: {
+          borderWidth: 1,
+          borderColor: "#e1e2e3",
+          color: theme.colors.text,
+          backgroundColor: theme.colors.background,
         },
       },
     },
-    inputDisabled: {
-      color: theme.colors.text3,
-    },
-    inputError: {
-      borderWidth: 1.5,
-      color: theme.colors.primary,
-      borderColor: theme.colors.primary,
-    },
-    errorLabel: {
-      paddingStart: 14,
-      paddingTop: 4,
-      marginBottom: 4,
-      color: theme.colors.primary,
-    },
-    birthdayFieldContent: {
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    dateValueContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      columnGap: theme.spacing.md,
-    },
-    birthdayDate: {
-      color: theme.colors.text2,
-    },
-    birthdayPlaceholder: {
-      color: theme.colors.text2,
-    },
-    label: {
-      color: theme.colors.text,
-      fontWeight: "600",
-      marginBottom: 8,
-    },
-  })
-);
+  },
+  inputDisabled: {
+    color: theme.colors.text3,
+  },
+  inputError: {
+    borderWidth: 1.5,
+    color: theme.colors.primary,
+    borderColor: theme.colors.primary,
+  },
+  errorLabel: {
+    paddingStart: 14,
+    paddingTop: 4,
+    marginBottom: 4,
+    color: theme.colors.primary,
+  },
+  birthdayFieldContent: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  dateValueContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: theme.spacing.md,
+  },
+  birthdayDate: {
+    color: theme.colors.text2,
+  },
+  birthdayPlaceholder: {
+    color: theme.colors.text2,
+  },
+  label: {
+    color: theme.colors.text,
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+}));

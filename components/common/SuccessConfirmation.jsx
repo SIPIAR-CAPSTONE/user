@@ -1,4 +1,4 @@
-import { View, Modal, StyleSheet } from "react-native";
+import { View, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Text } from "react-native-paper";
@@ -50,27 +50,25 @@ const SuccessConfirmation = ({
 
 export default SuccessConfirmation;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingBottom: 220,
-      rowGap: theme.spacing.md,
-      backgroundColor: theme.colors.background,
-      paddingHorizontal: theme.spacing.md,
-    },
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 220,
+    rowGap: theme.spacing.md,
+    backgroundColor: theme.colors.background,
+    paddingHorizontal: theme.spacing.md,
+  },
 
-    title: {
-      fontSize: theme.fontSize.xl,
-      fontWeight: "bold",
-      textAlign: "center",
-      marginTop: theme.spacing.sm,
-    },
-    desc: {
-      textAlign: "center",
-      color: theme.colors.text2,
-    },
-  })
-);
+  title: {
+    fontSize: theme.fontSize.xl,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: theme.spacing.sm,
+  },
+  desc: {
+    textAlign: "center",
+    color: theme.colors.text2,
+  },
+}));

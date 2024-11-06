@@ -16,22 +16,28 @@ const Title = ({ children }) => {
   );
 };
 
-const H1 = ({ children }) => {
+const H1 = ({ children, ...props }) => {
   return (
     children && (
-      <Text style={styles.h1} variant="titleMedium">
+      <Text style={styles.h1} variant="titleLarge" {...props}>
         {children}
       </Text>
     )
   );
 };
 
-const H2 = ({ children }) => {
-  return children && <Text variant="titleSmall">{children}</Text>;
+const H2 = ({ children, ...props }) => {
+  return (
+    children && (
+      <Text variant="titleMedium" {...props}>
+        {children}
+      </Text>
+    )
+  );
 };
 
 const P = ({ children }) => {
-  return children && <Text variant="bodySmall">{children}</Text>;
+  return children && <Text variant="bodyMedium">{children}</Text>;
 };
 
 const OL = ({ children }) => {
@@ -39,16 +45,18 @@ const OL = ({ children }) => {
     children && (
       <View style={styles.ol}>
         <Text style={styles.olDot}>{`\u2022`}</Text>
-        <Text variant="bodySmall">{children}</Text>
+        <Text variant="bodyMedium" style={styles.olText}>
+          {children}
+        </Text>
       </View>
     )
   );
 };
 
-const Strong = ({ children }) => {
+const Strong = ({ children, style, ...props }) => {
   return (
     children && (
-      <Text variant="labelSmall" style={styles.strong}>
+      <Text variant="bodyMedium" style={[styles.strong, style]} {...props}>
         {children}
       </Text>
     )
@@ -85,6 +93,9 @@ const styles = StyleSheet.create({
   },
   olDot: {
     marginEnd: 6,
+  },
+  olText: {
+    flex: 1,
   },
   strong: {
     fontWeight: "bold",

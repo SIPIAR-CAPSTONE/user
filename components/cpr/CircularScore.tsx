@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { type Size, type ColorStyle, type Color } from "./CircularScore.type";
+import { memo } from "react";
 
 const sizeStyle = {
   lg: 160,
@@ -76,7 +77,7 @@ function CircularScore({
   );
 }
 
-export default CircularScore;
+export default memo(CircularScore);
 
 const styles = StyleSheet.create({
   container: {

@@ -11,11 +11,11 @@ export const isCompressionEnded = (prevZ: number, currentZ: number, isCompressin
 };
 
 
-export const getTimeGap = (previousTime: number, currentTime: number): number => {
-  const timeGap: number = currentTime - previousTime;
-  const timeGapInSeconds: number = timeGap / 1000;
+export const getcompressionTimer = (previousTime: number, currentTime: number): number => {
+  const compressionTimer: number = currentTime - previousTime;
+  const compressionTimerInSeconds: number = compressionTimer / 1000;
 
-  return timeGapInSeconds;
+  return compressionTimerInSeconds;
 };
 
 export const getLowestZ = (lowestZ: number, currentZ: number): number => {
@@ -24,15 +24,13 @@ export const getLowestZ = (lowestZ: number, currentZ: number): number => {
 };
 
 
-export const getTimingScore = (timeGap: number): TimingScore => {
-  if (timeGap >= 0.3 && timeGap <= 0.7) {
+export const getTimingScore = (compressionTimer: number): TimingScore => {
+  if (compressionTimer >= 400 && compressionTimer <= 600) {
     return "Perfect"
-  } else if (timeGap < 0.3) {
+  } else if (compressionTimer < 400) {
     return "Too Early"
   }
-  else if (timeGap > 0.7) {
-    return "Too Late"
-  }
+
   return "Missed";
 }
 
@@ -57,25 +55,16 @@ export const getOverallScore = (timingScore: TimingScore | null, depthScore: Dep
   else if (timingScore === "Perfect" && depthScore === "Too Shallow") {
     return "yellow"
   }
-  else if (timingScore === "Perfect" && depthScore === "Too Deep") {
-    return "red"
-  }
   else if (timingScore === "Too Early" && depthScore === "Perfect") {
     return "yellow"
   }
   else if (timingScore === "Too Early" && depthScore === "Too Shallow") {
     return "yellow"
   }
-  else if (timingScore === "Too Early" && depthScore === "Too Deep") {
+  else if (timingScore === "Perfect" && depthScore === "Too Deep") {
     return "red"
   }
-  else if (timingScore === "Too Late" && depthScore === "Perfect") {
-    return "yellow"
-  }
-  else if (timingScore === "Too Late" && depthScore === "Too Shallow") {
-    return "yellow"
-  }
-  else if (timingScore === "Too Late" && depthScore === "Too Deep") {
+  else if (timingScore === "Too Early" && depthScore === "Too Deep") {
     return "red"
   }
   else if (timingScore === "Missed") {
@@ -89,7 +78,8 @@ export const formatTime = (time: number): string => {
   const totalSeconds: number = Math.floor(time / 1000);
   const minutes: number = Math.floor(totalSeconds / 60);
   const seconds: number = totalSeconds % 60;
+  const formattedTime = `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
+    }${seconds}`
 
-  return `${minutes < 10 ? "0" : ""}${minutes}:${seconds < 10 ? "0" : ""
-    }${seconds}`;
+  return formattedTime;
 };

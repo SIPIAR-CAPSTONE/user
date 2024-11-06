@@ -21,8 +21,11 @@ import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
 import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
 import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
 import CprScreen from "../screen/CPR/CprScreen";
-import DocumentMaterial from "../screen/learn/DocumentMaterial";
+import DocumentMaterialScreen from "../screen/learn/DocumentMaterialScreen";
 import ReportIssueScreen from "../screen/profile/setting/ReportIssueScreen";
+import QuizScreen from "../screen/learn/QuizScreen";
+import FinishedViewScreen from "../screen/learn/FinishedViewScreen";
+import QuizScoreScreen from "../screen/learn/QuizScoreScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -159,7 +162,22 @@ export const SignedInStack = (
     <Stack.Screen
       name="DocumentMaterial"
       options={{ headerTitle: " " }}
-      component={DocumentMaterial}
+      component={DocumentMaterialScreen}
+    />
+    <Stack.Screen
+      name="FinishedView"
+      options={{ headerShown: false }}
+      component={FinishedViewScreen}
+    />
+    <Stack.Screen
+      name="Quiz"
+      options={{ headerShown: false }}
+      component={QuizScreen}
+    />
+    <Stack.Screen
+      name="QuizScore"
+      options={{ headerShown: false }}
+      component={QuizScoreScreen}
     />
   </>
 );

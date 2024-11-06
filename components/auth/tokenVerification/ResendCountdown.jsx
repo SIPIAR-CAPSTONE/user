@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
@@ -19,13 +18,11 @@ const ResendCountdown = ({ time }) => {
 
 export default ResendCountdown;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    timerContainer: {
-      textAlign: "center",
-    },
-    time: {
-      color: theme.colors.primary,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  timerContainer: {
+    textAlign: "center",
+  },
+  time: {
+    color: theme.colors.primary,
+  },
+}));

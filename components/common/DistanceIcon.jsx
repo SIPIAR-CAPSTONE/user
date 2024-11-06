@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
@@ -18,16 +18,14 @@ const DistanceIcon = ({ distance, status }) => {
 
 export default DistanceIcon;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    container: {
-      alignItems: "center",
-      rowGap: 2,
-      marginHorizontal: 3,
-    },
-    distance: {
-      fontSize: 8,
-      color: theme.colors.text2,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    alignItems: "center",
+    rowGap: 2,
+    marginHorizontal: 3,
+  },
+  distance: {
+    fontSize: 8,
+    color: theme.colors.text2,
+  },
+}));

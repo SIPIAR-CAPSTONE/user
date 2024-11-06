@@ -1,4 +1,4 @@
-import { StyleSheet, Modal, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import React from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -35,36 +35,34 @@ const NotInternetAlert = () => {
 
 export default NotInternetAlert;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    modal: {
-      flex: 1,
-      backgroundColor: "rgba(1,1,1,0.1)",
-      alignItems: "center",
-      justifyContent: "center",
-      position: "absolute",
-      top: 0,
-      bottom: 0,
-      right: 0,
-      left: 0,
-    },
-    modalContent: {
-      paddingHorizontal: theme.spacing.md,
-      paddingTop: theme.spacing.xxl,
-      paddingBottom: 33,
-      backgroundColor: theme.colors.elevation.level3,
-      borderRadius: theme.borderRadius.curve,
-      maxWidth: "90%",
-      minHeight: 200,
-      alignItems: "center",
-      rowGap: theme.spacing.xxxs,
-    },
-    title: {
-      marginTop: theme.spacing.md,
-      fontWeight: "bold",
-    },
-    desc: {
-      textAlign: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  modal: {
+    flex: 1,
+    backgroundColor: "rgba(1,1,1,0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+  modalContent: {
+    paddingHorizontal: theme.spacing.md,
+    paddingTop: theme.spacing.xxl,
+    paddingBottom: 33,
+    backgroundColor: theme.colors.elevation.level3,
+    borderRadius: theme.borderRadius.curve,
+    maxWidth: "90%",
+    minHeight: 200,
+    alignItems: "center",
+    rowGap: theme.spacing.xxxs,
+  },
+  title: {
+    marginTop: theme.spacing.md,
+    fontWeight: "bold",
+  },
+  desc: {
+    textAlign: "center",
+  },
+}));

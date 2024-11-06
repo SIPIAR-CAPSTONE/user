@@ -1,4 +1,3 @@
-import { ScrollView, StyleSheet, View } from "react-native";
 import ProgressSteps, { Content } from "@joaosousa/react-native-progress-steps";
 import { useEffect, lazy, useState } from "react";
 
@@ -9,6 +8,8 @@ import AppBar from "../../../components/ui/AppBar";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import StepOneContent from "../../../components/profile/accountVerification/StepOneContent";
 import Layout from "../../../components/common/Layout";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
+import { View } from "react-native";
 const StepTwoContent = lazy(() =>
   import("../../../components/profile/accountVerification/StepTwoContent")
 );
@@ -132,50 +133,43 @@ const AccountVerificationScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const CustomAppBar = () => (
+    <AppBar>
+      <CircularIcon name="arrow-back" onPress={goBackStep} />
+      <AppBarTitle>Account Verification</AppBarTitle>
+      <View style={{ width: 40 }} />
+    </AppBar>
+  );
+
   return (
-    <Layout removeDefaultPaddingHorizontal>
-      <AppBar>
-        <CircularIcon name="arrow-back" pressable onPress={goBackStep} />
-      </AppBar>
+    <Layout
+      removeDefaultPaddingHorizontal
+      addNoInternetAlert
+      AppbarComponent={CustomAppBar}
+      scrollable
+      contentContainerStyle={styles.container}
+    >
+      <ProgressSteps
+        currentStep={currentStep}
+        orientation="horizontal"
+        steps={steps}
+        colors={customColors}
+      />
 
-      <ScrollView
-        style={{
-          flex: 1,
-        }}
-      >
-        <View style={styles.content}>
-          <ProgressSteps
-            currentStep={currentStep}
-            orientation="horizontal"
-            steps={steps}
-            colors={customColors}
-          />
-        </View>
-
-        <ConfirmationDialog
-          title="Are you sure you want to exit?"
-          isVisible={isConfirmationDialogVisible}
-          onPressConfirmation={() => navigation.goBack()}
-          onPressCancel={hideConfirmationDialog}
-        />
-      </ScrollView>
+      <ConfirmationDialog
+        title="Are you sure you want to exit?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={() => navigation.goBack()}
+        onPressCancel={hideConfirmationDialog}
+      />
     </Layout>
   );
 };
 
 export default AccountVerificationScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    content: {
-      marginTop: 10,
-      paddingVertical: theme.spacing.md,
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  container: {
+    paddingTop: 10,
+  },
+}));

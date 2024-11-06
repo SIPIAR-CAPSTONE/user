@@ -1,18 +1,21 @@
-import { SectionList, StyleSheet, View } from "react-native";
-import { Divider, Text } from "react-native-paper";
+import { SectionList, View } from "react-native";
+import { Divider } from "react-native-paper";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
+
 import UserProfileCard from "../../../components/profile/UserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useState } from "react";
 import useImageReader from "../../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
-import { useNavigation } from "@react-navigation/native";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
+import AppBarTitle from "../../../components/ui/AppBarTitle";
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
@@ -33,17 +36,7 @@ const MyAccountScreen = () => {
   const [profilePictureUri, setProfilePictureUri] = useState(null);
   useImageReader(setProfilePictureUri);
 
-  //* format date to string (ex.july 1, 2024)
-  const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const date = new Date(userMetaData["birthday"]);
-  const formattedDate = formatDate(date);
+  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
 
   //* array template for UI rendering
   const USER_DATA = [
@@ -81,12 +74,8 @@ const MyAccountScreen = () => {
   return (
     <>
       <AppBar>
-        <CircularIcon
-          name="arrow-back"
-          pressable
-          onPress={() => navigation.goBack()}
-        />
-        <Text style={styles.appBarTitle}>My Account</Text>
+        <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+        <AppBarTitle>My Account</AppBarTitle>
         <View style={{ width: 40 }} />
       </AppBar>
       <SectionList
@@ -121,21 +110,14 @@ const MyAccountScreen = () => {
 
 export default MyAccountScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    contentContainer: {
-      paddingBottom: theme.spacing.md,
-    },
-    divider: {
-      marginHorizontal: theme.spacing.base,
-    },
-    listHeaderContainer: {
-      marginBottom: 16,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  contentContainer: {
+    paddingBottom: theme.spacing.md,
+  },
+  divider: {
+    marginHorizontal: theme.spacing.base,
+  },
+  listHeaderContainer: {
+    marginBottom: 16,
+  },
+}));

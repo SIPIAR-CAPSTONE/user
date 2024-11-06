@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { TouchableRipple, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import useImagePicker from "../../hooks/useImagePicker";
@@ -62,28 +62,26 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
 
 export default EditUserProfileCard;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    header: {
-      alignItems: "center",
-      paddingVertical: 16,
-    },
-    button: {
-      borderRadius: theme.borderRadius.full,
-      position: "absolute",
-      bottom: 5,
-      right: 5,
-    },
-    icon: {
-      backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-      height: 30,
-      width: 30,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    avatar: {
-      backgroundColor: "#FFDDDD",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  header: {
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+  button: {
+    borderRadius: theme.borderRadius.full,
+    position: "absolute",
+    bottom: 5,
+    right: 5,
+  },
+  icon: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+    height: 30,
+    width: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatar: {
+    backgroundColor: "#FFDDDD",
+  },
+}));

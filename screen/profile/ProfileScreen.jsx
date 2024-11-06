@@ -1,7 +1,9 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import * as FileSystem from "expo-file-system";
+
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
 import CircularIcon from "../../components/ui/CircularIcon";
@@ -12,16 +14,13 @@ import { supabase } from "../../utils/supabase/config";
 import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
-import * as FileSystem from "expo-file-system";
 import useImageReader from "../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 
-/**
- * Profile screen component
- * Displays navigation itemsand a user profile card with user profile information
- */
+
 const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
@@ -89,7 +88,7 @@ const ProfileScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar centerContent>
-      <Text style={styles.appBarTitle}>Profile</Text>
+      <AppBarTitle>Profile</AppBarTitle>
     </AppBar>
   );
 
@@ -198,45 +197,38 @@ const EnteringVerificationConfirmationContent = () => {
 
 export default ProfileScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    listItems: {
-      marginTop: 20,
-      rowGap: 7,
-    },
-    instructionsContainer: {
-      rowGap: 20,
-      marginTop: 10,
-    },
-    instructionContainer: {
-      flexDirection: "row",
-      columnGap: 10,
-      alignItems: "center",
-    },
-    circularNumber: {
-      height: 22,
-      width: 22,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 2,
-      backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-    },
-    number: {
-      color: theme.colors.onPrimary,
-      fontSize: theme.fontSize.xs,
-    },
-    desc: {
-      flex: 1,
-      fontSize: 13,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  listItems: {
+    marginTop: 20,
+    rowGap: 7,
+  },
+  instructionsContainer: {
+    rowGap: 20,
+    marginTop: 10,
+  },
+  instructionContainer: {
+    flexDirection: "row",
+    columnGap: 10,
+    alignItems: "center",
+  },
+  circularNumber: {
+    height: 22,
+    width: 22,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 2,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.full,
+  },
+  number: {
+    color: theme.colors.onPrimary,
+    fontSize: theme.fontSize.xs,
+  },
+  desc: {
+    flex: 1,
+    fontSize: 13,
+  },
+}));
 
 const InstructionData = [
   {

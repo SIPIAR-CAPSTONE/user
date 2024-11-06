@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
@@ -21,34 +21,24 @@ const FormHeader = ({ title, titleStyle, titleSize = "base", desc }) => {
       >
         {title}
       </Text>
-      <Text
-        style={[
-          styles.desc,
-          {
-            color: theme.colors.text2,
-            fontSize: theme.fontSize.sm,
-          },
-        ]}
-      >
-        {desc}
-      </Text>
+      <Text style={styles.desc}>{desc}</Text>
     </View>
   );
 };
 
 export default FormHeader;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    header: {
-      marginVertical: theme.spacing.md,
-    },
-    title: {
-      fontWeight: "bold",
-      textAlign: "center",
-    },
-    desc: {
-      textAlign: "center",
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  header: {
+    marginVertical: theme.spacing.md,
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  desc: {
+    textAlign: "center",
+    color: theme.colors.text2,
+    fontSize: theme.fontSize.sm,
+  },
+}));

@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
-import { CprHeader } from "../../components/cpr/CprHeader";
+import CprHeader from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import { useState } from "react";
 import { useNavigation, StackActions } from "@react-navigation/native";
@@ -62,8 +62,6 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
-                : timingScore === "Too Late"
-                ? "red"
                 : timingScore === "Too Early"
                 ? "yellow"
                 : timingScore === "Missed"
@@ -112,7 +110,7 @@ function CprScreen() {
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
         onPressConfirmation={handleStartCpr}
-        title={"Start CPR?"}
+        title={"Are you ready to start CPR practice?"}
         containerStyle={styles.dialog}
       />
       <StatusBar hidden translucent />

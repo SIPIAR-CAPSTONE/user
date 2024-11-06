@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -64,28 +64,26 @@ const EmergencyAlerts = () => {
 
 export default EmergencyAlerts;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    emergencyAlerts: {
-      marginTop: 10,
-      paddingHorizontal: theme.spacing.base,
-    },
-    header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    listLabel: {
-      marginVertical: theme.spacing.base,
-    },
-    seeAllButton: {
-      borderRadius: 12,
-    },
-    list: {
-      rowGap: 10,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  emergencyAlerts: {
+    marginTop: 10,
+    paddingHorizontal: theme.spacing.base,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  listLabel: {
+    marginVertical: theme.spacing.base,
+  },
+  seeAllButton: {
+    borderRadius: 12,
+  },
+  list: {
+    rowGap: 10,
+  },
+}));
 
 const TEMP_ALERTS_DATA = [
   {

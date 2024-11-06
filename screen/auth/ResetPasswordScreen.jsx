@@ -1,11 +1,10 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import Button from "../../components/ui/Button";
 import FormHeader from "../../components/common/FormHeader";
 import { supabase } from "../../utils/supabase/config";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import TextInput from "../../components/ui/TextInput";
 import Form from "../../components/common/Form";
 import Layout from "../../components/common/Layout";
@@ -31,16 +30,16 @@ const fields = [
 ];
 
 const ResetPasswordScreen = () => {
-  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const form = { newPassword, confirmNewPassword };
 
   const handleSubmit = async () => {
-    if (isFormValid(fields, { newPassword, confirmNewPassword }, setErrors)) {
+    if (isFormValid(fields, form, setErrors)) {
       setLoading(true);
 
       //* update password of user
@@ -64,15 +63,13 @@ const ResetPasswordScreen = () => {
 
   return (
     <Layout removeDefaultPaddingHorizontal addNoInternetBar>
-      <Form style={styles.form}>
+      <Form>
         <FormHeader
           title="Reset Password"
           titleSize="large"
           desc="Set your new password for your account"
         />
-
         <View style={{ height: 16 }} />
-
         <TextInput
           placeholder="New Password"
           type="password"
@@ -89,7 +86,6 @@ const ResetPasswordScreen = () => {
           error={errors.confirmNewPassword}
           disabled={loading}
         />
-
         <Button label="Next" onPress={handleSubmit} isLoading={loading} />
       </Form>
 
@@ -105,11 +101,3 @@ const ResetPasswordScreen = () => {
 };
 
 export default ResetPasswordScreen;
-
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    form: {
-      paddingHorizontal: theme.spacing.base,
-    },
-  })
-);

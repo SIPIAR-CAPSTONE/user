@@ -1,5 +1,5 @@
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { View } from "react-native";
+import { useTheme } from "react-native-paper";
 import { useState } from "react";
 
 import FormHeader from "../../common/FormHeader";
@@ -7,11 +7,11 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import { supabase } from "../../../utils/supabase/config";
 import { LargeSecureStore } from "../../../utils/SecureLocalStorage";
 import useUserMetadata from "../../../hooks/useUserMetadata";
-import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import TextInput from "../../ui/TextInput";
 import Button from "../../ui/Button";
 import Form from "../../common/Form";
 import { isFormValid } from "../../../utils/formValidation";
+import ServerErrorMessage from "../../ui/ServerErrorMessage";
 
 const fields = [
   { name: "email", rules: [{ type: "required" }, { type: "email" }] },
@@ -33,16 +33,14 @@ const fields = [
 ];
 
 const StepThreeContent = () => {
-  const { styles, theme } = useStyles(stylesheet);
+  const theme = useTheme();
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
   const setSession = useBoundStore((state) => state.setSession);
   const { setState } = useUserMetadata();
-
-  //* State for UI signup error
-  const [signUpError, setSignUpError] = useState("");
 
   const handleSubmit = async () => {
     if (isFormValid(fields, signupForm, setErrors)) {
@@ -73,7 +71,7 @@ const StepThreeContent = () => {
 
       //* Checking error and handling after successful signup
       if (error) {
-        setSignUpError(error.message);
+        setServerError(error.message);
       } else if (!error) {
         //* after successful signup, store the encrypted session locally and as global state
         const largeSecureStore = new LargeSecureStore();
@@ -121,8 +119,7 @@ const StepThreeContent = () => {
         error={errors.confirmPassword}
         disabled={loading}
       />
-
-      <Text style={styles.serverErrorMessage}>{signUpError}</Text>
+      <ServerErrorMessage>{serverError}</ServerErrorMessage>
       <Button
         label="Next"
         onPress={handleSubmit}
@@ -134,11 +131,3 @@ const StepThreeContent = () => {
 };
 
 export default StepThreeContent;
-
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    serverErrorMessage: {
-      color: theme.colors.primary,
-    },
-  })
-);

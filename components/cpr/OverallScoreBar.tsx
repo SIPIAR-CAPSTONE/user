@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import { type OverallScore } from "../../hooks/cpr/useCpr.types";
 import Color from "../../utils/Color";
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OverallScoreBar;
+export default memo(OverallScoreBar);

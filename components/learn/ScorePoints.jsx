@@ -1,7 +1,7 @@
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import { Text } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 export default function ScorePoints({
   progress,
@@ -9,6 +9,7 @@ export default function ScorePoints({
   pointsFontSize,
   pointsColor,
   label,
+  labelColor,
   progressColor = "#22C55E",
   backgroundColor = "#D9D9D9",
   size = "md",
@@ -36,7 +37,7 @@ export default function ScorePoints({
               {pointsSuffix ? pointsSuffix : " "}
             </Text>
           </View>
-          <Text style={styles.label}>{label}</Text>
+          <Text style={[styles.label, { color: labelColor }]}>{label}</Text>
         </View>
       );
     }
@@ -75,31 +76,29 @@ export default function ScorePoints({
   );
 }
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    contentContainer: {
-      alignItems: "center",
-    },
-    label: {
-      color: theme.colors.background,
-      fontSize: theme.fontSize.xs,
-    },
-    pointsContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    points: {
-      fontWeight: "bold",
-      marginLeft: 3,
-    },
-    pointsSuffix: {
-      fontSize: 10,
-      fontWeight: "bold",
-      marginLeft: 1,
-      marginTop: 5,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  contentContainer: {
+    alignItems: "center",
+  },
+  label: {
+    color: theme.colors.background,
+    fontSize: theme.fontSize.xs,
+  },
+  pointsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  points: {
+    fontWeight: "bold",
+    marginLeft: 3,
+  },
+  pointsSuffix: {
+    fontSize: 10,
+    fontWeight: "bold",
+    marginLeft: 1,
+    marginTop: 5,
+  },
+}));
 
 const sizeStyle = {
   lg: 130,

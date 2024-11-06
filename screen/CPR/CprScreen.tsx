@@ -2,9 +2,9 @@ import { StyleSheet, View } from "react-native";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
-import { CprHeader } from "../../components/cpr/CprHeader";
+import CprHeader from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
@@ -30,22 +30,28 @@ function CprScreen() {
   } = useCountdown(3, false, startCpr);
 
   const handleStartCpr = () => {
+    const ifUserIsValidated = true; //!temp
+    if (ifUserIsValidated) {
+      sendEmergencyAlertRequest();
+    }
+
     setIsDialogVisible(false);
     startCountdown();
   };
 
-  /**
-   * Stop CPR and go back to the previous screen.
-   */
-  const handleEnd = () => {
+  const sendEmergencyAlertRequest = () => {
+    console.log("send emergency alert request to admin");
+  };
+
+  const handleEndCpr = useCallback(() => {
     stopCpr();
     navigation.goBack();
-  };
+  }, []);
 
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEnd} />
+      <CprHeader handleEnd={handleEndCpr} />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -59,8 +65,6 @@ function CprScreen() {
             color={
               timingScore === "Perfect"
                 ? "green"
-                : timingScore === "Too Late"
-                ? "red"
                 : timingScore === "Too Early"
                 ? "yellow"
                 : timingScore === "Missed"
@@ -75,9 +79,9 @@ function CprScreen() {
               depthScore === "Perfect"
                 ? "green"
                 : depthScore === "Too Shallow"
-                ? "red"
-                : depthScore === "Too Deep"
                 ? "yellow"
+                : depthScore === "Too Deep"
+                ? "red"
                 : depthScore === "Missed"
                 ? "red"
                 : "gray"
@@ -90,9 +94,9 @@ function CprScreen() {
               depthScore === "Perfect"
                 ? "green"
                 : depthScore === "Too Shallow"
-                ? "red"
-                : depthScore === "Too Deep"
                 ? "yellow"
+                : depthScore === "Too Deep"
+                ? "red"
                 : depthScore === "Missed"
                 ? "red"
                 : "gray"
@@ -109,7 +113,7 @@ function CprScreen() {
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}
         onPressConfirmation={handleStartCpr}
-        title={"Start CPR?"}
+        title={"Are you ready to start?"}
         containerStyle={styles.dialog}
       />
       <StatusBar hidden translucent />

@@ -1,22 +1,41 @@
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { View, Modal, FlatList } from "react-native";
+import { Text, Searchbar, Portal, TouchableRipple } from "react-native-paper";
+import { useState } from "react";
+
 import MaterialCard from "../../components/learn/MaterialCard";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
+import NextActionIcon from "../../components/common/NextActionIcon";
+import AppBarTitle from "../../components/ui/AppBarTitle";
 
 const LearnScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState(SEARCH_DATA);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setFilteredData(
+      SEARCH_DATA.filter((item) =>
+        item.title.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  };
+
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+  const handleNavigate = (route, params) => {
+    closeModal();
+    navigation.navigate(route, params);
+  };
 
   const CustomAppBar = () => (
     <AppBar>
-      <Text style={styles.appBarTitle}>Learn</Text>
-      <CircularIcon
-        name="search"
-        pressable
-        onPress={() => navigation.navigate("Notification")}
-      />
+      <AppBarTitle>Learn</AppBarTitle>
+      <CircularIcon name="search" onPress={openModal} />
     </AppBar>
   );
 
@@ -35,44 +54,108 @@ const LearnScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("LearnCpr")}
         />
       </View>
-
       <View style={styles.section}>
         <Text variant="titleMedium" style={styles.sectionLabel}>
           Learning Materials
         </Text>
-        <MaterialCard
-          size="large"
-          title="How to Perform CPR"
-          backgroundColor="#B6A4F8"
-          buttonLabel="View Tutorial"
-          imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprCover.png")}
-          onPress={() =>
-            navigation.navigate("DocumentMaterial", { data: CPR_STEPS_DATA })
-          }
-        />
+        <View style={styles.materialCards}>
+          <MaterialCard
+            size="large"
+            title="How to Perform CPR"
+            backgroundColor="#B6A4F8"
+            buttonLabel="View Tutorial"
+            imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprCover.png")}
+            onPress={() =>
+              navigation.navigate("DocumentMaterial", { data: CPR_STEPS_DATA })
+            }
+          />
+          <MaterialCard
+            size="large"
+            title="QUIZ: How to Perform CPR"
+            backgroundColor="#99DBCD"
+            buttonLabel="Answer Quiz"
+            imageSource={require("../../assets/images/learningMaterials/howToPerformCpr/howToPerformCprQuizCover.png")}
+            onPress={() => navigation.navigate("Quiz", { id: "1" })}
+          />
+        </View>
       </View>
+
+ 
+      <Portal>
+        <Modal
+          visible={isModalVisible}
+          animationType="slide"
+          onRequestClose={closeModal}
+          transparent
+        >
+          <TouchableRipple style={{ flex: 1 }} onPress={closeModal}>
+            <View style={styles.modalContainer}>
+              <Searchbar
+                onIconPress={closeModal}
+                value={searchQuery}
+                onChangeText={handleSearch}
+                style={styles.searchInput}
+                rippleColor={theme.colors.elevation.level5}
+              />
+              <FlatList
+                data={filteredData}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <TouchableRipple
+                    style={styles.searchResultItem}
+                    onPress={() => handleNavigate(item.route, item.params)}
+                  >
+                    <>
+                      <Text style={styles.searchResult}>{item.title}</Text>
+                      <NextActionIcon styles={styles.nextAction} />
+                    </>
+                  </TouchableRipple>
+                )}
+              />
+            </View>
+          </TouchableRipple>
+        </Modal>
+      </Portal>
     </Layout>
   );
 };
 
 export default LearnScreen;
 
-const stylesheet = createStyleSheet((theme) =>
-  StyleSheet.create({
-    section: {
-      marginBottom: theme.spacing.xl,
-    },
-    sectionLabel: {
-      marginVertical: theme.spacing.md,
-      fontWeight: "bold",
-    },
-    appBarTitle: {
-      fontSize: 23,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-  })
-);
+const stylesheet = createStyleSheet((theme) => ({
+  section: {
+    marginBottom: theme.spacing.xl,
+  },
+  sectionLabel: {
+    marginVertical: theme.spacing.md,
+    fontWeight: "bold",
+  },
+  materialCards: {
+    rowGap: theme.spacing.md,
+  },
+  modalContainer: {
+    flex: 1,
+    padding: theme.spacing.base,
+    justifyContent: "center",
+    backgroundColor: "rgba(1,1,1,0.6)",
+  },
+  searchInput: {
+    marginBottom: 20,
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  searchResult: {
+    padding: 20,
+  },
+  searchResultItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: theme.colors.elevation.level3,
+    paddingRight: theme.spacing.sm,
+  },
+  nextAction: {
+    marginLeft: "auto",
+  },
+}));
 
 const CPR_STEPS_DATA = [
   {
@@ -146,5 +229,21 @@ const CPR_STEPS_DATA = [
       "        Continue giving sets of 30 chest compressions and 2 breaths. Use an AED as soon as one is available! Minimize interruptions to chest compressions to less than 10 seconds.",
     ],
     imageSource: require("../../assets/images/learningMaterials/howToPerformCpr/step7.gif"),
+  },
+];
+
+const SEARCH_DATA = [
+  { id: 1, title: "Hands-on CPR Guide Training", route: "LearnCpr" },
+  {
+    id: 2,
+    title: "How to Perform CPR",
+    route: "DocumentMaterial",
+    params: { data: CPR_STEPS_DATA },
+  },
+  {
+    id: 3,
+    title: "QUIZ: How to Perform CPR",
+    route: "Quiz",
+    params: { data: "1" },
   },
 ];

@@ -1,15 +1,14 @@
-import { Image, View, StyleSheet } from "react-native";
-import { TouchableRipple, Text, useTheme } from "react-native-paper";
+import { Image, View } from "react-native";
+import { TouchableRipple, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { createStyleSheet, useStyles } from "../../../../hooks/useStyles";
 
 const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
-  const theme = useTheme();
+  const { styles, theme } = useStyles(stylesheet);
 
   return (
     <View style={styles.imageFrameContainer}>
-      <Text style={[styles.label, { fontSize: theme.fontSize.lg }]}>
-        {label}
-      </Text>
+      <Text style={styles.label}>{label}</Text>
       <TouchableRipple onPress={onPress} disabled={isLoading}>
         <View
           style={[
@@ -22,10 +21,7 @@ const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
           ) : (
             <>
               <Ionicons name="camera" size={50} color={theme.colors.primary} />
-              <Text
-                variant="titleMedium"
-                style={{ color: theme.colors.primary }}
-              >
+              <Text variant="titleMedium" style={styles.placeholder}>
                 Take a picture
               </Text>
             </>
@@ -47,12 +43,13 @@ const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
 
 export default ImageFrame;
 
-const styles = StyleSheet.create({
+const stylesheet = createStyleSheet((theme) => ({
   imageFrameContainer: {
     rowGap: 10,
     alignItems: "center",
   },
   label: {
+    fontSize: theme.fontSize.lg,
     textAlign: "center",
     color: "gray",
   },
@@ -60,14 +57,14 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: "dashed",
     borderRadius: 10,
-    width: 296,
-    height: 222,
+    width: 267,
+    height: 200,
     alignItems: "center",
     justifyContent: "center",
   },
   image: {
-    width: 293,
-    height: 220,
+    width: "100%",
+    height: "100%",
     borderRadius: 10,
     objectFit: "contain",
   },
@@ -76,4 +73,7 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     marginBottom: 4,
   },
-});
+  placeholder: {
+    color: theme.colors.primary,
+  },
+}));

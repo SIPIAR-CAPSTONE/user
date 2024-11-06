@@ -1,20 +1,18 @@
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { useState, memo } from "react";
-import { Divider, Menu, TouchableRipple } from "react-native-paper";
+import { Menu, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
 type CprHeaderProps = {
   handleEnd: () => void;
 };
 
-function Header({  handleEnd }: CprHeaderProps) {
+function CprHeader({ handleEnd }: CprHeaderProps) {
+  const { styles } = useStyles(stylesheet);
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
-
-
   const openActionMenu = (): void => setVisibleActionMenu(true);
   const closeActionMenu = (): void => setVisibleActionMenu(false);
-
-  
 
   return (
     <View style={styles.header}>
@@ -22,8 +20,8 @@ function Header({  handleEnd }: CprHeaderProps) {
         visible={visibleActionMenu}
         onDismiss={closeActionMenu}
         anchor={<MoreOptionActionButton onPress={openActionMenu} />}
+        contentStyle={styles.menu}
       >
-        <Divider />
         <Menu.Item onPress={handleEnd} title="End" />
       </Menu>
     </View>
@@ -35,22 +33,27 @@ type MoreOptionActionButtonProps = {
 };
 
 function MoreOptionActionButton({ onPress }: MoreOptionActionButtonProps) {
+  const { styles } = useStyles(stylesheet);
+
   return (
-    <TouchableRipple onPress={onPress} style={styles.optionButton}>
+    <TouchableRipple borderless onPress={onPress} style={styles.optionButton}>
       <MaterialCommunityIcons name="dots-vertical" size={24} color="black" />
     </TouchableRipple>
   );
 }
 
-export const CprHeader = memo(Header);
+export default memo(CprHeader);
 
-const styles = StyleSheet.create({
+const stylesheet = createStyleSheet((theme) => ({
   header: {
     height: 50,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
     justifyContent: "flex-end",
+  },
+  menu: {
+    backgroundColor: theme.colors.elevation.level3,
   },
   optionButton: {
     width: 33,
@@ -60,4 +63,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-});
+}));
