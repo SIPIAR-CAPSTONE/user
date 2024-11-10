@@ -12,6 +12,8 @@ import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
+import { supabase } from "../../../utils/supabase/config";
+import useBoundStore from "../../../zustand/useBoundStore";
 
 const fields = [
   {
@@ -45,6 +47,8 @@ const EditPasswordScreen = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const userMetaData = useBoundStore((state) => state.userMetaData);
+
 
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState(false);
@@ -63,7 +67,28 @@ const EditPasswordScreen = () => {
    *
    */
   const handleSubmit = async () => {
-    //TODO: diri and query
+     // Verify the old password by signing in
+     const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: userMetaData["email"], 
+      password: form.oldPassword,
+    });
+
+    if (signInError) {
+      setErrors({ oldPassword: "Incorrect old password." });
+      setLoading(false);
+      return;
+    }
+
+    // If old password is correct, update the password
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: form.newPassword, 
+    });
+
+    if (updateError) {
+      setErrors({ confirmNewPassword: updateError.message });
+    } else {
+      console.log('Password updated successfully');
+    }
   };
 
   const CustomAppBar = () => (
