@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pin: {
-    width: 45,
-    height: 45,
+    width: 40,
+    height: 40,
   },
 });
 
