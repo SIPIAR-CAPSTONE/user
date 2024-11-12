@@ -8,7 +8,6 @@ import TokenVerification from "../screen/auth/TokenVerification";
 import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
 import Tabs from "./BottomTab";
 import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
-import DeleteAccountScreen from "../screen/profile/setting/DeleteAccountScreen";
 import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
 import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
 import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
@@ -111,11 +110,6 @@ export const SignedInStack = (
       name="Settings"
       options={{ headerShown: false }}
       component={SettingsScreen}
-    />
-    <Stack.Screen
-      name="DeleteAccount"
-      options={{ headerShown: false }}
-      component={DeleteAccountScreen}
     />
     <Stack.Screen
       name="ReportIssue"
