@@ -100,17 +100,6 @@ const SettingsScreen = () => {
         selectedValue={currentThemeScheme}
         setSelectedValue={handleChangeTheme}
       />
-
-      <ListItem
-        size="medium"
-        title="Delete Account"
-        renderIcon={() => (
-          <CircularIcon name="trash" variant="primary" size={14} />
-        )}
-        renderActionIcon={() => <NextActionIcon />}
-        onPress={() => navigation.navigate("DeleteAccount")}
-      />
-
       <ListItem
         size="medium"
         title="Report Issue"

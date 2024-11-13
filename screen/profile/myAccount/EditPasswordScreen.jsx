@@ -14,6 +14,7 @@ import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
+import SuccessConfirmation from "../../../components/common/SuccessConfirmation";
 
 const fields = [
   {
@@ -47,8 +48,8 @@ const EditPasswordScreen = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const userMetaData = useBoundStore((state) => state.userMetaData);
-
 
   const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
     useState(false);
@@ -67,27 +68,34 @@ const EditPasswordScreen = () => {
    *
    */
   const handleSubmit = async () => {
-     // Verify the old password by signing in
-     const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: userMetaData["email"], 
-      password: form.oldPassword,
-    });
+    try {
+      setLoading(true);
 
-    if (signInError) {
-      setErrors({ oldPassword: "Incorrect old password." });
+      // Verify the old password by signing in
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: userMetaData["email"],
+        password: form.oldPassword,
+      });
+
+      if (signInError) {
+        setErrors({ oldPassword: "Incorrect old password." });
+        setLoading(false);
+        return;
+      }
+
+      // If old password is correct, update the password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: form.newPassword,
+      });
+      if (updateError) {
+        setErrors({ confirmNewPassword: updateError.message });
+      } else {
+        setShowSuccessAlert(true);
+      }
+    } catch (error) {
+      setErrors({ confirmNewPassword: error.message });
+    } finally {
       setLoading(false);
-      return;
-    }
-
-    // If old password is correct, update the password
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: form.newPassword, 
-    });
-
-    if (updateError) {
-      setErrors({ confirmNewPassword: updateError.message });
-    } else {
-      console.log('Password updated successfully');
     }
   };
 
@@ -150,6 +158,13 @@ const EditPasswordScreen = () => {
         isVisible={isConfirmationDialogVisible}
         onPressConfirmation={handleSubmit}
         onPressCancel={hideConfirmationDialog}
+      />
+      <SuccessConfirmation
+        open={showSuccessAlert}
+        setOpen={setShowSuccessAlert}
+        title="Change Password Successfully!"
+        desc="You have successfully changed your password."
+        onDelayEnd={() => navigation.navigate("ProfileScreen")}
       />
     </Layout>
   );

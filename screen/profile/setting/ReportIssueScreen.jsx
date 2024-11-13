@@ -9,6 +9,8 @@ import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { useNavigation } from "@react-navigation/native";
 import Layout from "../../../components/common/Layout";
+import ReportImageFrame from "../../../components/profile/settings/ReportImageFrame";
+import useImagePicker from "../../../hooks/useImagePicker";
 
 const fields = [
   {
@@ -23,6 +25,9 @@ const fields = [
     name: "email",
     rules: [{ type: "required", message: "Email is required." }],
   },
+  {
+    name: "reportImage",
+  },
 ];
 
 const ReportIssueScreen = () => {
@@ -33,6 +38,8 @@ const ReportIssueScreen = () => {
     issueDesc: "",
     email: "",
   });
+  const [reportImage, setReportImage] = useState(null);
+
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +48,7 @@ const ReportIssueScreen = () => {
   };
 
   const handleSubmit = async () => {
-    if (isFormValid(fields, reportForm, setErrors)) {
+    if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
       setLoading(true);
       //! sumbittion
 
@@ -51,10 +58,7 @@ const ReportIssueScreen = () => {
 
   customAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"
-        onPress={() => navigation.goBack()}
-      />
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
     </AppBar>
   );
 
@@ -97,6 +101,14 @@ const ReportIssueScreen = () => {
         type="email"
         variant="outlined"
         disabled={loading}
+      />
+      <ReportImageFrame
+        label="Image of the issue"
+        image={reportImage}
+        setImage={setReportImage}
+        onPress={() => verificationIdCapturerOne(setReportImage)}
+        error={errors.reportImage}
+        isLoading={loading}
       />
 
       <Button
