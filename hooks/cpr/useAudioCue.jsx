@@ -1,25 +1,19 @@
 import { useEffect, useRef } from "react";
 import { ToastAndroid } from "react-native";
-import { Audio, AVPlaybackSource } from "expo-av";
-import {
-  type TSoundRef,
-  type SoundFile,
-  type AudioCue,
-  type Compression,
-} from "./useCpr.types";
+import { Audio } from "expo-av";
 
-const PushAudio = require("../../assets/audio/push.mp3") as AVPlaybackSource;
+const PushAudio = require("../../assets/audio/push.mp3")
 const PushFasterAudio =
-  require("../../assets/audio/pushFaster.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushFaster.mp3")
 const PushHarderAudio =
-  require("../../assets/audio/pushHarder.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushHarder.mp3")
 const PushSoftlyAudio =
-  require("../../assets/audio/pushSoftly.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushSoftly.mp3")
 const pushSlowlyAudio =
-  require("../../assets/audio/pushSlowly.mp3") as AVPlaybackSource;
+  require("../../assets/audio/pushSlowly.mp3")
 
 const useAudioCue = () => {
-  const soundsRef = useRef<TSoundRef>({
+  const soundsRef = useRef({
     push: new Audio.Sound(),
     pushFaster: new Audio.Sound(),
     pushHarder: new Audio.Sound(),
@@ -31,7 +25,7 @@ const useAudioCue = () => {
   useEffect(() => {
     const preloadAudio = async () => {
       try {
-        const soundFiles: Array<SoundFile> = [
+        const soundFiles = [
           { name: "push", file: PushAudio },
           { name: "pushFaster", file: PushFasterAudio },
           { name: "pushHarder", file: PushHarderAudio },
@@ -43,8 +37,7 @@ const useAudioCue = () => {
           await soundsRef.current[name].loadAsync(file);
           await soundsRef.current[name].setStatusAsync({ shouldPlay: false });
         }
-      } catch (err: unknown) {
-        const error = err as Error;
+      } catch (error) {
         ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
       }
     };
@@ -54,15 +47,14 @@ const useAudioCue = () => {
     return () => {
       // Unload all sounds when the component is unmounted
       for (const key in soundsRef.current) {
-        const keyName = key as keyof TSoundRef;
-        soundsRef.current[keyName].unloadAsync();
+        soundsRef.current[key].unloadAsync();
       }
     };
   }, []);
 
-  const playAudioCue = async (compressionScore: Compression): Promise<void> => {
+  const playAudioCue = async (compressionScore) => {
     const { depthScore, timingScore } = compressionScore;
-    let audioClip: AudioCue = "push";
+    let audioClip = "push";
 
     if (depthScore === "Perfect" && timingScore === "Perfect") {
       audioClip = "push";
@@ -85,8 +77,7 @@ const useAudioCue = () => {
       } else {
         ToastAndroid.show(`Sound not found: ${audioClip}`, ToastAndroid.SHORT);
       }
-    } catch (err: unknown) {
-      const error = err as Error;
+    } catch (error) {
       ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
     }
   };

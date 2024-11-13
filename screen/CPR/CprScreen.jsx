@@ -1,10 +1,10 @@
 import { StyleSheet, View } from "react-native";
+import { useCallback, useState } from "react";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
 import CprHeader from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useCallback, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
@@ -111,7 +111,7 @@ function CprScreen() {
         isVisible={isDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
-        onPressCancel={() => navigation.goBack()}
+        onPressCancel={() => navigation.navigate("HomeScreen")}
         onPressConfirmation={handleStartCpr}
         title={"Are you ready to start?"}
         containerStyle={styles.dialog}
