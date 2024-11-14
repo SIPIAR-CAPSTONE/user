@@ -10,6 +10,7 @@ import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
 import useCpr from "../../hooks/cpr/useCpr";
+import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 
 function CprScreen() {
   const {
@@ -21,7 +22,10 @@ function CprScreen() {
   const { compressionDepth, depthScore, timingScore, overallScore } =
     currentCompressionScore;
 
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
+  const [isInfoDialogVisible, setIsInfoDialogVisible] = useState(false);
+  const handleOpenInfoDialog = () => setIsInfoDialogVisible(true);
+
+  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(true);
   const navigation = useNavigation();
   const {
     time: countdown,
@@ -35,7 +39,7 @@ function CprScreen() {
       sendEmergencyAlertRequest();
     }
 
-    setIsDialogVisible(false);
+    setIsConfirmDialogVisible(false);
     startCountdown();
   };
 
@@ -45,13 +49,16 @@ function CprScreen() {
 
   const handleEndCpr = useCallback(() => {
     stopCpr();
-    navigation.goBack();
+    navigation.navigate("HomeScreen");
   }, []);
 
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEndCpr} />
+      <CprHeader
+        handleEnd={handleEndCpr}
+        onOpenInfoDialog={handleOpenInfoDialog}
+      />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -107,14 +114,19 @@ function CprScreen() {
         </View>
       </View>
 
+      <CprInfoDialog
+        visible={isInfoDialogVisible}
+        setVisible={setIsInfoDialogVisible}
+      />
       <ConfirmationDialog
-        isVisible={isDialogVisible}
+        isVisible={isConfirmDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
         onPressCancel={() => navigation.navigate("HomeScreen")}
         onPressConfirmation={handleStartCpr}
         title={"Are you ready to start?"}
         containerStyle={styles.dialog}
+        removePortal
       />
       <StatusBar hidden translucent />
     </View>

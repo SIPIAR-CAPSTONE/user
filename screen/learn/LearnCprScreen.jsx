@@ -11,6 +11,7 @@ import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
 import useCpr from "../../hooks/cpr/useCpr";
 import useBoundStore from "../../zustand/useBoundStore";
+import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 
 function CprScreen() {
   const {
@@ -27,7 +28,11 @@ function CprScreen() {
     timerOn: countdownOn,
     start: startCountdown,
   } = useCountdown(3, false, startCpr);
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
+
+  const [isInfoDialogVisible, setIsInfoDialogVisible] = useState(false);
+  const handleOpenInfoDialog = () => setIsInfoDialogVisible(true);
+
+  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(true);
   const navigation = useNavigation();
 
   const setCompressionHistory = useBoundStore(
@@ -35,7 +40,7 @@ function CprScreen() {
   );
 
   const handleStartCpr = () => {
-    setIsDialogVisible(false);
+    setIsConfirmDialogVisible(false);
     startCountdown();
   };
 
@@ -48,7 +53,10 @@ function CprScreen() {
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEndCpr} />
+      <CprHeader
+        handleEnd={handleEndCpr}
+        onOpenInfoDialog={handleOpenInfoDialog}
+      />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -104,8 +112,12 @@ function CprScreen() {
         </View>
       </View>
 
+      <CprInfoDialog
+        visible={isInfoDialogVisible}
+        setVisible={setIsInfoDialogVisible}
+      />
       <ConfirmationDialog
-        isVisible={isDialogVisible}
+        isVisible={isConfirmDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
         onPressCancel={() => navigation.goBack()}

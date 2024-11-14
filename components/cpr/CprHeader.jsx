@@ -5,13 +5,13 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
-
-
-function CprHeader({ handleEnd }) {
+function CprHeader({ handleEnd, onOpenInfoDialog }) {
   const { styles } = useStyles(stylesheet);
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
   const openActionMenu = () => setVisibleActionMenu(true);
   const closeActionMenu = () => setVisibleActionMenu(false);
+
+  
 
   return (
     <View style={styles.header}>
@@ -21,13 +21,12 @@ function CprHeader({ handleEnd }) {
         anchor={<MoreOptionActionButton onPress={openActionMenu} />}
         contentStyle={styles.menu}
       >
+        <Menu.Item onPress={onOpenInfoDialog} title="CPR Guide Info" />
         <Menu.Item onPress={handleEnd} title="End" />
       </Menu>
     </View>
   );
 }
-
-
 
 function MoreOptionActionButton({ onPress }) {
   const { styles } = useStyles(stylesheet);
