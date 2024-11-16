@@ -13,7 +13,7 @@ const ContactCard = ({ name, contactNumber, onPress }) => {
         <Text variant="labelSmall" style={styles.name}>
           {name}
         </Text>
-        <Text variant="headlineSmall" style={styles.contactNumber}>
+        <Text style={styles.contactNumber}>
           {contactNumber}
         </Text>
         <View style={styles.icon}>
@@ -40,8 +40,9 @@ const stylesheet = createStyleSheet((theme) => ({
     color: theme.colors.onPrimary,
   },
   contactNumber: {
+    fontSize: theme.fontSize.xl,
     fontWeight: "bold",
-    marginVertical: 10,
+    marginVertical: 5,
     textAlign: "center",
     color: theme.colors.onPrimary,
   },
