@@ -18,6 +18,11 @@ const ConfirmationDialog = ({
 }) => {
   const { styles } = useStyles(stylesheet);
 
+  const handleOnPressConfirmation = () => {
+    onPressConfirmation();
+    onPressCancel(); //after confirmation, close the dialog
+  };
+
   if (!isVisible) return null;
 
   const DialogContent = (
@@ -33,7 +38,7 @@ const ConfirmationDialog = ({
       )}
 
       <Dialog.Actions style={styles.buttonsContainer}>
-        <Button label={confirmationLabel} onPress={onPressConfirmation} />
+        <Button label={confirmationLabel} onPress={handleOnPressConfirmation} />
         <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
       </Dialog.Actions>
     </Dialog>
