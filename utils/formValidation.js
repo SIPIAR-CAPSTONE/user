@@ -13,6 +13,26 @@ const validateFields = (fields, values) => {
           rule.message || `${name} must be at least ${rule.length} characters.`;
       }
 
+      if (rule.type === "includeNumber" && !/\d/.test(value)) {
+        errors[name] = rule.message || `Should at least one number.`;
+      }
+
+      if (
+        rule.type === "includeUpperAndLowerCase" &&
+        (!/[A-Z]/.test(value) || !/[a-z]/.test(value))
+      ) {
+        errors[name] =
+          rule.message || `Should include upper and lower case letters.`;
+      }
+
+      if (
+        rule.type === "includeSpecialCharacter" &&
+        !/[^a-zA-Z0-9]/.test(value)
+      ) {
+        errors[name] =
+          rule.message || `Should include at least one special character.`;
+      }
+
       if (rule.type === "exactLength" && value.length !== rule.length) {
         errors[name] =
           rule.message || `${name} should have ${rule.length} numbers.`;

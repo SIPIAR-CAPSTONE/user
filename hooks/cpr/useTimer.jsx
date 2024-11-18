@@ -1,25 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import { formatTime } from "./useCpr.helper";
 
-type Timer = {
-  timerOn: boolean;
-  timer: string;
-  timerInSeconds: number;
-  compressionTimer: number;
-  startTimer: () => void;
-  resetTimer: () => void;
-  resetCompressionTimer: () => void;
-};
 
-export default function useTimer(): Timer {
-  const [timerOn, setTimerOn] = useState<boolean>(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [rawTimer, setRawTimer] = useState<number>(0);
+export default function useTimer() {
+  const [timerOn, setTimerOn] = useState(false);
+  const timerRef = useRef(null);
+  const [rawTimer, setRawTimer] = useState(0);
   const timer = useMemo(() => formatTime(rawTimer), [rawTimer]);
   const timerInSeconds = useMemo(() => Math.floor(rawTimer / 1000), [rawTimer]);
 
   const compressionTimer = useRef(100);
-  const lastUpdateTime = useRef<number>(0);
+  const lastUpdateTime = useRef(0);
 
   useEffect(() => {
     if (timerOn) {
@@ -48,7 +40,7 @@ export default function useTimer(): Timer {
     };
   }, [timerOn]);
 
-  const resetTimer = (): void => {
+  const resetTimer = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       setTimerOn(false);
@@ -57,11 +49,11 @@ export default function useTimer(): Timer {
     }
   };
 
-  const startTimer = (): void => {
+  const startTimer = () => {
     setTimerOn(true);
   };
 
-  const resetCompressionTimer = (): void => {
+  const resetCompressionTimer = () => {
     compressionTimer.current = 100;
     lastUpdateTime.current = Date.now();
   };

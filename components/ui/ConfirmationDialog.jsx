@@ -14,31 +14,41 @@ const ConfirmationDialog = ({
   onPressCancel,
   containerStyle = {},
   dismissable = false,
+  removePortal = false,
 }) => {
   const { styles } = useStyles(stylesheet);
 
+  const handleOnPressConfirmation = () => {
+    onPressConfirmation();
+    onPressCancel(); //after confirmation, close the dialog
+  };
+
   if (!isVisible) return null;
 
-  return (
-    <Portal>
-      <Dialog
-        visible={isVisible}
-        onDismiss={onPressCancel}
-        style={[styles.dialog, containerStyle]}
-        dismissable={dismissable}
-      >
-        <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-        {content && (
-          <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
-        )}
+  const DialogContent = (
+    <Dialog
+      visible={isVisible}
+      onDismiss={onPressCancel}
+      style={[styles.dialog, containerStyle]}
+      dismissable={dismissable}
+    >
+      <Dialog.Title style={styles.title}>{title}</Dialog.Title>
+      {content && (
+        <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
+      )}
 
-        <Dialog.Actions style={styles.buttonsContainer}>
-          <Button label={confirmationLabel} onPress={onPressConfirmation} />
-          <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
-        </Dialog.Actions>
-      </Dialog>
-    </Portal>
+      <Dialog.Actions style={styles.buttonsContainer}>
+        <Button label={confirmationLabel} onPress={handleOnPressConfirmation} />
+        <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
+      </Dialog.Actions>
+    </Dialog>
   );
+
+  if (removePortal) {
+    return DialogContent;
+  }
+
+  return <Portal>{DialogContent}</Portal>;
 };
 
 export default ConfirmationDialog;

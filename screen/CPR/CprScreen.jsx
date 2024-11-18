@@ -1,16 +1,16 @@
 import { StyleSheet, View } from "react-native";
+import { useCallback, useState } from "react";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
 import CircularScore from "../../components/cpr/CircularScore";
 import CprHeader from "../../components/cpr/CprHeader";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import { useState } from "react";
-import { useNavigation, StackActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import StatusBar from "../../components/common/StatusBar";
 import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
 import useCpr from "../../hooks/cpr/useCpr";
-import useBoundStore from "../../zustand/useBoundStore";
+import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 
 function CprScreen() {
   const {
@@ -18,37 +18,47 @@ function CprScreen() {
     start: startCpr,
     stop: stopCpr,
     currentCompressionScore,
-    history,
   } = useCpr();
   const { compressionDepth, depthScore, timingScore, overallScore } =
     currentCompressionScore;
+
+  const [isInfoDialogVisible, setIsInfoDialogVisible] = useState(false);
+  const handleOpenInfoDialog = () => setIsInfoDialogVisible(true);
+
+  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(true);
+  const navigation = useNavigation();
   const {
     time: countdown,
     timerOn: countdownOn,
     start: startCountdown,
   } = useCountdown(3, false, startCpr);
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
-  const navigation = useNavigation();
-
-  const setCompressionHistory = useBoundStore(
-    (state) => state.setCompressionHistory
-  );
 
   const handleStartCpr = () => {
-    setIsDialogVisible(false);
+    const ifUserIsValidated = true; //!temp
+    if (ifUserIsValidated) {
+      sendEmergencyAlertRequest();
+    }
+
+    setIsConfirmDialogVisible(false);
     startCountdown();
   };
 
-  const handleEndCpr = () => {
-    setCompressionHistory([...history]);
-    stopCpr();
-    navigation.dispatch(StackActions.replace("LearnCprScore"));
+  const sendEmergencyAlertRequest = () => {
+    console.log("send emergency alert request to admin");
   };
+
+  const handleEndCpr = useCallback(() => {
+    stopCpr();
+    navigation.navigate("HomeScreen");
+  }, []);
 
   return (
     <View style={styles.container}>
       <Countdown time={countdown} visible={countdownOn} />
-      <CprHeader handleEnd={handleEndCpr} />
+      <CprHeader
+        handleEnd={handleEndCpr}
+        onOpenInfoDialog={handleOpenInfoDialog}
+      />
 
       <View style={styles.scoreContainer}>
         <View style={styles.scoreBarContainer}>
@@ -104,14 +114,19 @@ function CprScreen() {
         </View>
       </View>
 
+      <CprInfoDialog
+        visible={isInfoDialogVisible}
+        setVisible={setIsInfoDialogVisible}
+      />
       <ConfirmationDialog
-        isVisible={isDialogVisible}
+        isVisible={isConfirmDialogVisible}
         cancelLabel="Back"
         confirmationLabel="Start"
-        onPressCancel={() => navigation.goBack()}
+        onPressCancel={() => navigation.navigate("HomeScreen")}
         onPressConfirmation={handleStartCpr}
-        title={"Are you ready to start CPR practice?"}
+        title={"Are you ready to start?"}
         containerStyle={styles.dialog}
+        removePortal
       />
       <StatusBar hidden translucent />
     </View>

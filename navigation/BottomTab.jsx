@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeScreen from "../screen/home/HomeScreen";
 import BroadcastScreen from "../screen/broadcast/BroadcastScreen";
-import CprConfirmationScreen from "../screen/CPR/CprConfirmationScreen";
+import CprInitialScreen from "../screen/CPR/CprIntialScreen";
 import LearnScreen from "../screen/learn/LearnScreen";
 import ProfileScreen from "../screen/profile/ProfileScreen";
 
@@ -48,8 +48,8 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="CprConfirmationScreen"
-        component={CprConfirmationScreen}
+        name="CprInitialScreen"
+        component={CprInitialScreen}
         options={{
           title: "",
           tabBarIcon: () => <CprTabBarIcon />,

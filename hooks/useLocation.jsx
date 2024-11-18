@@ -15,10 +15,8 @@ const useLocation = () => {
   useEffect(() => {
     (async () => {
       try {
-        // Ask permision to access location
         let { status } = await Location.requestForegroundPermissionsAsync();
 
-        // If permision is not granted display warning
         if (status !== "granted") {
           Alert.alert(
             "Permission Denied",
@@ -58,7 +56,6 @@ const useLocation = () => {
         return () => foregroundSubscrition.remove();
       } catch (error) {
         if (error.code == "ERR_LOCATION_SETTINGS_UNSATISFIED") {
-          // Display warning alert
           Alert.alert(
             "Warning: Location not enabled",
             "To access this feature your location should be turned on.",
@@ -126,7 +123,18 @@ const useLocation = () => {
     }
   }
 
-  return { userLocation };
+  async function reverseGeocode({ longitude, latitude }) {
+    const reverseGeocodedAddress = await Location.reverseGeocodeAsync({
+      latitude: latitude,
+      longitude: longitude,
+    });
+    //! delete later
+    //! for testing
+    console.log("reverseGeocode");
+    console.log(reverseGeocodedAddress);
+  }
+
+  return { userLocation, reverseGeocode };
 };
 
 export default useLocation;

@@ -3,18 +3,13 @@ import { Text } from "react-native-paper";
 
 import ContactCard from "./ContactCard";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-
-const ContactCardData = [
-  { id: 1, name: "National Emergency Number", contactNumber: "911" },
-  {
-    id: 2,
-    name: "Northern Mindanao Medical Center",
-    contactNumber: "726-362",
-  },
-];
+import ModifyContacts from "./ModifyContacts";
+import useBoundStore from "../../zustand/useBoundStore";
+import { DEFAULT_CONTACTS } from "./defaultContactsData";
 
 const ContactCards = () => {
   const { styles } = useStyles(stylesheet);
+  const contactList = useBoundStore((state) => state.contactList);
 
   // open phone app of the device and pass the phone Number
   const callNumber = (phoneNumber) => Linking.openURL(`tel:${phoneNumber}`);
@@ -23,20 +18,21 @@ const ContactCards = () => {
     <ContactCard
       key={item.id}
       name={item.name}
-      contactNumber={item.contactNumber}
-      onPress={() => callNumber(item.contactNumber)}
+      contactNumber={item.number}
+      onPress={() => callNumber(item.number)}
     />
   );
 
   return (
     <View>
-      <Text variant="titleMedium" style={styles.header}>
-        Emergency Contacts
-      </Text>
+      <View style={styles.header}>
+        <Text variant="titleMedium">Emergency Contacts</Text>
+        <ModifyContacts />
+      </View>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={ContactCardData}
+        data={[...DEFAULT_CONTACTS, ...contactList]}
         keyExtractor={(item) => item.id}
         renderItem={renderContactCardItem}
         contentContainerStyle={styles.contactCards}
@@ -53,7 +49,11 @@ const stylesheet = createStyleSheet((theme) => ({
     paddingHorizontal: theme.spacing.base,
   },
   header: {
-    marginStart: theme.spacing.base,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginVertical: theme.spacing.base,
+    marginStart: theme.spacing.base,
+    marginEnd: theme.spacing.lg,
   },
 }));

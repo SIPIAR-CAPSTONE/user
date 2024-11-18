@@ -1,11 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
-type CountdownProps = {
-  time: number;
-  visible: boolean;
-};
 
-export default function Countdown({ time, visible = true }: CountdownProps) {
+export default function Countdown({ time, visible = true }) {
   if (!visible) return null;
 
   return (

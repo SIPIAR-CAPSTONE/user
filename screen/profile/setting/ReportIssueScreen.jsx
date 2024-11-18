@@ -10,7 +10,7 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import { useNavigation } from "@react-navigation/native";
 import Layout from "../../../components/common/Layout";
 import ReportImageFrame from "../../../components/profile/settings/ReportImageFrame";
-import useImagePicker from "../../../hooks/useImagePicker";
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 
 const fields = [
   {
@@ -27,6 +27,7 @@ const fields = [
   },
   {
     name: "reportImage",
+    rules: [],
   },
 ];
 
@@ -39,21 +40,24 @@ const ReportIssueScreen = () => {
     email: "",
   });
   const [reportImage, setReportImage] = useState(null);
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  const showConfirmationDialog = () => {
+    if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
+      setIsConfirmationDialogVisible(true);
+    }
+  };
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const handleFormChange = (key, value) => {
     setReportForm((prevReportForm) => ({ ...prevReportForm, [key]: value }));
   };
 
-  const handleSubmit = async () => {
-    if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
-      setLoading(true);
-      //! sumbittion
-
-      setLoading(false);
-    }
+  const handleSubmit = () => {
+    console.log("submit report");
   };
 
   customAppBar = () => (
@@ -113,9 +117,15 @@ const ReportIssueScreen = () => {
 
       <Button
         label="Submit"
-        onPress={handleSubmit}
+        onPress={showConfirmationDialog}
         marginVertical={20}
         isLoading={loading}
+      />
+      <ConfirmationDialog
+        title="Are you sure you want to submit this report?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={handleSubmit}
+        onPressCancel={hideConfirmationDialog}
       />
     </Layout>
   );
