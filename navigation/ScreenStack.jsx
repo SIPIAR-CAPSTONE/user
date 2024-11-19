@@ -1,30 +1,66 @@
+import { lazy } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import NotificationScreen from "../screen/home/NotificationScreen";
-import StartingScreen from "../screen/auth/StartingScreen";
-import LoginScreen from "../screen/auth/LoginScreen";
-import SignupScreen from "../screen/auth/SignupScreen";
-import ForgotPasswordScreen from "../screen/auth/ForgotPasswordScreen";
-import TokenVerification from "../screen/auth/TokenVerification";
-import ResetPasswordScreen from "../screen/auth/ResetPasswordScreen";
+
 import Tabs from "./BottomTab";
-import AccountVerificationScreen from "../screen/profile/accountVerification/AccountVerificationScreen";
-import EditProfileScreen from "../screen/profile/myAccount/EditProfileScreen";
-import MyAccountScreen from "../screen/profile/myAccount/MyAccountScreen";
-import PrivacyAndPolicyScreen from "../screen/profile/privacyPolicy/PrivacyAndPolicyScreen";
-import TermsAndConditionsScreen from "../screen/profile/termsAndCondition/TermsAndConditionScreen";
-import SettingsScreen from "../screen/profile/setting/SettingsScreen";
-import MapviewScreen from "../screen/broadcast/MapviewScreen";
-import EditPasswordScreen from "../screen/profile/myAccount/EditPasswordScreen";
-import LearnCprScreen from "../screen/learn/LearnCprScreen";
-import LearnCourseScreen from "../screen/learn/LearnCourseScreen";
-import VideoPlayerScreen from "../screen/learn/VideoPlayerScreen";
-import LearnCprScoreScreen from "../screen/learn/LearnCprScoreScreen";
-import CprScreen from "../screen/CPR/CprScreen";
-import DocumentMaterialScreen from "../screen/learn/DocumentMaterialScreen";
-import ReportIssueScreen from "../screen/profile/setting/ReportIssueScreen";
-import QuizScreen from "../screen/learn/QuizScreen";
-import FinishedViewScreen from "../screen/learn/FinishedViewScreen";
-import QuizScoreScreen from "../screen/learn/QuizScoreScreen";
+import StartingScreen from "../screen/auth/StartingScreen";
+const NotificationScreen = lazy(() =>
+  import("../screen/home/NotificationScreen")
+);
+const LoginScreen = lazy(() => import("../screen/auth/LoginScreen"));
+const SignupScreen = lazy(() => import("../screen/auth/SignupScreen"));
+const ForgotPasswordScreen = lazy(() =>
+  import("../screen/auth/ForgotPasswordScreen")
+);
+const TokenVerification = lazy(() =>
+  import("../screen/auth/TokenVerification")
+);
+const ResetPasswordScreen = lazy(() =>
+  import("../screen/auth/ResetPasswordScreen")
+);
+const AccountVerificationScreen = lazy(() =>
+  import("../screen/profile/accountVerification/AccountVerificationScreen")
+);
+const EditProfileScreen = lazy(() =>
+  import("../screen/profile/myAccount/EditProfileScreen")
+);
+const MyAccountScreen = lazy(() =>
+  import("../screen/profile/myAccount/MyAccountScreen")
+);
+const PrivacyAndPolicyScreen = lazy(() =>
+  import("../screen/profile/privacyPolicy/PrivacyAndPolicyScreen")
+);
+const TermsAndConditionsScreen = lazy(() =>
+  import("../screen/profile/termsAndCondition/TermsAndConditionScreen")
+);
+const SettingsScreen = lazy(() =>
+  import("../screen/profile/setting/SettingsScreen")
+);
+const MapviewScreen = lazy(() => import("../screen/broadcast/MapviewScreen"));
+const EditPasswordScreen = lazy(() =>
+  import("../screen/profile/myAccount/EditPasswordScreen")
+);
+const LearnCprScreen = lazy(() => import("../screen/learn/LearnCprScreen"));
+const LearnCourseScreen = lazy(() =>
+  import("../screen/learn/LearnCourseScreen")
+);
+const VideoPlayerScreen = lazy(() =>
+  import("../screen/learn/VideoPlayerScreen")
+);
+const LearnCprScoreScreen = lazy(() =>
+  import("../screen/learn/LearnCprScoreScreen")
+);
+const CprScreen = lazy(() => import("../screen/CPR/CprScreen"));
+const DocumentMaterialScreen = lazy(() =>
+  import("../screen/learn/DocumentMaterialScreen")
+);
+const ReportIssueScreen = lazy(() =>
+  import("../screen/profile/setting/ReportIssueScreen")
+);
+const QuizScreen = lazy(() => import("../screen/learn/QuizScreen"));
+const FinishedViewScreen = lazy(() =>
+  import("../screen/learn/FinishedViewScreen")
+);
+const QuizScoreScreen = lazy(() => import("../screen/learn/QuizScoreScreen"));
 
 const Stack = createNativeStackNavigator();
 
