@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, ToastAndroid } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -19,7 +19,6 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import AppBarTitle from "../../components/ui/AppBarTitle";
-
 
 const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -65,7 +64,14 @@ const ProfileScreen = () => {
       removeState();
 
       //* remove profile picture in local storage
-      await FileSystem.deleteAsync(globalStateProfilePath);
+      if (globalStateProfilePath) {
+        try {
+          //* remove profile picture in local storage
+          await FileSystem.deleteAsync(globalStateProfilePath);
+        } catch (error) {
+          ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+        }
+      }
 
       //* remove profile picture global variable
       removeProfilePicturePath();
@@ -84,6 +90,11 @@ const ProfileScreen = () => {
     setTimeout(() => {
       navigation.navigate("AccountVerification");
     }, 10);
+  };
+
+  const handleConfirmLogout = () => {
+    handleLogout();
+    hideLogoutDialog();
   };
 
   const CustomAppBar = () => (
@@ -156,7 +167,7 @@ const ProfileScreen = () => {
         <ConfirmationDialog
           title="Are you sure you want to Sign Out?"
           isVisible={isLogoutDialogVisible}
-          onPressConfirmation={handleLogout}
+          onPressConfirmation={handleConfirmLogout}
           onPressCancel={hideLogoutDialog}
         />
 
