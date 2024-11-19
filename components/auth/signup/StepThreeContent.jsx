@@ -12,17 +12,24 @@ import Button from "../../ui/Button";
 import Form from "../../common/Form";
 import { isFormValid } from "../../../utils/formValidation";
 import ServerErrorMessage from "../../ui/ServerErrorMessage";
+import PasswordStrength from "./PasswordStrength";
 
 const fields = [
   { name: "email", rules: [{ type: "required" }, { type: "email" }] },
   {
     name: "password",
-    rules: [{ type: "required" }],
+    rules: [
+      { type: "includeSpecialCharacter" },
+      { type: "includeUpperAndLowerCase" },
+      { type: "includeNumber" },
+      { type: "minLength", length: 8 },
+      { type: "required", message: "Password is required." },
+    ],
   },
   {
     name: "confirmPassword",
     rules: [
-      { type: "required" },
+      { type: "required", message: "Confirm Password is required." },
       {
         type: "match",
         matchField: "password",
@@ -79,7 +86,7 @@ const StepThreeContent = () => {
           "session",
           JSON.stringify(data["session"])
         );
-        await setSession(encryptedSession);
+        setSession(encryptedSession);
 
         //* set session global state variables
         setState(data["session"]);
@@ -102,7 +109,7 @@ const StepThreeContent = () => {
         error={errors.email}
         disabled={loading}
       />
-      <View style={{ height: 16 }} />
+      <View style={{ height: 14 }} />
       <TextInput
         placeholder="Password"
         type="password"
@@ -111,6 +118,7 @@ const StepThreeContent = () => {
         error={errors.password}
         disabled={loading}
       />
+      <PasswordStrength password={signupForm.password} />
       <TextInput
         placeholder="Confirm Password"
         type="password"

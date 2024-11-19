@@ -1,15 +1,11 @@
 import { useState, useEffect, memo } from "react";
 import { View, StyleSheet, Animated, Easing } from "react-native";
-import { type OverallScore } from "../../hooks/cpr/useCpr.types";
+
 import Color from "../../utils/Color";
 
-type ScoreBarProps = {
-  score: OverallScore | null;
-};
-
-const OverallScoreBar = ({ score }: ScoreBarProps) => {
+const OverallScoreBar = ({ score }) => {
   const [progress, setProgress] = useState(new Animated.Value(0));
-  const SCORE_PROGRESS_VALUE: Record<OverallScore, number> = {
+  const SCORE_PROGRESS_VALUE = {
     gray: 0,
     yellow: 13,
     green: 45,

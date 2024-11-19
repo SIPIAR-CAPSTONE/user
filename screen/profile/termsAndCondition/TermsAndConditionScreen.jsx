@@ -9,7 +9,7 @@ import {
   OL,
   Strong,
   Time,
-} from "../../../components/terms and policy/Typography";
+} from "../../../components/termsAndPolicy/Typography";
 import Layout from "../../../components/common/Layout";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
@@ -31,10 +31,7 @@ const TermsAndConditionScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"
-        onPress={() => navigation.goBack()}
-      />
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
       <AppBarTitle>Terms and Conditions</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
