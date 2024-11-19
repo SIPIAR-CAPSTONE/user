@@ -20,10 +20,9 @@ const ConfirmationDialog = ({
 
   const handleOnPressConfirmation = () => {
     onPressConfirmation();
-    onPressCancel(); //after confirmation, close the dialog
   };
 
-  if (!isVisible) return null;
+  if (!isVisible) return;
 
   const DialogContent = (
     <Dialog
