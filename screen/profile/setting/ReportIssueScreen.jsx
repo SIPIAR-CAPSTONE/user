@@ -56,6 +56,11 @@ const ReportIssueScreen = () => {
     setReportForm((prevReportForm) => ({ ...prevReportForm, [key]: value }));
   };
 
+  const handleConfirm = () => {
+    handleSubmit();
+    hideConfirmationDialog();
+  };
+
   const handleSubmit = () => {
     console.log("submit report");
   };
@@ -124,7 +129,7 @@ const ReportIssueScreen = () => {
       <ConfirmationDialog
         title="Are you sure you want to submit this report?"
         isVisible={isConfirmationDialogVisible}
-        onPressConfirmation={handleSubmit}
+        onPressConfirmation={handleConfirm}
         onPressCancel={hideConfirmationDialog}
       />
     </Layout>

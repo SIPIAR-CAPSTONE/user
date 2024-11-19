@@ -67,7 +67,7 @@ const MarkerDialog = ({
         <Dialog.Content style={styles.infoFieldsContainer}>
           <InfoField
             icon="user"
-            label="User"
+            label="Bystander"
             value={name}
             iconBackgroundColor="#FBF2DD"
             iconColor="#D2BD84"
