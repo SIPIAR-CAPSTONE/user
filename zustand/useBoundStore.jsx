@@ -4,6 +4,7 @@ import { createAuthSlice } from "./authSlice";
 import { createUtilSlice } from "./utilSlice";
 import { createCprSlice } from "./cprSlice";
 import { createThemeSlice } from "./themeSlice";
+import { createContactSlice } from "./contactSlice";
 
 const useBoundStore = create((...a) => ({
   ...createProfileSlice(...a),
@@ -11,6 +12,7 @@ const useBoundStore = create((...a) => ({
   ...createUtilSlice(...a),
   ...createCprSlice(...a),
   ...createThemeSlice(...a),
+  ...createContactSlice(...a),
 }));
 
 export default useBoundStore;

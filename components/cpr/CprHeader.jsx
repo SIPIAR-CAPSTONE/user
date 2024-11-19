@@ -2,17 +2,16 @@ import { View } from "react-native";
 import { useState, memo } from "react";
 import { Menu, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 
-type CprHeaderProps = {
-  handleEnd: () => void;
-};
-
-function CprHeader({ handleEnd }: CprHeaderProps) {
+function CprHeader({ handleEnd, onOpenInfoDialog }) {
   const { styles } = useStyles(stylesheet);
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
-  const openActionMenu = (): void => setVisibleActionMenu(true);
-  const closeActionMenu = (): void => setVisibleActionMenu(false);
+  const openActionMenu = () => setVisibleActionMenu(true);
+  const closeActionMenu = () => setVisibleActionMenu(false);
+
+  
 
   return (
     <View style={styles.header}>
@@ -22,17 +21,14 @@ function CprHeader({ handleEnd }: CprHeaderProps) {
         anchor={<MoreOptionActionButton onPress={openActionMenu} />}
         contentStyle={styles.menu}
       >
+        <Menu.Item onPress={onOpenInfoDialog} title="CPR Guide Info" />
         <Menu.Item onPress={handleEnd} title="End" />
       </Menu>
     </View>
   );
 }
 
-type MoreOptionActionButtonProps = {
-  onPress: () => void;
-};
-
-function MoreOptionActionButton({ onPress }: MoreOptionActionButtonProps) {
+function MoreOptionActionButton({ onPress }) {
   const { styles } = useStyles(stylesheet);
 
   return (

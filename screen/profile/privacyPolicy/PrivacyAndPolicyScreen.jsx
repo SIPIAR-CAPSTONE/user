@@ -8,7 +8,7 @@ import {
   H2,
   P,
   Strong,
-} from "../../../components/terms and policy/Typography";
+} from "../../../components/termsAndPolicy/Typography";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";

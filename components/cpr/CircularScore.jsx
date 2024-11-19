@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from "react-native";
-import { type Size, type ColorStyle, type Color } from "./CircularScore.type";
 import { memo } from "react";
 
 const sizeStyle = {
@@ -7,7 +6,7 @@ const sizeStyle = {
   sm: 130,
 };
 
-const colorStyle: ColorStyle = {
+const colorStyle = {
   green: {
     backgroundColor: "#22C55E",
     borderColor: "#1CAE52",
@@ -26,15 +25,6 @@ const colorStyle: ColorStyle = {
   },
 };
 
-type CircularScoreProps = {
-  size?: Size;
-  color?: Color | null;
-  value: string | number | null;
-  valueColor?: Color | null;
-  label: string;
-  fontSize?: number;
-};
-
 function CircularScore({
   size = "lg",
   color = "gray",
@@ -42,7 +32,7 @@ function CircularScore({
   valueColor,
   label,
   fontSize = 32,
-}: CircularScoreProps) {
+}) {
   return (
     <View
       style={[

@@ -13,6 +13,7 @@ import ReportImageFrame from '../../../components/profile/settings/ReportImageFr
 import { supabase } from '../../../utils/supabase/config'
 import useBoundStore from '../../../zustand/useBoundStore'
 import { decode } from 'base64-arraybuffer'
+import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 
 const fields = [
   {
@@ -26,7 +27,11 @@ const fields = [
   {
     name: 'reportImage',
   },
-]
+  {
+    name: "reportImage",
+    rules: [],
+  },
+];
 
 const ReportIssueScreen = () => {
   const navigation = useNavigation()
@@ -40,12 +45,28 @@ const ReportIssueScreen = () => {
 
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
+  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
+    useState(false);
+
+  
+  const showConfirmationDialog = () => {
+    if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
+      setIsConfirmationDialogVisible(true);
+    }
+  };
+  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   const handleFormChange = (key, value) => {
     setReportForm((prevReportForm) => ({ ...prevReportForm, [key]: value }))
   }
 
   const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat)
+  
+  =======
+  const handleConfirm = () => {
+    handleSubmit();
+    hideConfirmationDialog();
+  };
 
   const handleSubmit = async () => {
     // if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
@@ -97,6 +118,9 @@ const ReportIssueScreen = () => {
     // }
   }
 
+
+ 
+
   customAppBar = () => (
     <AppBar>
       <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
@@ -145,9 +169,15 @@ const ReportIssueScreen = () => {
 
       <Button
         label="Submit"
-        onPress={handleSubmit}
+        onPress={showConfirmationDialog}
         marginVertical={20}
         isLoading={loading}
+      />
+      <ConfirmationDialog
+        title="Are you sure you want to submit this report?"
+        isVisible={isConfirmationDialogVisible}
+        onPressConfirmation={handleConfirm}
+        onPressCancel={hideConfirmationDialog}
       />
     </Layout>
   )

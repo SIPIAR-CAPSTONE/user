@@ -1,13 +1,16 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { lazy } from "react";
 
 import HomeScreen from "../screen/home/HomeScreen";
-import BroadcastScreen from "../screen/broadcast/BroadcastScreen";
-import CprConfirmationScreen from "../screen/CPR/CprConfirmationScreen";
-import LearnScreen from "../screen/learn/LearnScreen";
-import ProfileScreen from "../screen/profile/ProfileScreen";
-
-import TabBarIcon from "../components/navigation/TabBarIcon";
+const BroadcastScreen = lazy(() =>
+  import("../screen/broadcast/BroadcastScreen")
+);
+const CprInitialScreen = lazy(() => import("../screen/CPR/CprIntialScreen"));
+const LearnScreen = lazy(() => import("../screen/learn/LearnScreen"));
+const ProfileScreen = lazy(() => import("../screen/profile/ProfileScreen"));
 import CprTabBarIcon from "../components/navigation/CprTabBarIcon";
+import TabBarIcon from "../components/navigation/TabBarIcon";
+
 import { useStyles, createStyleSheet } from "../hooks/useStyles";
 
 const Tab = createBottomTabNavigator();
@@ -48,8 +51,8 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="CprConfirmationScreen"
-        component={CprConfirmationScreen}
+        name="CprInitialScreen"
+        component={CprInitialScreen}
         options={{
           title: "",
           tabBarIcon: () => <CprTabBarIcon />,
