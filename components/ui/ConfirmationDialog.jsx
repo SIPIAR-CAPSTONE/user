@@ -1,8 +1,9 @@
-import { Dialog, Portal } from "react-native-paper";
+import { ActivityIndicator, Dialog, Portal } from "react-native-paper";
 import React from "react";
 
 import Button from "./Button";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { View } from "react-native";
 
 const ConfirmationDialog = ({
   isVisible,
@@ -15,6 +16,7 @@ const ConfirmationDialog = ({
   containerStyle = {},
   dismissable = false,
   removePortal = false,
+  loading = false,
 }) => {
   const { styles } = useStyles(stylesheet);
 
@@ -24,7 +26,7 @@ const ConfirmationDialog = ({
 
   if (!isVisible) return;
 
-  const DialogContent = (
+  const DialogComponent = () => (
     <Dialog
       visible={isVisible}
       onDismiss={onPressCancel}
@@ -32,22 +34,40 @@ const ConfirmationDialog = ({
       dismissable={dismissable}
     >
       <Dialog.Title style={styles.title}>{title}</Dialog.Title>
-      {content && (
-        <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
+      {loading ? (
+        <Dialog.Content style={styles.dialogLoadingContent}>
+          <ActivityIndicator size="large" />
+        </Dialog.Content>
+      ) : (
+        <>
+          {content && (
+            <Dialog.Content style={styles.desc}>{content}</Dialog.Content>
+          )}
+          <Dialog.Actions style={styles.buttonsContainer}>
+            <Button
+              label={confirmationLabel}
+              onPress={handleOnPressConfirmation}
+            />
+            <Button
+              label={cancelLabel}
+              onPress={onPressCancel}
+              variant="text"
+            />
+          </Dialog.Actions>
+        </>
       )}
-
-      <Dialog.Actions style={styles.buttonsContainer}>
-        <Button label={confirmationLabel} onPress={handleOnPressConfirmation} />
-        <Button label={cancelLabel} onPress={onPressCancel} variant="text" />
-      </Dialog.Actions>
     </Dialog>
   );
 
   if (removePortal) {
-    return DialogContent;
+    return <DialogComponent />;
   }
 
-  return <Portal>{DialogContent}</Portal>;
+  return (
+    <Portal>
+      <DialogComponent />
+    </Portal>
+  );
 };
 
 export default ConfirmationDialog;
@@ -67,4 +87,8 @@ const stylesheet = createStyleSheet((theme) => ({
     alignItems: "baseline",
     rowGap: theme.spacing.xxs,
   },
+  dialogLoadingContent: {
+    height: 148,
+    justifyContent: "center"
+  }
 }));

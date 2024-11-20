@@ -23,6 +23,7 @@ import AppBarTitle from "../../components/ui/AppBarTitle";
 const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   // Create references for the confirmation dialogs
   const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false);
   const [isNavConfirmationDialogVisible, setIsNavConfirmationDialogVisible] =
@@ -52,29 +53,32 @@ const ProfileScreen = () => {
   useImageReader(setProfilePictureUri);
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.signOut();
 
-    if (!error) {
-      //* remove encrypted session from secure local storage
-      await largeSecureStore.removeItem("session");
-      //* remove encrypted session as a global state
-      removeSession();
+      if (!error) {
+        //* remove encrypted session from secure local storage
+        await largeSecureStore.removeItem("session");
+        //* remove encrypted session as a global state
+        removeSession();
 
-      //* remove global state variable
-      removeState();
+        //* remove global state variable
+        removeState();
 
-      //* remove profile picture in local storage
-      if (globalStateProfilePath) {
-        try {
+        //* remove profile picture in local storage
+        if (globalStateProfilePath) {
           //* remove profile picture in local storage
           await FileSystem.deleteAsync(globalStateProfilePath);
-        } catch (error) {
-          ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
         }
-      }
 
-      //* remove profile picture global variable
-      removeProfilePicturePath();
+        //* remove profile picture global variable
+        removeProfilePicturePath();
+      }
+    } catch (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,11 +94,6 @@ const ProfileScreen = () => {
     setTimeout(() => {
       navigation.navigate("AccountVerification");
     }, 10);
-  };
-
-  const handleConfirmLogout = () => {
-    handleLogout();
-    hideLogoutDialog();
   };
 
   const CustomAppBar = () => (
@@ -167,8 +166,9 @@ const ProfileScreen = () => {
         <ConfirmationDialog
           title="Are you sure you want to Sign Out?"
           isVisible={isLogoutDialogVisible}
-          onPressConfirmation={handleConfirmLogout}
+          onPressConfirmation={handleLogout}
           onPressCancel={hideLogoutDialog}
+          loading={loading}
         />
 
         {/* Confirmation dialog for starting the verification process */}

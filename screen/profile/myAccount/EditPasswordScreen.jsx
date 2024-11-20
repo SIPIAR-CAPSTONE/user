@@ -158,6 +158,7 @@ const EditPasswordScreen = () => {
         isVisible={isConfirmationDialogVisible}
         onPressConfirmation={handleSubmit}
         onPressCancel={hideConfirmationDialog}
+        loading={loading}
       />
       <SuccessConfirmation
         open={showSuccessAlert}
