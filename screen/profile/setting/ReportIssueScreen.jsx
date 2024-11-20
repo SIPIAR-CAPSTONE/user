@@ -25,9 +25,6 @@ const fields = [
     rules: [{ type: 'required', message: 'Issue Description is required.' }],
   },
   {
-    name: 'reportImage',
-  },
-  {
     name: "reportImage",
     rules: [],
   },
@@ -62,14 +59,12 @@ const ReportIssueScreen = () => {
 
   const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat)
   
-  =======
   const handleConfirm = () => {
     handleSubmit();
     hideConfirmationDialog();
   };
 
   const handleSubmit = async () => {
-    // if (isFormValid(fields, { ...reportForm, reportImage }, setErrors)) {
       setLoading(true)
 
       // Insert the bug report data
@@ -115,11 +110,7 @@ const ReportIssueScreen = () => {
       }
 
       setLoading(false)
-    // }
-  }
-
-
- 
+  } 
 
   customAppBar = () => (
     <AppBar>
