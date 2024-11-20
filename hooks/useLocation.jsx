@@ -42,8 +42,8 @@ const useLocation = () => {
         // Listen to user location to track user location changes
         const foregroundSubscrition = await Location.watchPositionAsync(
           {
-            accuracy: Location.Accuracy.High,
-            distanceInterval: 10,
+            accuracy: Location.Accuracy.Highest,
+            distanceInterval: 1,
           },
           (location) => {
             let coordinate = {

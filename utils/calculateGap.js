@@ -113,7 +113,7 @@ const toRadians = (degrees) => degrees * (Math.PI / 180);
 const formatDistance = (distanceKm) => {
   return distanceKm >= 1
     ? `${distanceKm.toFixed(1)} km`
-    : `${(distanceKm * 1000).toFixed(0)} m`;
+    : `${(distanceKm * 100).toFixed(0)} m`; //100 - margin of error is low but slow update
 };
 
 export { getTimeGap, getDistanceGap };
