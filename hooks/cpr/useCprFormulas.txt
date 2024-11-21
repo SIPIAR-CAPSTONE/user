@@ -1,0 +1,26 @@
+  
+//FORMULA 1:
+  const calculateDepth = useCallback((lowestZ, currentZ) => {
+    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const gForceToInches = 0.3937;
+    const sensitivity = 4; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+    const depthInInches = Math.abs(
+      zAccelerationPeakGap * gForceToInches * sensitivity
+    );
+    return Number(depthInInches.toFixed(1));
+  }, []);
+
+
+
+  const calculateDepth = useCallback((lowestZ, currentZ) => {
+    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const inchesPerMeter = 39.37;
+    const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+    const depthInInches = Math.abs(
+      zAccelerationPeakGap * inchesPerMeter * sensitivity
+    );
+    console.log(depthInInches);
+    return Number(depthInInches.toFixed(1));
+  }, []);
+
+

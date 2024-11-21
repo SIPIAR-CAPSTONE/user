@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple } from "react-native-paper";
@@ -38,7 +38,8 @@ const EditProfileScreen = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const userMetaData = useBoundStore((state) => state.userMetaData);
   const navigation = useNavigation();
-  const { setState } = useUserMetadata();
+  const { setState: setUserMetadata } = useUserMetadata();
+  const [loading, setLoading] = useState(false);
 
   //* settter for global state profile path variable
   const setglobalStateProfilePath = useBoundStore(
@@ -82,48 +83,63 @@ const EditProfileScreen = () => {
   };
 
   const handleSubmit = async () => {
-    //! update profile picture, if exist, replace
-    const { error } = await supabase.storage
-      .from("bystander")
-      .upload(
-        `profile_picture/${userMetaData["email"]}`,
-        decode(base64ImageFormat),
-        {
-          contentType: "image/*",
-          upsert: true,
+    try {
+      setLoading(true);
+
+      //* update profile picture, if exist, replace
+      if (base64ImageFormat) {
+        const { error } = await supabase.storage
+          .from("bystander")
+          .upload(
+            `profile_picture/${userMetaData["email"]}`,
+            decode(base64ImageFormat),
+            {
+              contentType: "image/*",
+              upsert: true,
+            }
+          );
+
+        if (error) {
+          ToastAndroid.show(
+            `Error Update Profile: ${error.message}`,
+            ToastAndroid.SHORT
+          );
+        } else if (!error) {
+          setglobalStateProfilePath(profilePicture);
         }
-      );
-
-    if (error) {
-      //todo: more appropriate error handling for all
-      console.error("error update profile", error.message);
-    } else if (!error) {
-      setglobalStateProfilePath(profilePicture);
-    }
-
-    if (isFormValid(fields, userInfo, setErrors)) {
-      const { data, error } = await supabase.auth.updateUser({
-        data: {
-          first_name: userInfo["firstName"],
-          middle_name: userInfo["middleName"],
-          last_name: userInfo["lastName"],
-          suffix: userInfo["suffix"],
-          birth_date: userInfo["birthday"],
-          phone_number: userInfo["phone"],
-          barangay: userInfo["barangay"],
-          street: userInfo["street"],
-          house_number: userInfo["houseNumber"],
-        },
-      });
-      if (error) {
-        //todo: more appropriate error handling for all
-        console.error("error update", error.message);
-      } else if (!error) {
-        //* update session global state variables
-        setState(data);
-        //* navigate to my account page if success
-        navigation.navigate("MyAccount");
       }
+
+      if (isFormValid(fields, userInfo, setErrors)) {
+        const { data, error } = await supabase.auth.updateUser({
+          data: {
+            first_name: userInfo["firstName"],
+            middle_name: userInfo["middleName"],
+            last_name: userInfo["lastName"],
+            suffix: userInfo["suffix"],
+            birth_date: userInfo["birthday"],
+            phone_number: userInfo["phone"],
+            barangay: userInfo["barangay"],
+            street: userInfo["street"],
+            house_number: userInfo["houseNumber"],
+          },
+        });
+
+        if (error) {
+          ToastAndroid.show(
+            `Error Update: ${error.message}`,
+            ToastAndroid.SHORT
+          );
+        } else if (!error) {
+          //* update session global state variables
+          setUserMetadata(data);
+
+          navigation.navigate("MyAccount");
+        }
+      }
+    } catch (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -153,8 +169,7 @@ const EditProfileScreen = () => {
       scrollable
     >
       <EditUserProfileCard
-        name="John"
-        imageSource={""}
+        name={userInfo.firstName || "?"}
         image={profilePicture}
         setImage={setProfilePicture}
       />
@@ -237,6 +252,7 @@ const EditProfileScreen = () => {
           isVisible={isConfirmationDialogVisible}
           onPressConfirmation={handleSubmit}
           onPressCancel={hideConfirmationDialog}
+          loading={loading}
         />
       </View>
     </Layout>

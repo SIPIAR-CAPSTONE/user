@@ -1,14 +1,14 @@
-import { View } from 'react-native';
-import { Button as NPButton, Text } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import ListItem from '../ui/ListItem';
-import DistanceIcon from '../common/DistanceIcon';
-import NextActionIcon from '../common/NextActionIcon';
-import { getDistanceGap, getTimeGap } from '../../utils/calculateGap';
-import useLocation from '../../hooks/useLocation';
-import { createStyleSheet, useStyles } from '../../hooks/useStyles';
-import { supabase } from '../../utils/supabase/config';
-import { useEffect, useState, useCallback } from 'react';
+import { ToastAndroid, View } from "react-native";
+import { Button as NPButton, Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import ListItem from "../ui/ListItem";
+import DistanceIcon from "../common/DistanceIcon";
+import NextActionIcon from "../common/NextActionIcon";
+import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
+import useLocation from "../../hooks/useLocation";
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { supabase } from "../../utils/supabase/config";
+import { useEffect, useState } from "react";
 
 const EmergencyAlerts = () => {
   const navigation = useNavigation();
@@ -19,23 +19,29 @@ const EmergencyAlerts = () => {
 
   useEffect(() => {
     const channels = supabase
-      .channel('broadcast-all-channel')
+      .channel("broadcast-all-channel")
       .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'broadcast' },
+        "postgres_changes",
+        { event: "*", schema: "public", table: "broadcast" },
         async (payload) => {
-          console.log('Change received!', payload.new);
+          console.log("Change received!", payload.new);
 
           const { data: userData, error } = await supabase
-            .from('bystander')
-            .select('first_name, last_name')
-            .eq('id', payload.new.user_id)
+            .from("bystander")
+            .select("first_name, last_name")
+            .eq("id", payload.new.user_id)
             .single();
 
           if (!error) {
-            setRealTime(prevState => [...prevState, { ...payload.new, userData }]);
+            setRealTime((prevState) => [
+              ...prevState,
+              { ...payload.new, userData },
+            ]);
           } else {
-            console.error('Error fetching user name:', error);
+            ToastAndroid.show(
+              `Error fetching user name: ${error.message}`,
+              ToastAndroid.SHORT
+            );
           }
         }
       )
@@ -49,9 +55,13 @@ const EmergencyAlerts = () => {
   const EmergencyAlertsList = realTime.map((item) => {
     const id = item.broadcast_id;
     const userFullName = `${item.userData.first_name} ${item.userData.last_name}`;
-    const distanceGap = getDistanceGap(userLocation, { latitude: item.latitude, longitude: item.longitude });
+    const coordinate = {
+      latitude: item.latitude,
+      longitude: item.longitude,
+    };
+    const distanceGap = getDistanceGap(userLocation, coordinate);
     const timeGap = getTimeGap(item.created_at);
-
+    console.log(item);
     return (
       <ListItem
         key={id}
@@ -60,8 +70,8 @@ const EmergencyAlerts = () => {
         subTitle={timeGap}
         desc={item.address}
         onPress={() =>
-          navigation.navigate('Mapview', {
-            initialCoordinate: item.coordinate,
+          navigation.navigate("Mapview", {
+            initialCoordinate: coordinate,
             selectedAlertId: item.id,
           })
         }
@@ -83,7 +93,7 @@ const EmergencyAlerts = () => {
           mode="text"
           compact
           style={styles.seeAllButton}
-          onPress={() => navigation.navigate('BroadcastScreen')}
+          onPress={() => navigation.navigate("BroadcastScreen")}
         >
           See all
         </NPButton>
@@ -101,9 +111,9 @@ const stylesheet = createStyleSheet((theme) => ({
     paddingHorizontal: theme.spacing.base,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   listLabel: {
     marginVertical: theme.spacing.base,
