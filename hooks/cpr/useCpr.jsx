@@ -73,21 +73,34 @@ const useCpr = () => {
   const observeAcceleration = useCallback((currentZ, compressionTimer) => {
     const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
 
+    //Marks the beginning of a chest compression.
     if (isCompressionStarted(prevZ.current, currentZ)) {
-      isCompressing.current = true;
+      isCompressing.current = true; // Compression starts when Z drops below a threshold
       lowestZ.current = currentLowestZ;
     }
+    //Marks the end of the compression and getting the scores for depth and timing
     if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
       compressionDepth.current = calculateDepth(currentLowestZ, currentZ);
       timingScore.current = getTimingScore(compressionTimer);
 
-      //reset compression state
+      // Reset compression-related variables
       isCompressing.current = false;
       lowestZ.current = 0;
       prevZ.current = 0;
     }
 
     prevZ.current = currentZ;
+  }, []);
+
+  const calculateDepth = useCallback((lowestZ, currentZ) => {
+    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const inchesPerMeter = 39.37;
+    const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+    const depthInInches = Math.abs(
+      zAccelerationPeakGap * inchesPerMeter * sensitivity
+    );
+    console.log(depthInInches);
+    return Number(depthInInches.toFixed(1));
   }, []);
 
   const getCompressionScores = useCallback((currentTimeInSeconds) => {
@@ -123,17 +136,6 @@ const useCpr = () => {
     setTimeout(() => {
       setCurrentCompressionScore(EMPTY_COMPRESSION_VALUE);
     }, 150);
-  }, []);
-
-  // Function to calculate compression depth in inches
-  const calculateDepth = useCallback((lowestZ, currentZ) => {
-    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
-    const gForceToInches = 0.3937;
-    const sensitivity = 4; //* for tuning accuracy, the greater the number the more sensitive it is
-    const depthInInches = Math.abs(
-      zAccelerationPeakGap * gForceToInches * sensitivity
-    );
-    return Number(depthInInches.toFixed(1));
   }, []);
 
   const start = () => {
