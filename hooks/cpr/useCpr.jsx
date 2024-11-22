@@ -93,13 +93,12 @@ const useCpr = () => {
   }, []);
 
   const calculateDepth = useCallback((lowestZ, currentZ) => {
-    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const zDisplacement = Math.abs(currentZ - lowestZ);
     const inchesPerMeter = 39.37;
     const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
     const depthInInches = Math.abs(
-      zAccelerationPeakGap * inchesPerMeter * sensitivity
+      zDisplacement * inchesPerMeter * sensitivity
     );
-    console.log(depthInInches);
     return Number(depthInInches.toFixed(1));
   }, []);
 
