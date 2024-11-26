@@ -1,11 +1,19 @@
-const ACCELERATION_THRESHOLD = 0.3;
+const ACCELERATION_THRESHOLD = 0.9;
 
-export const isCompressionStarted = (prevZ, currentZ) => {
-  return prevZ - currentZ > ACCELERATION_THRESHOLD;
+export const calculateDepth = (currentZ) => {
+  const inchesPerMeter = 39.37;
+  const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+  const depthInInches = Math.abs(currentZ * inchesPerMeter * sensitivity);
+  console.log(depthInInches);
+  return Number(depthInInches.toFixed(1));
+}
+
+export const isCompressionStarted = (currentZ) => {
+  return currentZ < ACCELERATION_THRESHOLD;
 };
 
-export const isCompressionEnded = (prevZ, currentZ, isCompressing) => {
-  return currentZ - prevZ > ACCELERATION_THRESHOLD && isCompressing;
+export const isCompressionEnded = (currentZ, isCompressing) => {
+  return currentZ > ACCELERATION_THRESHOLD && isCompressing;
 };
 
 export const getcompressionTimer = (previousTime, currentTime) => {
@@ -13,11 +21,6 @@ export const getcompressionTimer = (previousTime, currentTime) => {
   const compressionTimerInSeconds = compressionTimer / 1000;
 
   return compressionTimerInSeconds;
-};
-
-export const getLowestZ = (lowestZ, currentZ) => {
-  const lowestZValue = Math.min(lowestZ, currentZ);
-  return lowestZValue;
 };
 
 export const getTimingScore = (compressionTimer) => {

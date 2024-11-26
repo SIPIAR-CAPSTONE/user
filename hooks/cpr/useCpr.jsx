@@ -4,10 +4,10 @@ import { Accelerometer } from "expo-sensors";
 import {
   isCompressionStarted,
   isCompressionEnded,
-  getLowestZ,
   getTimingScore,
   getDepthScore,
   getOverallScore,
+  calculateDepth,
 } from "./useCpr.helper";
 import useTimer from "./useTimer";
 import useAudioCue from "./useAudioCue";
@@ -41,8 +41,6 @@ const useCpr = () => {
 
   //prevCompressionScores stores the previous compression scores to be use for audio cue
   const prevCompressionScores = useRef(EMPTY_COMPRESSION_VALUE);
-  const prevZ = useRef(0);
-  const lowestZ = useRef(0);
   const isCompressing = useRef(false);
 
   // this will be executed when start and stop cpr is called
@@ -71,35 +69,20 @@ const useCpr = () => {
 
   // This will observe the acceleration of z data to check if there is movement or compression is performed
   const observeAcceleration = useCallback((currentZ, compressionTimer) => {
-    const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
+    if (isCompressionStarted(currentZ)) {
+      console.log("z: ", currentZ);
 
-    //Marks the beginning of a chest compression.
-    if (isCompressionStarted(prevZ.current, currentZ)) {
-      isCompressing.current = true; // Compression starts when Z drops below a threshold
-      lowestZ.current = currentLowestZ;
+      if (!isCompressing.current) {
+        isCompressing.current = true;
+      }
     }
-    //Marks the end of the compression and getting the scores for depth and timing
-    if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
-      compressionDepth.current = calculateDepth(currentLowestZ, currentZ);
+    if (isCompressionEnded(currentZ, isCompressing.current)) {
+      compressionDepth.current = calculateDepth(currentZ);
       timingScore.current = getTimingScore(compressionTimer);
 
       // Reset compression-related variables
       isCompressing.current = false;
-      lowestZ.current = 0;
-      prevZ.current = 0;
     }
-
-    prevZ.current = currentZ;
-  }, []);
-
-  const calculateDepth = useCallback((lowestZ, currentZ) => {
-    const zDisplacement = Math.abs(currentZ - lowestZ);
-    const inchesPerMeter = 39.37;
-    const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
-    const depthInInches = Math.abs(
-      zDisplacement * inchesPerMeter * sensitivity
-    );
-    return Number(depthInInches.toFixed(1));
   }, []);
 
   const getCompressionScores = useCallback((currentTimeInSeconds) => {
@@ -152,8 +135,6 @@ const useCpr = () => {
   };
 
   const clearCprState = () => {
-    lowestZ.current = 0;
-    prevZ.current = 0;
     timingScore.current = null;
     compressionDepth.current = null;
   };
