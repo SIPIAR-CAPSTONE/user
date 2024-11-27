@@ -1,3 +1,42 @@
+  
+//FORMULA 1:
+  const calculateDepth = useCallback((lowestZ, currentZ) => {
+    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const gForceToInches = 0.3937;
+    const sensitivity = 4; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+    const depthInInches = Math.abs(
+      zAccelerationPeakGap * gForceToInches * sensitivity
+    );
+    return Number(depthInInches.toFixed(1));
+  }, []);
+
+
+
+  const calculateDepth = useCallback((lowestZ, currentZ) => {
+    const zAccelerationPeakGap = Math.abs(currentZ - lowestZ);
+    const inchesPerMeter = 39.37;
+    const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+    const depthInInches = Math.abs(
+      zAccelerationPeakGap * inchesPerMeter * sensitivity
+    );
+    console.log(depthInInches);
+    return Number(depthInInches.toFixed(1));
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useEffect, useRef, useCallback, useState } from "react";
 import { Accelerometer } from "expo-sensors";
 
@@ -70,17 +109,19 @@ const useCpr = () => {
   }, [isSubscribed, compressionTimer]);
 
   // This will observe the acceleration of z data to check if there is movement or compression is performed
-  const observeAcceleration = useCallback((currentZ, compressionTimer) => {
-    const currentLowestZ = getLowestZ(lowestZ.current, currentZ);
+  const observeAcceleration = useCallback((rawZ, compressionTimer) => {
+    // Subtract gravity (9.8 m/s²) to get motion-related acceleration
+    const correctedZ = rawZ - 9.8;
+    const currentLowestZ = getLowestZ(lowestZ.current, correctedZ);
 
     //Marks the beginning of a chest compression.
-    if (isCompressionStarted(prevZ.current, currentZ)) {
+    if (isCompressionStarted(prevZ.current, correctedZ)) {
       isCompressing.current = true; // Compression starts when Z drops below a threshold
       lowestZ.current = currentLowestZ;
     }
     //Marks the end of the compression and getting the scores for depth and timing
-    if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
-      compressionDepth.current = calculateDepth(currentLowestZ, currentZ);
+    if (isCompressionEnded(prevZ.current, correctedZ, isCompressing.current)) {
+      compressionDepth.current = calculateDepth(currentLowestZ, correctedZ);
       timingScore.current = getTimingScore(compressionTimer);
 
       // Reset compression-related variables
@@ -89,7 +130,7 @@ const useCpr = () => {
       prevZ.current = 0;
     }
 
-    prevZ.current = currentZ;
+    prevZ.current = correctedZ;
   }, []);
 
   const calculateDepth = useCallback((lowestZ, currentZ) => {

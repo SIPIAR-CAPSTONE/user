@@ -7,6 +7,8 @@ import moment from "moment";
  *
  */
 const getTimeGap = (datetimeCreated, isFormatted = true) => {
+  if (!datetimeCreated) return " ";
+
   const createdDate = moment(datetimeCreated).toDate();
   const currentDate = moment().toDate();
 

@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import { useNavigation } from "@react-navigation/native";
@@ -59,8 +59,10 @@ const LoginScreen = () => {
       };
       reader.readAsDataURL(data);
     } else if (error) {
-      //todo proper handling sooon
-      console.log("download image error:", error.message);
+      ToastAndroid.show(
+        `download image error: ${error.message}`,
+        ToastAndroid.SHORT
+      );
     }
   };
 

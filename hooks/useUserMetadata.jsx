@@ -1,8 +1,9 @@
-import useBoundStore from '../zustand/useBoundStore'
+import { ToastAndroid } from "react-native";
+import useBoundStore from "../zustand/useBoundStore";
 
 const useUserMetadata = () => {
-  const setUserMetaData = useBoundStore((state) => state.setUserMetaData)
-  const removeUserMetaData = useBoundStore((state) => state.removeUserMetaData)
+  const setUserMetaData = useBoundStore((state) => state.setUserMetaData);
+  const removeUserMetaData = useBoundStore((state) => state.removeUserMetaData);
 
   //! setter and remover for global state variables
   const setState = (session) => {
@@ -21,20 +22,18 @@ const useUserMetadata = () => {
         email: session['user']['user_metadata']['email'],
       })
     } catch (error) {
-      //todo: proper error handling soon
-      console.log('error hooks setter', error)
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
     }
-  }
+  };
 
   const removeState = () => {
     try {
-      removeUserMetaData()
+      removeUserMetaData();
     } catch (error) {
-      //todo: proper error handling soon
-      console.log('error hooks remover', error)
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
     }
-  }
-  return { setState, removeState }
-}
+  };
+  return { setState, removeState };
+};
 
-export default useUserMetadata
+export default useUserMetadata;
