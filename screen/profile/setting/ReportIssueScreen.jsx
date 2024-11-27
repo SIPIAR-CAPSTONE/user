@@ -14,6 +14,7 @@ import { supabase } from '../../../utils/supabase/config'
 import useBoundStore from '../../../zustand/useBoundStore'
 import { decode } from 'base64-arraybuffer'
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
+import SuccessConfirmation from "../../../components/common/SuccessConfirmation";
 
 const fields = [
   {
@@ -31,6 +32,8 @@ const fields = [
 ];
 
 const ReportIssueScreen = () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
   const navigation = useNavigation()
   const { styles } = useStyles(stylesheet)
   const [reportForm, setReportForm] = useState({
@@ -104,11 +107,11 @@ const ReportIssueScreen = () => {
           console.error('Image upload error:', imageUploadError.message)
         } else {
           console.log('Image uploaded successfully!')
+          setShowSuccessAlert(true)
         }
       } catch (error) {
         console.error('Error during image upload:', error)
       }
-
       setLoading(false)
   } 
 
@@ -169,6 +172,13 @@ const ReportIssueScreen = () => {
         isVisible={isConfirmationDialogVisible}
         onPressConfirmation={handleConfirm}
         onPressCancel={hideConfirmationDialog}
+      />
+      <SuccessConfirmation
+        open={showSuccessAlert}
+        setOpen={setShowSuccessAlert}
+        title="Bug Report Submitted"
+        desc="Your feedback is highly appreciated. Thank you."
+        onDelayEnd={() => navigation.navigate("Settings")}
       />
     </Layout>
   )
