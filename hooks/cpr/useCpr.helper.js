@@ -1,19 +1,24 @@
-const ACCELERATION_THRESHOLD = 0.9;
+const ACCELERATION_THRESHOLD = 0.4; // if z is greater than the thershold, then compression is started and if its lower, then compression is ended
+const ACCELERATION_BASELINE = 1.0;
+const INCHES_PER_METER = 39.37;
+const SENSITIVITY = 0.025; //* (0.025) for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+
+//* FOR CPR CALIBRATION PURPOSE: adjust only the ACCELERATION_THERSHOLD and SENSITIVITY value *//
 
 export const calculateDepth = (currentZ) => {
-  const inchesPerMeter = 39.37;
-  const sensitivity = 0.025; //* for tuning accuracy, the greater the number the more sensitive the calculation of gap is
-  const depthInInches = Math.abs(currentZ * inchesPerMeter * sensitivity);
-  console.log(depthInInches);
+  const zAccelerationPeakGap = ACCELERATION_BASELINE - currentZ;
+  const depthInInches = Math.abs(
+    zAccelerationPeakGap * INCHES_PER_METER * SENSITIVITY
+  );
   return Number(depthInInches.toFixed(1));
-}
-
-export const isCompressionStarted = (currentZ) => {
-  return currentZ < ACCELERATION_THRESHOLD;
 };
 
-export const isCompressionEnded = (currentZ, isCompressing) => {
-  return currentZ > ACCELERATION_THRESHOLD && isCompressing;
+export const isCompressionStarted = (prevZ, currentZ) => {
+  return prevZ - currentZ > ACCELERATION_THRESHOLD;
+};
+
+export const isCompressionEnded = (prevZ, currentZ, isCompressing) => {
+  return currentZ - prevZ > ACCELERATION_THRESHOLD && isCompressing;
 };
 
 export const getcompressionTimer = (previousTime, currentTime) => {

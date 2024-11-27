@@ -42,6 +42,8 @@ const useCpr = () => {
   //prevCompressionScores stores the previous compression scores to be use for audio cue
   const prevCompressionScores = useRef(EMPTY_COMPRESSION_VALUE);
   const isCompressing = useRef(false);
+  const prevZ = useRef(0);
+  const peakZ = useRef(null);
 
   // this will be executed when start and stop cpr is called
   useEffect(() => {
@@ -69,20 +71,25 @@ const useCpr = () => {
 
   // This will observe the acceleration of z data to check if there is movement or compression is performed
   const observeAcceleration = useCallback((currentZ, compressionTimer) => {
-    if (isCompressionStarted(currentZ)) {
-      console.log("z: ", currentZ);
+    if (isCompressionStarted(prevZ.current, currentZ)) {
+      if (peakZ.current === null || currentZ < peakZ.current) {
+        peakZ.current = currentZ;
+      }
 
       if (!isCompressing.current) {
         isCompressing.current = true;
       }
     }
-    if (isCompressionEnded(currentZ, isCompressing.current)) {
-      compressionDepth.current = calculateDepth(currentZ);
+    if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
+      compressionDepth.current = calculateDepth(peakZ.current);
       timingScore.current = getTimingScore(compressionTimer);
 
       // Reset compression-related variables
       isCompressing.current = false;
+      peakZ.current = null;
     }
+
+    prevZ.current = currentZ;
   }, []);
 
   const getCompressionScores = useCallback((currentTimeInSeconds) => {
