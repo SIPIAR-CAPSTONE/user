@@ -1,82 +1,84 @@
-import { View, ToastAndroid } from "react-native";
-import { Text } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import * as FileSystem from "expo-file-system";
+import { View, ToastAndroid } from 'react-native'
+import { Text } from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import * as FileSystem from 'expo-file-system'
 
-import ListItem from "../../components/ui/ListItem";
-import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
-import CircularIcon from "../../components/ui/CircularIcon";
-import UserProfileCard from "../../components/profile/UserProfileCard";
-import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
-import NextActionIcon from "../../components/common/NextActionIcon";
-import { supabase } from "../../utils/supabase/config";
-import { LargeSecureStore } from "../../utils/SecureLocalStorage";
-import useBoundStore from "../../zustand/useBoundStore";
-import useUserMetadata from "../../hooks/useUserMetadata";
-import useImageReader from "../../hooks/useImageReader";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
-import Layout from "../../components/common/Layout";
-import AppBar from "../../components/ui/AppBar";
-import AppBarTitle from "../../components/ui/AppBarTitle";
+import ListItem from '../../components/ui/ListItem'
+import VerifiedIndicator from '../../components/profile/VerifiedIndicator'
+import CircularIcon from '../../components/ui/CircularIcon'
+import UserProfileCard from '../../components/profile/UserProfileCard'
+import ConfirmationDialog from '../../components/ui/ConfirmationDialog'
+import NextActionIcon from '../../components/common/NextActionIcon'
+import { supabase } from '../../utils/supabase/config'
+import { LargeSecureStore } from '../../utils/SecureLocalStorage'
+import useBoundStore from '../../zustand/useBoundStore'
+import useUserMetadata from '../../hooks/useUserMetadata'
+import useImageReader from '../../hooks/useImageReader'
+import { useStyles, createStyleSheet } from '../../hooks/useStyles'
+import Layout from '../../components/common/Layout'
+import AppBar from '../../components/ui/AppBar'
+import AppBarTitle from '../../components/ui/AppBarTitle'
 
 const ProfileScreen = () => {
-  const { styles } = useStyles(stylesheet);
-  const navigation = useNavigation();
+  const { styles } = useStyles(stylesheet)
+  const navigation = useNavigation()
   // Create references for the confirmation dialogs
-  const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false);
-  const [isNavConfirmationDialogVisible, setIsNavConfirmationDialogVisible] =
-    useState(false);
+  const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false)
+  const [
+    isNavConfirmationDialogVisible,
+    setIsNavConfirmationDialogVisible,
+  ] = useState(false)
 
-  const hideLogoutDialog = () => setIsLogoutDialogVisible(false);
-  const showLogoutDialog = () => setIsLogoutDialogVisible(true);
+  const hideLogoutDialog = () => setIsLogoutDialogVisible(false)
+  const showLogoutDialog = () => setIsLogoutDialogVisible(true)
 
   const hideNavConfirmationDialog = () =>
-    setIsNavConfirmationDialogVisible(false);
+    setIsNavConfirmationDialogVisible(false)
   const showNavConfirmationDialog = () =>
-    setIsNavConfirmationDialogVisible(true);
+    setIsNavConfirmationDialogVisible(true)
 
-  const userMetaData = useBoundStore((state) => state.userMetaData);
-  const removeSession = useBoundStore((state) => state.removeSession);
-  const largeSecureStore = new LargeSecureStore();
-  const { removeState } = useUserMetadata();
+  const userMetaData = useBoundStore((state) => state.userMetaData)
+  const removeSession = useBoundStore((state) => state.removeSession)
+  const largeSecureStore = new LargeSecureStore()
+  const { removeState } = useUserMetadata()
   const removeProfilePicturePath = useBoundStore(
-    (state) => state.removeProfilePicturePath
-  );
+    (state) => state.removeProfilePicturePath,
+  )
   const globalStateProfilePath = useBoundStore(
-    (state) => state.profilePicturePath
-  );
+    (state) => state.profilePicturePath,
+  )
 
   //* retrieve profile picture upon screen load
-  const [profilePictureUri, setProfilePictureUri] = useState(null);
-  useImageReader(setProfilePictureUri);
+  const [profilePictureUri, setProfilePictureUri] = useState(null)
+  useImageReader(setProfilePictureUri)
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut()
 
     if (!error) {
       //* remove encrypted session from secure local storage
-      await largeSecureStore.removeItem("session");
+      await largeSecureStore.removeItem('session')
       //* remove encrypted session as a global state
-      removeSession();
+      removeSession()
 
       //* remove global state variable
-      removeState();
+      removeState()
 
       //* remove profile picture in local storage
       if (globalStateProfilePath) {
         try {
           //* remove profile picture in local storage
-          await FileSystem.deleteAsync(globalStateProfilePath);
+          await FileSystem.deleteAsync(globalStateProfilePath)
         } catch (error) {
-          ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+          ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT)
         }
       }
 
       //* remove profile picture global variable
-      removeProfilePicturePath();
+      removeProfilePicturePath()
     }
-  };
+  }
 
   /**
    * Navigate to the verification screen
@@ -86,32 +88,64 @@ const ProfileScreen = () => {
    * navigated to the AccountVerification screen resulting in a laggy transition
    */
   const handleNavigateToVerification = () => {
-    hideNavConfirmationDialog();
+    hideNavConfirmationDialog()
     setTimeout(() => {
-      navigation.navigate("AccountVerification");
-    }, 10);
-  };
+      navigation.navigate('AccountVerification')
+    }, 10)
+  }
 
   const handleConfirmLogout = () => {
-    handleLogout();
-    hideLogoutDialog();
-  };
+    handleLogout()
+    hideLogoutDialog()
+  }
 
   const CustomAppBar = () => (
     <AppBar centerContent>
       <AppBarTitle>Profile</AppBarTitle>
     </AppBar>
-  );
+  )
+  const [status, setStatus] = useState()
+
+  const veriStatus = async () => {
+    const { data, error } = await supabase
+      .from('bystander')
+      .select()
+      .eq('id', userMetaData['bystanderId'])
+
+    if (!error) {
+      console.log('stats: ', data[0]['isVerified'])
+      setStatus(data[0]['isVerified'])
+    }
+  }
+  useEffect(() => {
+    veriStatus()
+
+    const channels = supabase
+      .channel('bystander-veri-status-all-channel')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'bystander' },
+        (payload) => {
+          console.log('Change received!', payload['new']['isVerified'])
+          setStatus(payload['new']['isVerified'])
+        },
+      )
+      .subscribe()
+
+    return () => {
+      channels.unsubscribe()
+    }
+  }, [])
 
   return (
     <Layout scrollable AppbarComponent={CustomAppBar}>
       <UserProfileCard
-        name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
-        email={userMetaData["email"]}
+        name={`${userMetaData['firstName']} ${userMetaData['middleName']} ${userMetaData['lastName']} ${userMetaData['suffix']}`}
+        email={userMetaData['email']}
         imageSource={profilePictureUri}
         renderFooter={() => (
           <VerifiedIndicator
-            isVerified={false}
+            isVerified={status}
             onPress={showNavConfirmationDialog}
           />
         )}
@@ -125,7 +159,7 @@ const ProfileScreen = () => {
             <CircularIcon name="person" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("MyAccount")}
+          onPress={() => navigation.navigate('MyAccount')}
         />
         <ListItem
           size="medium"
@@ -134,7 +168,7 @@ const ProfileScreen = () => {
             <CircularIcon name="settings" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("Settings")}
+          onPress={() => navigation.navigate('Settings')}
         />
         <ListItem
           size="medium"
@@ -143,7 +177,7 @@ const ProfileScreen = () => {
             <CircularIcon name="document" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("TermsAndConditions")}
+          onPress={() => navigation.navigate('TermsAndConditions')}
         />
         <ListItem
           size="medium"
@@ -152,7 +186,7 @@ const ProfileScreen = () => {
             <CircularIcon name="shield-checkmark" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("PrivacyPolicy")}
+          onPress={() => navigation.navigate('PrivacyPolicy')}
         />
         <ListItem
           size="medium"
@@ -181,11 +215,11 @@ const ProfileScreen = () => {
         />
       </View>
     </Layout>
-  );
-};
+  )
+}
 
 const EnteringVerificationConfirmationContent = () => {
-  const { styles } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet)
 
   //all instructions in the bottomSheet
   const renderInstructions = InstructionData.map((instruction) => (
@@ -197,16 +231,16 @@ const EnteringVerificationConfirmationContent = () => {
         {instruction.desc}
       </Text>
     </View>
-  ));
+  ))
 
   return (
     <View>
       <View style={styles.instructionsContainer}>{renderInstructions}</View>
     </View>
-  );
-};
+  )
+}
 
-export default ProfileScreen;
+export default ProfileScreen
 
 const stylesheet = createStyleSheet((theme) => ({
   listItems: {
@@ -218,15 +252,15 @@ const stylesheet = createStyleSheet((theme) => ({
     marginTop: 10,
   },
   instructionContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     columnGap: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   circularNumber: {
     height: 22,
     width: 22,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 2,
     backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
@@ -239,22 +273,22 @@ const stylesheet = createStyleSheet((theme) => ({
     flex: 1,
     fontSize: 13,
   },
-}));
+}))
 
 const InstructionData = [
   {
     id: 0,
     number: 1,
-    desc: "Provide your correct information",
+    desc: 'Provide your correct information',
   },
   {
     id: 1,
     number: 2,
-    desc: "Take a front picture with your ID",
+    desc: 'Take a front picture with your ID',
   },
   {
     id: 2,
     number: 3,
-    desc: "Take a back picture with your ID",
+    desc: 'Take a back picture with your ID',
   },
-];
+]
