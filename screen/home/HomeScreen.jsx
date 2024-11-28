@@ -1,30 +1,28 @@
-import Layout from '../../components/common/Layout'
-import EmergencyAlerts from '../../components/home/EmergencyAlerts'
-import ContactCards from '../../components/home/ContactCards'
-import CprPracticeScores from '../../components/home/CprPracticeScores'
-import AppBar from '../../components/ui/AppBar'
-import CircularIcon from '../../components/ui/CircularIcon'
-import LogoTitle from '../../components/navigation/LogoTitle'
-import useAskTermAndConditions from '../../hooks/useAskTermAndConditions'
-import useLocation from '../../hooks/useLocation'
-import { useEffect } from 'react'
+import Layout from "../../components/common/Layout";
+import EmergencyAlerts from "../../components/home/EmergencyAlerts";
+import ContactCards from "../../components/home/ContactCards";
+import CprPracticeScores from "../../components/home/CprPracticeScores";
+import AppBar from "../../components/ui/AppBar";
+import CircularIcon from "../../components/ui/CircularIcon";
+import LogoTitle from "../../components/navigation/LogoTitle";
+import useLocation from "../../hooks/useLocation";
 
-
-
-import Button from '../../components/ui/Button'
-import { supabase } from '../../utils/supabase/config'
-
-
+import Button from "../../components/ui/Button";
+import { supabase } from "../../utils/supabase/config";
+import useFirstTimePopup from "../../hooks/useFirstTimePopup";
 
 const HomeScreen = ({ navigation }) => {
-  const {} = useAskTermAndConditions()
+  useFirstTimePopup({
+    key: "TermAndConditions",
+    handleFalse: () => navigation.navigate("TermsAndConditions"),
+  });
 
   //! TESTING: GETTING CURRENT USER LOCATION IN HOME PAGE
-  const { userLocation } = useLocation()
+  const { userLocation } = useLocation();
 
   const onPressSend = async () => {
-    console.log('USER LOCS/ LATITUDE: ', userLocation.latitude)
-    console.log('USER LOCS/ LONGTITUDE: ', userLocation.longitude)
+    console.log("USER LOCS/ LATITUDE: ", userLocation.latitude);
+    console.log("USER LOCS/ LONGTITUDE: ", userLocation.longitude);
     /*
     - BSYTANDER NAME
     - latitude
@@ -32,14 +30,15 @@ const HomeScreen = ({ navigation }) => {
     - date
     - time
     */
-    const { error } = await supabase
-      .from('broadcast')
-      .insert({ latitude: userLocation.latitude, longitude: userLocation.longitude })
+    const { error } = await supabase.from("broadcast").insert({
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+    });
 
-    if(!error){
-      console.log('success insert');
+    if (!error) {
+      console.log("success insert");
     }
-  }
+  };
 
   //!----------------------------------------------------
 
@@ -48,10 +47,10 @@ const HomeScreen = ({ navigation }) => {
       <LogoTitle />
       <CircularIcon
         name="notifications"
-        onPress={() => navigation.navigate('Notification')}
+        onPress={() => navigation.navigate("Notification")}
       />
     </AppBar>
-  )
+  );
 
   return (
     <Layout
@@ -64,9 +63,9 @@ const HomeScreen = ({ navigation }) => {
       <EmergencyAlerts />
       <CprPracticeScores />
 
-      <Button label={'asd'} onPress={onPressSend} />
+      <Button label={"asd"} onPress={onPressSend} />
     </Layout>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
