@@ -18,10 +18,12 @@ import {
   getTotalTimeDuration,
   getScorePercentage,
 } from "./Learn.helper";
+import usePreventBack from "../../hooks/usePreventBack";
 
 const LearnCprScoreScreen = () => {
+  usePreventBack();
   const navigation = useNavigation();
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet);
   const compressionHistory = useBoundStore((state) => state.compressionHistory);
   const clearCompressionHistory = useBoundStore(
     (state) => state.clearCompressionHistory
@@ -43,6 +45,8 @@ const LearnCprScoreScreen = () => {
     "green"
   );
   const overallScore = `${perfectOverallScoreCount}/${totalCompression}`;
+  const badOverallScoreCount =
+    Number(totalCompression) - Number(perfectOverallScoreCount);
 
   const perfectTimingInPercentage = getScorePercentage(
     compressionHistory,
@@ -164,6 +168,22 @@ const LearnCprScoreScreen = () => {
             points={totalCompression}
             progress={100}
             progressColor={Color.green}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Perfect Compressions"
+            iconName="thumb-up-outline"
+            points={perfectOverallScoreCount}
+            progress={100}
+            progressColor={Color.green}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Bad Compressions"
+            iconName="thumb-down-outline"
+            points={badOverallScoreCount}
+            progress={100}
+            progressColor={Color.red}
           />
           <Divider />
           <ScorePointsListItem
