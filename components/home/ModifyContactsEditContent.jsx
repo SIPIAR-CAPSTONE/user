@@ -1,6 +1,6 @@
-import { Divider, List } from "react-native-paper";
+import { Divider, List, Text } from "react-native-paper";
 import { useState } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import useBoundStore from "../../zustand/useBoundStore";
 import { DEFAULT_CONTACTS } from "./defaultContactsData";
@@ -19,7 +19,6 @@ export default function ModifyContactsEditContent() {
     number: "",
   });
 
-
   handleContactNameChange = (value) => {
     setSelectedContact((prevContact) => ({ ...prevContact, name: value }));
   };
@@ -34,7 +33,7 @@ export default function ModifyContactsEditContent() {
   };
 
   handleSave = () => {
-      editEmergencyContact(selectedContact);
+    editEmergencyContact(selectedContact);
     setEditMode(false);
   };
 
@@ -44,9 +43,12 @@ export default function ModifyContactsEditContent() {
   };
 
   return (
-    <>
-      {editMode && (
+    <ScrollView style={styles.content}>
+      {editMode ? (
         <>
+          <Text variant="titleMedium" style={styles.title}>
+            Edit Contact
+          </Text>
           <ModifyContactForm
             contactName={selectedContact.name}
             onContactNameChange={handleContactNameChange}
@@ -56,36 +58,40 @@ export default function ModifyContactsEditContent() {
             showDeleteButton
             onDelete={handleDelete}
           />
-          <Divider />
+        </>
+      ) : (
+        <>
+          {DEFAULT_CONTACTS.map((item) => (
+            <List.Item
+              key={item.id}
+              title={item.number}
+              description={item.name}
+              left={(props) => <List.Icon {...props} icon="account-circle" />}
+            />
+          ))}
+          {contactList?.map((item) => (
+            <List.Item
+              key={item.id}
+              title={item.number}
+              description={item.name}
+              left={(props) => <List.Icon {...props} icon="account-circle" />}
+              right={(props) => (
+                <List.Icon {...props} icon="square-edit-outline" />
+              )}
+              onPress={() => handleSelectContactToEdit(item)}
+            />
+          ))}
         </>
       )}
-      <ScrollView style={styles.content}>
-        {DEFAULT_CONTACTS.map((item) => (
-          <List.Item
-            key={item.id}
-            title={item.number}
-            description={item.name}
-            left={(props) => <List.Icon {...props} icon="account-circle" />}
-          />
-        ))}
-        {contactList?.map((item) => (
-          <List.Item
-            key={item.id}
-            title={item.number}
-            description={item.name}
-            left={(props) => <List.Icon {...props} icon="account-circle" />}
-            right={(props) => (
-              <List.Icon {...props} icon="square-edit-outline" />
-            )}
-            onPress={() => handleSelectContactToEdit(item)}
-          />
-        ))}
-      </ScrollView>
-    </>
+    </ScrollView>
   );
 }
 
 const stylesheet = createStyleSheet((theme) => ({
+  title: {
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: theme.spacing.xs,
+  },
   content: {
     flex: 1,
     paddingTop: theme.spacing.base,
