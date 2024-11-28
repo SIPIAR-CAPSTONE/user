@@ -12,9 +12,16 @@ import Countdown from "../../components/cpr/Countdown";
 import useCpr from "../../hooks/cpr/useCpr";
 import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 import usePreventBack from "../../hooks/usePreventBack";
+import useFirstTimePopup from "../../hooks/useFirstTimePopup";
 
 function CprScreen() {
   usePreventBack();
+  const { markAsDone } = useFirstTimePopup({
+    key: "CprGuideInfo",
+    handleFalse: () => {
+      setIsInfoDialogVisible(true), markAsDone();
+    },
+  });
   const {
     timer,
     start: startCpr,
