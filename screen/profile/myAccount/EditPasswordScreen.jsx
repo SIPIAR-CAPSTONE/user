@@ -15,6 +15,7 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
 import SuccessConfirmation from "../../../components/common/SuccessConfirmation";
+import useConfirmBack from "../../../hooks/useConfirmBack";
 
 const fields = [
   {
@@ -39,6 +40,7 @@ const fields = [
 ];
 
 const EditPasswordScreen = () => {
+  const { visibleAlert, showAlert, hideAlert, confirmBack } = useConfirmBack();
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const [form, setForm] = useState({
@@ -101,7 +103,7 @@ const EditPasswordScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      <CircularIcon name="arrow-back" onPress={showAlert} />
     </AppBar>
   );
 
@@ -159,6 +161,12 @@ const EditPasswordScreen = () => {
         onPressConfirmation={handleSubmit}
         onPressCancel={hideConfirmationDialog}
         loading={loading}
+      />
+      <ConfirmationDialog
+        title="Are you sure you want to leave?"
+        isVisible={visibleAlert}
+        onPressConfirmation={confirmBack}
+        onPressCancel={hideAlert}
       />
       <SuccessConfirmation
         open={showSuccessAlert}

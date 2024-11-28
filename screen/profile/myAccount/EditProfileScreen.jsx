@@ -23,6 +23,7 @@ import CircularIcon from "../../../components/ui/CircularIcon";
 import Layout from "../../../components/common/Layout";
 import { isFormValid } from "../../../utils/formValidation";
 import AppBarTitle from "../../../components/ui/AppBarTitle";
+import useConfirmBack from "../../../hooks/useConfirmBack";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
 );
@@ -34,6 +35,7 @@ const fields = [
 ];
 
 const EditProfileScreen = () => {
+  const { visibleAlert, showAlert, hideAlert, confirmBack } = useConfirmBack();
   const { styles, theme } = useStyles(stylesheet);
   const [profilePicture, setProfilePicture] = useState(null);
   const userMetaData = useBoundStore((state) => state.userMetaData);
@@ -145,7 +147,7 @@ const EditProfileScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      <CircularIcon name="arrow-back" onPress={showAlert} />
       <AppBarTitle>Edit Profile</AppBarTitle>
       <TouchableRipple
         borderless
@@ -253,6 +255,12 @@ const EditProfileScreen = () => {
           onPressConfirmation={handleSubmit}
           onPressCancel={hideConfirmationDialog}
           loading={loading}
+        />
+        <ConfirmationDialog
+          title="Are you sure you want to leave?"
+          isVisible={visibleAlert}
+          onPressConfirmation={confirmBack}
+          onPressCancel={hideAlert}
         />
       </View>
     </Layout>
