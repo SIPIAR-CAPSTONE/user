@@ -11,8 +11,10 @@ import useCountdown from "../../hooks/useCountdown";
 import Countdown from "../../components/cpr/Countdown";
 import useCpr from "../../hooks/cpr/useCpr";
 import CprInfoDialog from "../../components/cpr/CprInfoDialog";
+import usePreventBack from "../../hooks/usePreventBack";
 
 function CprScreen() {
+  usePreventBack();
   const {
     timer,
     start: startCpr,
