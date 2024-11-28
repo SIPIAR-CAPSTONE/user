@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToastAndroid } from "react-native";
 
 const setItem = async (key, value) => {
   try {
@@ -9,7 +10,7 @@ const setItem = async (key, value) => {
       await AsyncStorage.setItem(key, value);
     }
   } catch (e) {
-    // saving error
+    ToastAndroid.show(`${e.message}`, ToastAndroid.SHORT);
   }
 };
 
@@ -25,7 +26,7 @@ const getItem = async (key) => {
       return value;
     }
   } catch (e) {
-    // error reading value
+    ToastAndroid.show(`${e.message}`, ToastAndroid.SHORT);
   }
 };
 
@@ -33,7 +34,7 @@ const deleteItem = async (key) => {
   try {
     await AsyncStorage.removeItem(key);
   } catch (e) {
-    // remove error
+    ToastAndroid.show(`${e.message}`, ToastAndroid.SHORT);
   }
 };
 
