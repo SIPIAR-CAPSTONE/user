@@ -26,6 +26,7 @@ export default function ModifyContactForm({
         maxLength={11}
         value={contactNumber}
         onChangeText={(text) => onContactNumberChange(text)}
+        style={styles.textInput}
       />
       <TextInput
         placeholder="Contact Name"
@@ -33,6 +34,7 @@ export default function ModifyContactForm({
         maxLength={32}
         value={contactName}
         onChangeText={(text) => onContactNameChange(text)}
+        style={styles.textInput}
       />
       {showDeleteButton ? (
         <View style={[styles.buttonWrapper, styles.rowDirection]}>
@@ -40,7 +42,7 @@ export default function ModifyContactForm({
             label="Delete"
             variant="outlined"
             onPress={onDelete}
-            style={styles.button}
+            style={[styles.button, styles.deleteButton]}
           />
           <Button label="Save" onPress={onSave} style={styles.button} />
         </View>
@@ -69,5 +71,17 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   button: {
     flex: 1,
+  },
+  deleteButton: {
+    backgroundColor: theme.colors.elevation.level3,
+  },
+  textInput: {
+    height: 50,
+    paddingHorizontal: 14,
+    borderRadius: theme.borderRadius.sm,
+    borderWidth: 1,
+    borderColor: theme.colors.text3,
+    color: theme.colors.text,
+    backgroundColor: theme.colors.elevation.level3,
   },
 }));
