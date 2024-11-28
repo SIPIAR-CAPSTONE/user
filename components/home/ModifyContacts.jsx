@@ -81,7 +81,7 @@ function TriggerButton({ onPress }) {
 
 const stylesheet = createStyleSheet((theme) => ({
   containerStyle: {
-    minHeight: 600,
+    minHeight: 460,
     maxHeight: "90%",
     margin: theme.spacing.base,
     paddingVertical: theme.spacing.base,
