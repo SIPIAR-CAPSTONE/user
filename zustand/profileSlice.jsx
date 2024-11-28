@@ -9,6 +9,7 @@ const DEFAULT_VERIFICATION_FORM = {
   street: "",
   houseNumber: "",
   selectedIdType: "",
+  email: ""
 };
 
 export const createProfileSlice = (set, get) => ({

@@ -1,9 +1,12 @@
-import { StyleSheet, View } from "react-native";
-import { Text, useTheme, TouchableRipple } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, View } from 'react-native'
+import { Text, useTheme, TouchableRipple } from 'react-native-paper'
+import { Ionicons } from '@expo/vector-icons'
+import useBoundStore from '../../zustand/useBoundStore'
+import { useEffect, useState } from 'react'
+import { supabase } from '../../utils/supabase/config'
 
-const VerifiedIndicator = ({ isVerified = "false", onPress }) => {
-  const theme = useTheme();
+const VerifiedIndicator = ({ isVerified, onPress }) => {
+  const theme = useTheme()
 
   if (isVerified) {
     return (
@@ -17,7 +20,7 @@ const VerifiedIndicator = ({ isVerified = "false", onPress }) => {
           Fully Verified
         </Text>
       </View>
-    );
+    )
   }
 
   return (
@@ -26,15 +29,15 @@ const VerifiedIndicator = ({ isVerified = "false", onPress }) => {
         <Text style={{ color: theme.colors.primary }}>Verify Now</Text>
       </View>
     </TouchableRipple>
-  );
-};
+  )
+}
 
-export default VerifiedIndicator;
+export default VerifiedIndicator
 
 const styles = StyleSheet.create({
   verifyIndicatorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     columnGap: 6,
     marginVertical: 10,
   },
@@ -48,4 +51,4 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     paddingHorizontal: 24,
   },
-});
+})

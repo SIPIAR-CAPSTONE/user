@@ -63,12 +63,13 @@ const StepFourContent = () => {
             middle_name: verificationForm["middleName"],
             last_name: verificationForm["lastName"],
             suffix: verificationForm["suffix"],
-            birthday: verificationForm["birthday"],
-            phone: verificationForm["phone"],
+            birth_date: verificationForm["birthday"],
+            phone_number: verificationForm["phone"],
             barangay: verificationForm["barangay"],
             street: verificationForm["street"],
             house_number: verificationForm["houseNumber"],
             identification_type: verificationForm["selectedIdType"],
+            email: verificationForm["email"]
           });
 
         // Check for insert error
