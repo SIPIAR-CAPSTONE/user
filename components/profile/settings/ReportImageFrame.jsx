@@ -20,7 +20,7 @@ const ReportImageFrame = ({ label, image, setImage, isLoading, error }) => {
         <View
           style={[
             styles.imageFrame,
-            { borderColor: error ? theme.colors.primary : "#e1e2e3" },
+            { borderColor: error ? theme.colors.primary :  theme.colors.text3 },
           ]}
         >
           {image ? (

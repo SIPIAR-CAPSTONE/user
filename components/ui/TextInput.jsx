@@ -98,7 +98,7 @@ const stylesheet = createStyleSheet((theme) => ({
       variant: {
         outlined: {
           borderWidth: 1,
-          borderColor: "#e1e2e3",
+          borderColor: theme.colors.text3,
           color: theme.colors.text,
           backgroundColor: theme.colors.background,
         },
