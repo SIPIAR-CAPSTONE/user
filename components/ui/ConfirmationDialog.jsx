@@ -3,7 +3,6 @@ import React from "react";
 
 import Button from "./Button";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import { View } from "react-native";
 
 const ConfirmationDialog = ({
   isVisible,
