@@ -77,35 +77,35 @@ const stylesheet = createStyleSheet((theme) => ({
 const CPR_INFO_DATA = [
   {
     title: "TIMER",
-    descriptions: ["This shows the time passed on using  the CPR guide."],
+    descriptions: ["Displays the time passed while using the CPR guide."],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/timer.png"),
   },
   {
     title: "TIMING",
     descriptions: [
-      "This shows the current compression timing score every 0.6 seconds.",
+      "Displays the current compression timing score for every 0.6 seconds.",
     ],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/timingscore.png"),
   },
   {
     title: "DEPTH",
     descriptions: [
-      "This shows the current compression depth score for every 0.6 seconds.",
-      "Perfect: depth is in between 2 and 2.5 inches.",
-      "Too Shallow: depth is less than 2 inches.",
-      "Too Deep: depth is greater than 2.5 inches.",
+      "Displays the current compression depth score for every 0.6 seconds.",
+      "Perfect: Depth is between 2 and 2.5 inches.",
+      "Too Shallow: Depth is less than 2 inches.",
+      "Too Deep: Depth is greater than 2.5 inches.",
     ],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/depthscore.png"),
   },
   {
     title: "DEPTH(in)",
-    descriptions: ["This shows the current compression depth in inches."],
+    descriptions: ["Displays the current compression depth in inches."],
     imageSource: require("../../assets/images/learningMaterials/cprConfirmation/depthInches.png"),
   },
   {
     title: "OVERALL SCORE",
     descriptions: [
-      "This shows the overall compression score every 0.6 seconds based on the scores in TIMING and DEPTH.",
+      "Displays the overall compression score every 0.6 seconds based on the scores in TIMING and DEPTH.",
       "For example:",
       "If TIMING is Perfect but DEPTH is Too Shallow, then the overall score is Yellow.",
     ],
