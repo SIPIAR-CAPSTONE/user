@@ -9,7 +9,6 @@ import {
   getOverallScore,
   calculateDepth,
   getDuration,
-  lowpassFilter,
 } from "./useCpr.helper";
 import useTimer from "./useTimer";
 import useAudioCue from "./useAudioCue";
@@ -40,9 +39,11 @@ const useCpr = () => {
   const [currentCompressionScore, setCurrentCompressionScore] = useState(
     EMPTY_COMPRESSION_VALUE
   );
+
+  //prevCompressionScores stores the previous compression scores to be use for audio cue
   const prevCompressionScores = useRef(EMPTY_COMPRESSION_VALUE);
   const isCompressing = useRef(false);
-  const prevFilteredZ = useRef(0);
+  const prevZ = useRef(0);
   const accelData = useRef([]);
 
   // this will be executed when start and stop cpr is called
@@ -51,10 +52,8 @@ const useCpr = () => {
       // here we observe the acceleration of z data to determine if compression is performed
       Accelerometer.setUpdateInterval(16);
       const subscription = Accelerometer.addListener((data) => {
-        const filteredZ = lowpassFilter(data.z, prevFilteredZ.current);
-        prevFilteredZ.current = filteredZ;
-
-        observeAcceleration(filteredZ, compressionTimer);
+        const dataZ = data.z > 1 ? 1 : data.z;
+        observeAcceleration(dataZ, compressionTimer);
       });
 
       //This is where we check if the audio cue should be played and when should get the compression score
@@ -74,37 +73,40 @@ const useCpr = () => {
 
   // This will observe the acceleration of z data to check if there is movement or compression is performed
   const observeAcceleration = useCallback((currentZ, compressionTimer) => {
-    if (isCompressionStarted(currentZ)) {
-      const currentTime = Date.now();
-      console.log("z: ", currentZ, " time: ", currentTime % 1000);
+    const currentTime = Date.now();
+
+    if (isCompressionStarted(prevZ.current, currentZ)) {
+      console.log("start");
       const latestZData = accelData.current[accelData.current.length - 1]?.z;
       if (accelData.current.length === 0 || latestZData > currentZ) {
         accelData.current.push({
           timestamp: currentTime,
-          z: Math.abs(currentZ),
+          z: currentZ,
         });
       }
 
-      if (isCompressing.current === false) {
+      if (!isCompressing.current) {
         isCompressing.current = true;
       }
     }
-
-    if (isCompressionEnded(currentZ, isCompressing.current)) {
+    if (isCompressionEnded(prevZ.current, currentZ, isCompressing.current)) {
       const lastIndex = accelData.current.length - 1;
       const minTime = accelData.current[0]?.timestamp;
       const maxTime = accelData.current[lastIndex]?.timestamp;
       const duration = getDuration(minTime, maxTime);
       const peakZ = accelData.current[lastIndex]?.z;
 
-      // console.log("peak: ", peakZ, " duration: ", duration);
+
       compressionDepth.current = calculateDepth(peakZ, duration);
       timingScore.current = getTimingScore(compressionTimer);
-      console.log("-------------------------------");
+      console.log("end");
+      console.log("------------------------");
       // Reset compression-related variables
       isCompressing.current = false;
       accelData.current = [];
     }
+
+    prevZ.current = currentZ;
   }, []);
 
   const getCompressionScores = useCallback((currentTimeInSeconds) => {
