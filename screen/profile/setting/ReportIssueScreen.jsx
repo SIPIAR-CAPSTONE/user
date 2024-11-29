@@ -15,6 +15,7 @@ import useBoundStore from "../../../zustand/useBoundStore";
 import { decode } from "base64-arraybuffer";
 import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import SuccessConfirmation from "../../../components/common/SuccessConfirmation";
+import useImagePicker from "../../../hooks/useImagePicker";
 
 const fields = [
   {
@@ -33,7 +34,7 @@ const fields = [
 
 const ReportIssueScreen = () => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-
+  const { bugReportCapture } = useImagePicker();
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const [reportForm, setReportForm] = useState({
