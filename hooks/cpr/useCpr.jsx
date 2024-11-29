@@ -38,6 +38,7 @@ const useCpr = () => {
   const [currentCompressionScore, setCurrentCompressionScore] = useState(
     EMPTY_COMPRESSION_VALUE
   );
+  const audioIsNotPlaying = useRef(true);
 
   //prevCompressionScores stores the previous compression scores to be use for audio cue
   const prevCompressionScores = useRef(EMPTY_COMPRESSION_VALUE);
@@ -55,12 +56,18 @@ const useCpr = () => {
       });
 
       //This is where we check if the audio cue should be played and when should get the compression score
-      if (compressionTimer >= 400 && compressionTimer < 600) {
+      if (
+        compressionTimer >= 400 &&
+        compressionTimer < 600 &&
+        audioIsNotPlaying.current
+      ) {
         playAudioCue(prevCompressionScores.current);
+        audioIsNotPlaying.current = false;
       }
       if (compressionTimer >= 600) {
         getCompressionScores(timerInSeconds);
         resetCompressionTimer();
+        audioIsNotPlaying.current = true;
       }
 
       return () => subscription && subscription.remove();
