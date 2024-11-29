@@ -1,16 +1,19 @@
-const ACCELERATION_THRESHOLD = 0.4; // if z is greater than the thershold, then compression is started and if its lower, then compression is ended
 const ACCELERATION_BASELINE = 1.0;
 const INCHES_PER_METER = 39.37;
-const SENSITIVITY = 0.025; //* (0.025) for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+const ACCELERATION_THRESHOLD = 0.4; //* if z is greater than the thershold, then compression is started and if its lower, then compression is ended
+const SENSITIVITY = 0.035; //* (0.025) for tuning accuracy, the greater the number the more sensitive the calculation of gap is
+const ALPHA = 0.8; //* alpha is a smoothing factor. The higher the value, the more smoothing
 
-//* FOR CPR CALIBRATION PURPOSE: adjust only the ACCELERATION_THERSHOLD and SENSITIVITY value *//
+//* FOR CPR CALIBRATION PURPOSE: adjust only the ACCELERATION_THERSHOLD, SENSITIVITY and ALPHA value *//
 
-export const calculateDepth = (currentZ) => {
-  const zAccelerationPeakGap = ACCELERATION_BASELINE - currentZ;
-  const depthInInches = Math.abs(
-    zAccelerationPeakGap * INCHES_PER_METER * SENSITIVITY
-  );
+export const calculateDepth = (peakZ) => {
+  const acceleration = ACCELERATION_BASELINE - peakZ;
+  const depthInInches = Math.abs(acceleration * INCHES_PER_METER * SENSITIVITY);
   return Number(depthInInches.toFixed(1));
+};
+
+export const lowpassFilter = (rawZ, prevFilteredZ) => {
+  return ALPHA * rawZ + (1 - ALPHA) * prevFilteredZ;
 };
 
 export const isCompressionStarted = (prevZ, currentZ) => {

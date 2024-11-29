@@ -8,6 +8,7 @@ import {
   getDepthScore,
   getOverallScore,
   calculateDepth,
+  lowpassFilter,
 } from "./useCpr.helper";
 import useTimer from "./useTimer";
 import useAudioCue from "./useAudioCue";
@@ -79,8 +80,9 @@ const useCpr = () => {
   // This will observe the acceleration of z data to check if there is movement or compression is performed
   const observeAcceleration = useCallback((currentZ, compressionTimer) => {
     if (isCompressionStarted(prevZ.current, currentZ)) {
-      if (peakZ.current === null || currentZ < peakZ.current) {
-        peakZ.current = currentZ;
+      const filteredZ = lowpassFilter(currentZ, prevZ.current);
+      if (peakZ.current === null || filteredZ < peakZ.current) {
+        peakZ.current = filteredZ;
       }
 
       if (!isCompressing.current) {
