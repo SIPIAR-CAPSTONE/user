@@ -15,23 +15,28 @@ import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import Button from "../../../components/ui/Button";
-import { setItem } from "../../../utils/LocalStorage";
-import useAskTermAndConditions from "../../../hooks/useAskTermAndConditions";
 import AppBarTitle from "../../../components/ui/AppBarTitle";
+import usePreventBack from "../../../hooks/usePreventBack";
+import useFirstTimePopup from "../../../hooks/useFirstTimePopup";
 
 const TermsAndConditionScreen = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
-  const { isTACAccepted } = useAskTermAndConditions();
+  const { done, markAsDone } = useFirstTimePopup({
+    key: "TermAndConditions",
+  });
+  usePreventBack();
 
   const handleAcceptTAC = () => {
-    setItem("termAndConditions", "true");
+    markAsDone();
     navigation.navigate("HomeScreen");
   };
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      {done && (
+        <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      )}
       <AppBarTitle>Terms and Conditions</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
@@ -152,7 +157,7 @@ const TermsAndConditionScreen = () => {
 
       <Time style={{ marginVertical: 20 }}>Last updated: May 15, 2024</Time>
 
-      {!isTACAccepted && (
+      {!done && (
         <View style={styles.buttonsContainer}>
           <Button label="Accept" onPress={handleAcceptTAC} />
           <Button

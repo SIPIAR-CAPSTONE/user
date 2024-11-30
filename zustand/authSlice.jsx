@@ -1,3 +1,4 @@
+import { LargeSecureStore } from "../utils/SecureLocalStorage";
 import { supabase } from "../utils/supabase/config";
 
 const DEFAULT_SIGNUP_FORM = {
@@ -48,26 +49,53 @@ export const createAuthSlice = (set) => ({
     set({ session: encryptedSession });
   },
   restoreSession: async () => {
+    const largeSecureStore = new LargeSecureStore();
+
     const { data } = await supabase.auth.getSession();
     if (data && data.session) {
-      set({ session: data.session });
+      const sessionUserMetaData = data.session["user"]["user_metadata"];
       set({
         userMetaData: {
-          firstName: data.session["user"]["user_metadata"]["first_name"],
-          middleName: data.session["user"]["user_metadata"]["middle_name"],
-          lastName: data.session["user"]["user_metadata"]["last_name"],
-          suffix: data.session["user"]["user_metadata"]["suffix"],
-          birthday: data.session["user"]["user_metadata"]["birth_date"],
-          phone: data.session["user"]["user_metadata"]["phone_number"],
-          barangay: data.session["user"]["user_metadata"]["barangay"],
-          street: data.session["user"]["user_metadata"]["street"],
-          houseNumber: data.session["user"]["user_metadata"]["house_number"],
-          email: data.session["user"]["user_metadata"]["email"],
+          firstName: sessionUserMetaData["first_name"],
+          middleName: sessionUserMetaData["middle_name"],
+          lastName: sessionUserMetaData["last_name"],
+          suffix: sessionUserMetaData["suffix"],
+          birthday: sessionUserMetaData["birth_date"],
+          phone: sessionUserMetaData["phone_number"],
+          barangay: sessionUserMetaData["barangay"],
+          street: sessionUserMetaData["street"],
+          houseNumber: sessionUserMetaData["house_number"],
+          email: sessionUserMetaData["email"],
         },
       });
+      set({ session: data.session });
+      await largeSecureStore.setItem("session", JSON.stringify(data.session));
     }
   },
-  removeSession: () => {
+  restoreSessionOffline: async () => {
+    const largeSecureStore = new LargeSecureStore();
+
+    const session = await largeSecureStore.getItem("session");
+    if (session) {
+      const sessionUserMetaData = session["user"]["user_metadata"];
+      set({
+        userMetaData: {
+          firstName: sessionUserMetaData["first_name"],
+          middleName: sessionUserMetaData["middle_name"],
+          lastName: sessionUserMetaData["last_name"],
+          suffix: sessionUserMetaData["suffix"],
+          birthday: sessionUserMetaData["birth_date"],
+          phone: sessionUserMetaData["phone_number"],
+          barangay: sessionUserMetaData["barangay"],
+          street: sessionUserMetaData["street"],
+          houseNumber: sessionUserMetaData["house_number"],
+          email: sessionUserMetaData["email"],
+        },
+      });
+      set({ session: session });
+    }
+  },
+  removeSession: async () => {
     set({ session: null });
   },
   setAppIsReady: (value) => set({ appIsReady: value }),

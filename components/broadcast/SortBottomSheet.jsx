@@ -21,6 +21,7 @@ const SortBottomSheet = forwardRef(function SortBottomSheet(
 
   const SortOptions = data.map((option) => (
     <List.Item
+      rippleColor={"rgba(0,0,0,0)"}
       key={option.id}
       title={option.title}
       titleStyle={option.value === selectedOption && styles.activeSortOption}

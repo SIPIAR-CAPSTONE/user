@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { formatTime } from "./useCpr.helper";
-
+import { formatTime } from "./useTimer.helper";
 
 export default function useTimer() {
   const [timerOn, setTimerOn] = useState(false);

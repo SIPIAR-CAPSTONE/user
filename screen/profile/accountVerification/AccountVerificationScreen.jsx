@@ -10,6 +10,7 @@ import StepOneContent from "../../../components/profile/accountVerification/Step
 import Layout from "../../../components/common/Layout";
 import AppBarTitle from "../../../components/ui/AppBarTitle";
 import { View } from "react-native";
+import useConfirmBack from "../../../hooks/useConfirmBack";
 const StepTwoContent = lazy(() =>
   import("../../../components/profile/accountVerification/StepTwoContent")
 );
@@ -21,14 +22,10 @@ const StepFourContent = lazy(() =>
 );
 
 const AccountVerificationScreen = ({ navigation }) => {
+  const { visibleAlert, showAlert, hideAlert, confirmBack } = useConfirmBack();
   const { styles, theme } = useStyles(stylesheet);
   const [currentStep, setCurrentStep] = useState(0);
   const resetVerification = useBoundStore((state) => state.resetVerification);
-  const [isConfirmationDialogVisible, setIsConfirmationDialogVisible] =
-    useState(false);
-
-  const showConfirmationDialog = () => setIsConfirmationDialogVisible(true);
-  const hideConfirmationDialog = () => setIsConfirmationDialogVisible(false);
 
   //!temporary solution for populating verification form with userData
   const initializeVerificationForm = useBoundStore(
@@ -48,7 +45,7 @@ const AccountVerificationScreen = ({ navigation }) => {
     if (currentStep > 0) {
       setCurrentStep((prevCurrentStep) => prevCurrentStep - 1);
     } else {
-      showConfirmationDialog();
+      showAlert();
     }
   };
 
@@ -158,9 +155,9 @@ const AccountVerificationScreen = ({ navigation }) => {
 
       <ConfirmationDialog
         title="Are you sure you want to exit?"
-        isVisible={isConfirmationDialogVisible}
-        onPressConfirmation={() => navigation.goBack()}
-        onPressCancel={hideConfirmationDialog}
+        isVisible={visibleAlert}
+        onPressConfirmation={confirmBack}
+        onPressCancel={hideAlert}
       />
     </Layout>
   );

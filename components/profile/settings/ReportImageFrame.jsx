@@ -5,22 +5,37 @@ import { Ionicons } from "@expo/vector-icons";
 import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 import useImagePicker from "../../../hooks/useImagePicker";
 
-const ReportImageFrame = ({ label, image, setImage, isLoading, error }) => {
+const ReportImageFrame = ({
+  label,
+  image,
+  setImage,
+  onPress,
+  isLoading,
+  error,
+}) => {
   const { styles, theme } = useStyles(stylesheet);
   const { pickImage } = useImagePicker();
+
+  const handleOnPress = () => {
+    if (onPress) {
+      onPress();
+    } else {
+      pickImage(setImage);
+    }
+  };
 
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       <TouchableRipple
-        onPress={() => pickImage(setImage)}
+        onPress={handleOnPress}
         disabled={isLoading}
         style={{ width: "100%" }}
       >
         <View
           style={[
             styles.imageFrame,
-            { borderColor: error ? theme.colors.primary : "#e1e2e3" },
+            { borderColor: error ? theme.colors.primary : theme.colors.text3 },
           ]}
         >
           {image ? (

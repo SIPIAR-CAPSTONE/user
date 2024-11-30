@@ -38,16 +38,16 @@ const OverallScoreBar = ({ score }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 36,
+    height: 42,
     borderRadius: 3,
     margin: 8,
-    width: 250,
+    width: 300,
     borderWidth: 2.5,
     flexDirection: "row",
   },
   bar: {
-    height: 43,
-    width: 24,
+    height: 48,
+    width: 28,
     zIndex: 90,
     position: "absolute",
     bottom: -6,

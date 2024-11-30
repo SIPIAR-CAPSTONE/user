@@ -12,10 +12,12 @@ import { getAnswerScore, isLastQuestion } from "./Learn.helper";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import CircularIcon from "../../components/ui/CircularIcon";
 import AppBar from "../../components/ui/AppBar";
+import useConfirmBack from "../../hooks/useConfirmBack";
 
 const QuizScreen = ({ route }) => {
   const { id } = route.params; //!id sa ghe pili na quiz
   const navigation = useNavigation();
+  const { visibleAlert, showAlert, hideAlert, confirmBack } = useConfirmBack();
   const { styles, theme } = useStyles(stylesheet);
   const {
     time,
@@ -24,7 +26,6 @@ const QuizScreen = ({ route }) => {
     start: startTimer,
   } = useCountdown(10, false, () => handleAnswer("missed"));
   const [isStartDialogVisible, setIsStartDialogVisible] = useState(true);
-  const [isExitDialogVisible, setIsExitDialogVisible] = useState(false);
   //!temp default value
   //!diri ibutang ang na fetched na quiz
   const [quiz, setQuiz] = useState(
@@ -69,17 +70,9 @@ const QuizScreen = ({ route }) => {
     startTimer();
   };
 
-  const handleExit = () => {
-    setIsExitDialogVisible(false);
-    navigation.navigate("LearnScreen");
-  };
-
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"
-        onPress={() => setIsExitDialogVisible(true)}
-      />
+      <CircularIcon name="arrow-back" onPress={showAlert} />
     </AppBar>
   );
 
@@ -166,12 +159,12 @@ const QuizScreen = ({ route }) => {
         containerStyle={styles.dialog}
       />
       <ConfirmationDialog
-        isVisible={isExitDialogVisible}
+        isVisible={visibleAlert}
         cancelLabel="Cancel"
         confirmationLabel="Exit"
-        onPressCancel={() => setIsExitDialogVisible(false)}
-        onPressConfirmation={handleExit}
-        title="Are you sure you want to exit?"
+        onPressCancel={hideAlert}
+        onPressConfirmation={confirmBack}
+        title="Are you sure you want to leave?"
         containerStyle={styles.dialog}
       />
     </Layout>

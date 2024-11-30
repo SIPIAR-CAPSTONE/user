@@ -1,27 +1,44 @@
-const ACCELERATION_BASELINE = 1.0;
-const INCHES_PER_METER = 39.37;
-const ACCELERATION_THRESHOLD = 0.4; //* if z is greater than the thershold, then compression is started and if its lower, then compression is ended
-const SENSITIVITY = 0.035; //* (0.025) for tuning accuracy, the greater the number the more sensitive the calculation of gap is
-const ALPHA = 0.8; //* alpha is a smoothing factor. The higher the value, the more smoothing
+const ACCELERATION_THRESHOLD = 0.9; //0.85
+const ALPHA = 0.25;
+const INCHES_PER_METER = 39.3701;
 
-//* FOR CPR CALIBRATION PURPOSE: adjust only the ACCELERATION_THERSHOLD, SENSITIVITY and ALPHA value *//
+//FORMULA: 1
+export const calculateDepth = (peakZ, timeDuration) => {
+  const factors = 1; //2.81;
+  const time = timeDuration * factors;
 
-export const calculateDepth = (peakZ) => {
-  const acceleration = ACCELERATION_BASELINE - peakZ;
-  const depthInInches = Math.abs(acceleration * INCHES_PER_METER * SENSITIVITY);
+  const acceleration = peakZ * 98.0; //convert peakZ to m/s²
+  const velocity = acceleration * time;
+  const distanceInMeters = (velocity / 2) * time;
+  const depthInInches = distanceInMeters * INCHES_PER_METER;
+  // console.log("z: ", peakZ);
+  // console.log("t: ", timeDuration);
+  //console.log("a: ", acceleration);
+  // console.log("v: ", velocity);
+  // console.log("d meter: ", distanceInMeters);
+  //console.log("d inches: ", depthInInches);
   return Number(depthInInches.toFixed(1));
 };
 
+export const getDuration = (minTime, maxTime) => {
+  if (maxTime === minTime) return 0.001;
+
+  const timeGap = (maxTime - minTime) / 1000;
+  return timeGap;
+};
+
 export const lowpassFilter = (rawZ, prevFilteredZ) => {
-  return ALPHA * rawZ + (1 - ALPHA) * prevFilteredZ;
+  const scaledZ = rawZ * 9.81;
+
+  return ALPHA * scaledZ + (1 - ALPHA) * prevFilteredZ;
 };
 
-export const isCompressionStarted = (prevZ, currentZ) => {
-  return prevZ - currentZ > ACCELERATION_THRESHOLD;
+export const isCompressionStarted = (currentZ) => {
+  return currentZ < ACCELERATION_THRESHOLD;
 };
 
-export const isCompressionEnded = (prevZ, currentZ, isCompressing) => {
-  return currentZ - prevZ > ACCELERATION_THRESHOLD && isCompressing;
+export const isCompressionEnded = (currentZ, isCompressing) => {
+  return currentZ > ACCELERATION_THRESHOLD && isCompressing;
 };
 
 export const getcompressionTimer = (previousTime, currentTime) => {
@@ -73,4 +90,15 @@ export const getOverallScore = (timingScore, depthScore) => {
   }
 
   return "gray";
+};
+
+export const formatTime = (time) => {
+  const totalSeconds = Math.floor(time / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const formattedTime = `${minutes < 10 ? "0" : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+
+  return formattedTime;
 };
