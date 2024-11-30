@@ -1,4 +1,3 @@
-import { ScrollView } from "react-native";
 import { Divider } from "react-native-paper";
 
 import FormHeader from "../../common/FormHeader";
@@ -7,9 +6,10 @@ import NextActionIcon from "../../common/NextActionIcon";
 import { Fragment, useState, lazy } from "react";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import useBoundStore from "../../../zustand/useBoundStore";
-const SelectIdModal = lazy(() => import("./StepThreeComponents/SelectIdModal"));
-import SecondaryHeader from "./StepThreeComponents/SecondaryHeader";
+const SelectIdModal = lazy(() => import("./SelectIdModal"));
+import SecondaryHeader from "./SecondaryHeader";
 import Form from "../../common/Form";
+import { ID_ITEMS_DATA } from "./IDData";
 
 const StepThreeContent = ({ goNextStep }) => {
   const { styles, theme } = useStyles(stylesheet);
@@ -85,35 +85,3 @@ const stylesheet = createStyleSheet((theme) => ({
     marginVertical: 8,
   },
 }));
-
-//Data for each id list item
-const ID_ITEMS_DATA = [
-  {
-    id: 0,
-    title: "National ID",
-    type: "nationalId",
-    imageSource:
-      "https://marketplace.canva.com/EAFanujoFkY/2/0/1600w/canva-blue-modern-highschool-id-card-vjI1KIbwj8o.jpg",
-  },
-  {
-    id: 1,
-    title: "Student ID",
-    type: "studentId",
-    imageSource:
-      "https://marketplace.canva.com/EAFXhyJiKhc/1/0/1600w/canva-white-and-red-modern-highschool-id-card-9QGif02vO4s.jpg",
-  },
-  {
-    id: 2,
-    title: "ePhil ID",
-    type: "ePhilId",
-    imageSource:
-      "https://upload.wikimedia.org/wikipedia/commons/3/34/Philippine_Identification_System_%28PhilSys%29_card_sample.png",
-  },
-  {
-    id: 3,
-    title: "Passport",
-    type: "passport",
-    imageSource:
-      "https://upload.wikimedia.org/wikipedia/commons/5/56/Specimen_Personal_Information_Page_South_Korean_Passport.jpg",
-  },
-];

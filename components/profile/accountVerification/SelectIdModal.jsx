@@ -4,10 +4,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { Portal, Appbar, Text } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-import CircularIcon from "../../../ui/CircularIcon";
-import Button from "../../../ui/Button";
-import { createStyleSheet, useStyles } from "../../../../hooks/useStyles";
-import AppBarTitle from "../../../ui/AppBarTitle";
+import CircularIcon from "../../ui/CircularIcon";
+import Button from "../../ui/Button";
+import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
+import AppBarTitle from "../../ui/AppBarTitle";
 
 const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
   const { styles, theme } = useStyles(stylesheet);
@@ -35,7 +35,7 @@ const SelectIdModal = ({ onClose, onConfirmed, idTitle, idImageSource }) => {
 
       <View style={styles.body}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: idImageSource }} style={styles.idSampleImage} />
+          <Image source={idImageSource} style={styles.idSampleImage} />
         </View>
 
         <BottomSheet
@@ -116,6 +116,7 @@ const stylesheet = createStyleSheet((theme) => ({
   idSampleImage: {
     width: 310,
     maxWidth: "88%",
+    objectFit: "cover",
     height: 190,
     maxHeight: "50%",
     borderRadius: theme.borderRadius.lg,
