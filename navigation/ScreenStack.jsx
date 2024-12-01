@@ -40,12 +40,6 @@ const EditPasswordScreen = lazy(() =>
   import("../screen/profile/myAccount/EditPasswordScreen")
 );
 const LearnCprScreen = lazy(() => import("../screen/learn/LearnCprScreen"));
-const LearnCourseScreen = lazy(() =>
-  import("../screen/learn/LearnCourseScreen")
-);
-const VideoPlayerScreen = lazy(() =>
-  import("../screen/learn/VideoPlayerScreen")
-);
 const LearnCprScoreScreen = lazy(() =>
   import("../screen/learn/LearnCprScoreScreen")
 );
@@ -182,12 +176,6 @@ export const SignedInStack = (
       name="LearnCprScore"
       options={{ headerShown: false }}
       component={LearnCprScoreScreen}
-    />
-    <Stack.Screen name="LearnCourse" component={LearnCourseScreen} />
-    <Stack.Screen
-      name="VideoPlayer"
-      options={{ orientation: "landscape" }}
-      component={VideoPlayerScreen}
     />
     <Stack.Screen
       name="DocumentMaterial"
