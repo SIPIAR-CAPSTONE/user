@@ -4,6 +4,7 @@ import { useTheme } from "react-native-paper";
 import StatusBar from "./StatusBar";
 import NotInternetAlert from "./NoInternetAlert";
 import NoInternetBar from "./NoInternetBar";
+import RequiredValidatedAlert from "./RequiredValidatedAlert";
 
 const Layout = ({
   removeDefaultStatusBar = false,
@@ -11,6 +12,7 @@ const Layout = ({
   statusBarHidden,
   addNoInternetAlert = false,
   addNoInternetBar = false,
+  requiredValidatedAccount = false,
   removeDefaultPaddingHorizontal = false,
   scrollable = false,
   style,
@@ -44,6 +46,7 @@ const Layout = ({
         )}
         {addNoInternetAlert && <NotInternetAlert />}
         {addNoInternetBar && <NoInternetBar />}
+        {requiredValidatedAccount && <RequiredValidatedAlert />}
       </>
     );
   }
@@ -60,6 +63,7 @@ const Layout = ({
       )}
       {addNoInternetAlert && <NotInternetAlert />}
       {addNoInternetBar && <NoInternetBar />}
+      {requiredValidatedAccount && <RequiredValidatedAlert />}
     </>
   );
 };
