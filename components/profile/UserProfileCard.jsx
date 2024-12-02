@@ -1,10 +1,19 @@
 import { View } from "react-native";
+import { useState } from "react";
 import { Text, Avatar } from "react-native-paper";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
-const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
+import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import useBoundStore from "../../zustand/useBoundStore";
+import useImageReader from "../../hooks/useImageReader";
+
+const UserProfileCard = ({ renderFooter }) => {
   const { styles } = useStyles(stylesheet);
-  const firstNameInitial = name[0];
+  const userMetaData = useBoundStore((state) => state.userMetaData);
+  const fullName = `${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`;
+  const firstNameInitial = fullName[0];
+  const email = userMetaData["email"];
+  const [imageSource, setImageSource] = useState(null);
+  useImageReader(setImageSource);
 
   const UserAvatar = imageSource ? (
     <Avatar.Image
@@ -20,7 +29,7 @@ const UserProfileCard = ({ name, imageSource, email, renderFooter }) => {
     <View style={styles.header}>
       {UserAvatar}
 
-      <Text variant="titleMedium">{name}</Text>
+      <Text variant="titleMedium">{fullName}</Text>
       <Text style={styles.email} variant="bodySmall">
         {email}
       </Text>

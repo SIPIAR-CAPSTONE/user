@@ -1,21 +1,24 @@
 import { SectionList, View } from "react-native";
 import { Divider } from "react-native-paper";
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 
-import UserProfileCard from "../../../components/profile/UserProfileCard";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import SectionItem from "../../../components/profile/SectionItem";
 import EditButton from "../../../components/profile/EditButton";
 import StatusBar from "../../../components/common/StatusBar";
 import useBoundStore from "../../../zustand/useBoundStore";
-import useImageReader from "../../../hooks/useImageReader";
-import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
-import ConfirmationDialog from "../../../components/ui/ConfirmationDialog";
 import AppBar from "../../../components/ui/AppBar";
 import CircularIcon from "../../../components/ui/CircularIcon";
 import AppBarTitle from "../../../components/ui/AppBarTitle";
+const ConfirmationDialog = lazy(() =>
+  import("../../../components/ui/ConfirmationDialog")
+);
+const UserProfileCard = lazy(() =>
+  import("../../../components/profile/UserProfileCard")
+);
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
@@ -31,10 +34,6 @@ const MyAccountScreen = () => {
     hideConfirmationDialog();
     navigation.navigate("EditProfile");
   };
-
-  //* retrieve profile picture upon screen load
-  const [profilePictureUri, setProfilePictureUri] = useState(null);
-  useImageReader(setProfilePictureUri);
 
   const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
 
@@ -86,9 +85,6 @@ const MyAccountScreen = () => {
         ListHeaderComponentStyle={styles.listHeaderContainer}
         ListHeaderComponent={
           <UserProfileCard
-            imageSource={profilePictureUri}
-            name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
-            email={userMetaData["email"]}
             renderFooter={() => <EditButton onPress={showConfirmationDialog} />}
           />
         }

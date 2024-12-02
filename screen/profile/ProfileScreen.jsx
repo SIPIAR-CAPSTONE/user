@@ -1,24 +1,26 @@
 import { View, ToastAndroid } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import * as FileSystem from "expo-file-system";
 
 import ListItem from "../../components/ui/ListItem";
 import VerifiedIndicator from "../../components/profile/VerifiedIndicator";
 import CircularIcon from "../../components/ui/CircularIcon";
-import UserProfileCard from "../../components/profile/UserProfileCard";
-import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import { supabase } from "../../utils/supabase/config";
-import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
-import useImageReader from "../../hooks/useImageReader";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import AppBarTitle from "../../components/ui/AppBarTitle";
+const ConfirmationDialog = lazy(() =>
+  import("../../components/ui/ConfirmationDialog")
+);
+const UserProfileCard = lazy(() =>
+  import("../../components/profile/UserProfileCard")
+);
 
 const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -40,7 +42,6 @@ const ProfileScreen = () => {
 
   const userMetaData = useBoundStore((state) => state.userMetaData);
   const removeSession = useBoundStore((state) => state.removeSession);
-  const largeSecureStore = new LargeSecureStore();
   const { removeState } = useUserMetadata();
   const removeProfilePicturePath = useBoundStore(
     (state) => state.removeProfilePicturePath
@@ -49,20 +50,14 @@ const ProfileScreen = () => {
     (state) => state.profilePicturePath
   );
 
-  //* retrieve profile picture upon screen load
-  const [profilePictureUri, setProfilePictureUri] = useState(null);
-  useImageReader(setProfilePictureUri);
-
   const handleLogout = async () => {
     try {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
 
       if (!error) {
-        //* remove encrypted session from secure local storage
-        await largeSecureStore.removeItem("session");
         //* remove encrypted session as a global state
-        removeSession();
+        await removeSession();
 
         //* remove global state variable
         removeState();
@@ -146,9 +141,6 @@ const ProfileScreen = () => {
   return (
     <Layout scrollable AppbarComponent={CustomAppBar}>
       <UserProfileCard
-        name={`${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`}
-        email={userMetaData["email"]}
-        imageSource={profilePictureUri}
         renderFooter={() => (
           <VerifiedIndicator
             isVerified={status}

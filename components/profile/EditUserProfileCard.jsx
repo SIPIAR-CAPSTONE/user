@@ -1,12 +1,20 @@
 import { View } from "react-native";
+import { useState } from "react";
 import { TouchableRipple, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+
 import useImagePicker from "../../hooks/useImagePicker";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import useBoundStore from "../../zustand/useBoundStore";
+import useImageReader from "../../hooks/useImageReader";
 
-const EditUserProfileCard = ({ name, image, setImage }) => {
+const EditUserProfileCard = () => {
   const { styles, theme } = useStyles(stylesheet);
-  const firstNameInitial = name[0];
+  const userMetaData = useBoundStore((state) => state.userMetaData);
+  const fullName = `${userMetaData["firstName"]} ${userMetaData["middleName"]} ${userMetaData["lastName"]} ${userMetaData["suffix"]}`;
+  const firstNameInitial = fullName[0];
+  const [imageSource, setImageSource] = useState(null);
+  useImageReader(setImageSource);
 
   const { pickImage } = useImagePicker();
 
@@ -17,7 +25,7 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
       <TouchableRipple
         borderless
         style={styles.button}
-        onPress={() => pickImage(setImage)}
+        onPress={() => pickImage(setImageSource)}
       >
         <View style={styles.icon}>
           <Ionicons
@@ -32,10 +40,10 @@ const EditUserProfileCard = ({ name, image, setImage }) => {
 
   // If image is provided use avatar.image else use avatar.text
   const UserProfileAvatar = () => {
-    if (image) {
+    if (imageSource) {
       return (
         <View>
-          <Avatar.Image size={124} source={{ uri: image }} />
+          <Avatar.Image size={124} source={{ uri: imageSource }} />
           <SelectImageButton />
         </View>
       );
