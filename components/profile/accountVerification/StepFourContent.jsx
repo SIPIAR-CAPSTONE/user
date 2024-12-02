@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View } from "react-native";
 
-import ImageFrame from "./StepFourComponents/ImageFrame";
+import ImageFrame from "./ImageFrame";
 import { Divider } from "react-native-paper";
 import Button from "../../ui/Button";
 import useBoundStore from "../../../zustand/useBoundStore";
@@ -69,7 +69,7 @@ const StepFourContent = () => {
             street: verificationForm["street"],
             house_number: verificationForm["houseNumber"],
             identification_type: verificationForm["selectedIdType"],
-            email: verificationForm["email"]
+            email: verificationForm["email"],
           });
 
         // Check for insert error

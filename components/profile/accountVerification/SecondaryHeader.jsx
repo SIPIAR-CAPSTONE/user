@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
-import { useStyles, createStyleSheet } from "../../../../hooks/useStyles";
+import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 
 const SecondaryHeader = ({ title, desc }) => {
   const { styles, theme } = useStyles(stylesheet);

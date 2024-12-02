@@ -10,6 +10,7 @@ import useLocation from "../../hooks/useLocation";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const HomeScreen = ({ navigation }) => {
   useFirstTimePopup({
@@ -19,28 +20,32 @@ const HomeScreen = ({ navigation }) => {
 
   //! TESTING: GETTING CURRENT USER LOCATION IN HOME PAGE
   const { userLocation } = useLocation();
+  const session = useBoundStore((state) => state.session);
+  const userId = session?.user?.id;
 
   const onPressSend = async () => {
-    console.log("USER LOCS/ LATITUDE: ", userLocation.latitude);
-    console.log("USER LOCS/ LONGTITUDE: ", userLocation.longitude);
-    /*
-    - BSYTANDER NAME
-    - latitude
-    - longitude
-    - date
-    - time
-    */
-    const { error } = await supabase.from("broadcast").insert({
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
-    });
+    try {
+      const { error, data } = await supabase.from("broadcast").insert({
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude,
+        address: "test address",
+        barangay: "test barangay",
+        landmark: "test landmark",
+        isActive: "Yes",
+        user_id: userId,
+        created_at: new Date().toISOString(),
+      });
 
-    if (!error) {
-      console.log("success insert");
+      if (error) {
+        console.log("insert to broadcast error inner: ", error.message);
+      }
+      if (data) {
+        console.log("insert to broadcast: ", data);
+      }
+    } catch (error) {
+      console.log("insert to broadcast error outer: ", error.message);
     }
   };
-
-  //!----------------------------------------------------
 
   const CustomAppBar = () => (
     <AppBar>

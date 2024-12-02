@@ -1,6 +1,8 @@
 import { ToastAndroid, View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+
 import ListItem from "../ui/ListItem";
 import DistanceIcon from "../common/DistanceIcon";
 import NextActionIcon from "../common/NextActionIcon";
@@ -8,14 +10,19 @@ import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import { supabase } from "../../utils/supabase/config";
-import { useEffect, useState } from "react";
 
 const EmergencyAlerts = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
-
   const { userLocation } = useLocation();
-  const [realTime, setRealTime] = useState([]);
+  const [emergencyAlerts, setEmergencyAlerts] = useState([]);
+  const recentEmergencyAlerts = useMemo(
+    () =>
+      [...emergencyAlerts]
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 5),
+    [emergencyAlerts]
+  );
 
   useEffect(() => {
     const channels = supabase
@@ -24,24 +31,26 @@ const EmergencyAlerts = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "broadcast" },
         async (payload) => {
-          console.log("Change received!", payload.new);
-
-          const { data: userData, error } = await supabase
+          const { data: user, error } = await supabase
             .from("bystander")
             .select("first_name, last_name")
             .eq("id", payload.new.user_id)
             .single();
 
-          if (!error) {
-            setRealTime((prevState) => [
-              ...prevState,
-              { ...payload.new, userData },
-            ]);
-          } else {
+          if (error) {
             ToastAndroid.show(
               `Error fetching user name: ${error.message}`,
               ToastAndroid.SHORT
             );
+          }
+
+          if (user) {
+            const newEmergencyAlert = { ...payload.new, user };
+
+            setEmergencyAlerts((prevEmergencyAlerts) => [
+              ...prevEmergencyAlerts,
+              newEmergencyAlert,
+            ]);
           }
         }
       )
@@ -52,16 +61,16 @@ const EmergencyAlerts = () => {
     };
   }, []);
 
-  const EmergencyAlertsList = realTime.map((item) => {
-    const id = item.broadcast_id;
-    const userFullName = `${item.userData.first_name} ${item.userData.last_name}`;
+  const EmergencyAlertsList = recentEmergencyAlerts.map((item) => {
+    const id = item?.broadcast_id;
+    const userFullName = `${item?.user?.first_name} ${item?.user?.last_name}`;
     const coordinate = {
-      latitude: item.latitude,
-      longitude: item.longitude,
+      latitude: item?.latitude,
+      longitude: item?.longitude,
     };
     const distanceGap = getDistanceGap(userLocation, coordinate);
-    const timeGap = getTimeGap(item.created_at);
-    console.log(item);
+    const timeGap = getTimeGap(item?.created_at);
+
     return (
       <ListItem
         key={id}

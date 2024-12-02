@@ -1,7 +1,7 @@
 import { Image, View } from "react-native";
 import { TouchableRipple, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { createStyleSheet, useStyles } from "../../../../hooks/useStyles";
+import { createStyleSheet, useStyles } from "../../../hooks/useStyles";
 
 const ImageFrame = ({ label, image, onPress, isLoading, error }) => {
   const { styles, theme } = useStyles(stylesheet);
