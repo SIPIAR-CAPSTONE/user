@@ -3,22 +3,22 @@ import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Divider } from "react-native-paper";
 
+import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
+import ScorePoints from "../../components/learn/ScorePoints";
+import AppBarTitle from "../../components/ui/AppBarTitle";
+import useBoundStore from "../../zustand/useBoundStore";
+import usePreventBack from "../../hooks/usePreventBack";
+import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import Button from "../../components/ui/Button";
-import useBoundStore from "../../zustand/useBoundStore";
-import ScorePoints from "../../components/learn/ScorePoints";
-import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
 import Color from "../../utils/Color";
-import Layout from "../../components/common/Layout";
-import AppBarTitle from "../../components/ui/AppBarTitle";
 import {
   countScore,
   getFormattedCurrentDate,
   getTotalTimeDuration,
   getScorePercentage,
 } from "./Learn.helper";
-import usePreventBack from "../../hooks/usePreventBack";
 
 const LearnCprScoreScreen = () => {
   usePreventBack();
@@ -82,17 +82,6 @@ const LearnCprScoreScreen = () => {
     compressionHistory,
     "depthScore",
     "Too Shallow"
-  );
-  const missedCompressionInPercentage = getScorePercentage(
-    compressionHistory,
-    "depthScore",
-    null
-  );
-
-  const missedCompressionCount = countScore(
-    compressionHistory,
-    "depthScore",
-    null
   );
 
   const handleExit = () => {
@@ -183,14 +172,6 @@ const LearnCprScoreScreen = () => {
             iconName="thumb-down-outline"
             points={badOverallScoreCount}
             progress={100}
-            progressColor={Color.red}
-          />
-          <Divider />
-          <ScorePointsListItem
-            title="Missed Compressions"
-            iconName="arrow-expand-vertical"
-            points={missedCompressionCount}
-            progress={missedCompressionInPercentage}
             progressColor={Color.red}
           />
           <Divider />
