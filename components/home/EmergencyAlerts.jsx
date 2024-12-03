@@ -10,6 +10,9 @@ import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import { supabase } from "../../utils/supabase/config";
+import EmptyLabel from "../ui/EmptyLabel";
+
+const ALERTS_LIMIT = 5;
 
 const EmergencyAlerts = () => {
   const navigation = useNavigation();
@@ -18,9 +21,9 @@ const EmergencyAlerts = () => {
   const [emergencyAlerts, setEmergencyAlerts] = useState([]);
   const recentEmergencyAlerts = useMemo(
     () =>
-      [...emergencyAlerts]
+      emergencyAlerts
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        .slice(0, 5),
+        .slice(0, ALERTS_LIMIT),
     [emergencyAlerts]
   );
 
@@ -98,16 +101,23 @@ const EmergencyAlerts = () => {
         <Text variant="titleMedium" style={styles.listLabel}>
           Recent Emergency Alerts
         </Text>
-        <NPButton
-          mode="text"
-          compact
-          style={styles.seeAllButton}
-          onPress={() => navigation.navigate("BroadcastScreen")}
-        >
-          See all
-        </NPButton>
+        {EmergencyAlertsList && EmergencyAlertsList.length > 0 && (
+          <NPButton
+            mode="text"
+            rippleColor={"rgba(255,255,255,50)"}
+            compact
+            style={styles.seeAllButton}
+            onPress={() => navigation.navigate("BroadcastScreen")}
+          >
+            See all
+          </NPButton>
+        )}
       </View>
-      <View style={styles.list}>{EmergencyAlertsList}</View>
+      {EmergencyAlertsList && EmergencyAlertsList.length > 0 ? (
+        <View style={styles.list}>{EmergencyAlertsList}</View>
+      ) : (
+        <EmptyLabel label="No Recent Alerts" />
+      )}
     </View>
   );
 };

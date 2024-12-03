@@ -15,6 +15,7 @@ import CircularIcon from "../../components/ui/CircularIcon";
 import SortBottomSheet from "../../components/broadcast/SortBottomSheet";
 import Header from "../../components/broadcast/Header";
 import AppBarTitle from "../../components/ui/AppBarTitle";
+import EmptyAlertsPlaceHolder from "../../components/broadcast/EmptyAlertsPlaceholder";
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
@@ -108,6 +109,7 @@ const BroadcastScreen = () => {
         ListHeaderComponent={<Header count={alertsCount} />}
         ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
         contentContainerStyle={styles.contentContainer}
+        ListEmptyComponent={() => <EmptyAlertsPlaceHolder />}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -116,6 +118,7 @@ const BroadcastScreen = () => {
           />
         }
       />
+
       <SortBottomSheet
         ref={bottomSheetRef}
         isVisible={showSortSheet}

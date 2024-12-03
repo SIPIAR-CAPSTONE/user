@@ -5,6 +5,7 @@ import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import moment from "moment";
 import Color from "../../utils/Color";
+import EmptyLabel from "../ui/EmptyLabel";
 
 export default function CprPracticeScores() {
   const { styles } = useStyles(stylesheet);
@@ -25,6 +26,8 @@ export default function CprPracticeScores() {
 
 function PracticeScores() {
   const { styles, theme } = useStyles(stylesheet);
+
+  if (TEMP_SCORES_DATA.length === 0) return <EmptyLabel label="No Scores" />;
 
   return TEMP_SCORES_DATA.map((item) => {
     const totalCompression = item.totalCompression;

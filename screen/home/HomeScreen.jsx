@@ -1,12 +1,11 @@
 import Layout from "../../components/common/Layout";
-import EmergencyAlerts from "../../components/home/EmergencyAlerts";
-import ContactCards from "../../components/home/ContactCards";
-import CprPracticeScores from "../../components/home/CprPracticeScores";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
 import LogoTitle from "../../components/navigation/LogoTitle";
 import useLocation from "../../hooks/useLocation";
-
+import EmergencyAlerts from "../../components/home/EmergencyAlerts";
+import ContactCards from "../../components/home/ContactCards";
+import CprPracticeScores from "../../components/home/CprPracticeScores";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
