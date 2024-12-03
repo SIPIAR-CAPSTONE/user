@@ -1,6 +1,6 @@
 import { View, FlatList, RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, lazy } from "react";
 import moment from "moment";
 
 import ListItem from "../../components/ui/ListItem";
@@ -9,13 +9,19 @@ import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import NotInternetAlert from "../../components/common/NoInternetAlert";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
-import SortBottomSheet from "../../components/broadcast/SortBottomSheet";
 import Header from "../../components/broadcast/Header";
 import AppBarTitle from "../../components/ui/AppBarTitle";
-import EmptyAlertsPlaceHolder from "../../components/broadcast/EmptyAlertsPlaceholder";
+const EmptyAlertsPlaceHolder = lazy(() =>
+  import("../../components/broadcast/EmptyAlertsPlaceholder")
+);
+const NotInternetAlert = lazy(() =>
+  import("../../components/common/NoInternetAlert")
+);
+const SortBottomSheet = lazy(() =>
+  import("../../components/broadcast/SortBottomSheet")
+);
 
 const BroadcastScreen = () => {
   const { styles } = useStyles(stylesheet);
