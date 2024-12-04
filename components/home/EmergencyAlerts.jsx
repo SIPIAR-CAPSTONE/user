@@ -1,7 +1,7 @@
-import { ToastAndroid, View } from "react-native";
+import { View } from "react-native";
 import { Button as NPButton, Text } from "react-native-paper";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { memo, useCallback, useMemo } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import ListItem from "../ui/ListItem";
 import DistanceIcon from "../common/DistanceIcon";
@@ -9,8 +9,8 @@ import NextActionIcon from "../common/NextActionIcon";
 import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import { supabase } from "../../utils/supabase/config";
 import EmptyLabel from "../ui/EmptyLabel";
+import useBroadcast from "../../hooks/useBroadcast";
 
 const ALERTS_LIMIT = 5;
 
@@ -18,7 +18,7 @@ const EmergencyAlerts = () => {
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const { userLocation } = useLocation();
-  const [emergencyAlerts, setEmergencyAlerts] = useState([]);
+  const { emergencyAlerts, loading, refecthAlerts } = useBroadcast();
   const recentEmergencyAlerts = useMemo(
     () =>
       emergencyAlerts
@@ -27,46 +27,9 @@ const EmergencyAlerts = () => {
     [emergencyAlerts]
   );
 
-  useEffect(() => {
-    const channels = supabase
-      .channel("broadcast-all-channel")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "broadcast" },
-        async (payload) => {
-          const { data: user, error } = await supabase
-            .from("bystander")
-            .select("first_name, last_name")
-            .eq("id", payload.new.user_id)
-            .single();
-
-          if (error) {
-            ToastAndroid.show(
-              `Error fetching user name: ${error.message}`,
-              ToastAndroid.SHORT
-            );
-          }
-
-          if (user) {
-            const newEmergencyAlert = { ...payload.new, user };
-
-            setEmergencyAlerts((prevEmergencyAlerts) => [
-              ...prevEmergencyAlerts,
-              newEmergencyAlert,
-            ]);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channels.unsubscribe();
-    };
-  }, []);
-
   const EmergencyAlertsList = recentEmergencyAlerts.map((item) => {
     const id = item?.broadcast_id;
-    const userFullName = `${item?.user?.first_name} ${item?.user?.last_name}`;
+    const userFullName = `${item?.bystander?.first_name} ${item?.bystander?.last_name}`;
     const coordinate = {
       latitude: item?.latitude,
       longitude: item?.longitude,
@@ -84,7 +47,7 @@ const EmergencyAlerts = () => {
         onPress={() =>
           navigation.navigate("Mapview", {
             initialCoordinate: coordinate,
-            selectedAlertId: item.id,
+            selectedAlertId: item.broadcast_id,
           })
         }
         renderIcon={() => (
@@ -94,6 +57,13 @@ const EmergencyAlerts = () => {
       />
     );
   });
+
+  //* when screen is focus refecth alerts
+  useFocusEffect(
+    useCallback(() => {
+      refecthAlerts();
+    }, [])
+  );
 
   return (
     <View style={styles.emergencyAlerts}>
@@ -122,7 +92,7 @@ const EmergencyAlerts = () => {
   );
 };
 
-export default EmergencyAlerts;
+export default memo(EmergencyAlerts);
 
 const stylesheet = createStyleSheet((theme) => ({
   emergencyAlerts: {

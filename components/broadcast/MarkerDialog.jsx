@@ -24,38 +24,47 @@ const MarkerDialog = ({
 }) => {
   const { styles } = useStyles(stylesheet);
 
-  // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
-  const FULL_NAME = `${selectedMarker?.first_name} ${selectedMarker?.last_name}`;
+  const selectedAlertCoordinate = {
+    latitude: selectedMarker?.latitude,
+    longitude: selectedMarker?.longitude,
+  };
+
+  // // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
+  const FULL_NAME = `${selectedMarker?.bystander?.first_name} ${selectedMarker?.bystander?.last_name}`;
   const name = useMemo(
     () =>
-      selectedMarker?.first_name || selectedMarker?.last_name
+      selectedMarker?.bystander?.first_name ||
+      selectedMarker?.bystander?.last_name
         ? FULL_NAME
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.first_name, selectedMarker?.last_name]
+    [
+      selectedMarker?.bystander?.first_name,
+      selectedMarker?.bystander?.last_name,
+    ]
   );
 
   const distanceGap = useMemo(
     () =>
-      selectedMarker?.coordinate
-        ? getDistanceGap(userLocation, selectedMarker?.coordinate)
+      selectedAlertCoordinate
+        ? getDistanceGap(userLocation, selectedAlertCoordinate)
         : EMPTY_PLACEHOLDER,
-    [userLocation, selectedMarker?.coordinate]
+    [userLocation, selectedAlertCoordinate]
   );
 
   const timeGap = useMemo(
     () =>
-      selectedMarker?.createdAt
-        ? getTimeGap(selectedMarker?.createdAt)
+      selectedMarker?.created_at
+        ? getTimeGap(selectedMarker?.created_at)
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.createdAt]
+    [selectedMarker?.created_at]
   );
 
   const dateRequested = useMemo(
     () =>
-      selectedMarker?.createdAt
-        ? moment(selectedMarker?.createdAt).format("LL")
+      selectedMarker?.created_at
+        ? moment(selectedMarker?.created_at).format("LL")
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.createdAt]
+    [selectedMarker?.created_at]
   );
 
   return (
@@ -72,6 +81,7 @@ const MarkerDialog = ({
             iconBackgroundColor="#FBF2DD"
             iconColor="#D2BD84"
           />
+
           <InfoField
             icon="map-pin"
             label="Distance"
@@ -79,6 +89,7 @@ const MarkerDialog = ({
             iconBackgroundColor="#c3ffcc"
             iconColor="#53a661"
           />
+
           <InfoField
             icon="clock"
             label="Time Requested"
