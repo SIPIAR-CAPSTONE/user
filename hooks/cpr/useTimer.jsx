@@ -53,7 +53,7 @@ export default function useTimer() {
   };
 
   const resetCompressionTimer = () => {
-    compressionTimer.current = 100;
+    compressionTimer.current = 50;
     lastUpdateTime.current = Date.now();
   };
 

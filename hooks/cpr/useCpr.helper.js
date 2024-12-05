@@ -24,13 +24,6 @@ export const isCompressionEnded = (prevZ, currentZ, isCompressing) => {
   return currentZ - prevZ > ACCELERATION_THRESHOLD && isCompressing;
 };
 
-export const getcompressionTimer = (previousTime, currentTime) => {
-  const compressionTimer = currentTime - previousTime;
-  const compressionTimerInSeconds = compressionTimer / 1000;
-
-  return compressionTimerInSeconds;
-};
-
 export const getTimingScore = (compressionTimer) => {
   if (compressionTimer >= 400 && compressionTimer <= 600) {
     return "Perfect";
