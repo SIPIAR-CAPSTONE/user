@@ -41,7 +41,7 @@ const BroadcastScreen = () => {
     } else if (selectedSort === "address") {
       return String(a.address).localeCompare(b.address);
     } else if (selectedSort === "timeRequested") {
-      return moment(b.created_at) - moment(a.created_at);
+      return String(b.created_at).localeCompare(a.created_at);
     } else if (selectedSort === "distance") {
       //split to remove the distance unit like m and km
       const bDistance = getDistanceGap(userLocation, {
@@ -77,10 +77,10 @@ const BroadcastScreen = () => {
     return (
       <ListItem
         key={item.broadcast_id}
-        title={userFullName}
+        title={item.address}
         titleSize={14}
         subTitle={timeGap}
-        desc={item.address}
+        desc={userFullName}
         descSize={11}
         onPress={() =>
           navigation.navigate("Mapview", {
@@ -92,6 +92,7 @@ const BroadcastScreen = () => {
           <DistanceIcon distance={distanceGap} status={item.condition} />
         )}
         renderActionIcon={() => <NextActionIcon />}
+        endSpacing={72}
       />
     );
   };

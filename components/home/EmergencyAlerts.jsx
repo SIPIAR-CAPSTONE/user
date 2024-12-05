@@ -40,10 +40,10 @@ const EmergencyAlerts = () => {
     return (
       <ListItem
         key={id}
-        title={userFullName}
+        title={item.address}
         titleSize={14}
         subTitle={timeGap}
-        desc={item.address}
+        desc={userFullName}
         onPress={() =>
           navigation.navigate("Mapview", {
             initialCoordinate: coordinate,
@@ -54,6 +54,7 @@ const EmergencyAlerts = () => {
           <DistanceIcon distance={distanceGap} status={item.condition} />
         )}
         renderActionIcon={() => <NextActionIcon />}
+        endSpacing={72}
       />
     );
   });

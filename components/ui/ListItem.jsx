@@ -16,6 +16,7 @@ const ListItem = ({
   onPress,
   contentContainerStyle,
   roundness,
+  endSpacing,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
 
@@ -53,7 +54,6 @@ const ListItem = ({
         style={[
           styles.container,
           {
-            backgroundColor: theme.colors.secondary,
             borderRadius: ROUNDNESS_STYLE,
             paddingHorizontal: sizeStyle[size].paddingHorizontal,
             paddingVertical: sizeStyle[size].paddingVertical,
@@ -110,7 +110,14 @@ const ListItem = ({
         </View>
         {/* Left Side: action icon */}
         {renderActionIcon && (
-          <View style={styles.actionIcon}>{renderActionIcon()}</View>
+          <View
+            style={[
+              styles.actionIcon,
+              endSpacing && { marginStart: endSpacing },
+            ]}
+          >
+            {renderActionIcon()}
+          </View>
         )}
       </View>
     </TouchableRipple>
@@ -123,6 +130,7 @@ const stylesheet = createStyleSheet((theme) => ({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: theme.colors.secondary,
   },
   content: {
     flex: 1,
