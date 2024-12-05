@@ -7,7 +7,6 @@ import { useState } from "react";
 import FormHeader from "../../components/common/FormHeader";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../utils/supabase/config";
-import { LargeSecureStore } from "../../utils/SecureLocalStorage";
 import useBoundStore from "../../zustand/useBoundStore";
 import useUserMetadata from "../../hooks/useUserMetadata";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
@@ -31,7 +30,6 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const setSession = useBoundStore((state) => state.setSession);
-  const largeSecureStore = new LargeSecureStore();
   const { setState } = useUserMetadata();
   const { styles } = useStyles(stylesheet);
 
@@ -83,12 +81,7 @@ const LoginScreen = () => {
           setErrors(errors);
         } else if (!error) {
           //* call the setItem in which it encrypt the session and store in secure local storage
-          encryptedSession = await largeSecureStore.setItem(
-            "session",
-            JSON.stringify(data["session"])
-          );
-
-          setSession(encryptedSession);
+          await setSession(data["session"]);
 
           //* set session global state variables
           setState(data["session"]);
