@@ -17,6 +17,7 @@ const ListItem = ({
   contentContainerStyle,
   roundness,
   endSpacing,
+  rightIconMinWidth,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
 
@@ -64,7 +65,11 @@ const ListItem = ({
         ]}
       >
         {/* Right Side: Leading Icon */}
-        {renderIcon && <View>{renderIcon()}</View>}
+        {renderIcon && (
+          <View style={rightIconMinWidth && { minWidth: rightIconMinWidth }}>
+            {renderIcon()}
+          </View>
+        )}
         {/* Center to last Side: Text content */}
         <View style={styles.content}>
           {/* Title and subtitle */}

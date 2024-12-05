@@ -1,7 +1,6 @@
 import { View, FlatList, RefreshControl } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useState, useCallback, useRef, lazy } from "react";
-import moment from "moment";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
@@ -88,11 +87,10 @@ const BroadcastScreen = () => {
             selectedAlertId: item.broadcast_id,
           })
         }
-        renderIcon={() => (
-          <DistanceIcon distance={distanceGap} status={item.condition} />
-        )}
+        renderIcon={() => <DistanceIcon distance={distanceGap} />}
         renderActionIcon={() => <NextActionIcon />}
-        endSpacing={72}
+        endSpacing={75}
+        rightIconMinWidth={45}
       />
     );
   };
@@ -121,7 +119,11 @@ const BroadcastScreen = () => {
         ItemSeparatorComponent={() => <View style={{ height: 6 }} />}
         contentContainerStyle={styles.contentContainer}
         ListEmptyComponent={
-          loading ? <ActivityIndicator /> : <EmptyAlertsPlaceHolder />
+          loading ? (
+            <ActivityIndicator style={styles.loading} />
+          ) : (
+            <EmptyAlertsPlaceHolder />
+          )
         }
         refreshControl={
           <RefreshControl
@@ -149,5 +151,8 @@ export default BroadcastScreen;
 const stylesheet = createStyleSheet((theme) => ({
   contentContainer: {
     paddingHorizontal: theme.spacing.base,
+  },
+  loading: {
+    marginTop: 100,
   },
 }));

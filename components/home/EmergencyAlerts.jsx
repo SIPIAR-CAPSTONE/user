@@ -50,11 +50,10 @@ const EmergencyAlerts = () => {
             selectedAlertId: item.broadcast_id,
           })
         }
-        renderIcon={() => (
-          <DistanceIcon distance={distanceGap} status={item.condition} />
-        )}
+        renderIcon={() => <DistanceIcon distance={distanceGap} />}
         renderActionIcon={() => <NextActionIcon />}
-        endSpacing={72}
+        endSpacing={75}
+        rightIconMinWidth={45}
       />
     );
   });
