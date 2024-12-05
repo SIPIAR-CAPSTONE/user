@@ -1,11 +1,11 @@
-import { View, FlatList, RefreshControl, ToastAndroid } from "react-native";
+import { View, FlatList, RefreshControl } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useState, useCallback, useRef, lazy } from "react";
 import moment from "moment";
 
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
-import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
+import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
 import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";

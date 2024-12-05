@@ -1,21 +1,16 @@
 import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
-import { getTimeGap, getDistanceGap } from "../../utils/calculateGap";
+import {
+  getDistanceGap,
+  getTimeGap,
+} from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import InfoField from "./InfoField";
 import moment from "moment";
 
 const EMPTY_PLACEHOLDER = " - ";
 
-/**
- * Component that displays a dialog with information about a marker.
- *
- * @param {boolean} props.visible - Whether the dialog should be visible.
- * @param {Function} props.hideDialog - The function to call when the dialog should be hidden.
- * @param {Object} props.selectedMarker - The selected marker to display information about selected alert.
- * @param {Object} props.userLocation - The user's location.
- */
 const MarkerDialog = ({
   visible,
   hideDialog,
@@ -29,7 +24,6 @@ const MarkerDialog = ({
     longitude: selectedMarker?.longitude,
   };
 
-  // // Get the full name of the selected marker, using the first and last name if available, otherwise use the EMPTY_PLACEHOLDER.
   const FULL_NAME = `${selectedMarker?.bystander?.first_name} ${selectedMarker?.bystander?.last_name}`;
   const name = useMemo(
     () =>
