@@ -15,6 +15,7 @@ import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import AppBarTitle from "../../components/ui/AppBarTitle";
+import useCheckVerification from "../../hooks/cpr/useCheckVerification";
 const ConfirmationDialog = lazy(() =>
   import("../../components/ui/ConfirmationDialog")
 );
@@ -25,22 +26,22 @@ const UserProfileCard = lazy(() =>
 const ProfileScreen = () => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
-  // Create references for the confirmation dialogs
+
+  const [loading, setLoading] = useState(false);
   const [isLogoutDialogVisible, setIsLogoutDialogVisible] = useState(false);
   const [isNavConfirmationDialogVisible, setIsNavConfirmationDialogVisible] =
     useState(false);
-
   const hideLogoutDialog = () => setIsLogoutDialogVisible(false);
   const showLogoutDialog = () => setIsLogoutDialogVisible(true);
 
-  const [loading, setLoading] = useState(false);
+  useCheckVerification();
+  const userIsVerified = useBoundStore((state) => state.userIsVerified);
 
   const hideNavConfirmationDialog = () =>
     setIsNavConfirmationDialogVisible(false);
   const showNavConfirmationDialog = () =>
     setIsNavConfirmationDialogVisible(true);
 
-  const userMetaData = useBoundStore((state) => state.userMetaData);
   const removeSession = useBoundStore((state) => state.removeSession);
   const { removeState } = useUserMetadata();
   const removeProfilePicturePath = useBoundStore(
@@ -105,45 +106,13 @@ const ProfileScreen = () => {
       <AppBarTitle>Profile</AppBarTitle>
     </AppBar>
   );
-  const [status, setStatus] = useState();
-
-  const veriStatus = async () => {
-    const { data, error } = await supabase
-      .from("bystander")
-      .select()
-      .eq("id", userMetaData["bystanderId"]);
-
-    if (!error) {
-      console.log("stats: ", data[0]["isVerified"]);
-      setStatus(data[0]["isVerified"]);
-    }
-  };
-  useEffect(() => {
-    veriStatus();
-
-    const channels = supabase
-      .channel("bystander-veri-status-all-channel")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "bystander" },
-        (payload) => {
-          console.log("Change received!", payload["new"]["isVerified"]);
-          setStatus(payload["new"]["isVerified"]);
-        }
-      )
-      .subscribe();
-
-    return () => {
-      channels.unsubscribe();
-    };
-  }, []);
 
   return (
     <Layout scrollable AppbarComponent={CustomAppBar}>
       <UserProfileCard
         renderFooter={() => (
           <VerifiedIndicator
-            isVerified={status}
+            isVerified={userIsVerified}
             onPress={showNavConfirmationDialog}
           />
         )}

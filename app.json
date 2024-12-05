@@ -40,6 +40,12 @@
         {
           "photosPermission": "The app accesses your photos to change your profile picture."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Sipiar to use your location."
+        }
       ]  
     ]
   }
