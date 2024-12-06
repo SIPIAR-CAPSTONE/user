@@ -10,8 +10,10 @@ const ListItem = ({
   subTitleSize = 10,
   desc,
   descSize = 12,
-  renderIcon,
+  renderTrailerIcon,
+  trailerIconStyle,
   renderActionIcon,
+  actionIconStyle,
   size = "small",
   onPress,
   contentContainerStyle,
@@ -53,7 +55,6 @@ const ListItem = ({
         style={[
           styles.container,
           {
-            backgroundColor: theme.colors.secondary,
             borderRadius: ROUNDNESS_STYLE,
             paddingHorizontal: sizeStyle[size].paddingHorizontal,
             paddingVertical: sizeStyle[size].paddingVertical,
@@ -64,7 +65,9 @@ const ListItem = ({
         ]}
       >
         {/* Right Side: Leading Icon */}
-        {renderIcon && <View>{renderIcon()}</View>}
+        {renderTrailerIcon && (
+          <View style={trailerIconStyle}>{renderTrailerIcon()}</View>
+        )}
         {/* Center to last Side: Text content */}
         <View style={styles.content}>
           {/* Title and subtitle */}
@@ -110,7 +113,9 @@ const ListItem = ({
         </View>
         {/* Left Side: action icon */}
         {renderActionIcon && (
-          <View style={styles.actionIcon}>{renderActionIcon()}</View>
+          <View style={[styles.actionIcon, actionIconStyle]}>
+            {renderActionIcon()}
+          </View>
         )}
       </View>
     </TouchableRipple>
@@ -123,6 +128,7 @@ const stylesheet = createStyleSheet((theme) => ({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: theme.colors.secondary,
   },
   content: {
     flex: 1,

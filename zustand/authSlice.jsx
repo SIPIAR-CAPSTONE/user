@@ -1,5 +1,7 @@
-import { LargeSecureStore } from "../utils/SecureLocalStorage";
 import { supabase } from "../utils/supabase/config";
+import { LargeSecureStore } from "../utils/SecureLocalStorage";
+
+const largeSecureStore = new LargeSecureStore();
 
 const DEFAULT_SIGNUP_FORM = {
   firstName: "",
@@ -16,13 +18,14 @@ const DEFAULT_SIGNUP_FORM = {
   confirmPassword: "",
 };
 
-export const createAuthSlice = (set) => ({
+export const createAuthSlice = (set, get) => ({
   session: null,
   resetPasswordSession: null,
   appIsReady: false,
   passwordResetEmail: "",
   signupForm: DEFAULT_SIGNUP_FORM,
   signupCurrentStep: 0,
+  userIsVerified: false,
   userMetaData: {
     bystanderId: "",
     firstName: "",
@@ -45,17 +48,19 @@ export const createAuthSlice = (set) => ({
       signupForm: { ...state.signupForm, [key]: newValue },
     })),
   setPasswordResetEmail: (value) => set({ passwordResetEmail: value }),
-  setSession: (encryptedSession) => {
+  setSession: async (session) => {
+    const encryptedSession = await largeSecureStore.setItem("session", session);
     set({ session: encryptedSession });
   },
   restoreSession: async () => {
-    const largeSecureStore = new LargeSecureStore();
-
     const { data } = await supabase.auth.getSession();
+
     if (data && data.session) {
       const sessionUserMetaData = data.session["user"]["user_metadata"];
+
       set({
         userMetaData: {
+          bystanderId: data.session["user"]["id"],
           firstName: sessionUserMetaData["first_name"],
           middleName: sessionUserMetaData["middle_name"],
           lastName: sessionUserMetaData["last_name"],
@@ -69,12 +74,12 @@ export const createAuthSlice = (set) => ({
         },
       });
       set({ session: data.session });
-      await largeSecureStore.setItem("session", JSON.stringify(data.session));
+      await largeSecureStore.setItem("session", data.session);
+    } else {
+      await get().removeSession();
     }
   },
   restoreSessionOffline: async () => {
-    const largeSecureStore = new LargeSecureStore();
-
     const session = await largeSecureStore.getItem("session");
     if (session) {
       const sessionUserMetaData = session["user"]["user_metadata"];
@@ -93,10 +98,13 @@ export const createAuthSlice = (set) => ({
         },
       });
       set({ session: session });
+    } else {
+      await get().removeSession();
     }
   },
   removeSession: async () => {
     set({ session: null });
+    await largeSecureStore.removeItem("session");
   },
   setAppIsReady: (value) => set({ appIsReady: value }),
   setResetPasswordSession: (value) => set({ resetPasswordSession: value }),
@@ -109,4 +117,5 @@ export const createAuthSlice = (set) => ({
   },
   setUserMetaData: (value) => set({ userMetaData: value }),
   removeUserMetaData: () => set({ userMetaData: DEFAULT_SIGNUP_FORM }),
+  setAccountIsVerified: (value) => set({ userIsVerified: value }),
 });

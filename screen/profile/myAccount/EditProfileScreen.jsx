@@ -9,7 +9,6 @@ import moment from "moment";
 import { useStyles, createStyleSheet } from "../../../hooks/useStyles";
 import Button from "../../../components/ui/Button";
 import cdoBarangayData from "../../../utils/cdoBarangayData";
-import EditUserProfileCard from "../../../components/profile/EditUserProfileCard";
 import SectionHeader from "../../../components/profile/SectionHeader";
 import { supabase } from "../../../utils/supabase/config";
 import useBoundStore from "../../../zustand/useBoundStore";
@@ -26,6 +25,9 @@ import AppBarTitle from "../../../components/ui/AppBarTitle";
 import useConfirmBack from "../../../hooks/useConfirmBack";
 const ConfirmationDialog = lazy(() =>
   import("../../../components/ui/ConfirmationDialog")
+);
+const EditUserProfileCard = lazy(() =>
+  import("../../../components/profile/EditUserProfileCard")
 );
 
 const fields = [

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ToastAndroid, View } from "react-native";
 import { useCallback, useState } from "react";
 
 import OverallScoreBar from "../../components/cpr/OverallScoreBar";
@@ -13,6 +13,9 @@ import useCpr from "../../hooks/cpr/useCpr";
 import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 import usePreventBack from "../../hooks/usePreventBack";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
+import useLocation from "../../hooks/useLocation";
+import useSendEmergencyAlert from "../../hooks/cpr/useSendEmergencyAlert";
+import useBoundStore from "../../zustand/useBoundStore";
 
 function CprScreen() {
   usePreventBack();
@@ -42,18 +45,26 @@ function CprScreen() {
     start: startCountdown,
   } = useCountdown(3, false, startCpr);
 
+  const { userLocation } = useLocation();
+  const { sendEmergencyAlertRequest } = useSendEmergencyAlert();
+  const userIsVerified = useBoundStore((state) => state.userIsVerified);
+
   const handleStartCpr = () => {
-    const ifUserIsValidated = true; //!temp
-    if (ifUserIsValidated) {
-      sendEmergencyAlertRequest();
+    console.log(1);
+    if (!userIsVerified) {
+      ToastAndroid.show(
+        "Failed to send emergency alert: your account is not verified",
+        ToastAndroid.LONG
+      );
+    } else if (userIsVerified) {
+      sendEmergencyAlertRequest(
+        userLocation?.latitude,
+        userLocation?.longitude
+      );
     }
 
     setIsConfirmDialogVisible(false);
     startCountdown();
-  };
-
-  const sendEmergencyAlertRequest = () => {
-    console.log("send emergency alert request to admin");
   };
 
   const handleEndCpr = useCallback(() => {

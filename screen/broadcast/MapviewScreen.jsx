@@ -5,47 +5,51 @@ import { StyleSheet, Image } from "react-native";
 import MarkerDialog from "../../components/broadcast/MarkerDialog";
 import useLocation from "../../hooks/useLocation";
 import NotInternetAlert from "../../components/common/NoInternetAlert";
+import useBroadcast from "../../hooks/useBroadcast";
 
 const MapviewScreen = ({ route }) => {
   const { initialCoordinate, selectedAlertId } = route.params;
-  const [alerts, setAlerts] = useState(TEMP_ALERTS_DATA);
+
   const [region, setRegion] = useState({
-    latitude: Number(initialCoordinate.latitude),
-    longitude: Number(initialCoordinate.longitude),
+    latitude: initialCoordinate?.latitude,
+    longitude: initialCoordinate?.longitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const { emergencyAlerts } = useBroadcast();
 
   //location of the user of the device
   const { userLocation } = useLocation();
-  const initialSelectedAlert = alerts.find(
-    (alert) => alert.id === selectedAlertId
-  );
-  const [selectedAlert, setSelectedAlert] = useState(initialSelectedAlert);
-  const [isDialogVisible, setIsDialogVisible] = useState(true);
+  const [selectedAlert, setSelectedAlert] = useState({});
+  const [isDialogVisible, setIsDialogVisible] = useState(false);
   const showDialog = (alert) => {
     setIsDialogVisible(true);
     setSelectedAlert(alert);
   };
 
   const hideDialog = () => {
-    //hide the dialog first before removing all data pf selected alert
-    //to prevent the flickering issue
     setIsDialogVisible(false);
-    setTimeout(() => setSelectedAlert(null), 200);
+    setSelectedAlert(null);
   };
 
-  const alertMarkers = alerts.map((alert) => {
+  const alertMarkers = emergencyAlerts.map((alert) => {
     return (
       <Marker
-        key={alert.id}
+        key={alert.broadcast_id}
         onPress={() => showDialog(alert)}
-        coordinate={{ ...alert.coordinate }}
+        coordinate={{ latitude: alert.latitude, longitude: alert.longitude }}
       >
-        <Image
-          source={require("../../assets/images/MapPin.png")}
-          style={styles.pin}
-        />
+        {alert.broadcast_id === selectedAlertId ? (
+          <Image
+            source={require("../../assets/images/MapPinActive.png")}
+            style={styles.pin}
+          />
+        ) : (
+          <Image
+            source={require("../../assets/images/MapPin.png")}
+            style={styles.pin}
+          />
+        )}
       </Marker>
     );
   });
@@ -62,17 +66,18 @@ const MapviewScreen = ({ route }) => {
         showsScale
         showsBuildings
         showsCompass
+        showsTraffic
       >
         {alertMarkers}
       </MapView>
-
-      <MarkerDialog
-        visible={isDialogVisible}
-        hideDialog={hideDialog}
-        selectedMarker={selectedAlert}
-        userLocation={userLocation}
-      />
-
+      {isDialogVisible && (
+        <MarkerDialog
+          visible={isDialogVisible}
+          hideDialog={hideDialog}
+          selectedMarker={selectedAlert}
+          userLocation={userLocation}
+        />
+      )}
       <NotInternetAlert />
     </>
   );
@@ -91,67 +96,3 @@ const styles = StyleSheet.create({
     height: 40,
   },
 });
-
-//!remove this later
-const TEMP_ALERTS_DATA = [
-  {
-    id: 1,
-    distance: 500,
-    createdAt: "2024-07-01T05:22:31.269Z",
-    address: "Elmwood Park, 24 Oak Street",
-    condition: true,
-    first_name: "Alex",
-    last_name: "Smith",
-    coordinate: { latitude: 8.424359, longitude: 124.637703 },
-  },
-  {
-    id: 2,
-    distance: 520,
-    createdAt: "2024-07-01T07:12:45.569Z",
-    address: "Greenwood, 18 Pine Avenue",
-    condition: true,
-    first_name: "Maria",
-    last_name: "Johnson",
-    coordinate: { latitude: 8.43456, longitude: 124.64 },
-  },
-  {
-    id: 3,
-    distance: 480,
-    createdAt: "2024-07-01T08:25:10.849Z",
-    address: "Riverside, 35 Maple Street",
-    condition: true,
-    first_name: "John",
-    last_name: "Doe",
-    coordinate: { latitude: 8.41, longitude: 124.63 },
-  },
-  {
-    id: 4,
-    distance: 510,
-    createdAt: "2024-07-01T09:45:23.123Z",
-    address: "Lakeside, 22 Willow Road",
-    condition: false,
-    first_name: "Emma",
-    last_name: "Brown",
-    coordinate: { latitude: 8.42, longitude: 124.62 },
-  },
-  {
-    id: 5,
-    distance: 530,
-    createdAt: "2024-07-01T11:15:33.647Z",
-    address: "Springfield, 40 Cedar Lane",
-    condition: true,
-    first_name: "Michael",
-    last_name: "Wilson",
-    coordinate: { latitude: 8.444444, longitude: 124.65 },
-  },
-  {
-    id: 6,
-    distance: 470,
-    createdAt: "2024-07-01T12:30:49.512Z",
-    address: "Hillcrest, 50 Elm Street",
-    condition: false,
-    first_name: "Sophia",
-    last_name: "Lee",
-    coordinate: { latitude: 8.46, longitude: 124.67 },
-  },
-];

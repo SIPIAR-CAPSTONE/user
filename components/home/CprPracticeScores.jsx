@@ -2,42 +2,13 @@ import { View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import moment from "moment";
+import Color from "../../utils/Color";
+import EmptyLabel from "../ui/EmptyLabel";
 
-const CprPracticeScores = () => {
+export default function CprPracticeScores() {
   const { styles } = useStyles(stylesheet);
-
-  const PracticeScores = TEMP_SCORES_DATA.map((item) => {
-    const totalCompression = item.totalCompression;
-    const createdAtDate = new Date(item.createdAt);
-    const formattedDate = createdAtDate.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    });
-
-    const score = `${item.perfectOverallScore}/${totalCompression}`;
-
-    return (
-      <View key={item.id} style={styles.listItem}>
-        <View style={styles.listItemCard}>
-          <Text style={styles.cardLabel}>DATE</Text>
-          <Text style={[styles.cardValue, styles.date]}>
-            {formattedDate ? formattedDate : "-"}
-          </Text>
-        </View>
-        <View style={styles.listItemCard}>
-          <Text style={styles.cardLabel}>SCORE</Text>
-          <Text style={[styles.cardValue, styles.score]}>{score}</Text>
-        </View>
-        <View style={styles.listItemCard}>
-          <Text style={styles.cardLabel}>DURATION</Text>
-          <Text style={[styles.cardValue, styles.duration]}>
-            {item.totalDuration ? `${item.totalDuration}s` : "0"}
-          </Text>
-        </View>
-      </View>
-    );
-  });
 
   return (
     <View style={styles.cprPracticeScores}>
@@ -46,12 +17,65 @@ const CprPracticeScores = () => {
           Recent Practice Scores
         </Text>
       </View>
-      <View style={styles.list}>{PracticeScores}</View>
+      <View style={styles.list}>
+        <PracticeScores />
+      </View>
     </View>
   );
-};
+}
 
-export default CprPracticeScores;
+function PracticeScores() {
+  const { styles, theme } = useStyles(stylesheet);
+
+  if (TEMP_SCORES_DATA.length === 0) return <EmptyLabel label="No Scores" />;
+
+  return TEMP_SCORES_DATA.map((item) => {
+    const totalCompression = item.totalCompression;
+    const formattedDate = moment(item.createdAt).format("LL");
+    const score = `${item.perfectOverallScore}/${totalCompression}`;
+    const progress = (item.perfectOverallScore / totalCompression) * 100;
+    const progressColor =
+      progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red;
+
+    const Content = () => (
+      <View>
+        <Text>{progress}%</Text>
+      </View>
+    );
+
+    return (
+      <View key={item.id} style={styles.listItem}>
+        <View style={styles.leftContent}>
+          <AnimatedCircularProgress
+            size={75}
+            width={7}
+            fill={progress ? progress : 0}
+            tintColor={progressColor}
+            backgroundColor={theme.colors.text3}
+            rotation={0}
+          >
+            {Content}
+          </AnimatedCircularProgress>
+        </View>
+        <View style={styles.rightContent}>
+          <Text style={styles.date}>{formattedDate ? formattedDate : "-"}</Text>
+          <View style={styles.listItemCards}>
+            <View style={styles.listItemCard}>
+              <Text style={styles.cardLabel}>Score</Text>
+              <Text style={styles.cardValue}>{score}</Text>
+            </View>
+            <View style={styles.listItemCard}>
+              <Text style={styles.cardLabel}>Duration</Text>
+              <Text style={styles.cardValue}>
+                {item.totalDuration ? `${item.totalDuration}s` : "0"}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  });
+}
 
 const stylesheet = createStyleSheet((theme) => ({
   cprPracticeScores: {
@@ -70,38 +94,45 @@ const stylesheet = createStyleSheet((theme) => ({
     rowGap: theme.spacing.sm,
   },
   listItem: {
-    height: 80,
+    height: 100,
     flexDirection: "row",
-    padding: theme.spacing.sm,
-    columnGap: theme.spacing.sm,
+    paddingVertical: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.lg,
+    columnGap: theme.spacing.xxl,
     borderRadius: theme.borderRadius.lg,
     backgroundColor: theme.colors.secondary,
   },
+  leftContent: {
+    justifyContent: "center",
+  },
+  rightContent: {
+    flex: 1,
+    rowGap: theme.spacing.xxs,
+  },
+  date: {
+    fontWeight: "bold",
+    color: theme.colors.text2,
+    marginStart: 6,
+  },
+  listItemCards: {
+    flexDirection: "row",
+    columnGap: theme.spacing.base,
+  },
   listItemCard: {
     flex: 1,
-    borderRadius: theme.borderRadius.md,
+    borderRadius: theme.borderRadius.base,
     backgroundColor: theme.colors.elevation.level3,
     alignItems: "center",
-    paddingVertical: theme.spacing.xs,
+    paddingVertical: theme.spacing.xxs,
+    minWidth: 80,
   },
   cardLabel: {
     fontSize: theme.fontSize.xxs,
-    fontWeight: "bold",
+    fontWeight: "semibold",
     color: theme.colors.primary,
   },
   cardValue: {
     color: theme.colors.text,
-    fontWeight: "bold",
-  },
-  date: {
-    marginTop: 4,
-    fontSize: theme.fontSize.xs,
-  },
-  score: {
-    marginTop: 2,
-    fontSize: theme.fontSize.sm,
-  },
-  duration: {
     marginTop: 2,
     fontSize: theme.fontSize.sm,
   },
@@ -111,28 +142,28 @@ const TEMP_SCORES_DATA = [
   {
     id: 1,
     totalCompression: 12,
-    perfectOverallScore: 0,
+    perfectOverallScore: 12,
     totalDuration: 60,
     createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 2,
     totalCompression: 12,
-    perfectOverallScore: 0,
+    perfectOverallScore: 9,
     totalDuration: 60,
     createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 3,
     totalCompression: 12,
-    perfectOverallScore: 0,
+    perfectOverallScore: 6,
     totalDuration: 60,
     createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 4,
     totalCompression: 12,
-    perfectOverallScore: 0,
+    perfectOverallScore: 3,
     totalDuration: 60,
     createdAt: "2024-07-01T06:12:45.569Z",
   },

@@ -5,7 +5,6 @@ import { useState } from "react";
 import FormHeader from "../../common/FormHeader";
 import useBoundStore from "../../../zustand/useBoundStore";
 import { supabase } from "../../../utils/supabase/config";
-import { LargeSecureStore } from "../../../utils/SecureLocalStorage";
 import useUserMetadata from "../../../hooks/useUserMetadata";
 import TextInput from "../../ui/TextInput";
 import Button from "../../ui/Button";
@@ -81,12 +80,7 @@ const StepThreeContent = () => {
         setServerError(error.message);
       } else if (!error) {
         //* after successful signup, store the encrypted session locally and as global state
-        const largeSecureStore = new LargeSecureStore();
-        encryptedSession = await largeSecureStore.setItem(
-          "session",
-          JSON.stringify(data["session"])
-        );
-        setSession(encryptedSession);
+        await setSession(data["session"]);
 
         //* set session global state variables
         setState(data["session"]);

@@ -52,10 +52,7 @@ const SettingsScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon
-        name="arrow-back"
-        onPress={() => navigation.goBack()}
-      />
+      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
       <AppBarTitle>Settings</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>
@@ -67,7 +64,7 @@ const SettingsScreen = () => {
       <ListItem
         size="medium"
         title="Notification"
-        renderIcon={() => (
+        renderTrailerIcon={() => (
           <CircularIcon name="notifications" variant="primary" size={14} />
         )}
         renderActionIcon={() => <NextActionIcon />}
@@ -86,7 +83,7 @@ const SettingsScreen = () => {
       <ListItem
         size="medium"
         title="Appearance"
-        renderIcon={() => (
+        renderTrailerIcon={() => (
           <CircularIcon name="color-palette" variant="primary" size={14} />
         )}
         renderActionIcon={() => <NextActionIcon />}
@@ -103,7 +100,7 @@ const SettingsScreen = () => {
       <ListItem
         size="medium"
         title="Report Issue"
-        renderIcon={() => (
+        renderTrailerIcon={() => (
           <CircularIcon name="bug-sharp" variant="primary" size={14} />
         )}
         renderActionIcon={() => <NextActionIcon />}

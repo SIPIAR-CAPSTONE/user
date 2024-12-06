@@ -1,13 +1,13 @@
 import { View } from "react-native";
 import { TouchableRipple, Avatar } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+
 import useImagePicker from "../../hooks/useImagePicker";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 
 const EditUserProfileCard = ({ name, image, setImage }) => {
   const { styles, theme } = useStyles(stylesheet);
   const firstNameInitial = name[0];
-
   const { pickImage } = useImagePicker();
 
   // The button for opening image library to select image
