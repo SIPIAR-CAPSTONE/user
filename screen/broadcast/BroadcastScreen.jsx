@@ -87,10 +87,10 @@ const BroadcastScreen = () => {
             selectedAlertId: item.broadcast_id,
           })
         }
-        renderIcon={() => <DistanceIcon distance={distanceGap} />}
+        renderTrailerIcon={() => <DistanceIcon distance={distanceGap} />}
+        trailerIconStyle={{ width: 47 }}
         renderActionIcon={() => <NextActionIcon />}
-        endSpacing={75}
-        rightIconMinWidth={45}
+        actionIconStyle={{ marginStart: 75 }}
       />
     );
   };

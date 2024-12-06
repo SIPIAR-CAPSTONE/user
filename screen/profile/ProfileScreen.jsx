@@ -122,7 +122,7 @@ const ProfileScreen = () => {
         <ListItem
           size="medium"
           title="My Account"
-          renderIcon={() => (
+          renderTrailerIcon={() => (
             <CircularIcon name="person" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
@@ -131,7 +131,7 @@ const ProfileScreen = () => {
         <ListItem
           size="medium"
           title="Settings"
-          renderIcon={() => (
+          renderTrailerIcon={() => (
             <CircularIcon name="settings" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
@@ -140,7 +140,7 @@ const ProfileScreen = () => {
         <ListItem
           size="medium"
           title="Terms and Conditions"
-          renderIcon={() => (
+          renderTrailerIcon={() => (
             <CircularIcon name="document" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
@@ -149,7 +149,7 @@ const ProfileScreen = () => {
         <ListItem
           size="medium"
           title="Privacy Policy"
-          renderIcon={() => (
+          renderTrailerIcon={() => (
             <CircularIcon name="shield-checkmark" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}
@@ -158,7 +158,7 @@ const ProfileScreen = () => {
         <ListItem
           size="medium"
           title="Sign Out"
-          renderIcon={() => (
+          renderTrailerIcon={() => (
             <CircularIcon name="exit" variant="primary" size={12} />
           )}
           renderActionIcon={() => <NextActionIcon />}

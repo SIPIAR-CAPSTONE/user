@@ -10,14 +10,14 @@ const ListItem = ({
   subTitleSize = 10,
   desc,
   descSize = 12,
-  renderIcon,
+  renderTrailerIcon,
+  trailerIconStyle,
   renderActionIcon,
+  actionIconStyle,
   size = "small",
   onPress,
   contentContainerStyle,
   roundness,
-  endSpacing,
-  rightIconMinWidth,
 }) => {
   const { styles, theme } = useStyles(stylesheet);
 
@@ -65,10 +65,8 @@ const ListItem = ({
         ]}
       >
         {/* Right Side: Leading Icon */}
-        {renderIcon && (
-          <View style={rightIconMinWidth && { minWidth: rightIconMinWidth }}>
-            {renderIcon()}
-          </View>
+        {renderTrailerIcon && (
+          <View style={trailerIconStyle}>{renderTrailerIcon()}</View>
         )}
         {/* Center to last Side: Text content */}
         <View style={styles.content}>
@@ -115,12 +113,7 @@ const ListItem = ({
         </View>
         {/* Left Side: action icon */}
         {renderActionIcon && (
-          <View
-            style={[
-              styles.actionIcon,
-              endSpacing && { marginStart: endSpacing },
-            ]}
-          >
+          <View style={[styles.actionIcon, actionIconStyle]}>
             {renderActionIcon()}
           </View>
         )}
