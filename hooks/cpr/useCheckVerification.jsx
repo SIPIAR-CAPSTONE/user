@@ -12,12 +12,13 @@ export default function useCheckVerification() {
 
   const checkAccountIfVerified = async () => {
     const { data, error } = await supabase
-      .from("bystander")
+      .from("BYSTANDER")
       .select()
-      .eq("id", userMetaData["bystanderId"]);
+      .eq("user_id", userMetaData["bystanderId"]);
 
     if (!error) {
-      const isVerified = data[0]["isVerified"];
+      const isVerified = data[0]["is_verified"];
+      console.log('is verified - id', isVerified);
       setAccountIsVerified(isVerified);
     }
   };
