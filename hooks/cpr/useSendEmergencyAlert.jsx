@@ -5,11 +5,9 @@ import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
 
 export default function useSendEmergencyAlert() {
-  const session = useBoundStore((state) => state.session);
-  const userId = session?.user?.id;
+  const userId = useBoundStore((state) => state.userMetaData['bystanderId']);
 
   const sendEmergencyAlertRequest = async (userLatitude, userLongitude) => {
-    const currentDate = moment();
 
     if (!userLatitude || !userLongitude) {
       ToastAndroid.show(
@@ -20,15 +18,15 @@ export default function useSendEmergencyAlert() {
     }
 
     try {
-      const { error, status } = await supabase.from("broadcast").insert({
+
+      //! ADDRESS, BARANGAY, AND LANDMARK SHOULD BE DYNAMIC
+      const { error, status } = await supabase.from("BROADCAST").insert({
         user_id: userId,
         latitude: userLatitude,
         longitude: userLongitude,
         address: "test address",
         barangay: "test barangay",
-        landmark: "test landmark",
-        isActive: "Yes",
-        created_at: currentDate,
+        landmark: "test landmark"
       });
 
       if (error) {

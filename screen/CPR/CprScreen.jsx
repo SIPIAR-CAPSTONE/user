@@ -16,6 +16,7 @@ import useFirstTimePopup from "../../hooks/useFirstTimePopup";
 import useLocation from "../../hooks/useLocation";
 import useSendEmergencyAlert from "../../hooks/cpr/useSendEmergencyAlert";
 import useBoundStore from "../../zustand/useBoundStore";
+import useCheckVerification from "../../hooks/cpr/useCheckVerification";
 
 function CprScreen() {
   usePreventBack();
@@ -47,6 +48,8 @@ function CprScreen() {
 
   const { userLocation } = useLocation();
   const { sendEmergencyAlertRequest } = useSendEmergencyAlert();
+  useCheckVerification();
+
   const userIsVerified = useBoundStore((state) => state.userIsVerified);
 
   const handleStartCpr = () => {
@@ -57,11 +60,15 @@ function CprScreen() {
         ToastAndroid.LONG
       );
     } else if (userIsVerified) {
-      sendEmergencyAlertRequest(
-        userLocation?.latitude,
-        userLocation?.longitude
-      );
+      // added delayer to await current location because dili niya makuha ditso
+      setTimeout(() => {
+        sendEmergencyAlertRequest(
+          userLocation?.latitude,
+          userLocation?.longitude
+        );
+      }, 3000);
     }
+    
 
     setIsConfirmDialogVisible(false);
     startCountdown();
