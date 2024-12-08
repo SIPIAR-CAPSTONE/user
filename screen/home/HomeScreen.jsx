@@ -6,13 +6,15 @@ import EmergencyAlerts from "../../components/home/EmergencyAlerts";
 import ContactCards from "../../components/home/ContactCards";
 import CprPracticeScores from "../../components/home/CprPracticeScores";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
+import useCheckVerification from "../../hooks/cpr/useCheckVerification";
 
 const HomeScreen = ({ navigation }) => {
   useFirstTimePopup({
     key: "TermAndConditions",
     handleFalse: () => navigation.navigate("TermsAndConditions"),
   });
-
+  useCheckVerification();
+ 
   const CustomAppBar = () => (
     <AppBar>
       <LogoTitle />

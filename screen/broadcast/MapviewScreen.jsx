@@ -2,12 +2,13 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import { useState } from "react";
 import { StyleSheet, Image } from "react-native";
 
-import MarkerDialog from "../../components/broadcast/MarkerDialog";
 import useLocation from "../../hooks/useLocation";
+import MarkerDialog from "../../components/broadcast/MarkerDialog";
 import NotInternetAlert from "../../components/common/NoInternetAlert";
 import useBroadcast from "../../hooks/useBroadcast";
 
 const MapviewScreen = ({ route }) => {
+  const { userLocation } = useLocation();
   const { initialCoordinate, selectedAlertId } = route.params;
 
   const [region, setRegion] = useState({
@@ -19,7 +20,7 @@ const MapviewScreen = ({ route }) => {
   const { emergencyAlerts } = useBroadcast();
 
   //location of the user of the device
-  const { userLocation } = useLocation();
+
   const [selectedAlert, setSelectedAlert] = useState({});
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const showDialog = (alert) => {

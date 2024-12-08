@@ -15,10 +15,10 @@ import useBroadcast from "../../hooks/useBroadcast";
 const ALERTS_LIMIT = 5;
 
 const EmergencyAlerts = () => {
+  const { userLocation } = useLocation();
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
-  const { userLocation } = useLocation();
-  const { emergencyAlerts, loading, refecthAlerts } = useBroadcast();
+  const { emergencyAlerts, refecthAlerts } = useBroadcast();
   const recentEmergencyAlerts = useMemo(
     () =>
       emergencyAlerts
