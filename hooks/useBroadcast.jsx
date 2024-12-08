@@ -12,12 +12,10 @@ export default function useBroadcast() {
   const fetchAlerts = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.from("BROADCAST").select(
-        `
+      const { data, error } = await supabase.from("BROADCAST").select(`
         *,
         bystander: user_id (first_name, last_name)
-        `
-      );
+      `);
 
       if (error) {
         ToastAndroid.show(

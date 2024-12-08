@@ -29,7 +29,7 @@ const EmergencyAlerts = () => {
 
   const EmergencyAlertsList = recentEmergencyAlerts.map((item) => {
     const id = item?.broadcast_id;
-    const userFullName = `${item?.bystander?.first_name} ${item?.bystander?.last_name}`;
+    const userFullName = `${item?.USER?.first_name} ${item?.USER?.last_name}`;
     const coordinate = {
       latitude: item?.latitude,
       longitude: item?.longitude,

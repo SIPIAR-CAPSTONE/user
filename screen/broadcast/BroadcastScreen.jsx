@@ -36,11 +36,11 @@ const BroadcastScreen = () => {
 
   const sortedAlerts = emergencyAlerts.sort((a, b) => {
     if (selectedSort === "name") {
-      return a.bystander.first_name.localeCompare(b.bystander.first_name);
+      return a.USER.first_name.localeCompare(b.USER.first_name);
     } else if (selectedSort === "address") {
       return String(a.address).localeCompare(b.address);
     } else if (selectedSort === "timeRequested") {
-      return String(b.created_at).localeCompare(a.created_at);
+      return String(b.date).localeCompare(a.date);
     } else if (selectedSort === "distance") {
       //split to remove the distance unit like m and km
       const bDistance = getDistanceGap(userLocation, {
@@ -65,7 +65,7 @@ const BroadcastScreen = () => {
   }, []);
 
   const renderAlertItem = ({ item }) => {
-    const userFullName = `${item.bystander.first_name} ${item.bystander.last_name}`;
+    const userFullName = `${item?.USER?.first_name} ${item?.USER?.last_name}`;
     const alertCoordinate = {
       latitude: item.latitude,
       longitude: item.longitude,
