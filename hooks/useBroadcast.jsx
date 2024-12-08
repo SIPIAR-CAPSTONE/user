@@ -14,7 +14,7 @@ export default function useBroadcast() {
       setLoading(true);
       const { data, error } = await supabase.from("BROADCAST").select(`
         *,
-        bystander: user_id (first_name, last_name)
+        USER: user_id (first_name, last_name)
       `);
 
       if (error) {
