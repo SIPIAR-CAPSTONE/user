@@ -24,16 +24,16 @@ const MarkerDialog = ({
     longitude: selectedMarker?.longitude,
   };
 
-  const FULL_NAME = `${selectedMarker?.bystander?.first_name} ${selectedMarker?.bystander?.last_name}`;
+  const FULL_NAME = `${selectedMarker?.USER?.first_name} ${selectedMarker?.USER?.last_name}`;
   const name = useMemo(
     () =>
-      selectedMarker?.bystander?.first_name ||
-      selectedMarker?.bystander?.last_name
+      selectedMarker?.USER?.first_name ||
+      selectedMarker?.USER?.last_name
         ? FULL_NAME
         : EMPTY_PLACEHOLDER,
     [
-      selectedMarker?.bystander?.first_name,
-      selectedMarker?.bystander?.last_name,
+      selectedMarker?.USER?.first_name,
+      selectedMarker?.USER?.last_name,
     ]
   );
 
@@ -47,18 +47,18 @@ const MarkerDialog = ({
 
   const timeGap = useMemo(
     () =>
-      selectedMarker?.created_at
-        ? getTimeGap(selectedMarker?.created_at)
+      selectedMarker?.date
+        ? getTimeGap(selectedMarker?.date)
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.created_at]
+    [selectedMarker?.date]
   );
 
   const dateRequested = useMemo(
     () =>
-      selectedMarker?.created_at
-        ? moment(selectedMarker?.created_at).format("LL")
+      selectedMarker?.date
+        ? moment(selectedMarker?.date).format("LL")
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.created_at]
+    [selectedMarker?.date]
   );
 
   return (
