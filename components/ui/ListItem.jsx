@@ -147,6 +147,5 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   title: {
     flexGrow: 1,
-    backgroundColor: "red",
   },
 }));
