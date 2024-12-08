@@ -1,8 +1,9 @@
 import { ToastAndroid } from "react-native";
+import moment from "moment";
 
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
-import moment from "moment";
+import { reverseGeocode } from "../../screen/learn/utils";
 
 export default function useSendEmergencyAlert() {
   const userId = useBoundStore((state) => state.userMetaData["bystanderId"]);
@@ -17,6 +18,11 @@ export default function useSendEmergencyAlert() {
     }
 
     try {
+      const address = await reverseGeocode({
+        latitude: userLatitude,
+        longitude: userLongitude,
+      });
+
       //* ADDRESS, BARANGAY, AND LANDMARK SHOULD BE DYNAMIC
       const currentDate = moment();
 
@@ -24,9 +30,9 @@ export default function useSendEmergencyAlert() {
         user_id: userId,
         latitude: userLatitude,
         longitude: userLongitude,
-        address: "test address",
-        barangay: "test barangay",
-        landmark: "test landmark",
+        address: address[0]?.formattedAddress ?? "",
+        barangay: "",
+        landmark: "",
         date: currentDate,
       });
 

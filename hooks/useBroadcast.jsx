@@ -46,10 +46,10 @@ export default function useBroadcast() {
   useEffect(() => {
     fetchAlerts();
 
-    //refetch every 20 seconds
+    //refetch every 10 seconds
     pollingInterval = setInterval(() => {
       fetchAlerts();
-    }, 20000);
+    }, 10000);
 
     return () => {
       clearInterval(pollingInterval);
@@ -68,7 +68,7 @@ export default function useBroadcast() {
       .channel("broadcast-all-channel")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "broadcast" },
+        { event: "*", schema: "public", table: "BROADCAST" },
         async () => {
           fetchAlerts();
         }

@@ -139,6 +139,13 @@ const stylesheet = createStyleSheet((theme) => ({
     columnGap: 6,
   },
   actionIcon: {
+    height: "100%",
     alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.secondary,
+    overflow: "hidden",
+  },
+  title: {
+    flexGrow: 1,
   },
 }));
