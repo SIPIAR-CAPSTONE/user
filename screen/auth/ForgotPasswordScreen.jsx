@@ -30,7 +30,7 @@ const ForgotPasswordScreen = () => {
 
       try {
         const { data } = await supabase
-          .from("bystander")
+          .from("USER")
           .select()
           .eq("email", email);
 
