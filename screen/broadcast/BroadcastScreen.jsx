@@ -2,11 +2,11 @@ import { View, FlatList, RefreshControl } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useState, useCallback, useRef, lazy } from "react";
 
+import useLocation from "../../hooks/useLocation";
 import ListItem from "../../components/ui/ListItem";
 import DistanceIcon from "../../components/common/DistanceIcon";
 import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import NextActionIcon from "../../components/common/NextActionIcon";
-import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import AppBar from "../../components/ui/AppBar";
 import CircularIcon from "../../components/ui/CircularIcon";
@@ -23,8 +23,8 @@ const SortBottomSheet = lazy(() =>
 );
 
 const BroadcastScreen = () => {
-  const { styles } = useStyles(stylesheet);
   const { userLocation } = useLocation();
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const bottomSheetRef = useRef(null);
   const [showSortSheet, setShowSortSheet] = useState(false);

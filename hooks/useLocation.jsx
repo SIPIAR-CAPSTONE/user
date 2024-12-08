@@ -4,11 +4,9 @@ import { promptForEnableLocationIfNeeded } from "react-native-android-location-e
 import { useNavigation } from "@react-navigation/native";
 import { Linking, Alert } from "react-native";
 
-/**
- * @returns {Object} An object containing user location.
- */
 const useLocation = () => {
   const [userLocation, setUserLocation] = useState({});
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
 
   // On first screen load ask user permision to access their location
@@ -18,6 +16,8 @@ const useLocation = () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
 
         if (status !== "granted") {
+          setLoading(false);
+
           Alert.alert(
             "Permission Denied",
             "You cannot access this feature because you denied the permision request. Please go to the app setting and change the Location permision to access this feature.",
@@ -46,11 +46,11 @@ const useLocation = () => {
             distanceInterval: 1,
           },
           (location) => {
-            let coordinate = {
+            setUserLocation({
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
-            };
-            setUserLocation(coordinate);
+            });
+            setLoading(false);
           }
         );
         return () => foregroundSubscrition.remove();
@@ -134,7 +134,7 @@ const useLocation = () => {
     console.log(reverseGeocodedAddress);
   }
 
-  return { userLocation, reverseGeocode };
+  return { userLocation, loading, reverseGeocode };
 };
 
 export default useLocation;
