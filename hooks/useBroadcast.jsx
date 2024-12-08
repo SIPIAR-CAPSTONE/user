@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { supabase } from "../utils/supabase/config";
 import { ToastAndroid } from "react-native";
 
@@ -11,10 +12,12 @@ export default function useBroadcast() {
   const fetchAlerts = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.from("broadcast").select(`
+      const { data, error } = await supabase.from("BROADCAST").select(
+        `
         *,
         bystander: user_id (first_name, last_name)
-      `);
+        `
+      );
 
       if (error) {
         ToastAndroid.show(
@@ -65,7 +68,6 @@ export default function useBroadcast() {
         "postgres_changes",
         { event: "*", schema: "public", table: "broadcast" },
         async () => {
-          console.log("realtime: new data received");
           fetchAlerts();
         }
       )

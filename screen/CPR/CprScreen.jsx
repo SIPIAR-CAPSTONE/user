@@ -53,7 +53,6 @@ function CprScreen() {
   const userIsVerified = useBoundStore((state) => state.userIsVerified);
 
   const handleStartCpr = () => {
-    console.log(1);
     if (!userIsVerified) {
       ToastAndroid.show(
         "Failed to send emergency alert: your account is not verified",

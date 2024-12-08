@@ -1,10 +1,7 @@
 import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
-import {
-  getDistanceGap,
-  getTimeGap,
-} from "../../utils/calculateGap";
+import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import InfoField from "./InfoField";
 import moment from "moment";
@@ -47,18 +44,18 @@ const MarkerDialog = ({
 
   const timeGap = useMemo(
     () =>
-      selectedMarker?.created_at
-        ? getTimeGap(selectedMarker?.created_at)
+      selectedMarker?.date
+        ? getTimeGap(selectedMarker?.date)
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.created_at]
+    [selectedMarker?.date]
   );
 
   const dateRequested = useMemo(
     () =>
-      selectedMarker?.created_at
-        ? moment(selectedMarker?.created_at).format("LL")
+      selectedMarker?.date
+        ? moment(selectedMarker?.date).format("LL")
         : EMPTY_PLACEHOLDER,
-    [selectedMarker?.created_at]
+    [selectedMarker?.date]
   );
 
   return (
