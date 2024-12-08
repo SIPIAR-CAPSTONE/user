@@ -22,7 +22,7 @@ const EmergencyAlerts = () => {
   const recentEmergencyAlerts = useMemo(
     () =>
       emergencyAlerts
-        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, ALERTS_LIMIT),
     [emergencyAlerts]
   );
@@ -35,7 +35,7 @@ const EmergencyAlerts = () => {
       longitude: item?.longitude,
     };
     const distanceGap = getDistanceGap(userLocation, coordinate);
-    const timeGap = getTimeGap(item?.created_at);
+    const timeGap = getTimeGap(item?.date);
 
     return (
       <ListItem

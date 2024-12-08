@@ -71,7 +71,7 @@ const BroadcastScreen = () => {
       longitude: item.longitude,
     };
     const distanceGap = getDistanceGap(userLocation, alertCoordinate);
-    const timeGap = getTimeGap(item.created_at);
+    const timeGap = getTimeGap(item.date);
 
     return (
       <ListItem
