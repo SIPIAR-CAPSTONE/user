@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "../utils/supabase/config";
 import { ToastAndroid } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function useBroadcast() {
+  const isFocused = useIsFocused();
   const [emergencyAlerts, setEmergencyAlerts] = useState([]);
   const [loading, setLoading] = useState(false);
   const emergencyAlertsLength = emergencyAlerts.length;
@@ -60,6 +62,8 @@ export default function useBroadcast() {
    *
    */
   useEffect(() => {
+    if (!isFocused) return;
+
     const channels = supabase
       .channel("broadcast-all-channel")
       .on(
