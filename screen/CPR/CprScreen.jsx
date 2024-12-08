@@ -55,6 +55,8 @@ function CprScreen() {
         "Failed to send emergency alert: your account is not verified",
         ToastAndroid.LONG
       );
+      setIsConfirmDialogVisible(false);
+      startCountdown();
       return;
     }
 
@@ -144,6 +146,7 @@ function CprScreen() {
         cancelLabel="Back"
         confirmationLabel="Start"
         onPressCancel={() => navigation.navigate("HomeScreen")}
+        loading={loading}
         onPressConfirmation={handleStartCpr}
         title={"Are you ready to start?"}
         containerStyle={styles.dialog}
