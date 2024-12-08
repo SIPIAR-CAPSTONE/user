@@ -60,7 +60,8 @@ const ReportIssueScreen = () => {
     setReportForm((prevReportForm) => ({ ...prevReportForm, [key]: value }));
   };
 
-  const base64ImageFormat = useBoundStore((state) => state.base64ImageFormat);
+  const bugReportBase64 = useBoundStore((state) => state.bugReportBase64);
+  const userMetaData = useBoundStore((state) => state.userMetaData);
 
   const handleConfirm = () => {
     handleSubmit();
@@ -72,9 +73,10 @@ const ReportIssueScreen = () => {
 
     // Insert the bug report data
     const { data, error: insertError } = await supabase
-      .from("bug_report")
+      .from("BUG REPORT")
       .insert([
         {
+          bystander_id: userMetaData['bystanderId'],
           issue_type: reportForm.issueType,
           issue_description: reportForm.issueDesc,
         },
@@ -99,7 +101,7 @@ const ReportIssueScreen = () => {
       // Upload the image
       const { error: imageUploadError } = await supabase.storage
         .from("bug_report")
-        .upload(`${newBugId}`, decode(base64ImageFormat), {
+        .upload(`${newBugId}`, decode(bugReportBase64), {
           contentType: "image/*",
         });
 
@@ -110,7 +112,7 @@ const ReportIssueScreen = () => {
         setShowSuccessAlert(true);
       }
     } catch (error) {
-      console.error("Error during image upload:", error);
+      console.error("Error during image upload:", error.message);
     }
     setLoading(false);
   };
