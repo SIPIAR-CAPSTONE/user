@@ -84,6 +84,17 @@ const LearnCprScoreScreen = () => {
     "Too Shallow"
   );
 
+  const missedTimingInPercentage = getScorePercentage(
+    compressionHistory,
+    "timingScore",
+    "Missed"
+  );
+  const missedTimingCount = countScore(
+    compressionHistory,
+    "timingScore",
+    "Missed"
+  );
+
   const handleExit = () => {
     clearCompressionHistory();
     navigation.navigate("LearnScreen");
@@ -197,6 +208,14 @@ const LearnCprScoreScreen = () => {
             points={tooShallowDepthCount}
             progress={tooShallowDepthInPercentage}
             progressColor={Color.yellow}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Missed"
+            iconName="arrow-expand-vertical"
+            points={missedTimingCount}
+            progress={missedTimingInPercentage}
+            progressColor={Color.red}
           />
           <Divider />
           <ScorePointsListItem

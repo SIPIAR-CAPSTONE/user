@@ -13,6 +13,7 @@ import useCpr from "../../hooks/cpr/useCpr";
 import useBoundStore from "../../zustand/useBoundStore";
 import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 import usePreventBack from "../../hooks/usePreventBack";
+import moment from "moment";
 
 function CprScreen() {
   usePreventBack();
@@ -47,6 +48,7 @@ function CprScreen() {
   };
 
   const handleEndCpr = () => {
+    console.log(moment().format("HH:mm:ss A"), "CPR DATA: ", history);
     setCompressionHistory([...history]);
     stopCpr();
     navigation.dispatch(StackActions.replace("LearnCprScore"));
