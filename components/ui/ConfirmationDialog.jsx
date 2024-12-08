@@ -1,5 +1,5 @@
 import { ActivityIndicator, Dialog, Portal } from "react-native-paper";
-import React from "react";
+import React, { memo } from "react";
 
 import Button from "./Button";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
@@ -17,13 +17,13 @@ const ConfirmationDialog = ({
   removePortal = false,
   loading = false,
 }) => {
+  if (!isVisible) return;
+
   const { styles } = useStyles(stylesheet);
 
   const handleOnPressConfirmation = () => {
     onPressConfirmation();
   };
-
-  if (!isVisible) return;
 
   const DialogComponent = () => (
     <Dialog
@@ -69,7 +69,7 @@ const ConfirmationDialog = ({
   );
 };
 
-export default ConfirmationDialog;
+export default memo(ConfirmationDialog);
 
 const stylesheet = createStyleSheet((theme) => ({
   dialog: {
@@ -88,6 +88,6 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   dialogLoadingContent: {
     height: 148,
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
