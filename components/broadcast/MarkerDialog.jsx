@@ -92,7 +92,7 @@ const MarkerDialog = ({
             iconColor="#BB655D"
           />
           <InfoField
-            icon="calendar"
+            icon="git-commit"
             label="Status"
             value={selectedMarker?.status}
             iconBackgroundColor="#dddae4"
