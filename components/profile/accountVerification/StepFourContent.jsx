@@ -55,10 +55,10 @@ const StepFourContent = () => {
       setLoading(true);
 
       try {
-        // Insert data into Supabase
-        const { error: insertError } = await supabase
-          .from("verification_request")
-          .insert({
+        // Update bystander data in USER table
+        const { error: updateError } = await supabase
+          .from("USER")
+          .update({
             first_name: verificationForm["firstName"],
             middle_name: verificationForm["middleName"],
             last_name: verificationForm["lastName"],
@@ -68,13 +68,26 @@ const StepFourContent = () => {
             barangay: verificationForm["barangay"],
             street: verificationForm["street"],
             house_number: verificationForm["houseNumber"],
-            identification_type: verificationForm["selectedIdType"],
             email: verificationForm["email"],
+          }).eq('user_id', userMetaData['bystanderId'])
+
+        // Check for update error
+        if (updateError) {
+          console.log("Update user Error:", updateError);
+          return;
+        }
+
+        // Insert into VERIFICATION REQUEST table
+        const { error: insertError } = await supabase
+          .from("VERIFICATION REQUEST")
+          .insert({
+            user_id: userMetaData['bystanderId'],
+            identification_type: verificationForm["selectedIdType"]
           });
 
         // Check for insert error
         if (insertError) {
-          console.log("Insert Error:", insertError);
+          console.log("Insert request Error:", insertError);
           return;
         }
 
