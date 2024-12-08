@@ -11,8 +11,8 @@ const MapviewScreen = ({ route }) => {
   const { initialCoordinate, selectedAlertId } = route.params;
 
   const [region, setRegion] = useState({
-    latitude: initialCoordinate?.latitude,
-    longitude: initialCoordinate?.longitude,
+    latitude: Number(initialCoordinate?.latitude),
+    longitude: Number(initialCoordinate?.longitude),
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -37,7 +37,10 @@ const MapviewScreen = ({ route }) => {
       <Marker
         key={alert.broadcast_id}
         onPress={() => showDialog(alert)}
-        coordinate={{ latitude: alert.latitude, longitude: alert.longitude }}
+        coordinate={{
+          latitude: Number(alert?.latitude),
+          longitude: Number(alert?.longitude),
+        }}
       >
         {alert.broadcast_id === selectedAlertId ? (
           <Image

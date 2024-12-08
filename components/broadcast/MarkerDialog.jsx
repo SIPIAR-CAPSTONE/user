@@ -1,10 +1,7 @@
 import { Dialog, Portal, Button } from "react-native-paper";
 import { useMemo } from "react";
 
-import {
-  getDistanceGap,
-  getTimeGap,
-} from "../../utils/calculateGap";
+import { getDistanceGap, getTimeGap } from "../../utils/calculateGap";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import InfoField from "./InfoField";
 import moment from "moment";
@@ -27,14 +24,10 @@ const MarkerDialog = ({
   const FULL_NAME = `${selectedMarker?.USER?.first_name} ${selectedMarker?.USER?.last_name}`;
   const name = useMemo(
     () =>
-      selectedMarker?.USER?.first_name ||
-      selectedMarker?.USER?.last_name
+      selectedMarker?.USER?.first_name || selectedMarker?.USER?.last_name
         ? FULL_NAME
         : EMPTY_PLACEHOLDER,
-    [
-      selectedMarker?.USER?.first_name,
-      selectedMarker?.USER?.last_name,
-    ]
+    [selectedMarker?.USER?.first_name, selectedMarker?.USER?.last_name]
   );
 
   const distanceGap = useMemo(
@@ -97,6 +90,13 @@ const MarkerDialog = ({
             value={dateRequested}
             iconBackgroundColor="#FFD8CC"
             iconColor="#BB655D"
+          />
+          <InfoField
+            icon="calendar"
+            label="Status"
+            value={selectedMarker?.status}
+            iconBackgroundColor="#dddae4"
+            iconColor="#7A288A"
           />
         </Dialog.Content>
         <Dialog.Actions>
