@@ -1,69 +1,132 @@
-const ACCELERATION_BASELINE = 1.0;
-const INCHES_PER_METER = 39.37;
-const ACCELERATION_THRESHOLD = 0.4; //* if z is greater than the thershold, then compression is started and if its lower, then compression is ended
-const SENSITIVITY = 0.035; //* (0.025) for tuning accuracy, the greater the number the more sensitive the calculation of gap is
-const ALPHA = 0.8; //* alpha is a smoothing factor. The higher the value, the more smoothing
+import { Feedback, Score } from "./cprEnum";
 
-//* FOR CPR CALIBRATION PURPOSE: adjust only the ACCELERATION_THERSHOLD, SENSITIVITY and ALPHA value *//
+const COMPRESSION_THRESHOLD = 1.15;
+const TARGET_INTERVAL_MS = 500;
+const TOLERANCE_MS = 100;
+const GRAVITY = 9.81; // Gravity constant in m/s^2
+const TIME_INTERVAL = 0.01667; // 60Hz = 16.67ms
+const INCHES_PER_METER = 39.3701;
+const CALIBRATION_FACTOR = 36.8; //* Adjust based on real-world testing (example 36.8)
 
-export const calculateDepth = (peakZ) => {
-  const acceleration = ACCELERATION_BASELINE - peakZ;
-  const depthInInches = Math.abs(acceleration * INCHES_PER_METER * SENSITIVITY);
-  return Number(depthInInches.toFixed(1));
-};
+export function calculateDepth(z) {
+  const verticalAcceleration = Math.abs(z - GRAVITY);
+  const depth = 0.5 * verticalAcceleration * Math.pow(TIME_INTERVAL, 2);
+  return (depth * INCHES_PER_METER * CALIBRATION_FACTOR).toFixed(2);
+}
 
-export const lowpassFilter = (rawZ, prevFilteredZ) => {
-  return ALPHA * rawZ + (1 - ALPHA) * prevFilteredZ;
-};
+export function isCompression(magnitude, lastCompressionTime) {
+  const now = Date.now();
 
-export const isCompressionStarted = (prevZ, currentZ) => {
-  return prevZ - currentZ > ACCELERATION_THRESHOLD;
-};
+  return (
+    magnitude > COMPRESSION_THRESHOLD &&
+    (!lastCompressionTime || now - lastCompressionTime > 300) // Prevent double-counting of compression
+  );
+}
 
-export const isCompressionEnded = (prevZ, currentZ, isCompressing) => {
-  return currentZ - prevZ > ACCELERATION_THRESHOLD && isCompressing;
-};
+export function calculateMagnitude({ x, y, z }) {
+  return Math.sqrt(x * x + y * y + z * z).toFixed(2);
+}
 
-export const getTimingScore = (compressionTimer) => {
-  if (compressionTimer >= 400 && compressionTimer <= 600) {
-    return "Perfect";
-  } else if (compressionTimer < 400) {
-    return "Too Early";
-  }
-
-  return "Missed";
-};
-
-export const getDepthScore = (depth) => {
-  if (depth === null) return null;
-
-  if (depth >= 2 && depth <= 2.5) {
-    return "Perfect";
+export function getDepthScore(depth) {
+  if (depth > 2.5) {
+    return Score.TooDeep;
   } else if (depth < 2) {
-    return "Too Shallow";
-  } else if (depth > 2.5) {
-    return "Too Deep";
+    return Score.TooShallow;
+  } else {
+    return Score.Perfect;
   }
+}
 
-  return null;
+export function getTimingScore(interval) {
+  if (Math.abs(interval - TARGET_INTERVAL_MS) <= TOLERANCE_MS) {
+    return Score.Perfect;
+  } else if (interval < TARGET_INTERVAL_MS - TOLERANCE_MS) {
+    return Score.TooFast;
+  } else {
+    return Score.Missed;
+  }
+}
+
+export function getOverallScore(timingScore, depthScore) {
+  if (timingScore === Score.Perfect && depthScore === Score.Perfect) {
+    return Feedback.Push;
+  } else if (timingScore === Score.Perfect && depthScore === Score.TooShallow) {
+    return Feedback.PushHarder;
+  } else if (timingScore === Score.Perfect && depthScore === Score.TooDeep) {
+    return Feedback.PushSoftly;
+  } else if (timingScore === Score.TooFast && depthScore === Score.Perfect) {
+    return Feedback.PushSlower;
+  } else if (timingScore === Score.TooFast && depthScore === Score.TooShallow) {
+    return Feedback.PushSlowerHarder;
+  } else if (timingScore === Score.TooFast && depthScore === Score.TooDeep) {
+    return Feedback.PushSlowerSoftly;
+  } else if (timingScore === Score.Missed && depthScore === Score.TooShallow) {
+    return Feedback.PushFasterHarder;
+  } else if (timingScore === Score.Missed && depthScore === Score.Perfect) {
+    return Feedback.PushFaster;
+  } else if (timingScore === Score.Missed && depthScore === Score.TooDeep) {
+    return Feedback.PushFasterSoftly;
+  } else if (timingScore === Score.Missed && depthScore === Score.Missed) {
+    return Feedback.PleasePush;
+  } else {
+    return Feedback.Push;
+  }
+}
+
+const colorStyle = {
+  green: {
+    backgroundColor: "#22C55E",
+    borderColor: "#1CAE52",
+  },
+  darkerGreen: {
+    backgroundColor: "#16A34A",
+    borderColor: "#138E3B",
+  },
+  red: {
+    backgroundColor: "#DC2626",
+    borderColor: "#BB1E1E",
+  },
+  yellow: {
+    backgroundColor: "#F59E0B",
+    borderColor: "#D48806",
+  },
+  gray: {
+    backgroundColor: "#bab8b8",
+    borderColor: "#a6a6a6",
+  },
 };
 
-export const getOverallScore = (timingScore, depthScore) => {
-  if (timingScore === "Perfect" && depthScore === "Perfect") {
-    return "green";
-  } else if (timingScore === "Perfect" && depthScore === "Too Shallow") {
-    return "yellow";
-  } else if (timingScore === "Too Early" && depthScore === "Perfect") {
-    return "yellow";
-  } else if (timingScore === "Too Early" && depthScore === "Too Shallow") {
-    return "yellow";
-  } else if (timingScore === "Perfect" && depthScore === "Too Deep") {
-    return "red";
-  } else if (timingScore === "Too Early" && depthScore === "Too Deep") {
-    return "red";
-  } else if (timingScore === "Missed") {
-    return "red";
+export function getOverallScoreColor(score) {
+  switch (score) {
+    case Feedback.Push:
+      return colorStyle.green;
+    case Feedback.PushSlower:
+    case Feedback.PushSoftly:
+    case Feedback.PushFasterSoftly:
+    case Feedback.PushSlowerSoftly:
+    case Feedback.PushSlowerHarder:
+    case Feedback.PleasePush:
+      return colorStyle.red;
+    case Feedback.PushFaster:
+    case Feedback.PushHarder:
+    case Feedback.PushFasterHarder:
+      return colorStyle.yellow;
+    default:
+      return colorStyle.gray;
   }
+}
 
-  return "gray";
-};
+export function getScoreColor(score) {
+  switch (score) {
+    case Score.Perfect:
+      return colorStyle.green;
+    case Score.TooShallow:
+      return colorStyle.yellow;
+    case Score.TooDeep:
+    case Score.TooFast:
+    case Score.Missed:
+      return colorStyle.red;
+    default:
+      return colorStyle.gray;
+  }
+}
