@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { View, Image, FlatList, Dimensions } from "react-native";
-import { Text } from "react-native-paper";
-import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import Button from "../../components/ui/Button";
-import Layout from "../../components/common/Layout";
-import { useNavigation, StackActions } from "@react-navigation/native";
+import React, { useState } from 'react'
+import { View, Image, FlatList, Dimensions } from 'react-native'
+import { Text } from 'react-native-paper'
+import { createStyleSheet, useStyles } from '../../hooks/useStyles'
+import Button from '../../components/ui/Button'
+import Layout from '../../components/common/Layout'
+import { useNavigation, StackActions } from '@react-navigation/native'
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window')
 
 const DocumentMaterialScreen = ({ route }) => {
-  const { data } = route.params;
-  const navigation = useNavigation();
-  const { styles, theme } = useStyles(stylesheet);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { data } = route.params
+  const navigation = useNavigation()
+  const { styles, theme } = useStyles(stylesheet)
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const handleNext = () => {
     if (currentIndex < data.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex(currentIndex + 1)
     }
-  };
+  }
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      setCurrentIndex(currentIndex - 1)
     }
-  };
+  }
 
   const handleExitViewing = () => {
-    navigation.dispatch(StackActions.replace("FinishedView", { id: 1 }));
-  };
+    navigation.dispatch(StackActions.replace('FinishedView', { id: 1 }))
+  }
 
   const paginationDots = data.map((page, index) => (
     <View
@@ -38,20 +38,31 @@ const DocumentMaterialScreen = ({ route }) => {
         index === currentIndex ? styles.activeDot : styles.inactiveDot,
       ]}
     />
-  ));
+  ))
 
   const renderStep = ({ item }) => (
     <>
       <View style={styles.textContainer}>
         <Text style={styles.stepNumber}>
-          {item.number ? `Step ${item.number}` : ""}
+          {item.number ? `Step ${item.number}` : ''}
         </Text>
-        {item.message.map((msg, index) => (
-          <Text key={index} style={styles.stepMessage}>
-            {msg}
-          </Text>
-        ))}
+        {/* For headers side by side */}
+        <View style={styles.headerContainer}>
+          {item.headerOne &&
+            item.headerOne.map((msg, index) => (
+              <Text key={`headerOne-${index}`} style={styles.headerOne}>
+                {msg}
+              </Text>
+            ))}
+          {item.headerTwo &&
+            item.headerTwo.map((msg, index) => (
+              <Text key={`headerTwo-${index}`} style={styles.headerTwo}>
+                {msg}
+              </Text>
+            ))}
+        </View>
       </View>
+
       {item.imageSource && (
         <Image
           source={item.imageSource}
@@ -59,8 +70,14 @@ const DocumentMaterialScreen = ({ route }) => {
           resizeMode="contain"
         />
       )}
+      {item.description &&
+        item.description.map((msg, index) => (
+          <Text key={index} style={styles.description}>
+            {msg}
+          </Text>
+        ))}
     </>
-  );
+  )
 
   return (
     <Layout>
@@ -77,7 +94,7 @@ const DocumentMaterialScreen = ({ route }) => {
                 How to Perform CPR - Adult CPR Steps
               </Text>
               <Text variant="bodySmall" style={styles.sourceReference}>
-                Source: American Red Cross
+                Source: American Heart Association
               </Text>
             </View>
           )}
@@ -110,8 +127,8 @@ const DocumentMaterialScreen = ({ route }) => {
         </View>
       </View>
     </Layout>
-  );
-};
+  )
+}
 
 const stylesheet = createStyleSheet((theme) => ({
   header: {
@@ -119,21 +136,23 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   title: {
     color: theme.colors.primary,
-    textAlign: "center",
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   sourceReference: {
     color: theme.colors.text2,
-    textAlign: "center",
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   stepContainer: {
     flex: 1,
     width: width * 0.94,
-    alignItems: "center",
+    alignItems: 'center',
   },
   stepNumber: {
     fontSize: theme.fontSize.lg,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   stepMessage: {
     marginVertical: theme.spacing.xxxs,
@@ -141,14 +160,14 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   stepImage: {
     marginTop: theme.spacing.xs,
-    maxHeight: "40%",
-    width: "100%",
-    backgroundColor: "#f9f8f8",
+    maxHeight: '40%',
+    width: '100%',
+    backgroundColor: '#f9f8f8',
   },
   pagination: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   dot: {
     width: 10,
@@ -160,11 +179,11 @@ const stylesheet = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.primary,
   },
   inactiveDot: {
-    backgroundColor: "#D3D3D3",
+    backgroundColor: '#D3D3D3',
   },
   navigationContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     columnGap: theme.spacing.xxs,
     marginTop: theme.spacing.base,
     marginBottom: theme.spacing.sm,
@@ -172,6 +191,23 @@ const stylesheet = createStyleSheet((theme) => ({
   navButton: {
     flex: 1,
   },
-}));
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+    marginTop: 15,
+  },
+  headerOne: {
+    color: theme.colors.primary,
+    fontWeight: 'bold',
+  },
+  headerTwo: {
+    fontWeight: 'bold',
+  },
+  description: {
+    textAlign: 'justify',
+  },
+}))
 
-export default DocumentMaterialScreen;
+export default DocumentMaterialScreen
