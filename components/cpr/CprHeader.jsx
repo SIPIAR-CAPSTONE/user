@@ -4,17 +4,20 @@ import { Menu, TouchableRipple } from "react-native-paper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import CprGuideTimer from "./CprGuideTimer";
 
-function CprHeader({ handleEnd, onOpenInfoDialog }) {
+function CprHeader({ handleEnd, onOpenInfoDialog, timer }) {
   const { styles } = useStyles(stylesheet);
   const [visibleActionMenu, setVisibleActionMenu] = useState(false);
   const openActionMenu = () => setVisibleActionMenu(true);
   const closeActionMenu = () => setVisibleActionMenu(false);
 
-  
-
   return (
     <View style={styles.header}>
+      <View style={{ width: 30 }} />
+
+      <CprGuideTimer timer={timer} />
+
       <Menu
         visible={visibleActionMenu}
         onDismiss={closeActionMenu}
@@ -45,8 +48,7 @@ const stylesheet = createStyleSheet((theme) => ({
     height: 50,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   menu: {
     backgroundColor: theme.colors.elevation.level3,

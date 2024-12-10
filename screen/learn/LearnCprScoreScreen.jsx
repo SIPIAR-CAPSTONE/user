@@ -16,76 +16,84 @@ import Color from "../../utils/Color";
 import {
   countScore,
   getFormattedCurrentDate,
-  getTotalTimeDuration,
   getScorePercentage,
 } from "./Learn.helper";
 
-const LearnCprScoreScreen = () => {
+const LearnCprScoreScreen = ({ route }) => {
+  const { compressionHistory } = route.params;
+
   usePreventBack();
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
-  const compressionHistory = useBoundStore((state) => state.compressionHistory);
-  const clearCompressionHistory = useBoundStore(
-    (state) => state.clearCompressionHistory
-  );
   const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
 
   const currentDate = getFormattedCurrentDate();
-  const totalCompression = compressionHistory.length;
-  const totalDuration = getTotalTimeDuration(compressionHistory);
+  const totalCompression = compressionHistory?.data.length;
+  const totalDuration = Number(compressionHistory?.duration).toFixed(0) ?? 0;
 
   const perfectOverallScoreCount = countScore(
-    compressionHistory,
-    "overallScore",
-    "green"
+    compressionHistory?.data,
+    "overall",
+    "Push"
   );
+
   const perfectOverallScorePercentage = getScorePercentage(
-    compressionHistory,
-    "overallScore",
-    "green"
+    compressionHistory?.data,
+    "overall",
+    "Push"
   );
   const overallScore = `${perfectOverallScoreCount}/${totalCompression}`;
   const badOverallScoreCount =
     Number(totalCompression) - Number(perfectOverallScoreCount);
 
   const perfectTimingInPercentage = getScorePercentage(
-    compressionHistory,
-    "timingScore",
+    compressionHistory?.data,
+    "timing",
     "Perfect"
   );
   const perfectDepthInPercentage = getScorePercentage(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Perfect"
   );
   const perfectDepthCount = countScore(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Perfect"
   );
   const tooDeepDepthInPercentage = getScorePercentage(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Too Deep"
   );
   const tooDeepDepthCount = countScore(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Too Deep"
   );
   const tooShallowDepthInPercentage = getScorePercentage(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Too Shallow"
   );
   const tooShallowDepthCount = countScore(
-    compressionHistory,
-    "depthScore",
+    compressionHistory?.data,
+    "depth",
     "Too Shallow"
   );
 
+  const missedDepthInPercentage = getScorePercentage(
+    compressionHistory?.data,
+    "depth",
+    "Missed"
+  );
+  const missedDepthCount = countScore(
+    compressionHistory?.data,
+    "depth",
+    "Missed"
+  );
+
   const handleExit = () => {
-    clearCompressionHistory();
     navigation.navigate("LearnScreen");
   };
 
@@ -172,7 +180,7 @@ const LearnCprScoreScreen = () => {
             iconName="thumb-down-outline"
             points={badOverallScoreCount}
             progress={100}
-            progressColor={Color.red}
+            progressColor={Color.yellow}
           />
           <Divider />
           <ScorePointsListItem
@@ -197,6 +205,14 @@ const LearnCprScoreScreen = () => {
             points={tooShallowDepthCount}
             progress={tooShallowDepthInPercentage}
             progressColor={Color.yellow}
+          />
+          <Divider />
+          <ScorePointsListItem
+            title="Missed"
+            iconName="arrow-expand-vertical"
+            points={missedDepthCount}
+            progress={missedDepthInPercentage}
+            progressColor={Color.red}
           />
           <Divider />
           <ScorePointsListItem

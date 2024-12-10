@@ -153,7 +153,7 @@ export const SignedInStack = (
       component={CprScreen}
       options={{
         headerShown: false,
-        orientation: "landscape",
+        orientation: "landscape_left",
       }}
     />
     <Stack.Screen

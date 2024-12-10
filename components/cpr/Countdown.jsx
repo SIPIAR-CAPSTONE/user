@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
-
+import { Portal } from "react-native-paper";
 
 export default function Countdown({ time, visible = true }) {
   if (!visible) return null;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.time}>{time}</Text>
-    </View>
+    <Portal>
+      <View style={styles.container}>
+        <Text style={styles.time}>{time}</Text>
+      </View>
+    </Portal>
   );
 }
 
