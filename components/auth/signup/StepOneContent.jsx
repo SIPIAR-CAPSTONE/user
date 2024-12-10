@@ -14,7 +14,7 @@ import { isFormValid } from "../../../utils/formValidation";
 
 const fields = [
   { name: "firstName", rules: [{ type: "required" }] },
-  { name: "middleName", rules: [{ type: "required" }] },
+  { name: "middleName", rules: [] },
   { name: "lastName", rules: [{ type: "required" }] },
   { name: "birthday", rules: [{ type: "required" }] },
   {
