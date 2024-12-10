@@ -60,25 +60,6 @@ const SettingsScreen = () => {
 
   return (
     <Layout style={styles.listItems} AppbarComponent={CustomAppBar}>
-      {/* Notification */}
-      <ListItem
-        size="medium"
-        title="Notification"
-        renderTrailerIcon={() => (
-          <CircularIcon name="notifications" variant="primary" size={14} />
-        )}
-        renderActionIcon={() => <NextActionIcon />}
-        onPress={() => showDialog("notification")}
-      />
-      <RadioDialog
-        title="Notification"
-        visible={visible.notification}
-        hideDialog={() => hideDialog("notification")}
-        data={["On", "Off"]}
-        selectedValue={notificationStatus}
-        setSelectedValue={handleChangeNotification}
-      />
-
       {/* Appearance */}
       <ListItem
         size="medium"

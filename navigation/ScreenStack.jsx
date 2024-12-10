@@ -3,9 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Tabs from "./BottomTab";
 import StartingScreen from "../screen/auth/StartingScreen";
-const NotificationScreen = lazy(() =>
-  import("../screen/home/NotificationScreen")
-);
 const LoginScreen = lazy(() => import("../screen/auth/LoginScreen"));
 const SignupScreen = lazy(() => import("../screen/auth/SignupScreen"));
 const ForgotPasswordScreen = lazy(() =>
@@ -105,11 +102,6 @@ export const SignedInStack = (
       name="Tabs"
       component={Tabs}
       options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="Notification"
-      options={{ headerShown: false }}
-      component={NotificationScreen}
     />
     <Stack.Screen
       name="Mapview"
