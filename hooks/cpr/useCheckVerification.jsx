@@ -20,7 +20,6 @@ export default function useCheckVerification() {
 
     if (!error) {
       const isVerified = data[0]["is_verified"];
-      console.log("is verified - id", isVerified);
       setAccountIsVerified(isVerified);
     }
   };

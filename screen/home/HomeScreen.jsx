@@ -7,6 +7,7 @@ import ContactCards from "../../components/home/ContactCards";
 import CprPracticeScores from "../../components/home/CprPracticeScores";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
 import useCheckVerification from "../../hooks/cpr/useCheckVerification";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const HomeScreen = ({ navigation }) => {
   useFirstTimePopup({
@@ -14,6 +15,8 @@ const HomeScreen = ({ navigation }) => {
     handleFalse: () => navigation.navigate("TermsAndConditions"),
   });
   useCheckVerification();
+  const globalModalCloser = useBoundStore((state) => state.globalModalCloser)
+
  
   const CustomAppBar = () => (
     <AppBar>
@@ -25,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
     <Layout
       scrollable
       removeDefaultPaddingHorizontal
+      requiredValidatedAccount={globalModalCloser}
       AppbarComponent={CustomAppBar}
       contentContainerStyle={{ paddingBottom: 20 }}
     >

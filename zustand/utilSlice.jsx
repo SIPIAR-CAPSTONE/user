@@ -3,9 +3,10 @@ export const createUtilSlice = (set) => ({
   verificationIdOneBase64: null,
   verificationIdTwoBase64: null,
   bugReportBase64: null,
+  globalModalCloser: false,
   setBase64ImageFormat: (state) => set({ base64ImageFormat: state }),
   setBase64VerOne: (state) => set({ verificationIdOneBase64: state }),
   setBase64VerTwo: (state) => set({ verificationIdTwoBase64: state }),
-  setBase64BugReport: (state) => set({ bugReportBase64: state })
-
+  setBase64BugReport: (state) => set({ bugReportBase64: state }),
+  setGlobalSetter: (state) => set({ globalModalCloser: state })
 })
