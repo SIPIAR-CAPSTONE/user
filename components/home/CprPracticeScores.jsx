@@ -1,14 +1,16 @@
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { View } from 'react-native'
+import { Text } from 'react-native-paper'
 
-import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
-import moment from "moment";
-import Color from "../../utils/Color";
-import EmptyLabel from "../ui/EmptyLabel";
+import { createStyleSheet, useStyles } from '../../hooks/useStyles'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import moment from 'moment'
+import Color from '../../utils/Color'
+import EmptyLabel from '../ui/EmptyLabel'
+import useCheckVerification from '../../hooks/cpr/useCheckVerification'
 
 export default function CprPracticeScores() {
-  const { styles } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet)
+  const { userIsVerified } = useCheckVerification()
 
   return (
     <View style={styles.cprPracticeScores}>
@@ -18,30 +20,38 @@ export default function CprPracticeScores() {
         </Text>
       </View>
       <View style={styles.list}>
-        <PracticeScores />
+        {userIsVerified ? (
+          <PracticeScores />
+        ) : (
+          <View style={styles.notVerified}>
+            <Text variant="titleMedium" style={styles.notVerifiedText}>
+              Not verified
+            </Text>
+          </View>
+        )}
       </View>
     </View>
-  );
+  )
 }
 
 function PracticeScores() {
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles, theme } = useStyles(stylesheet)
 
-  if (TEMP_SCORES_DATA.length === 0) return <EmptyLabel label="No Scores" />;
+  if (TEMP_SCORES_DATA.length === 0) return <EmptyLabel label="No Scores" />
 
   return TEMP_SCORES_DATA.map((item) => {
-    const totalCompression = item.totalCompression;
-    const formattedDate = moment(item.createdAt).format("LL");
-    const score = `${item.perfectOverallScore}/${totalCompression}`;
-    const progress = (item.perfectOverallScore / totalCompression) * 100;
+    const totalCompression = item.totalCompression
+    const formattedDate = moment(item.createdAt).format('LL')
+    const score = `${item.perfectOverallScore}/${totalCompression}`
+    const progress = (item.perfectOverallScore / totalCompression) * 100
     const progressColor =
-      progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red;
+      progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red
 
     const Content = () => (
       <View>
         <Text>{progress}%</Text>
       </View>
-    );
+    )
 
     return (
       <View key={item.id} style={styles.listItem}>
@@ -58,7 +68,7 @@ function PracticeScores() {
           </AnimatedCircularProgress>
         </View>
         <View style={styles.rightContent}>
-          <Text style={styles.date}>{formattedDate ? formattedDate : "-"}</Text>
+          <Text style={styles.date}>{formattedDate ? formattedDate : '-'}</Text>
           <View style={styles.listItemCards}>
             <View style={styles.listItemCard}>
               <Text style={styles.cardLabel}>Score</Text>
@@ -67,14 +77,14 @@ function PracticeScores() {
             <View style={styles.listItemCard}>
               <Text style={styles.cardLabel}>Duration</Text>
               <Text style={styles.cardValue}>
-                {item.totalDuration ? `${item.totalDuration}s` : "0"}
+                {item.totalDuration ? `${item.totalDuration}s` : '0'}
               </Text>
             </View>
           </View>
         </View>
       </View>
-    );
-  });
+    )
+  })
 }
 
 const stylesheet = createStyleSheet((theme) => ({
@@ -83,9 +93,9 @@ const stylesheet = createStyleSheet((theme) => ({
     paddingHorizontal: theme.spacing.base,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   listLabel: {
     marginVertical: theme.spacing.base,
@@ -95,7 +105,7 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   listItem: {
     height: 100,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.lg,
     columnGap: theme.spacing.xxl,
@@ -103,32 +113,32 @@ const stylesheet = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.secondary,
   },
   leftContent: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   rightContent: {
     flex: 1,
     rowGap: theme.spacing.xxs,
   },
   date: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: theme.colors.text2,
     marginStart: 6,
   },
   listItemCards: {
-    flexDirection: "row",
+    flexDirection: 'row',
     columnGap: theme.spacing.base,
   },
   listItemCard: {
     flex: 1,
     borderRadius: theme.borderRadius.base,
     backgroundColor: theme.colors.elevation.level3,
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: theme.spacing.xxs,
     minWidth: 80,
   },
   cardLabel: {
     fontSize: theme.fontSize.xxs,
-    fontWeight: "semibold",
+    fontWeight: 'semibold',
     color: theme.colors.primary,
   },
   cardValue: {
@@ -136,7 +146,16 @@ const stylesheet = createStyleSheet((theme) => ({
     marginTop: 2,
     fontSize: theme.fontSize.sm,
   },
-}));
+  notVerified: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 100, // or another height that fits your layout
+    color: 'gray', // you can also use a theme color like theme.colors.text3
+  },
+  notVerifiedText: {
+    color: 'gray', // Ensure this matches your gray color
+  },
+}))
 
 const TEMP_SCORES_DATA = [
   {
@@ -144,34 +163,34 @@ const TEMP_SCORES_DATA = [
     totalCompression: 12,
     perfectOverallScore: 12,
     totalDuration: 60,
-    createdAt: "2024-07-01T06:12:45.569Z",
+    createdAt: '2024-07-01T06:12:45.569Z',
   },
   {
     id: 2,
     totalCompression: 12,
     perfectOverallScore: 9,
     totalDuration: 60,
-    createdAt: "2024-07-01T06:12:45.569Z",
+    createdAt: '2024-07-01T06:12:45.569Z',
   },
   {
     id: 3,
     totalCompression: 12,
     perfectOverallScore: 6,
     totalDuration: 60,
-    createdAt: "2024-07-01T06:12:45.569Z",
+    createdAt: '2024-07-01T06:12:45.569Z',
   },
   {
     id: 4,
     totalCompression: 12,
     perfectOverallScore: 3,
     totalDuration: 60,
-    createdAt: "2024-07-01T06:12:45.569Z",
+    createdAt: '2024-07-01T06:12:45.569Z',
   },
   {
     id: 5,
     totalCompression: 12,
     perfectOverallScore: 0,
     totalDuration: 60,
-    createdAt: "2024-07-01T06:12:45.569Z",
+    createdAt: '2024-07-01T06:12:45.569Z',
   },
-];
+]

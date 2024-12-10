@@ -13,14 +13,29 @@ import Feather from "@expo/vector-icons/Feather";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import ModifyContactsEditContent from "./ModifyContactsEditContent";
 import ModifyContactsAddContent from "./ModifyContactsAddContent";
+import useCheckVerification from "../../hooks/cpr/useCheckVerification";
+import useBoundStore from "../../zustand/useBoundStore";
 
 export default function ModifyContact() {
   const { styles, theme } = useStyles(stylesheet);
   const [visible, setVisible] = useState(false);
   const [modifyMode, setModifyMode] = useState("Edit");
+  const { userIsVerified } = useCheckVerification()
+  const setGlobalSetter = useBoundStore((state) => state.setGlobalSetter)
 
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const showModal = (requireValidation = false) => {
+    if (requireValidation && !userIsVerified) {
+      setGlobalSetter(true)
+      return;
+    } else {
+      setGlobalSetter(false)
+    }
+    setVisible(true)
+
+  };
+  const hideModal = () => {
+    setVisible(false)
+  };
 
   return (
     <>
