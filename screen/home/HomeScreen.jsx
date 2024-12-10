@@ -18,10 +18,6 @@ const HomeScreen = ({ navigation }) => {
   const CustomAppBar = () => (
     <AppBar>
       <LogoTitle />
-      <CircularIcon
-        name="notifications"
-        onPress={() => navigation.navigate("Notification")}
-      />
     </AppBar>
   );
 
