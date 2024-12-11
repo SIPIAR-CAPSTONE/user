@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { ToastAndroid, View } from 'react-native'
 import { Text } from 'react-native-paper'
 
 import { createStyleSheet, useStyles } from '../../hooks/useStyles'
@@ -7,6 +7,10 @@ import moment from 'moment'
 import Color from '../../utils/Color'
 import EmptyLabel from '../ui/EmptyLabel'
 import useCheckVerification from '../../hooks/cpr/useCheckVerification'
+import { useCallback, useEffect, useState } from 'react'
+import { supabase } from '../../utils/supabase/config'
+import useBoundStore from '../../zustand/useBoundStore'
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function CprPracticeScores() {
   const { styles } = useStyles(stylesheet)
@@ -36,14 +40,34 @@ export default function CprPracticeScores() {
 
 function PracticeScores() {
   const { styles, theme } = useStyles(stylesheet)
+  const userMetaData = useBoundStore((state) => state.userMetaData)
+  const [recentScores, setRecentScores] = useState(null)
 
-  if (TEMP_SCORES_DATA.length === 0) return <EmptyLabel label="No Scores" />
+  const fetchRecentScore = async () => {
+    const { data, error } = await supabase
+      .from('PRACTICE SCORE')
+      .select('*')
+      .eq('bystander_id', userMetaData['bystanderId'])
 
-  return TEMP_SCORES_DATA.map((item) => {
-    const totalCompression = item.totalCompression
-    const formattedDate = moment(item.createdAt).format('LL')
-    const score = `${item.perfectOverallScore}/${totalCompression}`
-    const progress = (item.perfectOverallScore / totalCompression) * 100
+    if (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT)
+      return
+    }
+    setRecentScores(data)
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchRecentScore();
+    }, [])
+  );
+
+  if (recentScores === null || recentScores.length === 0) return <EmptyLabel label="No Scores" />
+  return recentScores.map((item) => {
+    const totalCompression = item.total_compression
+    const formattedDate = moment(item.date).format('LL')
+    const score = `${item.perfect_overall}/${totalCompression}`
+    const progress = parseFloat(((item.perfect_overall / totalCompression) * 100).toFixed(2));
     const progressColor =
       progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red
 
@@ -54,7 +78,7 @@ function PracticeScores() {
     )
 
     return (
-      <View key={item.id} style={styles.listItem}>
+      <View key={item.practice_id} style={styles.listItem}>
         <View style={styles.leftContent}>
           <AnimatedCircularProgress
             size={75}
@@ -77,7 +101,7 @@ function PracticeScores() {
             <View style={styles.listItemCard}>
               <Text style={styles.cardLabel}>Duration</Text>
               <Text style={styles.cardValue}>
-                {item.totalDuration ? `${item.totalDuration}s` : '0'}
+                {item.total_duration ? `${item.total_duration}s` : '0'}
               </Text>
             </View>
           </View>
