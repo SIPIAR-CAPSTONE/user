@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo, useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import * as ScreenOrientation from "expo-screen-orientation";
 
 import useTimingAudio from "../../hooks/cpr/useTimingAudio";
 import useCpr from "../../hooks/cpr/useCpr";
@@ -22,8 +21,6 @@ import useHistory from "../../hooks/cpr/useHistory";
 import useTimer from "../../hooks/cpr/useTimer";
 
 export default function CprScreen() {
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
-
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
   const navigation = useNavigation();
   usePreventBack();
@@ -100,9 +97,9 @@ export default function CprScreen() {
     handleStopSession();
 
     setHistoryDuration(timerInSeconds);
+    clearHistory();
 
     navigation.navigate("LearnCprScore", { compressionHistory: history });
-    clearHistory();
   };
 
   return (
