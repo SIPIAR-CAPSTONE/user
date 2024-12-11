@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState,  useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 import useTimingAudio from "../../hooks/cpr/useTimingAudio";
 import useCpr from "../../hooks/cpr/useCpr";
@@ -19,6 +20,8 @@ import CprHeader from "../../components/cpr/CprHeader";
 import Countdown from "../../components/cpr/Countdown";
 import useHistory from "../../hooks/cpr/useHistory";
 import useTimer from "../../hooks/cpr/useTimer";
+
+ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
 
 export default function CprScreen() {
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();

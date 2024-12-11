@@ -46,7 +46,13 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Sipiar to use your location."
         }
-      ]  
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "DEFAULT"
+        }
+      ]
     ]
   }
 }
