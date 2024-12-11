@@ -1,20 +1,20 @@
-import { ToastAndroid, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { ToastAndroid, View } from "react-native";
+import { Text } from "react-native-paper";
 
-import { createStyleSheet, useStyles } from '../../hooks/useStyles'
-import { AnimatedCircularProgress } from 'react-native-circular-progress'
-import moment from 'moment'
-import Color from '../../utils/Color'
-import EmptyLabel from '../ui/EmptyLabel'
-import useCheckVerification from '../../hooks/cpr/useCheckVerification'
-import { useCallback, useEffect, useState } from 'react'
-import { supabase } from '../../utils/supabase/config'
-import useBoundStore from '../../zustand/useBoundStore'
+import { createStyleSheet, useStyles } from "../../hooks/useStyles";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import moment from "moment";
+import Color from "../../utils/Color";
+import EmptyLabel from "../ui/EmptyLabel";
+import useCheckVerification from "../../hooks/cpr/useCheckVerification";
+import { useCallback, useEffect, useState } from "react";
+import { supabase } from "../../utils/supabase/config";
+import useBoundStore from "../../zustand/useBoundStore";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function CprPracticeScores() {
-  const { styles } = useStyles(stylesheet)
-  const { userIsVerified } = useCheckVerification()
+  const { styles } = useStyles(stylesheet);
+  const { userIsVerified } = useCheckVerification();
 
   return (
     <View style={styles.cprPracticeScores}>
@@ -35,26 +35,28 @@ export default function CprPracticeScores() {
         )}
       </View>
     </View>
-  )
+  );
 }
 
 function PracticeScores() {
-  const { styles, theme } = useStyles(stylesheet)
-  const userMetaData = useBoundStore((state) => state.userMetaData)
-  const [recentScores, setRecentScores] = useState(null)
+  const { styles, theme } = useStyles(stylesheet);
+  const userMetaData = useBoundStore((state) => state.userMetaData);
+  const [recentScores, setRecentScores] = useState(null);
 
   const fetchRecentScore = async () => {
     const { data, error } = await supabase
-      .from('PRACTICE SCORE')
-      .select('*')
-      .eq('bystander_id', userMetaData['bystanderId'])
+      .from("PRACTICE SCORE")
+      .select("*")
+      .eq("bystander_id", userMetaData["bystanderId"])
+      .order("date", { ascending: false })
+      .limit(5);
 
     if (error) {
-      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT)
-      return
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      return;
     }
-    setRecentScores(data)
-  }
+    setRecentScores(data);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -62,20 +64,23 @@ function PracticeScores() {
     }, [])
   );
 
-  if (recentScores === null || recentScores.length === 0) return <EmptyLabel label="No Scores" />
+  if (recentScores === null || recentScores.length === 0)
+    return <EmptyLabel label="No Scores" />;
   return recentScores.map((item) => {
-    const totalCompression = item.total_compression
-    const formattedDate = moment(item.date).format('LL')
-    const score = `${item.perfect_overall}/${totalCompression}`
-    const progress = parseFloat(((item.perfect_overall / totalCompression) * 100).toFixed(2));
+    const totalCompression = item.total_compression;
+    const formattedDate = moment(item.date).format("LL");
+    const score = `${item.perfect_overall}/${totalCompression}`;
+    const progress = parseFloat(
+      ((item.perfect_overall / totalCompression) * 100).toFixed(1)
+    );
     const progressColor =
-      progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red
+      progress >= 75 ? Color.green : progress >= 40 ? Color.yellow : Color.red;
 
     const Content = () => (
       <View>
         <Text>{progress}%</Text>
       </View>
-    )
+    );
 
     return (
       <View key={item.practice_id} style={styles.listItem}>
@@ -92,7 +97,7 @@ function PracticeScores() {
           </AnimatedCircularProgress>
         </View>
         <View style={styles.rightContent}>
-          <Text style={styles.date}>{formattedDate ? formattedDate : '-'}</Text>
+          <Text style={styles.date}>{formattedDate ? formattedDate : "-"}</Text>
           <View style={styles.listItemCards}>
             <View style={styles.listItemCard}>
               <Text style={styles.cardLabel}>Score</Text>
@@ -101,14 +106,14 @@ function PracticeScores() {
             <View style={styles.listItemCard}>
               <Text style={styles.cardLabel}>Duration</Text>
               <Text style={styles.cardValue}>
-                {item.total_duration ? `${item.total_duration}s` : '0'}
+                {item.total_duration ? `${item.total_duration}s` : "0"}
               </Text>
             </View>
           </View>
         </View>
       </View>
-    )
-  })
+    );
+  });
 }
 
 const stylesheet = createStyleSheet((theme) => ({
@@ -117,9 +122,9 @@ const stylesheet = createStyleSheet((theme) => ({
     paddingHorizontal: theme.spacing.base,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   listLabel: {
     marginVertical: theme.spacing.base,
@@ -129,7 +134,7 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   listItem: {
     height: 100,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: theme.spacing.xs,
     paddingHorizontal: theme.spacing.lg,
     columnGap: theme.spacing.xxl,
@@ -137,32 +142,32 @@ const stylesheet = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.secondary,
   },
   leftContent: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   rightContent: {
     flex: 1,
     rowGap: theme.spacing.xxs,
   },
   date: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.text2,
     marginStart: 6,
   },
   listItemCards: {
-    flexDirection: 'row',
+    flexDirection: "row",
     columnGap: theme.spacing.base,
   },
   listItemCard: {
     flex: 1,
     borderRadius: theme.borderRadius.base,
     backgroundColor: theme.colors.elevation.level3,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: theme.spacing.xxs,
     minWidth: 80,
   },
   cardLabel: {
     fontSize: theme.fontSize.xxs,
-    fontWeight: 'semibold',
+    fontWeight: "semibold",
     color: theme.colors.primary,
   },
   cardValue: {
@@ -171,15 +176,15 @@ const stylesheet = createStyleSheet((theme) => ({
     fontSize: theme.fontSize.sm,
   },
   notVerified: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 100, // or another height that fits your layout
-    color: 'gray', // you can also use a theme color like theme.colors.text3
+    color: "gray", // you can also use a theme color like theme.colors.text3
   },
   notVerifiedText: {
-    color: 'gray', // Ensure this matches your gray color
+    color: "gray", // Ensure this matches your gray color
   },
-}))
+}));
 
 const TEMP_SCORES_DATA = [
   {
@@ -187,34 +192,34 @@ const TEMP_SCORES_DATA = [
     totalCompression: 12,
     perfectOverallScore: 12,
     totalDuration: 60,
-    createdAt: '2024-07-01T06:12:45.569Z',
+    createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 2,
     totalCompression: 12,
     perfectOverallScore: 9,
     totalDuration: 60,
-    createdAt: '2024-07-01T06:12:45.569Z',
+    createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 3,
     totalCompression: 12,
     perfectOverallScore: 6,
     totalDuration: 60,
-    createdAt: '2024-07-01T06:12:45.569Z',
+    createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 4,
     totalCompression: 12,
     perfectOverallScore: 3,
     totalDuration: 60,
-    createdAt: '2024-07-01T06:12:45.569Z',
+    createdAt: "2024-07-01T06:12:45.569Z",
   },
   {
     id: 5,
     totalCompression: 12,
     perfectOverallScore: 0,
     totalDuration: 60,
-    createdAt: '2024-07-01T06:12:45.569Z',
+    createdAt: "2024-07-01T06:12:45.569Z",
   },
-]
+];
