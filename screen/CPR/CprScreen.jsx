@@ -20,6 +20,7 @@ import CprInfoDialog from "../../components/cpr/CprInfoDialog";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import CprHeader from "../../components/cpr/CprHeader";
 import Countdown from "../../components/cpr/Countdown";
+import useTimer from "../../hooks/cpr/useTimer";
 
 export default function CprScreen() {
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
@@ -54,7 +55,8 @@ export default function CprScreen() {
   } = useCountdown(3, false, () => handleStartSession());
   const { startTimer, resetTimer, timer } = useTimer();
 
-  const { sendEmergencyAlertRequest } = useSendEmergencyAlert();
+  const { sendEmergencyAlertRequest, checkIfthereIsRecentAlert } =
+    useSendEmergencyAlert();
   const userIsVerified = useBoundStore((state) => state.userIsVerified);
 
   //Get score colors
@@ -77,7 +79,7 @@ export default function CprScreen() {
     resetTimer();
   };
 
-  const handleStartCpr = () => {
+  const handleStartCpr = async () => {
     if (!userIsVerified) {
       ToastAndroid.show(
         "Failed to send emergency alert: your account is not verified",
@@ -96,7 +98,10 @@ export default function CprScreen() {
       return;
     }
 
-    sendEmergencyAlertRequest(userLocation.latitude, userLocation.longitude);
+    const thereIsRecentAlert10MinsAgo = await checkIfthereIsRecentAlert();
+    if (thereIsRecentAlert10MinsAgo === false) {
+      sendEmergencyAlertRequest(userLocation.latitude, userLocation.longitude);
+    }
 
     setIsConfirmDialogVisible(false);
     startCountdown();
