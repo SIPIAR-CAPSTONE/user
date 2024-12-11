@@ -48,8 +48,8 @@ const useCpr = () => {
           }
 
           resetCompressionScores();
-          compressionTimer.current = 0;
           isCompressed.current = false;
+          compressionTimer.current = 0;
         } else {
           compressionTimer.current += UPDATE_INTERVAL;
         }
@@ -78,7 +78,7 @@ const useCpr = () => {
       // Calculate depth based on the z-axis acceleration
       const depth = calculateDepth(lowestZ.current);
       const depthScore = getDepthScore(depth);
-  
+
       // Evaluate timing
       const now = Date.now();
       const compressionInterval = now - lastCompressionTime.current;
