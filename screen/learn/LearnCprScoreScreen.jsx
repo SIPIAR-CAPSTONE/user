@@ -28,7 +28,7 @@ const LearnCprScoreScreen = ({ route }) => {
   const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
 
   const currentDate = getFormattedCurrentDate();
-  const totalCompression = compressionHistory?.data.length;
+  const totalCompression = compressionHistory?.data?.length;
   const totalDuration = Number(compressionHistory?.duration).toFixed(0) ?? 0;
 
   const perfectOverallScoreCount = countScore(
