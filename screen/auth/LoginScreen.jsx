@@ -57,10 +57,7 @@ const LoginScreen = () => {
       };
       reader.readAsDataURL(data);
     } else if (error) {
-      ToastAndroid.show(
-        `download image error: ${error.message}`,
-        ToastAndroid.SHORT
-      );
+      console.log(`download image error: ${error.message}`);
     }
   };
 
