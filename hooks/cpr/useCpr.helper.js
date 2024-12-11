@@ -6,7 +6,7 @@ const TOLERANCE_MS = 100;
 const GRAVITY = 9.81; // Gravity constant in m/s^2
 const TIME_INTERVAL = 0.01667; // 60Hz = 16.67ms
 const INCHES_PER_METER = 39.3701;
-const CALIBRATION_FACTOR = 36.8; //* Adjust based on real-world testing (example 36.8)
+const CALIBRATION_FACTOR = 39.37; //* Adjust based on real-world testing (example 39.6)
 
 export function calculateDepth(z) {
   const verticalAcceleration = Math.abs(z - GRAVITY);
@@ -14,12 +14,16 @@ export function calculateDepth(z) {
   return (depth * INCHES_PER_METER * CALIBRATION_FACTOR).toFixed(2);
 }
 
+export function lowPassFilter(currentValue, previousValue, alpha = 0.6) {
+  return alpha * currentValue + (1 - alpha) * previousValue;
+}
+
 export function isCompression(magnitude, lastCompressionTime) {
   const now = Date.now();
 
   return (
     magnitude > COMPRESSION_THRESHOLD &&
-    (!lastCompressionTime || now - lastCompressionTime > 300) // Prevent double-counting of compression
+    (!lastCompressionTime || now - lastCompressionTime > 200) // Prevent double-counting of compression
   );
 }
 
