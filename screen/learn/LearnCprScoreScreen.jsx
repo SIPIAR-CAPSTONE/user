@@ -1,31 +1,34 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { Divider } from "react-native-paper";
+import { View, Text, ScrollView, ToastAndroid } from 'react-native'
+import React, { useEffect } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { Divider } from 'react-native-paper'
 
-import ScorePointsListItem from "../../components/learn/ScorePointsListItem";
-import { useStyles, createStyleSheet } from "../../hooks/useStyles";
-import ScorePoints from "../../components/learn/ScorePoints";
-import AppBarTitle from "../../components/ui/AppBarTitle";
-import useBoundStore from "../../zustand/useBoundStore";
-import usePreventBack from "../../hooks/usePreventBack";
-import Layout from "../../components/common/Layout";
-import AppBar from "../../components/ui/AppBar";
-import Button from "../../components/ui/Button";
-import Color from "../../utils/Color";
+import ScorePointsListItem from '../../components/learn/ScorePointsListItem'
+import { useStyles, createStyleSheet } from '../../hooks/useStyles'
+import ScorePoints from '../../components/learn/ScorePoints'
+import AppBarTitle from '../../components/ui/AppBarTitle'
+import useBoundStore from '../../zustand/useBoundStore'
+import usePreventBack from '../../hooks/usePreventBack'
+import Layout from '../../components/common/Layout'
+import AppBar from '../../components/ui/AppBar'
+import Button from '../../components/ui/Button'
+import Color from '../../utils/Color'
 import {
   countScore,
   getFormattedCurrentDate,
   getScorePercentage,
-} from "./Learn.helper";
+} from './Learn.helper'
+import { supabase } from '../../utils/supabase/config'
+import moment from 'moment'
 
 const LearnCprScoreScreen = ({ route }) => {
-  const { compressionHistory } = route.params;
+  const { compressionHistory } = route.params
 
-  usePreventBack();
-  const navigation = useNavigation();
-  const { styles } = useStyles(stylesheet);
-  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
+  usePreventBack()
+  const navigation = useNavigation()
+  const { styles } = useStyles(stylesheet)
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme)
+  const userMetaData = useBoundStore((state) => state.userMetaData);
 
   const currentDate = getFormattedCurrentDate();
   const totalCompression = compressionHistory?.data?.length;
@@ -33,86 +36,101 @@ const LearnCprScoreScreen = ({ route }) => {
 
   const perfectOverallScoreCount = countScore(
     compressionHistory?.data,
-    "overall",
-    "Push"
-  );
+    'overall',
+    'Push',
+  )
 
   const perfectOverallScorePercentage = getScorePercentage(
     compressionHistory?.data,
-    "overall",
-    "Push"
-  );
-  const overallScore = `${perfectOverallScoreCount}/${totalCompression}`;
+    'overall',
+    'Push',
+  )
+  const overallScore = `${perfectOverallScoreCount}/${totalCompression}`
   const badOverallScoreCount =
-    Number(totalCompression) - Number(perfectOverallScoreCount);
+    Number(totalCompression) - Number(perfectOverallScoreCount)
 
   const perfectTimingInPercentage = getScorePercentage(
     compressionHistory?.data,
-    "timing",
-    "Perfect"
-  );
+    'timing',
+    'Perfect',
+  )
   const perfectDepthInPercentage = getScorePercentage(
     compressionHistory?.data,
-    "depth",
-    "Perfect"
-  );
+    'depth',
+    'Perfect',
+  )
   const perfectDepthCount = countScore(
     compressionHistory?.data,
-    "depth",
-    "Perfect"
-  );
+    'depth',
+    'Perfect',
+  )
   const tooDeepDepthInPercentage = getScorePercentage(
     compressionHistory?.data,
-    "depth",
-    "Too Deep"
-  );
+    'depth',
+    'Too Deep',
+  )
   const tooDeepDepthCount = countScore(
     compressionHistory?.data,
-    "depth",
-    "Too Deep"
-  );
+    'depth',
+    'Too Deep',
+  )
   const tooShallowDepthInPercentage = getScorePercentage(
     compressionHistory?.data,
-    "depth",
-    "Too Shallow"
-  );
+    'depth',
+    'Too Shallow',
+  )
   const tooShallowDepthCount = countScore(
     compressionHistory?.data,
-    "depth",
-    "Too Shallow"
-  );
+    'depth',
+    'Too Shallow',
+  )
 
   const missedDepthInPercentage = getScorePercentage(
     compressionHistory?.data,
-    "depth",
-    "Missed"
-  );
+    'depth',
+    'Missed',
+  )
   const missedDepthCount = countScore(
     compressionHistory?.data,
-    "depth",
-    "Missed"
-  );
+    'depth',
+    'Missed',
+  )
 
-  const handleExit = () => {
-    navigation.navigate("LearnScreen");
-  };
+  const handleExit = async () => {
+    const currentDate = moment()
+
+    const { error: insertError } = await supabase
+      .from('PRACTICE SCORE')
+      .insert({
+        bystander_id: userMetaData['bystanderId'],
+        date: currentDate,
+        total_compression: totalCompression,
+        perfect_overall: perfectOverallScoreCount,
+        total_duration: totalDuration
+      })
+
+    if (insertError) {
+      ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT)
+    }
+    navigation.navigate('LearnScreen')
+  }
 
   //prevent going back to previous screen
   useEffect(() => {
     const beforeRemoveListener = (e) => {
-      e.preventDefault();
-    };
+      e.preventDefault()
+    }
 
     const subscription = navigation.addListener(
-      "beforeRemove",
-      beforeRemoveListener
-    );
+      'beforeRemove',
+      beforeRemoveListener,
+    )
 
     // Cleanup the listener on component unmount
     return () => {
-      subscription();
-    };
-  }, [navigation]);
+      subscription()
+    }
+  }, [navigation])
 
   return (
     <Layout
@@ -121,7 +139,7 @@ const LearnCprScoreScreen = ({ route }) => {
       statusBarHidden={false}
     >
       <AppBar style={styles.appbar}>
-        <AppBarTitle size="lg" style={{ color: "white" }}>
+        <AppBarTitle size="lg" style={{ color: 'white' }}>
           Scoring
         </AppBarTitle>
       </AppBar>
@@ -237,14 +255,14 @@ const LearnCprScoreScreen = ({ route }) => {
         </View>
       </ScrollView>
     </Layout>
-  );
-};
+  )
+}
 
-export default LearnCprScoreScreen;
+export default LearnCprScoreScreen
 
 const stylesheet = createStyleSheet((theme) => ({
   appbar: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: theme.colors.primary,
   },
   mainContent: {
@@ -252,7 +270,7 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   overallScoreContainer: {
     backgroundColor: theme.colors.primary,
-    alignItems: "center",
+    alignItems: 'center',
     paddingTop: 20,
     paddingBottom: 40,
   },
@@ -260,7 +278,7 @@ const stylesheet = createStyleSheet((theme) => ({
     fontSize: theme.fontSize.sm,
     marginTop: 14,
     marginBottom: 4,
-    color: "white",
+    color: 'white',
   },
   detailedScoreContainer: {
     flex: 1,
@@ -270,6 +288,6 @@ const stylesheet = createStyleSheet((theme) => ({
   finishButtonContainer: {
     paddingHorizontal: theme.spacing.base,
     paddingVertical: 26,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
-}));
+}))
