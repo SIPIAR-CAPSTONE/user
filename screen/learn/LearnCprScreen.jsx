@@ -21,9 +21,9 @@ import Countdown from "../../components/cpr/Countdown";
 import useHistory from "../../hooks/cpr/useHistory";
 import useTimer from "../../hooks/cpr/useTimer";
 
-ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
-
 export default function CprScreen() {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
   const navigation = useNavigation();
   usePreventBack();

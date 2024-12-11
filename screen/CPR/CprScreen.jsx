@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useMemo, useState, useCallback } from "react";
 import { StyleSheet, View, ToastAndroid } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 import useTimingAudio from "../../hooks/cpr/useTimingAudio";
 import useCpr from "../../hooks/cpr/useCpr";
@@ -23,6 +24,8 @@ import Countdown from "../../components/cpr/Countdown";
 import useTimer from "../../hooks/cpr/useTimer";
 
 export default function CprScreen() {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
   const { userLocation, loading: locationLoading } = useLocation();
   const navigation = useNavigation();
