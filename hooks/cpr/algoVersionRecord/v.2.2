@@ -1,0 +1,127 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Accelerometer } from "expo-sensors";
+import {
+  calculateDepth,
+  calculateMagnitude,
+  getDepthScore,
+  getOverallScore,
+  getTimingScore,
+  isCompression,
+} from "../cpr.helper";
+
+const TARGET_INTERVAL_MS = 500;
+const UPDATE_INTERVAL = 16.67;
+
+const useCpr = () => {
+  const [isMonitoring, setIsMonitoring] = useState(false);
+  const subscription = useRef(null);
+  const lowestZ = useRef(1);
+  const lastCompressionTime = useRef(null);
+  const compressionTimer = useRef(0);
+  const compressionCount = useRef(0);
+  const [compressionScores, setCompressionScores] = useState({
+    timing: "",
+    depth: "",
+    overall: "",
+  });
+
+  useEffect(() => {
+    if (isMonitoring) {
+      Accelerometer.setUpdateInterval(UPDATE_INTERVAL); // update interval to 60Hz (16.67ms)
+      subscription.current = Accelerometer.addListener(handleAccelerometerData);
+
+      const timerInterval = setInterval(() => {
+        if (compressionTimer.current >= TARGET_INTERVAL_MS) {
+          // If timer exceeds 500ms, set scores to "Missed" and reset timer
+          const overallScore = getOverallScore("Missed", "Missed");
+          setCompressionScores({
+            timing: "Missed",
+            depth: "Missed",
+            overall: overallScore,
+          });
+
+          resetCompressionScores();
+          compressionTimer.current = 0;
+        } else {
+          compressionTimer.current += UPDATE_INTERVAL;
+        }
+      }, UPDATE_INTERVAL);
+
+      return () => {
+        clearInterval(timerInterval);
+        subscription.current?.remove();
+      };
+    } else {
+      subscription.current?.remove();
+    }
+  }, [isMonitoring]);
+
+  const handleAccelerometerData = useCallback((data) => {
+    const magnitude = calculateMagnitude(data);
+
+    if (data.z < lowestZ.current) {
+      lowestZ.current = data.z;
+    }
+
+    if (isCompression(magnitude, lastCompressionTime.current)) {
+      // Calculate depth based on the z-axis acceleration
+      const depth = calculateDepth(lowestZ.current);
+      const depthScore = getDepthScore(depth);
+      console.log("d: ", depth);
+
+      // Evaluate timing
+      const now = Date.now();
+      const compressionInterval = now - lastCompressionTime.current;
+      const timingScore = getTimingScore(compressionInterval);
+
+      const overallScore = getOverallScore(timingScore, depthScore);
+      setCompressionScores({
+        timing: timingScore,
+        depth: depthScore,
+        overall: overallScore,
+      });
+
+      resetCompressionScores();
+      compressionCount.current += 1;
+      lastCompressionTime.current = now;
+      compressionTimer.current = 0;
+      lowestZ.current = 1;
+    }
+  }, []);
+
+  const resetCompressionScores = () => {
+    setTimeout(() => {
+      setCompressionScores({
+        timing: "",
+        depth: "",
+        overall: "",
+      });
+    }, 150);
+  };
+
+  const startMonitoring = () => {
+    compressionCount.current = 0;
+    setCompressionScores({
+      timing: "",
+      depth: "",
+      overall: "",
+    });
+    lastCompressionTime.current = null;
+    compressionTimer.current = 0;
+    setIsMonitoring(true);
+  };
+
+  const stopMonitoring = () => {
+    setIsMonitoring(false);
+  };
+
+  return {
+    compressionScores,
+    isMonitoring,
+    startMonitoring,
+    stopMonitoring,
+  };
+};
+
+export default useCpr;
+w

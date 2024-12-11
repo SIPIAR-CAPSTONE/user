@@ -1,0 +1,138 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Accelerometer } from "expo-sensors";
+import {
+  calculateDepth,
+  calculateMagnitude,
+  getDepthScore,
+  getOverallScore,
+  getTimingScore,
+  isCompression,
+  lowPassFilter,
+} from "./useCpr.helper";
+
+const TARGET_INTERVAL_MS = 500;
+const UPDATE_INTERVAL = 16.67;
+
+const useCpr = () => {
+  const [isSessionStarted, setIsSessionStarted] = useState(false);
+  const subscription = useRef(null);
+  const lowestZ = useRef(1);
+  const lastCompressionTime = useRef(null);
+  const isCompressed = useRef(false);
+  const compressionTimer = useRef(0);
+  const compressionCount = useRef(0);
+  const [compressionScores, setCompressionScores] = useState({
+    timing: "",
+    depth: "",
+    overall: "",
+  });
+
+  useEffect(() => {
+    if (isSessionStarted) {
+      Accelerometer.setUpdateInterval(UPDATE_INTERVAL); // update interval to 60Hz (16.67ms)
+      subscription.current = Accelerometer.addListener(handleAccelerometerData);
+
+      const timerInterval = setInterval(() => {
+        // If timer exceeds 500ms, set scores to "Missed" and reset timer
+        if (
+          compressionTimer.current >= TARGET_INTERVAL_MS &&
+          compressionScores.overall === ""
+        ) {
+          if (isCompressed.current === false) {
+            const overallScore = getOverallScore("Missed", "Missed");
+            setCompressionScores({
+              timing: "Missed",
+              depth: "Missed",
+              overall: overallScore,
+            });
+          }
+
+          resetCompressionScores();
+          compressionTimer.current = 0;
+          isCompressed.current = false;
+        } else {
+          compressionTimer.current += UPDATE_INTERVAL;
+        }
+      }, UPDATE_INTERVAL);
+
+      return () => {
+        clearInterval(timerInterval);
+        subscription.current?.remove();
+      };
+    } else {
+      subscription.current?.remove();
+    }
+  }, [isSessionStarted]);
+
+  const handleAccelerometerData = useCallback((data) => {
+    const currentZ = lowPassFilter(data.z, lowestZ.current);
+    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: data.z });
+
+    if (currentZ < lowestZ.current) {
+      lowestZ.current = currentZ;
+    }
+
+    if (isCompression(magnitude, lastCompressionTime.current)) {
+      isCompressed.current = true;
+
+      // Calculate depth based on the z-axis acceleration
+      const depth = calculateDepth(lowestZ.current);
+      const depthScore = getDepthScore(depth);
+  
+      // Evaluate timing
+      const now = Date.now();
+      const compressionInterval = now - lastCompressionTime.current;
+      const timingScore = getTimingScore(compressionInterval);
+
+      const overallScore = getOverallScore(timingScore, depthScore);
+      setCompressionScores({
+        timing: timingScore,
+        depth: depthScore,
+        overall: overallScore,
+      });
+
+      resetCompressionScores();
+      compressionCount.current += 1;
+      lastCompressionTime.current = now;
+      compressionTimer.current = 0;
+      lowestZ.current = 1;
+    } else {
+      isCompressed.current = false;
+    }
+  }, []);
+
+  const resetCompressionScores = () => {
+    setTimeout(() => {
+      setCompressionScores({
+        timing: "",
+        depth: "",
+        overall: "",
+      });
+    }, 150);
+  };
+
+  const startSession = () => {
+    compressionCount.current = 0;
+    setCompressionScores({
+      timing: "",
+      depth: "",
+      overall: "",
+    });
+    lastCompressionTime.current = null;
+    compressionTimer.current = 0;
+    setIsSessionStarted(true);
+  };
+
+  const stopSession = () => {
+    setIsSessionStarted(false);
+  };
+
+  return {
+    compressionScores,
+    isSessionStarted,
+    startSession,
+    stopSession,
+  };
+};
+
+export default useCpr;
