@@ -37,7 +37,7 @@ const useCpr = () => {
 
         // If timer exceeds the target interval, handle "Missed" scores
         if (
-          elapsed >= TARGET_INTERVAL_MS + 20 &&
+          elapsed >= TARGET_INTERVAL_MS + 30 &&
           compressionScores.overall === ""
         ) {
           if (isCompressed.current === false) {
@@ -48,7 +48,7 @@ const useCpr = () => {
               overall: overallScore,
             });
           }
-
+          console.log("missed");
           resetCompressionScores();
           isCompressed.current = false;
           compressionTimerStartTime.current = Date.now();
@@ -66,13 +66,14 @@ const useCpr = () => {
 
   const handleAccelerometerData = useCallback((data) => {
     const currentZ = lowPassFilter(data.z, lowestZ.current);
-    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: data.z });
+    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: currentZ });
 
     if (currentZ < lowestZ.current) {
       lowestZ.current = currentZ;
     }
 
     if (isCompression(magnitude, lastCompressionTime.current)) {
+      console.log("compressed");
       isCompressed.current = true;
 
       // Calculate depth based on the z-axis acceleration
