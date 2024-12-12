@@ -20,7 +20,6 @@ const useCpr = () => {
   const lastCompressionTime = useRef(null);
   const isCompressed = useRef(false);
   const compressionTimer = useRef(0);
-  const compressionCount = useRef(0);
   const [compressionScores, setCompressionScores] = useState({
     timing: "",
     depth: "",
@@ -93,7 +92,6 @@ const useCpr = () => {
       });
 
       resetCompressionScores();
-      compressionCount.current += 1;
       lastCompressionTime.current = now;
       compressionTimer.current = 0;
       lowestZ.current = 1;
@@ -113,7 +111,7 @@ const useCpr = () => {
   };
 
   const startSession = () => {
-    compressionCount.current = 0;
+
     setCompressionScores({
       timing: "",
       depth: "",
