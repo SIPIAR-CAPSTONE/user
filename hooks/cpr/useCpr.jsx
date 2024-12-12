@@ -19,7 +19,7 @@ const useCpr = () => {
   const lowestZ = useRef(1);
   const lastCompressionTime = useRef(null);
   const isCompressed = useRef(false);
-  const compressionTimer = useRef(0);
+  const compressionTimerStartTime = useRef(null);
   const [compressionScores, setCompressionScores] = useState({
     timing: "",
     depth: "",
@@ -31,10 +31,13 @@ const useCpr = () => {
       Accelerometer.setUpdateInterval(UPDATE_INTERVAL); // update interval to 60Hz (16.67ms)
       subscription.current = Accelerometer.addListener(handleAccelerometerData);
 
+      compressionTimerStartTime.current = Date.now(); // Initialize the start time
       const timerInterval = setInterval(() => {
-        // If timer exceeds 500ms, set scores to "Missed" and reset timer
+        const elapsed = Date.now() - compressionTimerStartTime.current; // Calculate the elapsed time
+
+        // If timer exceeds the target interval, handle "Missed" scores
         if (
-          compressionTimer.current >= TARGET_INTERVAL_MS &&
+          elapsed >= TARGET_INTERVAL_MS + 20 &&
           compressionScores.overall === ""
         ) {
           if (isCompressed.current === false) {
@@ -48,9 +51,7 @@ const useCpr = () => {
 
           resetCompressionScores();
           isCompressed.current = false;
-          compressionTimer.current = 0;
-        } else {
-          compressionTimer.current += UPDATE_INTERVAL;
+          compressionTimerStartTime.current = Date.now();
         }
       }, UPDATE_INTERVAL);
 
@@ -66,14 +67,13 @@ const useCpr = () => {
   const handleAccelerometerData = useCallback((data) => {
     const currentZ = lowPassFilter(data.z, lowestZ.current);
     const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: data.z });
-   
+
     if (currentZ < lowestZ.current) {
       lowestZ.current = currentZ;
     }
 
     if (isCompression(magnitude, lastCompressionTime.current)) {
       isCompressed.current = true;
-      console.log("compressed")
 
       // Calculate depth based on the z-axis acceleration
       const depth = calculateDepth(lowestZ.current);
@@ -93,7 +93,7 @@ const useCpr = () => {
 
       resetCompressionScores();
       lastCompressionTime.current = now;
-      compressionTimer.current = 0;
+      compressionTimerStartTime.current = Date.now();
       lowestZ.current = 1;
     } else {
       isCompressed.current = false;
@@ -111,14 +111,13 @@ const useCpr = () => {
   };
 
   const startSession = () => {
-
     setCompressionScores({
       timing: "",
       depth: "",
       overall: "",
     });
     lastCompressionTime.current = null;
-    compressionTimer.current = 0;
+    compressionTimerStartTime.current = Date.now();
     setIsSessionStarted(true);
   };
 
