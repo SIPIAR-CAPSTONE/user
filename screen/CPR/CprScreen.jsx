@@ -23,6 +23,7 @@ import Countdown from "../../components/cpr/Countdown";
 import useTimer from "../../hooks/cpr/useTimer";
 
 export default function CprScreen() {
+
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
   const { userLocation, loading: locationLoading } = useLocation();
   const navigation = useNavigation();
@@ -39,7 +40,6 @@ export default function CprScreen() {
       timing: timingScore,
       overall: overallScore,
     },
-    isSessionStarted,
     startSession,
     stopSession,
   } = useCpr();

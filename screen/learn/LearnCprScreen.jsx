@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState,  useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import useTimingAudio from "../../hooks/cpr/useTimingAudio";
@@ -97,9 +97,9 @@ export default function CprScreen() {
     handleStopSession();
 
     setHistoryDuration(timerInSeconds);
+    clearHistory();
 
     navigation.navigate("LearnCprScore", { compressionHistory: history });
-    clearHistory();
   };
 
   return (

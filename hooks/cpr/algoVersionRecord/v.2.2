@@ -7,19 +7,18 @@ import {
   getOverallScore,
   getTimingScore,
   isCompression,
-  lowPassFilter,
-} from "./useCpr.helper";
+} from "../cpr.helper";
 
 const TARGET_INTERVAL_MS = 500;
 const UPDATE_INTERVAL = 16.67;
 
 const useCpr = () => {
-  const [isSessionStarted, setIsSessionStarted] = useState(false);
+  const [isMonitoring, setIsMonitoring] = useState(false);
   const subscription = useRef(null);
   const lowestZ = useRef(1);
   const lastCompressionTime = useRef(null);
-  const isCompressed = useRef(false);
-  const compressionTimerStartTime = useRef(null);
+  const compressionTimer = useRef(0);
+  const compressionCount = useRef(0);
   const [compressionScores, setCompressionScores] = useState({
     timing: "",
     depth: "",
@@ -27,31 +26,24 @@ const useCpr = () => {
   });
 
   useEffect(() => {
-    if (isSessionStarted) {
+    if (isMonitoring) {
       Accelerometer.setUpdateInterval(UPDATE_INTERVAL); // update interval to 60Hz (16.67ms)
       subscription.current = Accelerometer.addListener(handleAccelerometerData);
 
-      compressionTimerStartTime.current = Date.now(); // Initialize the start time
       const timerInterval = setInterval(() => {
-        const elapsed = Date.now() - compressionTimerStartTime.current; // Calculate the elapsed time
+        if (compressionTimer.current >= TARGET_INTERVAL_MS) {
+          // If timer exceeds 500ms, set scores to "Missed" and reset timer
+          const overallScore = getOverallScore("Missed", "Missed");
+          setCompressionScores({
+            timing: "Missed",
+            depth: "Missed",
+            overall: overallScore,
+          });
 
-        // If timer exceeds the target interval, handle "Missed" scores
-        if (
-          elapsed >= TARGET_INTERVAL_MS + 30 &&
-          compressionScores.overall === ""
-        ) {
-          if (isCompressed.current === false) {
-            const overallScore = getOverallScore("Missed", "Missed");
-            setCompressionScores({
-              timing: "Missed",
-              depth: "Missed",
-              overall: overallScore,
-            });
-          }
-          console.log("missed");
           resetCompressionScores();
-          isCompressed.current = false;
-          compressionTimerStartTime.current = Date.now();
+          compressionTimer.current = 0;
+        } else {
+          compressionTimer.current += UPDATE_INTERVAL;
         }
       }, UPDATE_INTERVAL);
 
@@ -62,23 +54,20 @@ const useCpr = () => {
     } else {
       subscription.current?.remove();
     }
-  }, [isSessionStarted]);
+  }, [isMonitoring]);
 
   const handleAccelerometerData = useCallback((data) => {
-    const currentZ = lowPassFilter(data.z, lowestZ.current);
-    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: currentZ });
+    const magnitude = calculateMagnitude(data);
 
-    if (currentZ < lowestZ.current) {
-      lowestZ.current = currentZ;
+    if (data.z < lowestZ.current) {
+      lowestZ.current = data.z;
     }
 
     if (isCompression(magnitude, lastCompressionTime.current)) {
-      console.log("compressed");
-      isCompressed.current = true;
-
       // Calculate depth based on the z-axis acceleration
       const depth = calculateDepth(lowestZ.current);
       const depthScore = getDepthScore(depth);
+      console.log("d: ", depth);
 
       // Evaluate timing
       const now = Date.now();
@@ -93,11 +82,10 @@ const useCpr = () => {
       });
 
       resetCompressionScores();
+      compressionCount.current += 1;
       lastCompressionTime.current = now;
-      compressionTimerStartTime.current = Date.now();
+      compressionTimer.current = 0;
       lowestZ.current = 1;
-    } else {
-      isCompressed.current = false;
     }
   }, []);
 
@@ -111,27 +99,29 @@ const useCpr = () => {
     }, 150);
   };
 
-  const startSession = () => {
+  const startMonitoring = () => {
+    compressionCount.current = 0;
     setCompressionScores({
       timing: "",
       depth: "",
       overall: "",
     });
     lastCompressionTime.current = null;
-    compressionTimerStartTime.current = Date.now();
-    setIsSessionStarted(true);
+    compressionTimer.current = 0;
+    setIsMonitoring(true);
   };
 
-  const stopSession = () => {
-    setIsSessionStarted(false);
+  const stopMonitoring = () => {
+    setIsMonitoring(false);
   };
 
   return {
     compressionScores,
-    isSessionStarted,
-    startSession,
-    stopSession,
+    isMonitoring,
+    startMonitoring,
+    stopMonitoring,
   };
 };
 
 export default useCpr;
+w
