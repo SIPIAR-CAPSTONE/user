@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 
 import ImageFrame from "./ImageFrame";
 import { Divider } from "react-native-paper";
@@ -52,9 +52,9 @@ const StepFourContent = () => {
 
   const handleSubmit = async () => {
     if (isFormValid(fields, { frontIdImage, backIdImage }, setErrors)) {
-      setLoading(true);
-
       try {
+        setLoading(true);
+
         // Update bystander data in USER table
         const { error: updateError } = await supabase
           .from("USER")
@@ -69,7 +69,8 @@ const StepFourContent = () => {
             street: verificationForm["street"],
             house_number: verificationForm["houseNumber"],
             email: verificationForm["email"],
-          }).eq('user_id', userMetaData['bystanderId'])
+          })
+          .eq("user_id", userMetaData["bystanderId"]);
 
         // Check for update error
         if (updateError) {
@@ -81,8 +82,8 @@ const StepFourContent = () => {
         const { error: insertError } = await supabase
           .from("VERIFICATION REQUEST")
           .insert({
-            user_id: userMetaData['bystanderId'],
-            identification_type: verificationForm["selectedIdType"]
+            user_id: userMetaData["bystanderId"],
+            identification_type: verificationForm["selectedIdType"],
           });
 
         // Check for insert error
@@ -120,10 +121,12 @@ const StepFourContent = () => {
         }
         setShowSuccessAlert(true);
       } catch (error) {
-        // Catch unexpected errors
-        console.log("Unexpected Error:", error);
+        ToastAndroid.show(
+          `Error submitting verification request: ${error.message}`
+        );
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
