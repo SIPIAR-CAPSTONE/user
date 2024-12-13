@@ -11,7 +11,7 @@ import {
 } from "./useCpr.helper";
 
 const TARGET_INTERVAL_MS = 500;
-const UPDATE_INTERVAL = 16.67;
+const UPDATE_INTERVAL = 16.67; //60Hz (16.67ms)
 
 const useCpr = () => {
   const [isSessionStarted, setIsSessionStarted] = useState(false);
@@ -28,12 +28,12 @@ const useCpr = () => {
 
   useEffect(() => {
     if (isSessionStarted) {
-      Accelerometer.setUpdateInterval(UPDATE_INTERVAL); // update interval to 60Hz (16.67ms)
+      Accelerometer.setUpdateInterval(UPDATE_INTERVAL);
       subscription.current = Accelerometer.addListener(handleAccelerometerData);
 
-      compressionTimerStartTime.current = Date.now(); // Initialize the start time
+      compressionTimerStartTime.current = Date.now(); 
       const timerInterval = setInterval(() => {
-        const elapsed = Date.now() - compressionTimerStartTime.current; // Calculate the elapsed time
+        const elapsed = Date.now() - compressionTimerStartTime.current; 
 
         // If timer exceeds the target interval, handle "Missed" scores
         if (
@@ -48,7 +48,6 @@ const useCpr = () => {
               overall: overallScore,
             });
           }
-          console.log("missed");
           resetCompressionScores();
           isCompressed.current = false;
           compressionTimerStartTime.current = Date.now();
@@ -66,14 +65,13 @@ const useCpr = () => {
 
   const handleAccelerometerData = useCallback((data) => {
     const currentZ = lowPassFilter(data.z, lowestZ.current);
-    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: currentZ });
+    const magnitude = calculateMagnitude({ x: data.x, y: data.y, z: data.z });
 
     if (currentZ < lowestZ.current) {
       lowestZ.current = currentZ;
     }
 
     if (isCompression(magnitude, lastCompressionTime.current)) {
-      console.log("compressed");
       isCompressed.current = true;
 
       // Calculate depth based on the z-axis acceleration

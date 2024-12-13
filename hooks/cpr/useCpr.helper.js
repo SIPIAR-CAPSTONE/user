@@ -6,7 +6,7 @@ const TOLERANCE_MS = 100;
 const GRAVITY = 9.81; // Gravity constant in m/s^2
 const TIME_INTERVAL = 0.01667; // 60Hz = 16.67ms
 const INCHES_PER_METER = 39.3701;
-const CALIBRATION_FACTOR = 39.37; //* Adjust based on real-world testing (example 39.6)
+const CALIBRATION_FACTOR = 38.85; //* Adjust based on real-world testing (example 38.85)
 
 export function calculateDepth(z) {
   const verticalAcceleration = Math.abs(z - GRAVITY);
