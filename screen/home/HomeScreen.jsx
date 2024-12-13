@@ -1,6 +1,5 @@
 import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
-import CircularIcon from "../../components/ui/CircularIcon";
 import LogoTitle from "../../components/navigation/LogoTitle";
 import EmergencyAlerts from "../../components/home/EmergencyAlerts";
 import ContactCards from "../../components/home/ContactCards";
