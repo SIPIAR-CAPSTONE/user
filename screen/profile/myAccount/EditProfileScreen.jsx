@@ -218,6 +218,7 @@ const EditProfileScreen = () => {
         <TextInput
           variant="outlined"
           label="Phone"
+          type="numeric"
           value={userInfo.phone}
           onChangeText={(item) => handleFieldChange("phone", item)}
         />
