@@ -97,6 +97,12 @@ const ReportIssueScreen = () => {
         return;
       }
 
+      // check image doesnt exist submit only the text
+      if (!bugReportBase64) {
+        setShowSuccessAlert(true);
+        return;
+      }
+
       // Upload the image
       const { error: imageUploadError } = await supabase.storage
         .from("bug_report")
