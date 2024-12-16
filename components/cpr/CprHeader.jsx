@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { useState, memo } from "react";
 import { Menu, TouchableRipple } from "react-native-paper";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import CprGuideTimer from "./CprGuideTimer";

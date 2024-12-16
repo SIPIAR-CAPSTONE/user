@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import Layout from "../../components/common/Layout";
 
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";

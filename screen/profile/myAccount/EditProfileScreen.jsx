@@ -2,7 +2,7 @@ import { ToastAndroid, View } from "react-native";
 import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple } from "react-native-paper";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { decode } from "base64-arraybuffer";
 import moment from "moment";
 
