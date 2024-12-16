@@ -131,4 +131,8 @@ export const createAuthSlice = (set, get) => ({
       set({ userIsVerified: userIsVerified });
     }
   },
+  removeAccountIsVerifiedLocally: async () => {
+    set({ userIsVerified: false });
+    await largeSecureStore.removeItem("userIsVerified");
+  },
 });

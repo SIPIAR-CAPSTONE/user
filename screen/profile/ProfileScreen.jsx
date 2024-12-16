@@ -43,6 +43,9 @@ const ProfileScreen = () => {
     setIsNavConfirmationDialogVisible(true);
 
   const removeSession = useBoundStore((state) => state.removeSession);
+  const removeAccountIsVerifiedLocally = useBoundStore(
+    (state) => state.removeAccountIsVerifiedLocally
+  );
   const { removeState } = useUserMetadata();
   const removeProfilePicturePath = useBoundStore(
     (state) => state.removeProfilePicturePath
@@ -62,6 +65,8 @@ const ProfileScreen = () => {
 
         //* remove global state variable
         removeState();
+
+        await removeAccountIsVerifiedLocally();
 
         //* remove profile picture in local storage
         if (globalStateProfilePath) {
