@@ -11,7 +11,7 @@ const BirthdatePicker = ({
   placeholder = "Birthday",
   label,
   error,
-  date: strDate,
+  givenDate: strDate,
   setDate,
   disabled,
   variant,
@@ -21,7 +21,7 @@ const BirthdatePicker = ({
   const [open, setOpen] = useState(false);
   const date = moment(strDate).toDate();
   const formattedDate = moment(date).format("LL");
-
+  
   const handleOnCancel = () => setOpen(false);
   const handleOnPress = () => setOpen(true);
   const handleOnConfirm = (date) => {

@@ -56,7 +56,7 @@ const EditProfileScreen = () => {
   //* retrieve dafault profile picture
   useImageReader(setProfilePicture);
 
-  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
+  const formattedDate = moment(userMetaData["birthday"]);
 
   //* default value to input fields
   const [userInfo, setUserInfo] = useState({

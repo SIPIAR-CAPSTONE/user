@@ -82,7 +82,7 @@ const StepOneContent = ({ goNextStep }) => {
         error={errors.suffix}
       />
       <BirthdatePicker
-        date={signupForm.birthday}
+        givenDate={signupForm.birthday}
         setDate={setSignupForm}
         error={errors.birthday}
       />
