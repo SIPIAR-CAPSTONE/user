@@ -10,7 +10,6 @@ import {
   lowPassFilter,
 } from "./useCpr.helper";
 
-const TOLERANCE_MS = 50;
 const TARGET_INTERVAL_MS = 500;
 const UPDATE_INTERVAL = 16.67; //60Hz (16.67ms)
 
@@ -40,10 +39,7 @@ const useCpr = () => {
         const elapsed = Date.now() - compressionTimerStartTime.current;
 
         // If timer exceeds the target interval, handle "Missed" scores
-        if (
-          elapsed >= TARGET_INTERVAL_MS + TOLERANCE_MS &&
-          compressionScores.overall === ""
-        ) {
+        if (elapsed >= TARGET_INTERVAL_MS + 20 && compressionScores.overall === "") {
           if (isCompressed.current === false) {
             const overallScore = getOverallScore("Missed", "Missed");
             setCompressionScores({
@@ -112,7 +108,7 @@ const useCpr = () => {
         depth: "",
         overall: "",
       });
-    }, 150);
+    }, 100);
   };
 
   const startSession = () => {
