@@ -11,10 +11,10 @@ export function getFormattedCurrentDate() {
 //get the percentage of selected scoreType and score
 //example: getScorePercentage(compressionHistory, "overallScore", "green")
 export function getScorePercentage(records, scoreType, score) {
-  const totalRecords = records.length;
+  const totalRecords = records?.length || 0;
   const scoreCount = records.filter(
     (record) => record[scoreType] === score
-  ).length;
+  )?.length || 0;
 
   if (totalRecords === 0 || scoreCount === 0) {
     return 0;
@@ -26,9 +26,9 @@ export function getScorePercentage(records, scoreType, score) {
 
 // Get the count of records with a specific color score
 export function countScore(records, scoreType, score) {
-  if (records.length === 0) return 0;
+  if (records?.length === 0) return 0;
 
-  return records.filter((record) => record[scoreType] === score).length;
+  return records.filter((record) => record[scoreType] === score)?.length;
 }
 
 export function getPercentage(value, totalValue) {
@@ -42,5 +42,5 @@ export function getAnswerScore(answerId, currentCorrectAnswerId) {
 }
 
 export function isLastQuestion(currentQuestionIndex, quiz) {
-  return currentQuestionIndex < quiz.length - 1;
+  return currentQuestionIndex < quiz?.length - 1;
 }
