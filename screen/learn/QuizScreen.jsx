@@ -42,9 +42,7 @@ const QuizScreen = ({ route }) => {
     setSelectedAnswerId(answerId);
     recordAnswer({
       question: currentQuestion.question,
-      scores: {
-        answerScore: getAnswerScore(answerId, currentCorrectAnswerId),
-      },
+      answerScore: getAnswerScore(answerId, currentCorrectAnswerId),
     });
     resetTimer();
 
