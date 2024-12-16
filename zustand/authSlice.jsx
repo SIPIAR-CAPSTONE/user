@@ -47,6 +47,7 @@ export const createAuthSlice = (set, get) => ({
     set((state) => ({
       signupForm: { ...state.signupForm, [key]: newValue },
     })),
+  resetSignupForm: () => set({ signupForm: DEFAULT_SIGNUP_FORM }),
   setPasswordResetEmail: (value) => set({ passwordResetEmail: value }),
   setSession: async (session) => {
     const encryptedSession = await largeSecureStore.setItem("session", session);
