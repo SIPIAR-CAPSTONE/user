@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { createStyleSheet, useStyles } from '../../hooks/useStyles'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Button from '../ui/Button'
 import useBoundStore from '../../zustand/useBoundStore'
 

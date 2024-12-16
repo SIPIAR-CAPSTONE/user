@@ -2,7 +2,7 @@ import { ToastAndroid, View } from "react-native";
 import { useState, lazy } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple } from "react-native-paper";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { decode } from "base64-arraybuffer";
 import moment from "moment";
 
@@ -56,7 +56,7 @@ const EditProfileScreen = () => {
   //* retrieve dafault profile picture
   useImageReader(setProfilePicture);
 
-  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
+  const formattedDate = moment(userMetaData["birthday"]);
 
   //* default value to input fields
   const [userInfo, setUserInfo] = useState({
@@ -149,12 +149,13 @@ const EditProfileScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={showAlert} />
+      <CircularIcon name="arrow-back" onPress={showAlert} disabled={loading} />
       <AppBarTitle>Edit Profile</AppBarTitle>
       <TouchableRipple
         borderless
         style={styles.changePassButton}
         onPress={() => navigation.navigate("EditPassword")}
+        disabled={loading}
       >
         <MaterialCommunityIcons
           name="form-textbox-password"
@@ -176,6 +177,7 @@ const EditProfileScreen = () => {
         name={userInfo.firstName || "?"}
         image={profilePicture}
         setImage={setProfilePicture}
+        disabled={loading}
       />
 
       <SectionHeader title="Personal Information" />

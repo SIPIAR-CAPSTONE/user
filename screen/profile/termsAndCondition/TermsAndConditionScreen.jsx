@@ -93,58 +93,43 @@ const TermsAndConditionScreen = () => {
         their content or practices.
       </P>
 
-      <H1>4. Intellectual Property</H1>
+      <H1>4. Disclaimers</H1>
       <P>
-        The App and its content, including but not limited to text, graphics,
-        logos, and images, are protected by copyright, trademark, and other
-        intellectual property laws. You may not use, modify, or distribute any
-        of the App's content without our prior written consent.
-      </P>
-
-      <H1>5. Disclaimers</H1>
-      <P>
-        <H2>5.1. No Medical Advice: </H2>
+        <H2>4.1. No Medical Advice: </H2>
         The information provided in the App is for educational purposes only and
         should not be considered medical advice. Always consult a qualified
         healthcare professional for medical guidance and treatment.
       </P>
 
       <P>
-        <H2>5.2. Accuracy of Information: </H2>
+        <H2>4.2. Accuracy of Information: </H2>
         We strive to provide accurate and up-to-date information in the App but
         make no representations or warranties of any kind regarding the
         accuracy, completeness, or reliability of the content.
       </P>
 
-      <H1>6. Limitation of Liability</H1>
+      <H1>5. Limitation of Liability</H1>
       <P>
         To the extent permitted by law, we shall not be liable for any direct,
         indirect, incidental, special, or consequential damages arising out of
         or in any way connected with your use of the App.
       </P>
 
-      <H1>7. Indemnification</H1>
+      <H1>6. Indemnification</H1>
       <P>
         You agree to indemnify and hold us harmless from any claims, damages,
         liabilities, costs, or expenses (including attorney fees) arising out of
         your use of the App or violation of these Terms.
       </P>
 
-      <H1>8. Changes to Terms</H1>
+      <H1>7. Changes to Terms</H1>
       <P>
         We reserve the right to update or modify these Terms at any time without
         prior notice. Your continued use of the App after any changes
         constitutes acceptance of the revised Terms.
       </P>
 
-      <H1>9. Governing Law</H1>
-      <P>
-        These Terms shall be governed by and construed in accordance with the
-        laws of Regional Trial Courts, without regard to its conflict of law
-        provisions.
-      </P>
-
-      <H1>10. Contact Us</H1>
+      <H1>8. Contact Us</H1>
       <P>
         If you have any questions or concerns about these Terms, please contact
         us at <Strong>sipiar@gmail.com</Strong>.

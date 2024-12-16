@@ -18,7 +18,6 @@ const SuccessConfirmation = ({
   const runOnDelayEnd = () => {
     setTimeout(() => {
       onDelayEnd();
-      setOpen(false);
     }, delay);
   };
 

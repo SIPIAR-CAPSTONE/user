@@ -78,37 +78,35 @@ const CPR_INFO_DATA = [
   {
     title: "TIMER",
     descriptions: ["Displays the time passed while using the CPR guide."],
-    imageSource: require("../../assets/images/learningMaterials/cprConfirmation/timer.png"),
+    imageSource: require("../../assets/images/cprGuideInfo/timer.jpg"),
   },
   {
     title: "TIMING",
     descriptions: [
-      "Displays the current compression timing score for every 0.6 seconds.",
+      "Displays the current compression timing score for every compression.",
+      "Pefect: if compression is performed around 500 milliseconds.",
+      "Too Fast: if interval between compression is less than 450 milliseconds.",
+      "Missed: if interval between compression is greater than 550 milliseconds or compression is not performed.",
     ],
-    imageSource: require("../../assets/images/learningMaterials/cprConfirmation/timingscore.png"),
-  },
-  {
-    title: "DEPTH",
-    descriptions: [
-      "Displays the current compression depth score for every 0.6 seconds.",
-      "Perfect: Depth is between 2 and 2.5 inches.",
-      "Too Shallow: Depth is less than 2 inches.",
-      "Too Deep: Depth is greater than 2.5 inches.",
-    ],
-    imageSource: require("../../assets/images/learningMaterials/cprConfirmation/depthscore.png"),
-  },
-  {
-    title: "DEPTH(in)",
-    descriptions: ["Displays the current compression depth in inches."],
-    imageSource: require("../../assets/images/learningMaterials/cprConfirmation/depthInches.png"),
+    imageSource: require("../../assets/images/cprGuideInfo/timingScore.jpg"),
   },
   {
     title: "OVERALL SCORE",
     descriptions: [
-      "Displays the overall compression score every 0.6 seconds based on the scores in TIMING and DEPTH.",
+      "Display feedback according on the depth and time scores combined.",
       "For example:",
-      "If TIMING is Perfect but DEPTH is Too Shallow, then the overall score is Yellow.",
+      "If TIMING is Perfect but DEPTH is Too Shallow, then the feedback is Push Harder.",
     ],
-    imageSource: require("../../assets/images/learningMaterials/cprConfirmation/overallscore.png"),
+    imageSource: require("../../assets/images/cprGuideInfo/feedback.jpg"),
+  },
+  {
+    title: "DEPTH",
+    descriptions: [
+      "Displays the current compression depth score for every compression.",
+      "Perfect: Depth is between 2 and 2.5 inches.",
+      "Too Shallow: Depth is less than 2 inches.",
+      "Too Deep: Depth is greater than 2.5 inches.",
+    ],
+    imageSource: require("../../assets/images/cprGuideInfo/depthScore.jpg"),
   },
 ];

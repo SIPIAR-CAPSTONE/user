@@ -74,7 +74,6 @@ const StepOneContent = ({ goNextStep }) => {
       <BirthdatePicker
         placeholder="Birthday"
         givenDate={verificationForm.birthday}
-        date={verificationForm.birthday}
         setDate={setVerificationForm}
         error={errors.birthday}
       />

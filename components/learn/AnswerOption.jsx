@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const AnswerOption = ({ isCorrect = null, onPress, text, disabled }) => {
   const { styles, theme } = useStyles(stylesheet);

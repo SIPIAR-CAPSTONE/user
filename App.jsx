@@ -31,6 +31,9 @@ export default function App() {
   const restoreSessionOffline = useBoundStore(
     (state) => state.restoreSessionOffline
   );
+  const restoreAccountIsVerifiedLocally = useBoundStore(
+    (state) => state.restoreAccountIsVerifiedLocally
+  );
   useInitializeTheme();
   useEffect(() => {
     async function prepare() {
@@ -40,6 +43,7 @@ export default function App() {
         } else {
           await restoreSessionOffline();
         }
+        await restoreAccountIsVerifiedLocally();
       } catch (error) {
         ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
       } finally {

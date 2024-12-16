@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, ToastAndroid } from "react-native";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Divider } from "react-native-paper";
 
@@ -23,12 +23,14 @@ import moment from "moment";
 
 const LearnCprScoreScreen = ({ route }) => {
   const { compressionHistory } = route.params;
+  usePreventBack();
 
   usePreventBack();
   const navigation = useNavigation();
   const { styles } = useStyles(stylesheet);
   const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
   const userMetaData = useBoundStore((state) => state.userMetaData);
+  const [loading, setLoading] = useState(false);
 
   const currentDate = getFormattedCurrentDate();
   const totalCompression = compressionHistory?.data?.length || 0;
@@ -97,40 +99,30 @@ const LearnCprScoreScreen = ({ route }) => {
   );
 
   const handleExit = async () => {
-    const currentDate = moment();
+    try {
+      setLoading(true);
+      const currentDate = moment();
 
-    const { error: insertError } = await supabase
-      .from("PRACTICE SCORE")
-      .insert({
-        bystander_id: userMetaData["bystanderId"],
-        date: currentDate,
-        total_compression: totalCompression,
-        perfect_overall: perfectOverallScoreCount,
-        total_duration: totalDuration,
-      });
+      const { error: insertError } = await supabase
+        .from("PRACTICE SCORE")
+        .insert({
+          bystander_id: userMetaData["bystanderId"],
+          date: currentDate,
+          total_compression: totalCompression,
+          perfect_overall: perfectOverallScoreCount,
+          total_duration: totalDuration,
+        });
 
-    if (insertError) {
-      ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+      if (insertError) {
+        ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
+      navigation.navigate("LearnScreen");
     }
-    navigation.navigate("LearnScreen");
   };
-
-  //prevent going back to previous screen
-  useEffect(() => {
-    const beforeRemoveListener = (e) => {
-      e.preventDefault();
-    };
-
-    const subscription = navigation.addListener(
-      "beforeRemove",
-      beforeRemoveListener
-    );
-
-    // Cleanup the listener on component unmount
-    return () => {
-      subscription();
-    };
-  }, [navigation]);
 
   return (
     <Layout
@@ -251,7 +243,7 @@ const LearnCprScoreScreen = ({ route }) => {
         </View>
 
         <View style={styles.finishButtonContainer}>
-          <Button label="Finish" onPress={handleExit} />
+          <Button label="Finish" onPress={handleExit} isLoading={loading} />
         </View>
       </ScrollView>
     </Layout>

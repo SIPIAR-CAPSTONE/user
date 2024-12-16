@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { ToastAndroid, View } from "react-native";
 
 import ImageFrame from "./ImageFrame";
 import { Divider } from "react-native-paper";
 import Button from "../../ui/Button";
 import useBoundStore from "../../../zustand/useBoundStore";
-import { useNavigation } from "@react-navigation/native";
+import { StackActions, useNavigation } from "@react-navigation/native";
 import useImagePicker from "../../../hooks/useImagePicker";
 import { supabase } from "../../../utils/supabase/config";
 import { decode } from "base64-arraybuffer";
@@ -24,7 +24,7 @@ const fields = [
   },
 ];
 
-const StepFourContent = () => {
+const StepFourContent = ({ disableBack, enableBack }) => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
 
@@ -39,9 +39,6 @@ const StepFourContent = () => {
   const { verificationIdCapturerOne, verificationIdCapturerTwo } =
     useImagePicker();
 
-  //! logger
-
-  //!access base 64 formatted image
   const verificationIdOneBase64 = useBoundStore(
     (state) => state.verificationIdOneBase64
   );
@@ -52,11 +49,40 @@ const StepFourContent = () => {
 
   const handleSubmit = async () => {
     if (isFormValid(fields, { frontIdImage, backIdImage }, setErrors)) {
-      setLoading(true);
-
       try {
+        setLoading(true);
+        disableBack();
+
+        // submit images
+        const files = [
+          {
+            fileName: "verification_id_front",
+            base64: verificationIdOneBase64,
+          },
+          {
+            fileName: "verification_id_back",
+            base64: verificationIdTwoBase64,
+          },
+        ];
+
+        // Upload files in parallel
+        const uploadPromises = files.map((file) =>
+          supabase.storage
+            .from("bystander")
+            .upload(
+              `verification_request/${userMetaData["email"]}/${file.fileName}`,
+              decode(file.base64),
+              { contentType: "image/*", upsert: true }
+            )
+        );
+
+        //1. Wait for all promises to complete
+        const [uploadResults] = await Promise.all([
+          Promise.all(uploadPromises),
+        ]);
+
         // Update bystander data in USER table
-        const { error: updateError } = await supabase
+        const updateUserPromise = supabase
           .from("USER")
           .update({
             first_name: verificationForm["firstName"],
@@ -69,61 +95,50 @@ const StepFourContent = () => {
             street: verificationForm["street"],
             house_number: verificationForm["houseNumber"],
             email: verificationForm["email"],
-          }).eq('user_id', userMetaData['bystanderId'])
-
-        // Check for update error
-        if (updateError) {
-          console.log("Update user Error:", updateError);
-          return;
-        }
+          })
+          .eq("user_id", userMetaData["bystanderId"]);
 
         // Insert into VERIFICATION REQUEST table
-        const { error: insertError } = await supabase
+        const insertRequestPromise = supabase
           .from("VERIFICATION REQUEST")
           .insert({
-            user_id: userMetaData['bystanderId'],
-            identification_type: verificationForm["selectedIdType"]
+            user_id: userMetaData["bystanderId"],
+            identification_type: verificationForm["selectedIdType"],
           });
 
-        // Check for insert error
-        if (insertError) {
-          console.log("Insert request Error:", insertError);
-          return;
+        //2. Wait for all promises to complete
+        const [updateUserResult, insertRequestResult] = await Promise.all([
+          updateUserPromise,
+          insertRequestPromise,
+        ]);
+
+        // Handle errors
+        if (updateUserResult.error) {
+          console.error("Update user Error:", updateUserResult.error);
+          throw new Error(updateUserResult.error.message);
+        }
+        if (insertRequestResult.error) {
+          console.error("Insert request Error:", insertRequestResult.error);
+          throw new Error(insertRequestResult.error.message);
+        }
+        const uploadErrors = uploadResults.filter((result) => result.error);
+        if (uploadErrors.length) {
+          console.error("Image Upload Errors:", uploadErrors);
+          throw new Error("Some image uploads failed.");
         }
 
-        const files = [
-          {
-            fileName: "verification_id_front",
-            base64: verificationIdOneBase64,
-          },
-          { fileName: "verification_id_back", base64: verificationIdTwoBase64 },
-        ];
-
-        // Upload each file
-        for (const file of files) {
-          const { error: uploadError } = await supabase.storage
-            .from("bystander")
-            .upload(
-              `verification_request/${userMetaData["email"]}/${file.fileName}`,
-              decode(file.base64),
-              {
-                contentType: "image/*",
-                upsert: true,
-              }
-            );
-
-          // Check for upload error
-          if (uploadError) {
-            console.log("Image Upload Error:", uploadError);
-            return;
-          }
-        }
+        // Success
         setShowSuccessAlert(true);
       } catch (error) {
-        // Catch unexpected errors
-        console.log("Unexpected Error:", error);
+        console.error("Error during submission:", error.message);
+        ToastAndroid.show(
+          `Error submitting verification request: ${error.message}`,
+          ToastAndroid.LONG
+        );
+      } finally {
+        enableBack();
+        setLoading(false);
       }
-      setLoading(false);
     }
   };
 
@@ -157,7 +172,7 @@ const StepFourContent = () => {
         setOpen={setShowSuccessAlert}
         title="Verification Request Submitted"
         desc="You successfully submitted account verification request. Please just wait until your account is verified. Thank you."
-        onDelayEnd={() => navigation.navigate("ProfileScreen")}
+        onDelayEnd={() => navigation.dispatch(StackActions.popToTop())}
       />
     </View>
   );

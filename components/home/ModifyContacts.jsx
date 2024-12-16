@@ -8,7 +8,7 @@ import {
   SegmentedButtons,
   Divider,
 } from "react-native-paper";
-import Feather from "@expo/vector-icons/Feather";
+import { Feather } from "@expo/vector-icons";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import ModifyContactsEditContent from "./ModifyContactsEditContent";
@@ -20,21 +20,20 @@ export default function ModifyContact() {
   const { styles, theme } = useStyles(stylesheet);
   const [visible, setVisible] = useState(false);
   const [modifyMode, setModifyMode] = useState("Edit");
-  const { userIsVerified } = useCheckVerification()
-  const setGlobalSetter = useBoundStore((state) => state.setGlobalSetter)
+  const { userIsVerified } = useCheckVerification();
+  const setGlobalSetter = useBoundStore((state) => state.setGlobalSetter);
 
   const showModal = (requireValidation = false) => {
     if (requireValidation && !userIsVerified) {
-      setGlobalSetter(true)
+      setGlobalSetter(true);
       return;
     } else {
-      setGlobalSetter(false)
+      setGlobalSetter(false);
     }
-    setVisible(true)
-
+    setVisible(true);
   };
   const hideModal = () => {
-    setVisible(false)
+    setVisible(false);
   };
 
   return (

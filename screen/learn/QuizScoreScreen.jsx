@@ -19,7 +19,7 @@ import {
 
 const QuizScoreScreen = ({ route }) => {
   const { quizAnswersHistory } = route.params;
-  const { styles, theme } = useStyles(stylesheet);
+  const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
   const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
   const currentDate = getFormattedCurrentDate();

@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Text, Button as NPButton } from "react-native-paper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "../../ui/Button";
 import FormHeader from "../../common/FormHeader";
@@ -37,7 +37,12 @@ const StepOneContent = ({ goNextStep }) => {
 
   const signupForm = useBoundStore((state) => state.signupForm);
   const setSignupForm = useBoundStore((state) => state.setSignupForm);
+  const resetSignupForm = useBoundStore((state) => state.resetSignupForm);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    resetSignupForm();
+  }, []);
 
   const handleSubmit = () => {
     if (isFormValid(fields, signupForm, setErrors)) {
@@ -77,7 +82,7 @@ const StepOneContent = ({ goNextStep }) => {
         error={errors.suffix}
       />
       <BirthdatePicker
-        date={signupForm.birthday}
+        givenDate={signupForm.birthday}
         setDate={setSignupForm}
         error={errors.birthday}
       />

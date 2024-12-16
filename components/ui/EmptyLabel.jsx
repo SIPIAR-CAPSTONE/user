@@ -1,6 +1,5 @@
 import { View } from "react-native";
 import { Text } from "react-native-paper";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 

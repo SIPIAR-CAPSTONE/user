@@ -47,6 +47,7 @@ export const createAuthSlice = (set, get) => ({
     set((state) => ({
       signupForm: { ...state.signupForm, [key]: newValue },
     })),
+  resetSignupForm: () => set({ signupForm: DEFAULT_SIGNUP_FORM }),
   setPasswordResetEmail: (value) => set({ passwordResetEmail: value }),
   setSession: async (session) => {
     const encryptedSession = await largeSecureStore.setItem("session", session);
@@ -117,5 +118,22 @@ export const createAuthSlice = (set, get) => ({
   },
   setUserMetaData: (value) => set({ userMetaData: value }),
   removeUserMetaData: () => set({ userMetaData: DEFAULT_SIGNUP_FORM }),
-  setAccountIsVerified: (value) => set({ userIsVerified: value }),
+  setAccountIsVerified: async (value) => {
+    set({ userIsVerified: value });
+    await largeSecureStore.setItem("userIsVerified", value);
+  },
+  restoreAccountIsVerifiedLocally: async () => {
+    const userIsVerifiedStr = await largeSecureStore.getItem("userIsVerified");
+    const userIsVerified = userIsVerifiedStr
+      ? Boolean(userIsVerifiedStr)
+      : false;
+
+    if (userIsVerified) {
+      set({ userIsVerified: userIsVerified });
+    }
+  },
+  removeAccountIsVerifiedLocally: async () => {
+    set({ userIsVerified: false });
+    await largeSecureStore.removeItem("userIsVerified");
+  },
 });

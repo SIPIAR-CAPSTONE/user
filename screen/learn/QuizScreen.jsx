@@ -7,7 +7,7 @@ import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import AnswerOption from "../../components/learn/AnswerOption";
 import { useNavigation } from "@react-navigation/native";
 import useCountdown from "../../hooks/useCountdown";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { getAnswerScore, isLastQuestion } from "./Learn.helper";
 import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import CircularIcon from "../../components/ui/CircularIcon";
@@ -42,9 +42,7 @@ const QuizScreen = ({ route }) => {
     setSelectedAnswerId(answerId);
     recordAnswer({
       question: currentQuestion.question,
-      scores: {
-        answerScore: getAnswerScore(answerId, currentCorrectAnswerId),
-      },
+      answerScore: getAnswerScore(answerId, currentCorrectAnswerId),
     });
     resetTimer();
 

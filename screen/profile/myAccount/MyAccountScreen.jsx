@@ -35,7 +35,7 @@ const MyAccountScreen = () => {
     navigation.navigate("EditProfile");
   };
 
-  const formattedDate = moment(userMetaData["birthday"]).format("YYYY-MM-DD");
+  const formattedDate = moment(userMetaData["birthday"]).format("MMMM D, YYYY");
 
   //* array template for UI rendering
   const USER_DATA = [

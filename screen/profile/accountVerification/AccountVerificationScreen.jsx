@@ -26,6 +26,10 @@ const AccountVerificationScreen = ({ navigation }) => {
   const { styles, theme } = useStyles(stylesheet);
   const [currentStep, setCurrentStep] = useState(0);
   const resetVerification = useBoundStore((state) => state.resetVerification);
+  const [disableBackButton, setDisabledBackButton] = useState(false);
+
+  const disableBack = () => setDisabledBackButton(true);
+  const enableBack = () => setDisabledBackButton(false);
 
   //!temporary solution for populating verification form with userData
   const initializeVerificationForm = useBoundStore(
@@ -82,7 +86,7 @@ const AccountVerificationScreen = ({ navigation }) => {
       id: 4,
       content: (
         <Content>
-          <StepFourContent />
+          <StepFourContent disableBack={disableBack} enableBack={enableBack} />
         </Content>
       ),
     },
@@ -132,7 +136,11 @@ const AccountVerificationScreen = ({ navigation }) => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={goBackStep} />
+      <CircularIcon
+        name="arrow-back"
+        onPress={goBackStep}
+        disabled={disableBackButton}
+      />
       <AppBarTitle>Account Verification</AppBarTitle>
       <View style={{ width: 40 }} />
     </AppBar>

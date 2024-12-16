@@ -18,21 +18,25 @@ export default function useBroadcast() {
         *,
         USER: user_id (first_name, last_name)
       `);
-
       if (error) {
-        ToastAndroid.show(
-          `Error fetching alerts: ${error.message}`,
-          ToastAndroid.SHORT
-        );
+        if (!error.message === "TypeError: Network request failed") {
+          ToastAndroid.show(
+            `Error fetching alerts: ${error?.message}`,
+            ToastAndroid.SHORT
+          );
+        }
       }
+
       if (data) {
         setEmergencyAlerts(data);
       }
     } catch (error) {
-      ToastAndroid.show(
-        `Error fetching alerts: ${error.message}`,
-        ToastAndroid.SHORT
-      );
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(
+          `Error fetching alerts: ${error?.message}`,
+          ToastAndroid.SHORT
+        );
+      }
     } finally {
       setLoading(false);
     }
