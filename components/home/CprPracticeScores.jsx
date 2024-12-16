@@ -52,7 +52,9 @@ function PracticeScores() {
       .limit(5);
 
     if (error) {
-      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      }
       return;
     }
     setRecentScores(data);
