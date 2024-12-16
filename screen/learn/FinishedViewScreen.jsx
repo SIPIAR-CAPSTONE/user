@@ -6,11 +6,14 @@ import Layout from "../../components/common/Layout";
 import { useStyles, createStyleSheet } from "../../hooks/useStyles";
 import Button from "../../components/ui/Button";
 import { useNavigation, StackActions } from "@react-navigation/native";
+import useBoundStore from "../../zustand/useBoundStore";
 
 const FinishedViewScreen = ({ route }) => {
   const { id } = route.params;
   const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
+  const isUserVerified = useBoundStore((state) => state.isUserVerified);
+
   return (
     <Layout>
       <View style={styles.container}>
@@ -29,13 +32,15 @@ const FinishedViewScreen = ({ route }) => {
             variant="outlined"
             onPress={() => navigation.navigate("LearnScreen")}
           />
-          <Button
-            style={styles.button}
-            label="Answer Quiz"
-            onPress={() =>
-              navigation.dispatch(StackActions.replace("Quiz", { id: id }))
-            }
-          />
+          {isUserVerified && (
+            <Button
+              style={styles.button}
+              label="Answer Quiz"
+              onPress={() =>
+                navigation.dispatch(StackActions.replace("Quiz", { id: id }))
+              }
+            />
+          )}
         </View>
       </View>
     </Layout>
