@@ -11,6 +11,7 @@ import useLocation from "../../hooks/useLocation";
 import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import EmptyLabel from "../ui/EmptyLabel";
 import useBroadcast from "../../hooks/useBroadcast";
+import NotInternetAlert from "../common/NoInternetAlert";
 
 const ALERTS_LIMIT = 5;
 
@@ -88,6 +89,7 @@ const EmergencyAlerts = () => {
       ) : (
         <EmptyLabel label="No Recent Alerts" />
       )}
+      <NotInternetAlert />
     </View>
   );
 };
