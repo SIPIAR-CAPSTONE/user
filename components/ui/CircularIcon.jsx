@@ -1,7 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme, TouchableRipple } from "react-native-paper";
 
-const CircularIcon = ({ name, onPress, variant = "gray", size = 19 }) => {
+const CircularIcon = ({
+  name,
+  onPress,
+  variant = "gray",
+  size = 19,
+  disabled,
+}) => {
   const theme = useTheme();
 
   const VARIANT_STYLE = {
@@ -22,6 +28,7 @@ const CircularIcon = ({ name, onPress, variant = "gray", size = 19 }) => {
   return (
     <TouchableRipple
       borderless
+      disabled={disabled}
       onPress={onPress ? onPress : null}
       style={{
         padding: Math.floor(size / 2),
@@ -29,7 +36,7 @@ const CircularIcon = ({ name, onPress, variant = "gray", size = 19 }) => {
         borderRadius: theme.borderRadius.full,
       }}
     >
-      <Ionicons name={name} size={size} color={VARIANT_STYLE[variant].color} />
+      <Ionicons name={name} size={size} color={disabled ? "lightgray" : VARIANT_STYLE[variant].color} />
     </TouchableRipple>
   );
 };

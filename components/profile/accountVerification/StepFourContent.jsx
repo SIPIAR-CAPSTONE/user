@@ -24,7 +24,7 @@ const fields = [
   },
 ];
 
-const StepFourContent = () => {
+const StepFourContent = ({ disableBack, enableBack }) => {
   const { styles } = useStyles(stylesheet);
   const navigation = useNavigation();
 
@@ -51,6 +51,7 @@ const StepFourContent = () => {
     if (isFormValid(fields, { frontIdImage, backIdImage }, setErrors)) {
       try {
         setLoading(true);
+        disableBack();
 
         // submit images
         const files = [
@@ -135,6 +136,7 @@ const StepFourContent = () => {
           ToastAndroid.LONG
         );
       } finally {
+        enableBack();
         setLoading(false);
       }
     }

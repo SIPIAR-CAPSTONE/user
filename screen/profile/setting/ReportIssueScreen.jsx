@@ -69,35 +69,34 @@ const ReportIssueScreen = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-
-    // Insert the bug report data
-    const { data, error: insertError } = await supabase
-      .from("BUG REPORT")
-      .insert([
-        {
-          bystander_id: userMetaData['bystanderId'],
-          issue_type: reportForm.issueType,
-          issue_description: reportForm.issueDesc,
-        },
-      ])
-      .select();
-
-    if (insertError) {
-      console.error("Text data error: ", insertError.message);
-      setLoading(false);
-      return;
-    }
-
-    const newBugId = data[0]?.bug_id;
-
-    if (!newBugId) {
-      console.error("Bug ID is undefined. Cannot upload the image.");
-      setLoading(false);
-      return;
-    }
-
     try {
+      setLoading(true);
+      // Insert the bug report data
+      const { data, error: insertError } = await supabase
+        .from("BUG REPORT")
+        .insert([
+          {
+            bystander_id: userMetaData["bystanderId"],
+            issue_type: reportForm.issueType,
+            issue_description: reportForm.issueDesc,
+          },
+        ])
+        .select();
+
+      if (insertError) {
+        console.error("Text data error: ", insertError.message);
+        setLoading(false);
+        return;
+      }
+
+      const newBugId = data[0]?.bug_id;
+
+      if (!newBugId) {
+        console.error("Bug ID is undefined. Cannot upload the image.");
+        setLoading(false);
+        return;
+      }
+
       // Upload the image
       const { error: imageUploadError } = await supabase.storage
         .from("bug_report")
@@ -108,18 +107,22 @@ const ReportIssueScreen = () => {
       if (imageUploadError) {
         console.error("Image upload error:", imageUploadError.message);
       } else {
-        console.log("Image uploaded successfully!");
         setShowSuccessAlert(true);
       }
     } catch (error) {
       console.error("Error during image upload:", error.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   customAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={() => navigation.goBack()} />
+      <CircularIcon
+        name="arrow-back"
+        onPress={() => navigation.goBack()}
+        disabled={loading}
+      />
     </AppBar>
   );
 

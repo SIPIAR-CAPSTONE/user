@@ -103,7 +103,7 @@ const EditPasswordScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={showAlert} />
+      <CircularIcon name="arrow-back" onPress={showAlert} disabled={loading} />
     </AppBar>
   );
 

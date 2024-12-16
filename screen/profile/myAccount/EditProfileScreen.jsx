@@ -149,12 +149,13 @@ const EditProfileScreen = () => {
 
   const CustomAppBar = () => (
     <AppBar>
-      <CircularIcon name="arrow-back" onPress={showAlert} />
+      <CircularIcon name="arrow-back" onPress={showAlert} disabled={loading} />
       <AppBarTitle>Edit Profile</AppBarTitle>
       <TouchableRipple
         borderless
         style={styles.changePassButton}
         onPress={() => navigation.navigate("EditPassword")}
+        disabled={loading}
       >
         <MaterialCommunityIcons
           name="form-textbox-password"
@@ -176,6 +177,7 @@ const EditProfileScreen = () => {
         name={userInfo.firstName || "?"}
         image={profilePicture}
         setImage={setProfilePicture}
+        disabled={loading}
       />
 
       <SectionHeader title="Personal Information" />
