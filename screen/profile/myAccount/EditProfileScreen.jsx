@@ -32,8 +32,25 @@ const EditUserProfileCard = lazy(() =>
 
 const fields = [
   { name: "firstName", rules: [{ type: "required" }] },
+  { name: "middleName", rules: [] },
   { name: "lastName", rules: [{ type: "required" }] },
+  { name: "suffix", rules: [] },
   { name: "birthday", rules: [{ type: "required" }] },
+  {
+    name: "phone",
+    rules: [
+      { type: "required" },
+      { type: "validPhNumber" },
+      {
+        type: "exactLength",
+        length: 11,
+        message: "Phone number should be exactly 11 digits long.",
+      },
+    ],
+  },
+  { name: "barangay", rules: [{ type: "required" }] },
+  { name: "street", rules: [{ type: "required" }] },
+  { name: "houseNumber", rules: [] },
 ];
 
 const EditProfileScreen = () => {
@@ -87,63 +104,67 @@ const EditProfileScreen = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
+    if (isFormValid(fields, userInfo, setErrors)) {
+      try {
+        setLoading(true);
 
-      //* update profile picture, if exist, replace
-      if (base64ImageFormat) {
-        const { error } = await supabase.storage
-          .from("bystander")
-          .upload(
-            `profile_picture/${userMetaData["email"]}`,
-            decode(base64ImageFormat),
-            {
-              contentType: "image/*",
-              upsert: true,
-            }
-          );
+        //* update profile picture, if exist, replace
+        if (base64ImageFormat) {
+          const { error } = await supabase.storage
+            .from("bystander")
+            .upload(
+              `profile_picture/${userMetaData["email"]}`,
+              decode(base64ImageFormat),
+              {
+                contentType: "image/*",
+                upsert: true,
+              }
+            );
 
-        if (error) {
-          ToastAndroid.show(
-            `Error Update Profile: ${error.message}`,
-            ToastAndroid.SHORT
-          );
-        } else if (!error) {
-          setglobalStateProfilePath(profilePicture);
+          if (error) {
+            ToastAndroid.show(
+              `Error Update Profile: ${error.message}`,
+              ToastAndroid.SHORT
+            );
+          } else if (!error) {
+            setglobalStateProfilePath(profilePicture);
+          }
         }
-      }
 
-      if (isFormValid(fields, userInfo, setErrors)) {
-        const { data, error } = await supabase.auth.updateUser({
-          data: {
-            first_name: userInfo["firstName"],
-            middle_name: userInfo["middleName"],
-            last_name: userInfo["lastName"],
-            suffix: userInfo["suffix"],
-            birth_date: userInfo["birthday"],
-            phone_number: userInfo["phone"],
-            barangay: userInfo["barangay"],
-            street: userInfo["street"],
-            house_number: userInfo["houseNumber"],
-          },
-        });
+        if (isFormValid(fields, userInfo, setErrors)) {
+          const { data, error } = await supabase.auth.updateUser({
+            data: {
+              first_name: userInfo["firstName"],
+              middle_name: userInfo["middleName"],
+              last_name: userInfo["lastName"],
+              suffix: userInfo["suffix"],
+              birth_date: userInfo["birthday"],
+              phone_number: userInfo["phone"],
+              barangay: userInfo["barangay"],
+              street: userInfo["street"],
+              house_number: userInfo["houseNumber"],
+            },
+          });
 
-        if (error) {
-          ToastAndroid.show(
-            `Error Update: ${error.message}`,
-            ToastAndroid.SHORT
-          );
-        } else if (!error) {
-          //* update session global state variables
-          setUserMetadata(data);
+          if (error) {
+            ToastAndroid.show(
+              `Error Update: ${error.message}`,
+              ToastAndroid.SHORT
+            );
+          } else if (!error) {
+            //* update session global state variables
+            setUserMetadata(data);
 
-          navigation.navigate("MyAccount");
+            navigation.navigate("MyAccount");
+          }
         }
+      } catch (error) {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
-    } finally {
-      setLoading(false);
+    } else {
+      hideConfirmationDialog();
     }
   };
 
@@ -221,6 +242,7 @@ const EditProfileScreen = () => {
           type="numeric"
           value={userInfo.phone}
           onChangeText={(item) => handleFieldChange("phone", item)}
+          error={errors.phone}
         />
       </View>
 
@@ -239,6 +261,7 @@ const EditProfileScreen = () => {
           label="Street"
           value={userInfo.street}
           onChangeText={(item) => handleFieldChange("street", item)}
+          error={errors.street}
         />
         <TextInput
           variant="outlined"
