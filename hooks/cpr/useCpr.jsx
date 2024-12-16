@@ -37,9 +37,12 @@ const useCpr = () => {
 
       const timerInterval = setInterval(() => {
         const elapsed = Date.now() - compressionTimerStartTime.current;
-
+  
         // If timer exceeds the target interval, handle "Missed" scores
-        if (elapsed >= TARGET_INTERVAL_MS + 20 && compressionScores.overall === "") {
+        if (
+          elapsed >= TARGET_INTERVAL_MS + 25 &&
+          compressionScores.overall === ""
+        ) {
           if (isCompressed.current === false) {
             const overallScore = getOverallScore("Missed", "Missed");
             setCompressionScores({
