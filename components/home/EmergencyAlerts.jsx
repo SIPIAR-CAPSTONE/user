@@ -100,6 +100,7 @@ const stylesheet = createStyleSheet((theme) => ({
   emergencyAlerts: {
     marginTop: 10,
     paddingHorizontal: theme.spacing.base,
+    minHeight: 345,
   },
   header: {
     flexDirection: "row",
