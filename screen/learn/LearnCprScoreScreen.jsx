@@ -114,10 +114,14 @@ const LearnCprScoreScreen = ({ route }) => {
         });
 
       if (insertError) {
-        ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+        if (!error.message === "TypeError: Network request failed") {
+          ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+        }
       }
     } catch (error) {
-      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      }
     } finally {
       setLoading(false);
       navigation.navigate("LearnScreen");

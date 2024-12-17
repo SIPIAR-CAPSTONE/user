@@ -12,7 +12,6 @@ export default function useSendEmergencyAlert() {
 
   //create a function that check if there is a recent sent emergencyAlertRequest not more than 30 mins ago
   const checkIfthereIsRecentAlert = async () => {
-    console.log(userId);
     const { data, error } = await supabase
       .from("BROADCAST")
       .select("date, user_id")
@@ -21,17 +20,18 @@ export default function useSendEmergencyAlert() {
       .limit(1);
 
     if (error) {
-      ToastAndroid.show(
-        `Error checking recent emergency alert request: ${error.message}`,
-        ToastAndroid.LONG
-      );
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(
+          `Error checking recent emergency alert request: ${error.message}`,
+          ToastAndroid.LONG
+        );
+      }
     }
     if (data && data.length > 0) {
       console.log(data[0]);
       const recentDate = data[0].date;
       const recentDateDiff = moment().diff(recentDate, "minutes");
       if (recentDateDiff < MINIMUM_MINS_BEFORE_ALLOWED_TO_RESEND_ALERT) {
-        console.log("there is");
         ToastAndroid.show(
           `You have already sent an emergency alert in the last ${MINIMUM_MINS_BEFORE_ALLOWED_TO_RESEND_ALERT} minutes`,
           ToastAndroid.LONG
@@ -71,19 +71,14 @@ export default function useSendEmergencyAlert() {
       });
 
       if (error) {
-        ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
-      }
-      if (status === 400) {
-        ToastAndroid.show("Error 400: Unable to send emergency alert");
-      }
-      if (status === 201) {
-        ToastAndroid.show(
-          "Emergency alert sent successfully",
-          ToastAndroid.LONG
-        );
+        if (!error.message === "TypeError: Network request failed") {
+          ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
+        }
       }
     } catch (error) {
-      ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
+      }
     }
   };
 
