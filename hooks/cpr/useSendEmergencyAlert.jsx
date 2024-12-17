@@ -75,6 +75,12 @@ export default function useSendEmergencyAlert() {
           ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
         }
       }
+      if (status === 201) {
+        ToastAndroid.show(
+          "Emergency alert sent successfully",
+          ToastAndroid.LONG
+        );
+      }
     } catch (error) {
       if (!error.message === "TypeError: Network request failed") {
         ToastAndroid.show(`Error sending emergency alert: ${error.message}`);
