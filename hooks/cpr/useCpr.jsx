@@ -32,12 +32,12 @@ const useCpr = () => {
       subscription.current = Accelerometer.addListener(handleAccelerometerData);
 
       //set initial value the first time session started
-      lastCompressionTime.current = Date.now();
+      lastCompressionTime.current = Date.now() - 100;
       compressionTimerStartTime.current = Date.now();
 
       const timerInterval = setInterval(() => {
         const elapsed = Date.now() - compressionTimerStartTime.current;
-  
+
         // If timer exceeds the target interval, handle "Missed" scores
         if (
           elapsed >= TARGET_INTERVAL_MS + 25 &&
