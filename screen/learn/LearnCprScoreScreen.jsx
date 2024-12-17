@@ -114,7 +114,7 @@ const LearnCprScoreScreen = ({ route }) => {
         });
 
       if (insertError) {
-        if (!error.message === "TypeError: Network request failed") {
+        if (!insertError.message === "TypeError: Network request failed") {
           ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
         }
       }
