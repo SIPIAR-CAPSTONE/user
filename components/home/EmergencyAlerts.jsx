@@ -12,12 +12,14 @@ import { createStyleSheet, useStyles } from "../../hooks/useStyles";
 import EmptyLabel from "../ui/EmptyLabel";
 import useBroadcast from "../../hooks/useBroadcast";
 import NotInternetAlert from "../common/NoInternetAlert";
+import useInternet from "../../hooks/useInternet";
 
 const ALERTS_LIMIT = 5;
 
 const EmergencyAlerts = () => {
   const { userLocation } = useLocation();
   const navigation = useNavigation();
+  const { hasInternet } = useInternet();
   const { styles } = useStyles(stylesheet);
   const { emergencyAlerts, refecthAlerts } = useBroadcast();
   const recentEmergencyAlerts = useMemo(
@@ -84,12 +86,13 @@ const EmergencyAlerts = () => {
           </NPButton>
         )}
       </View>
-      {EmergencyAlertsList && EmergencyAlertsList.length > 0 ? (
+      {!hasInternet ? (
+        <EmptyLabel label="No Internet Connection" />
+      ) : EmergencyAlertsList && EmergencyAlertsList.length > 0 ? (
         <View style={styles.list}>{EmergencyAlertsList}</View>
       ) : (
         <EmptyLabel label="No Recent Alerts" />
       )}
-      <NotInternetAlert />
     </View>
   );
 };
@@ -100,7 +103,6 @@ const stylesheet = createStyleSheet((theme) => ({
   emergencyAlerts: {
     marginTop: 10,
     paddingHorizontal: theme.spacing.base,
-    minHeight: 345,
   },
   header: {
     flexDirection: "row",
