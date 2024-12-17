@@ -41,15 +41,21 @@ export function getDepthScore(depth) {
   }
 }
 
-export function getTimingScore(interval) {
-  if (Math.abs(interval - TARGET_INTERVAL_MS) <= TOLERANCE_MS) {
-    return Score.Perfect;
-  } else if (interval < TARGET_INTERVAL_MS - TOLERANCE_MS) {
-    return Score.TooFast;
-  } else {
-    return Score.Missed;
+export function getTimingScore(compressionInterval) {
+  //450ms ≤ compression_interval ≤ 550ms
+    if (Math.abs(compressionInterval - TARGET_INTERVAL_MS) <= TOLERANCE_MS) {
+      return Score.Perfect;
+    } 
+  //compression_interval < 450ms
+  else if (compressionInterval < TARGET_INTERVAL_MS - TOLERANCE_MS) {
+      return Score.TooFast;
+    } 
+  //compression_interval > 550ms
+    else {
+      return Score.Missed;
+    }
   }
-}
+  
 
 export function getOverallScore(timingScore, depthScore) {
   if (timingScore === Score.Perfect && depthScore === Score.Perfect) {

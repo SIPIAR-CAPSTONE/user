@@ -35,17 +35,22 @@ export default function App() {
     (state) => state.restoreAccountIsVerifiedLocally
   );
   useInitializeTheme();
+
   useEffect(() => {
     async function prepare() {
       try {
+        await restoreAccountIsVerifiedLocally();
+
         if (hasInternet) {
           await restoreSession();
         } else {
           await restoreSessionOffline();
         }
-        await restoreAccountIsVerifiedLocally();
       } catch (error) {
-        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+        ToastAndroid.show(
+          `Initialize App Error: ${error.message}`,
+          ToastAndroid.SHORT
+        );
       } finally {
         // Tell the application to render
         setAppIsReady(true);
