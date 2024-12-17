@@ -22,8 +22,8 @@ import { supabase } from "../../utils/supabase/config";
 import moment from "moment";
 
 const LearnCprScoreScreen = ({ route }) => {
-  const { compressionHistory } = route.params;
-  usePreventBack();
+  const { history } = route.params;
+  const compressionHistory = history ? history : { data: [], duration: 0 };
 
   usePreventBack();
   const navigation = useNavigation();
