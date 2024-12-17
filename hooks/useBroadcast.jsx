@@ -14,10 +14,16 @@ export default function useBroadcast() {
   const fetchAlerts = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase.from("BROADCAST").select(`
+      const { data, error } = await supabase
+        .from("BROADCAST")
+        .select(
+          `
         *,
         USER: user_id (first_name, last_name)
-      `);
+      `
+        )
+        .neq("status", "Completed");
+        
       if (error) {
         if (!error.message === "TypeError: Network request failed") {
           ToastAndroid.show(

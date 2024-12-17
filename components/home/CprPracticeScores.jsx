@@ -7,7 +7,7 @@ import moment from "moment";
 import Color from "../../utils/Color";
 import EmptyLabel from "../ui/EmptyLabel";
 import useCheckVerification from "../../hooks/cpr/useCheckVerification";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { supabase } from "../../utils/supabase/config";
 import useBoundStore from "../../zustand/useBoundStore";
 import { useFocusEffect } from "@react-navigation/native";

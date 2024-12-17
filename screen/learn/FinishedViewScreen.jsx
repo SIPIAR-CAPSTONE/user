@@ -12,7 +12,7 @@ const FinishedViewScreen = ({ route }) => {
   const { id } = route.params;
   const { styles, theme } = useStyles(stylesheet);
   const navigation = useNavigation();
-  const isUserVerified = useBoundStore((state) => state.isUserVerified);
+  const isUserVerified = useBoundStore((state) => state.userIsVerified);
 
   return (
     <Layout>

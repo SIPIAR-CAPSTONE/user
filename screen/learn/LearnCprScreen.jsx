@@ -99,7 +99,7 @@ export default function CprScreen() {
     setHistoryDuration(timerInSeconds);
     clearHistory();
 
-    navigation.navigate("LearnCprScore", { compressionHistory: history });
+    navigation.navigate("LearnCprScore", { history: history });
   };
 
   return (

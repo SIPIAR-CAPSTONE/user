@@ -22,8 +22,8 @@ import { supabase } from "../../utils/supabase/config";
 import moment from "moment";
 
 const LearnCprScoreScreen = ({ route }) => {
-  const { compressionHistory } = route.params;
-  usePreventBack();
+  const { history } = route.params;
+  const compressionHistory = history ? history : { data: [], duration: 0 };
 
   usePreventBack();
   const navigation = useNavigation();
@@ -114,10 +114,14 @@ const LearnCprScoreScreen = ({ route }) => {
         });
 
       if (insertError) {
-        ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+        if (!insertError.message === "TypeError: Network request failed") {
+          ToastAndroid.show(`${insertError.message}`, ToastAndroid.SHORT);
+        }
       }
     } catch (error) {
-      ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      if (!error.message === "TypeError: Network request failed") {
+        ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+      }
     } finally {
       setLoading(false);
       navigation.navigate("LearnScreen");

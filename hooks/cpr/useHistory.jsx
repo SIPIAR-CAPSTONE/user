@@ -3,7 +3,7 @@ import { useRef } from "react";
 export default function useHistory() {
   const history = useRef({
     data: [],
-    duration: "00:00",
+    duration: 0,
   });
 
   const record = (data) => {
