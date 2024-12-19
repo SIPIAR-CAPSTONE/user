@@ -5,11 +5,14 @@ export default function useFirstTimePopup({
   key,
   handleTrue = () => {},
   handleFalse = () => {},
+  delay = 0,
 }) {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    checkKey();
+    setTimeout(() => {
+      checkKey();
+    }, delay);
   }, []);
 
   const checkKey = async () => {

@@ -12,6 +12,7 @@ const HomeScreen = ({ navigation }) => {
   useFirstTimePopup({
     key: "TermAndConditions",
     handleFalse: () => navigation.navigate("TermsAndConditions"),
+    delay: 1000
   });
   useCheckVerification();
   const globalModalCloser = useBoundStore((state) => state.globalModalCloser)
