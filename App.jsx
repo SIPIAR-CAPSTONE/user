@@ -24,28 +24,27 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { hasInternet } = useInternet();
-  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
-  const selectedTheme = currentThemeScheme == "light" ? lightTheme : darkTheme;
-  const globalStateEncryptedSession = useBoundStore((state) => state.session);
+  const restoreAccountIsVerifiedLocally = useBoundStore(
+    (state) => state.restoreAccountIsVerifiedLocally
+  );
   const restoreSession = useBoundStore((state) => state.restoreSession);
   const restoreSessionOffline = useBoundStore(
     (state) => state.restoreSessionOffline
   );
-  const restoreAccountIsVerifiedLocally = useBoundStore(
-    (state) => state.restoreAccountIsVerifiedLocally
-  );
+  const globalStateEncryptedSession = useBoundStore((state) => state.session);
+  const currentThemeScheme = useBoundStore((state) => state.currentThemeScheme);
+  const selectedTheme = currentThemeScheme == "light" ? lightTheme : darkTheme;
   useInitializeTheme();
 
   useEffect(() => {
     async function prepare() {
       try {
-        await restoreAccountIsVerifiedLocally();
-
         if (hasInternet) {
           await restoreSession();
         } else {
           await restoreSessionOffline();
         }
+        await restoreAccountIsVerifiedLocally();
       } catch (error) {
         ToastAndroid.show(
           `Initialize App Error: ${error.message}`,

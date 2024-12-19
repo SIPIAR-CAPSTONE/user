@@ -19,7 +19,7 @@ export default function useCheckVerification() {
       .eq("user_id", userMetaData["bystanderId"]);
 
     if (!error) {
-      const isVerified = data[0]["is_verified"];
+      const isVerified = data[0]?.["is_verified"];
       setAccountIsVerified(isVerified);
     }
   };
@@ -35,8 +35,8 @@ export default function useCheckVerification() {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "bystander" },
         (payload) => {
-          console.log("Change received!", payload["new"]["isVerified"]);
-          const isVeried = payload["new"]["isVerified"];
+          console.log("Change received!", payload["new"]?.["isVerified"]);
+          const isVeried = payload["new"]?.["isVerified"];
 
           setAccountIsVerified(isVeried);
         }
