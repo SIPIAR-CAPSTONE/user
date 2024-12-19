@@ -46,11 +46,13 @@ const ConfirmationDialog = ({
             <Button
               label={confirmationLabel}
               onPress={handleOnPressConfirmation}
+              isLoading={loading}
             />
             <Button
               label={cancelLabel}
               onPress={onPressCancel}
               variant="text"
+              isLoading={loading}
             />
           </Dialog.Actions>
         </>

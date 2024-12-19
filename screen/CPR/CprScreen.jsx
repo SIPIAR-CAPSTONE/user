@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { StyleSheet, View, ToastAndroid } from "react-native";
 
 import useTimingAudio from "../../hooks/cpr/useTimingAudio";
@@ -21,11 +21,13 @@ import ConfirmationDialog from "../../components/ui/ConfirmationDialog";
 import CprHeader from "../../components/cpr/CprHeader";
 import Countdown from "../../components/cpr/Countdown";
 import useTimer from "../../hooks/cpr/useTimer";
+import useInternet from "../../hooks/useInternet";
 
 export default function CprScreen() {
-
   const { isLoading: audioLoading, playAudio, stopAudio } = useTimingAudio();
   const { userLocation, loading: locationLoading } = useLocation();
+  const userIsVerified = useBoundStore((state) => state.userIsVerified);
+  const { hasInternet } = useInternet();
   const navigation = useNavigation();
   usePreventBack();
   const { markAsDone } = useFirstTimePopup({
@@ -47,7 +49,23 @@ export default function CprScreen() {
   const [isInfoDialogVisible, setIsInfoDialogVisible] = useState(false);
   const handleOpenInfoDialog = () => setIsInfoDialogVisible(true);
 
-  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(true);
+  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
+  const [isSendAlertDialogVisible, setIsSendDialogVisible] = useState(false);
+
+  const showConfirmDialog = () => setIsConfirmDialogVisible(true);
+  const hideConfirmDialog = () => setIsConfirmDialogVisible(false);
+  const showSendAlertDialog = () => setIsSendDialogVisible(true);
+  const hideSendAlertDialog = () => setIsSendDialogVisible(false);
+
+  //if userIsVerified and has internet show send alert broadcast dialog
+  useEffect(() => {
+    if (userIsVerified && hasInternet) {
+      showSendAlertDialog();
+    } else {
+      showConfirmDialog();
+    }
+  }, []);
+
   const {
     time: countdown,
     timerOn: countdownOn,
@@ -55,9 +73,12 @@ export default function CprScreen() {
   } = useCountdown(3, false, () => handleStartSession());
   const { startTimer, resetTimer, timer } = useTimer();
 
-  const { sendEmergencyAlertRequest, checkIfthereIsRecentAlert } =
-    useSendEmergencyAlert();
-  const userIsVerified = useBoundStore((state) => state.userIsVerified);
+  const {
+    sendEmergencyAlertRequest,
+    checkIfthereIsRecentAlert,
+    loadingCheckAlert,
+    loadingSendAlert,
+  } = useSendEmergencyAlert();
 
   //Get score colors
   const { backgroundColor: overallBgColor, borderColor: overallBorderColor } =
@@ -79,14 +100,19 @@ export default function CprScreen() {
     resetTimer();
   };
 
-  const handleStartCpr = async () => {
+  const handleNoSendEmergencyAlert = () => {
+    hideSendAlertDialog();
+    showConfirmDialog();
+  };
+
+  const handleYesSendEmergencyAlert = async () => {
     if (!userIsVerified) {
       ToastAndroid.show(
         "Failed to send emergency alert: your account is not verified",
         ToastAndroid.LONG
       );
-      setIsConfirmDialogVisible(false);
-      startCountdown();
+      hideSendAlertDialog();
+      showConfirmDialog();
       return;
     }
 
@@ -103,7 +129,12 @@ export default function CprScreen() {
       sendEmergencyAlertRequest(userLocation.latitude, userLocation.longitude);
     }
 
-    setIsConfirmDialogVisible(false);
+    hideSendAlertDialog();
+    showConfirmDialog();
+  };
+
+  const handleStartCpr = async () => {
+    hideConfirmDialog();
     startCountdown();
   };
 
@@ -156,9 +187,22 @@ export default function CprScreen() {
           cancelLabel="Back"
           confirmationLabel="Start"
           onPressCancel={() => navigation.navigate("HomeScreen")}
-          loading={locationLoading && audioLoading}
+          loading={audioLoading}
           onPressConfirmation={handleStartCpr}
-          title={"Are you ready to start?"}
+          title={"Would you like to start?"}
+          containerStyle={styles.dialog}
+          removePortal
+        />
+      )}
+      {isSendAlertDialogVisible && userIsVerified && (
+        <ConfirmationDialog
+          isVisible={isSendAlertDialogVisible}
+          cancelLabel="No"
+          confirmationLabel="Yes"
+          onPressCancel={handleNoSendEmergencyAlert}
+          loading={locationLoading && loadingSendAlert && loadingCheckAlert}
+          onPressConfirmation={handleYesSendEmergencyAlert}
+          title={"Would you like to send emergency alert broadcast?"}
           containerStyle={styles.dialog}
           removePortal
         />
@@ -199,7 +243,7 @@ const styles = StyleSheet.create({
     maxHeight: "90%",
   },
   dialog: {
-    width: 360,
+    width: 400,
     marginHorizontal: "auto",
   },
 });
