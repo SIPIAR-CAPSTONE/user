@@ -1,7 +1,7 @@
 import { View, ToastAndroid } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { lazy, useEffect, useState } from "react";
+import { lazy, useState } from "react";
 import * as FileSystem from "expo-file-system";
 
 import ListItem from "../../components/ui/ListItem";
@@ -16,6 +16,7 @@ import Layout from "../../components/common/Layout";
 import AppBar from "../../components/ui/AppBar";
 import AppBarTitle from "../../components/ui/AppBarTitle";
 import useCheckVerification from "../../hooks/cpr/useCheckVerification";
+import AppearanceListItem from "./AppearanceListItem";
 const ConfirmationDialog = lazy(() =>
   import("../../components/ui/ConfirmationDialog")
 );
@@ -133,15 +134,7 @@ const ProfileScreen = () => {
           renderActionIcon={() => <NextActionIcon />}
           onPress={() => navigation.navigate("MyAccount")}
         />
-        <ListItem
-          size="medium"
-          title="Settings"
-          renderTrailerIcon={() => (
-            <CircularIcon name="settings" variant="primary" size={12} />
-          )}
-          renderActionIcon={() => <NextActionIcon />}
-          onPress={() => navigation.navigate("Settings")}
-        />
+        <AppearanceListItem />
         <ListItem
           size="medium"
           title="Terms and Conditions"
