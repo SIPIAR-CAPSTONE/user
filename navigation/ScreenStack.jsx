@@ -29,9 +29,6 @@ const PrivacyAndPolicyScreen = lazy(() =>
 const TermsAndConditionsScreen = lazy(() =>
   import("../screen/profile/termsAndCondition/TermsAndConditionScreen")
 );
-const SettingsScreen = lazy(() =>
-  import("../screen/profile/setting/SettingsScreen")
-);
 const MapviewScreen = lazy(() => import("../screen/broadcast/MapviewScreen"));
 const EditPasswordScreen = lazy(() =>
   import("../screen/profile/myAccount/EditPasswordScreen")
@@ -43,9 +40,6 @@ const LearnCprScoreScreen = lazy(() =>
 const CprScreen = lazy(() => import("../screen/CPR/CprScreen"));
 const DocumentMaterialScreen = lazy(() =>
   import("../screen/learn/DocumentMaterialScreen")
-);
-const ReportIssueScreen = lazy(() =>
-  import("../screen/profile/setting/ReportIssueScreen")
 );
 const QuizScreen = lazy(() => import("../screen/learn/QuizScreen"));
 const FinishedViewScreen = lazy(() =>
@@ -127,16 +121,6 @@ export const SignedInStack = (
       name="AccountVerification"
       options={{ headerShown: false }}
       component={AccountVerificationScreen}
-    />
-    <Stack.Screen
-      name="Settings"
-      options={{ headerShown: false }}
-      component={SettingsScreen}
-    />
-    <Stack.Screen
-      name="ReportIssue"
-      options={{ headerShown: false }}
-      component={ReportIssueScreen}
     />
     <Stack.Screen
       name="TermsAndConditions"

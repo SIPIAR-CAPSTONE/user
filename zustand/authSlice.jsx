@@ -128,9 +128,7 @@ export const createAuthSlice = (set, get) => ({
       ? Boolean(userIsVerifiedStr)
       : false;
 
-    if (userIsVerified) {
-      set({ userIsVerified: userIsVerified });
-    }
+    set({ userIsVerified: userIsVerified });
   },
   removeAccountIsVerifiedLocally: async () => {
     set({ userIsVerified: false });
