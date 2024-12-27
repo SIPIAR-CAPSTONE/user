@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "eas-build-pre-install": "echo $GOOGLE_SERVICES_JSON | base64 -d > google-services.json"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "4",
@@ -22,10 +23,13 @@
     "base64-arraybuffer": "^1.0.2",
     "expo": "~51.0.39",
     "expo-av": "^14.0.7",
+    "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.29",
+    "expo-device": "~6.0.2",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "~15.0.7",
     "expo-location": "~17.0.1",
+    "expo-notifications": "~0.28.19",
     "expo-secure-store": "~13.0.2",
     "expo-sensors": "~13.0.9",
     "expo-splash-screen": "~0.27.7",

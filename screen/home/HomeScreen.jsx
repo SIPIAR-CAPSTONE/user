@@ -7,17 +7,19 @@ import CprPracticeScores from "../../components/home/CprPracticeScores";
 import useFirstTimePopup from "../../hooks/useFirstTimePopup";
 import useCheckVerification from "../../hooks/cpr/useCheckVerification";
 import useBoundStore from "../../zustand/useBoundStore";
+import usePushNotification from "../../hooks/usePushNotification";
 
 const HomeScreen = ({ navigation }) => {
   useFirstTimePopup({
     key: "TermAndConditions",
     handleFalse: () => navigation.navigate("TermsAndConditions"),
-    delay: 1000
+    delay: 1000,
   });
   useCheckVerification();
-  const globalModalCloser = useBoundStore((state) => state.globalModalCloser)
-
- 
+  const globalModalCloser = useBoundStore((state) => state.globalModalCloser);
+  const session = useBoundStore((state) => state.session);
+  usePushNotification({ userId: session?.user.id });
+  
   const CustomAppBar = () => (
     <AppBar>
       <LogoTitle />

@@ -36,8 +36,14 @@ const H2 = ({ children, ...props }) => {
   );
 };
 
-const P = ({ children }) => {
-  return children && <Text variant="bodyMedium">{children}</Text>;
+const P = ({ children, ...props }) => {
+  return (
+    children && (
+      <Text variant="bodyMedium" {...props}>
+        {children}
+      </Text>
+    )
+  );
 };
 
 const OL = ({ children }) => {
