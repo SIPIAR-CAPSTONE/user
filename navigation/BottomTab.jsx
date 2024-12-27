@@ -12,12 +12,14 @@ import CprTabBarIcon from "../components/navigation/CprTabBarIcon";
 import TabBarIcon from "../components/navigation/TabBarIcon";
 
 import { useStyles, createStyleSheet } from "../hooks/useStyles";
+import useActivityTracker from "../hooks/useActivityTracker";
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
+  useActivityTracker();
   const { styles, theme } = useStyles(stylesheet);
-
+  console.log(1);
   const screenOptions = {
     tabBarStyle: styles.tabBar,
     tabBarActiveTintColor: theme.colors.primary,
