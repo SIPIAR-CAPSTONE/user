@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
   useCheckVerification();
   const globalModalCloser = useBoundStore((state) => state.globalModalCloser);
   const session = useBoundStore((state) => state.session);
-  usePushNotification({ userId: session?.user.id });
+  usePushNotification({ userId: session?.user?.id });
   
   const CustomAppBar = () => (
     <AppBar>
