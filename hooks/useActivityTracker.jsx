@@ -6,11 +6,12 @@ import moment from "moment";
 
 export default function useActivityTracker() {
   const { userLocation, loading } = useLocation();
-  const session = useBoundStore((state) => state.session);
-  const userId = session?.user.id;
+  const userId = useBoundStore((state) => state.userMetaData['bystanderId']);
+  // console.log('SESSION VAL', session);
+  // console.log('USER ID - TRACKER', userId);
 
   const updateActivity = async () => {
-    if (!session || !userId || loading || !userLocation) return;
+    if (!userId || loading || !userLocation) return;
 
     const { error } = await supabase.from("USER ACTIVITY").upsert({
       user_id: userId,
